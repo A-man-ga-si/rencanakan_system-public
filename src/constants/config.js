@@ -1,7 +1,7 @@
 import { UserRole } from "../utils/auth.roles";
 
 export const defaultMenuType = "menu-sub-hidden"; // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
-export const adminRoot = "/app";
+export const adminRoot = "";
 export const searchPath = `${adminRoot}/#`;
 export const buyUrl = "https://1.envato.market/nEyZa";
 export const apiUrl = "https://api.coloredstrategies.com";
@@ -13,8 +13,7 @@ export const defaultLocale = "en";
 export const defaultDirection = "ltr";
 export const localeOptions = [
   { id: "en", name: "English LTR", direction: "ltr" },
-  { id: "es", name: "Español", direction: "ltr" },
-  { id: "enrtl", name: "English RTL", direction: "rtl" },
+  { id: "id", name: "Indonesian", direction: "ltr" },
 ];
 
 export const firebaseConfig = {
@@ -35,7 +34,7 @@ export const currentUser = {
   role: UserRole.Admin,
 };
 
-export const isAuthGuardActive = false;
+export const isAuthGuardActive = true;
 export const themeRadiusStorageKey = "theme_radius";
 export const themeSelectedColorStorageKey = "theme_selected_color";
 export const defaultColor = "light.blueolympic";

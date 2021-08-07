@@ -4,7 +4,7 @@
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">
-            {{ $t("dashboards.magic-is-in-the-details") }}
+            {{ $t("dashboards.login-string-title") }}
           </p>
           <p class="white mb-0">
             Please use your credentials to login.
@@ -157,9 +157,9 @@ export default {
   watch: {
     currentUser(val) {
       if (val && val.uid && val.uid.length > 0) {
-        setTimeout(() => {
-          this.$router.push(adminRoot);
-        }, 200);
+        this.$router.push({
+          name: "Dashboard",
+        });
       }
     },
     loginError(val) {

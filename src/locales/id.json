@@ -24,7 +24,7 @@
   "menu": {
     "home": "Home",
     "app": "Home",
-    "dashboards": "Dashboards",
+    "dashboards": "Dasbor",
     "default": "Default",
     "analytics": "Analytics",
     "ecommerce": "Ecommerce",
@@ -119,14 +119,14 @@
     "second": "Second",
     "start": "Start",
     "single": "Single",
-    "dashboard": "Dashboard"
+    "dashboard": "Dasbor"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",
     "completed-orders": "Completed Orders",
     "refund-requests": "Refund Requests",
-    "login-string-title": "Welcome",
     "new-comments": "New Comments",
+    "login-string-title": "Selamat Datang",
     "sales": "Sales",
     "orders": "Orders",
     "refunds": "Refunds",

@@ -21,21 +21,6 @@
       >
         <mobile-menu-icon />
       </a>
-      <div
-        :class="{ search: true, 'mobile-view': isMobileSearch }"
-        ref="searchContainer"
-        @mouseenter="isSearchOver = true"
-        @mouseleave="isSearchOver = false"
-      >
-        <b-input
-          :placeholder="$t('menu.search')"
-          @keypress.native.enter="search"
-          v-model="searchKeyword"
-        />
-        <span class="search-icon" @click="searchClick">
-          <i class="simple-icon-magnifier"></i>
-        </span>
-      </div>
       <div class="d-inline-block">
         <b-dropdown
           id="langddm"
@@ -54,14 +39,6 @@
             >{{ l.name }}</b-dropdown-item
           >
         </b-dropdown>
-      </div>
-      <div class="position-relative d-none d-none d-lg-inline-block">
-        <a
-          class="btn btn-outline-primary btn-sm ml-2"
-          target="_top"
-          :href="buyUrl"
-          >{{ $t("user.buy") }}</a
-        >
       </div>
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
@@ -291,7 +268,9 @@ export default {
     },
     logout() {
       this.signOut().then(() => {
-        this.$router.push("/user/login");
+        this.$router.push({
+          name: "Login",
+        });
       });
     },
 

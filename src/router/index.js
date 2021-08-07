@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import AuthGuard from "./../utils/auth.guard";
+import App from "./../views/app";
 import { adminRoot } from "./../constants/config";
 import { UserRole } from "./../utils/auth.roles";
 
@@ -8,58 +9,43 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    component: () => import(/* webpackChunkName: "home" */ "./../views/home"),
-    // redirect: `${adminRoot}/piaf`,
+    path: adminRoot,
+    name: "Dashboard",
+    meta: { loginRequired: true, permissions: ["read-dashboard"] },
+    component: App,
   },
   {
-    path: adminRoot,
-    component: () => import(/* webpackChunkName: "app" */ "./../views/app"),
-    redirect: `${adminRoot}/piaf`,
-    meta: { loginRequired: true },
-    /*
-   define with Authorization :
-   meta: { loginRequired: true, roles: [UserRole.Admin, UserRole.Editor] },
-   */
+    path: `${adminRoot}/auth`,
+    redirect: "/auth/login",
+    component: () => import(/* webpackChunkName: "auth" */ "./../views/user"),
     children: [
       {
-        path: "piaf",
+        path: "login",
+        name: "Login",
         component: () =>
-          import(/* webpackChunkName: "piaf" */ "./../views/app/piaf"),
-        redirect: `${adminRoot}/piaf/start`,
-        children: [
-          {
-            path: "start",
-            component: () =>
-              import(
-                /* webpackChunkName: "piaf" */ "./../views/app/piaf/Start"
-              ),
-            // meta: { roles: [UserRole.Admin, UserRole.Editor] },
-          },
-        ],
+          import(/* webpackChunkName: "login" */ "./../views/user/Login"),
       },
       {
-        path: "second-menu",
+        path: "register",
+        name: "Register",
+        component: () =>
+          import(/* webpackChunkName: "register" */ "./../views/user/Register"),
+      },
+      {
+        path: "forgot-password",
+        name: "ForgotPassword",
         component: () =>
           import(
-            /* webpackChunkName: "second-menu" */ "./../views/app/second-menu"
+            /* webpackChunkName: "forgotPassword" */ "./../views/user/ForgotPassword"
           ),
-        redirect: `${adminRoot}/second-menu/second`,
-        children: [
-          {
-            path: "second",
-            component: () =>
-              import(
-                /* webpackChunkName: "piaf" */ "./../views/app/second-menu/Second"
-              ),
-          },
-        ],
       },
-
       {
-        path: "single",
+        path: "reset-password",
+        name: "ResetPassword",
         component: () =>
-          import(/* webpackChunkName: "single" */ "./../views/app/single"),
+          import(
+            /* webpackChunkName: "resetPassword" */ "./../views/user/ResetPassword"
+          ),
       },
     ],
   },
@@ -68,46 +54,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "error" */ "./../views/Error"),
   },
   {
-    path: "/user",
-    component: () => import(/* webpackChunkName: "user" */ "./../views/user"),
-    redirect: "/user/login",
-    children: [
-      {
-        path: "login",
-        component: () =>
-          import(/* webpackChunkName: "user" */ "./../views/user/Login"),
-      },
-      {
-        path: "register",
-        component: () =>
-          import(/* webpackChunkName: "user" */ "./../views/user/Register"),
-      },
-      {
-        path: "forgot-password",
-        component: () =>
-          import(
-            /* webpackChunkName: "user" */ "./../views/user/ForgotPassword"
-          ),
-      },
-      {
-        path: "reset-password",
-        component: () =>
-          import(
-            /* webpackChunkName: "user" */ "./../views/user/ResetPassword"
-          ),
-      },
-    ],
-  },
-  {
     path: "*",
     component: () => import(/* webpackChunkName: "error" */ "./../views/Error"),
   },
 ];
 
 const router = new VueRouter({
-  linkActiveClass: "active",
   routes,
+  linkActiveClass: "active",
   mode: "history",
 });
+
 router.beforeEach(AuthGuard);
+
 export default router;

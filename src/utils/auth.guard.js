@@ -1,5 +1,6 @@
 import { isAuthGuardActive } from "../constants/config";
 import { setCurrentUser, getCurrentUser } from ".";
+
 export default (to, from, next) => {
   if (to.matched.some((record) => record.meta.loginRequired)) {
     if (isAuthGuardActive) {
@@ -15,7 +16,9 @@ export default (to, from, next) => {
         }
       } else {
         setCurrentUser(null);
-        next("/user/login");
+        next({
+          name: "Login",
+        });
       }
     } else {
       next();
