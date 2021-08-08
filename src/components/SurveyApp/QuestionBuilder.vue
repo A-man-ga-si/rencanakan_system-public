@@ -161,60 +161,60 @@
 </template>
 
 <script>
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
-import Draggable from "vuedraggable";
+  import vSelect from 'vue-select';
+  import 'vue-select/dist/vue-select.css';
+  import Draggable from 'vuedraggable';
 
-const questionTypes = [
-  { label: "Text Input", value: 0, options: false },
-  { label: "Single Select", value: 1, options: true },
-  { label: "Multiple Select", value: 2, options: true },
-  { label: "Checkbox", value: 3, options: true },
-  { label: "Radiobutton", value: 4, options: true },
-];
+  const questionTypes = [
+    { label: 'Text Input', value: 0, options: false },
+    { label: 'Single Select', value: 1, options: true },
+    { label: 'Multiple Select', value: 2, options: true },
+    { label: 'Checkbox', value: 3, options: true },
+    { label: 'Radiobutton', value: 4, options: true },
+  ];
 
-export default {
-  props: ["data", "sort"],
-  components: {
-    "v-select": vSelect,
-    draggable: Draggable,
-  },
-  data() {
-    return {
-      questionTypes,
-      mode: "edit", // edit,
-      showDetail: false,
-      title: "",
-      question: "",
-      answers: null,
-      answerType: questionTypes[0],
-    };
-  },
-  mounted() {
-    this.title = this.data.title;
-    this.question = this.data.question;
-    this.answers = this.data.answers;
-    this.answerType = questionTypes.find(
-      (x) => x.value === this.data.answerType
-    );
-  },
-  methods: {
-    changeMode(mode) {
-      this.mode = mode;
-      this.showDetail = true;
+  export default {
+    props: ['data', 'sort'],
+    components: {
+      'v-select': vSelect,
+      draggable: Draggable,
     },
-    deleteAnswer(value) {
-      this.answers = this.answers.filter((x) => x.value !== value);
+    data() {
+      return {
+        questionTypes,
+        mode: 'edit', // edit,
+        showDetail: false,
+        title: '',
+        question: '',
+        answers: null,
+        answerType: questionTypes[0],
+      };
     },
-    addAnswer() {
-      this.answers.push({ value: this.answers.length + 1, label: "" });
+    mounted() {
+      this.title = this.data.title;
+      this.question = this.data.question;
+      this.answers = this.data.answers;
+      this.answerType = questionTypes.find(
+        x => x.value === this.data.answerType
+      );
     },
-  },
-  watch: {
-    showDetail(val) {
-      if (!val) {
-      }
+    methods: {
+      changeMode(mode) {
+        this.mode = mode;
+        this.showDetail = true;
+      },
+      deleteAnswer(value) {
+        this.answers = this.answers.filter(x => x.value !== value);
+      },
+      addAnswer() {
+        this.answers.push({ value: this.answers.length + 1, label: '' });
+      },
     },
-  },
-};
+    watch: {
+      showDetail(val) {
+        if (!val) {
+        }
+      },
+    },
+  };
 </script>

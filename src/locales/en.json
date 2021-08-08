@@ -119,7 +119,8 @@
     "second": "Second",
     "start": "Start",
     "single": "Single",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "settings": "Setting"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",

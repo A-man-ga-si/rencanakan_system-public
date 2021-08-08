@@ -39,37 +39,37 @@
 </template>
 
 <script>
-export default {
-  props: ["id", "variant", "click"],
-  data() {
-    return {
-      status: "default",
-      message: "",
-      messageShow: false,
-    };
-  },
-  methods: {
-    handleClick() {
-      this.status = "processing";
-      this.click()
-        .then((res) => {
-          this.status = "success";
-          this.message = res;
-        })
-        .catch((err) => {
-          this.status = "fail";
-          this.message = err;
-        })
-        .finally(() => {
-          this.messageShow = true;
-          this.$refs.statusTooltip.$emit("enable");
-          setTimeout(() => {
-            this.messageShow = false;
-            this.status = "default";
-            this.$refs.statusTooltip.$emit("disable");
-          }, 3000);
-        });
+  export default {
+    props: ['id', 'variant', 'click'],
+    data() {
+      return {
+        status: 'default',
+        message: '',
+        messageShow: false,
+      };
     },
-  },
-};
+    methods: {
+      handleClick() {
+        this.status = 'processing';
+        this.click()
+          .then(res => {
+            this.status = 'success';
+            this.message = res;
+          })
+          .catch(err => {
+            this.status = 'fail';
+            this.message = err;
+          })
+          .finally(() => {
+            this.messageShow = true;
+            this.$refs.statusTooltip.$emit('enable');
+            setTimeout(() => {
+              this.messageShow = false;
+              this.status = 'default';
+              this.$refs.statusTooltip.$emit('disable');
+            }, 3000);
+          });
+      },
+    },
+  };
 </script>

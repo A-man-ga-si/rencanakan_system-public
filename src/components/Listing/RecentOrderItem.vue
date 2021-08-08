@@ -30,7 +30,7 @@
 </template>
 
 <script>
-export default {
-  props: ["order", "detailPath"],
-};
+  export default {
+    props: ['order', 'detailPath'],
+  };
 </script>

@@ -55,21 +55,21 @@
 </template>
 
 <script>
-export default {
-  props: ["conversations", "contacts", "currentUser"],
-  methods: {
-    selectConversation(conversation) {
-      const otherUser = this.otherUser(conversation.users);
-      this.$emit("select-conversation", otherUser, conversation.messages);
+  export default {
+    props: ['conversations', 'contacts', 'currentUser'],
+    methods: {
+      selectConversation(conversation) {
+        const otherUser = this.otherUser(conversation.users);
+        this.$emit('select-conversation', otherUser, conversation.messages);
+      },
+      otherUser(users) {
+        var otherUserId = users.find(x => x !== this.currentUser.id);
+        return this.contacts.find(x => x.id === otherUserId);
+      },
     },
-    otherUser(users) {
-      var otherUserId = users.find((x) => x !== this.currentUser.id);
-      return this.contacts.find((x) => x.id === otherUserId);
+    computed: {},
+    mounted() {
+      this.selectConversation(this.conversations[0]);
     },
-  },
-  computed: {},
-  mounted() {
-    this.selectConversation(this.conversations[0]);
-  },
-};
+  };
 </script>

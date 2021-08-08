@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import Stars from "../Common/Stars";
+  import Stars from '../Common/Stars';
 
-export default {
-  props: ["image", "order", "title", "rate", "rateCount"],
-  components: {
-    stars: Stars,
-  },
-};
+  export default {
+    props: ['image', 'order', 'title', 'rate', 'rateCount'],
+    components: {
+      stars: Stars,
+    },
+  };
 </script>

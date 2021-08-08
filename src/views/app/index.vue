@@ -1,15 +1,19 @@
 <template>
   <app-layout>
-    <router-view />
+    <SlideYDownTransition mode="out-in">
+      <router-view />
+    </SlideYDownTransition>
   </app-layout>
 </template>
 
 <script>
-import AppLayout from "../../layouts/AppLayout";
+  import { SlideYDownTransition } from 'vue2-transitions';
+  import AppLayout from '../../layouts/AppLayout';
 
-export default {
-  components: {
-    "app-layout": AppLayout,
-  },
-};
+  export default {
+    components: {
+      'app-layout': AppLayout,
+      SlideYDownTransition,
+    },
+  };
 </script>

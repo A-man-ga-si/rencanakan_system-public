@@ -22,15 +22,15 @@
   </footer>
 </template>
 <script>
-export default {
-  data: () => ({
-    copyrightBy: "rencanakan.id",
-    copyrightSymbol: "&copy",
-  }),
-  computed: {
-    year() {
-      return new Date().getFullYear();
+  export default {
+    data: () => ({
+      copyrightBy: 'rencanakan.id',
+      copyrightSymbol: '&copy',
+    }),
+    computed: {
+      year() {
+        return new Date().getFullYear();
+      },
     },
-  },
-};
+  };
 </script>

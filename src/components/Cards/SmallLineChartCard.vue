@@ -7,24 +7,24 @@
 </template>
 
 <script>
-import SmallLineChart from "../Charts/SmallLine";
+  import SmallLineChart from '../Charts/SmallLine';
 
-export default {
-  props: ["labelPrefix", "data"],
-  components: {
-    "small-line-chart": SmallLineChart,
-  },
-  data() {
-    return {
-      labelx: "",
-      labely: "",
-    };
-  },
-  methods: {
-    onChartMouseOver({ labelx, labely }) {
-      this.labelx = labelx;
-      this.labely = labely;
+  export default {
+    props: ['labelPrefix', 'data'],
+    components: {
+      'small-line-chart': SmallLineChart,
     },
-  },
-};
+    data() {
+      return {
+        labelx: '',
+        labely: '',
+      };
+    },
+    methods: {
+      onChartMouseOver({ labelx, labely }) {
+        this.labelx = labelx;
+        this.labely = labely;
+      },
+    },
+  };
 </script>

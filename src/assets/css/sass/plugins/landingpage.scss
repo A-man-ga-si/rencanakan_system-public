@@ -224,7 +224,7 @@
         }
 
         &.active::before {
-          content: " ";
+          content: ' ';
           background: $button-text-color;
           border-radius: 10px;
           position: absolute;
@@ -325,7 +325,7 @@
 
         li {
           &.active::before {
-            content: " ";
+            content: ' ';
             background-color: $theme-color-1;
           }
         }
@@ -520,7 +520,7 @@
     }
 
     &::before {
-      content: " ";
+      content: ' ';
       width: 100%;
       height: 70px;
       position: absolute;
@@ -533,7 +533,7 @@
     }
 
     &::after {
-      content: " ";
+      content: ' ';
       width: 100%;
       height: 70px;
       position: absolute;
@@ -547,7 +547,7 @@
 
     &.background-no-bottom {
       &::after {
-        content: "";
+        content: '';
         background: initial;
         width: initial;
         height: initial;
@@ -1072,7 +1072,7 @@
 
       &:before {
         color: $theme-color-1;
-        content: "\f101";
+        content: '\f101';
       }
     }
 

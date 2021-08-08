@@ -65,82 +65,82 @@
 </template>
 
 <script>
-import { colors } from "../../constants/config";
-import {
-  getThemeRadius,
-  setThemeRadius,
-  setThemeColor,
-  getThemeColor,
-} from "../../utils";
-export default {
-  data() {
-    return {
-      isOpen: false,
-      isMenuOver: false,
-      selectedColor: "",
-      colors,
-      radius: getThemeRadius(),
-    };
-  },
-  methods: {
-    getIconClass(color, type) {
-      var classes = ["theme-color", "theme-color-" + color];
-      if (this.selectedColor === type + "." + color) {
-        classes.push("active");
-      }
-      return classes.join(" ");
+  import { colors } from '../../constants/config';
+  import {
+    getThemeRadius,
+    setThemeRadius,
+    setThemeColor,
+    getThemeColor,
+  } from '../../utils';
+  export default {
+    data() {
+      return {
+        isOpen: false,
+        isMenuOver: false,
+        selectedColor: '',
+        colors,
+        radius: getThemeRadius(),
+      };
     },
+    methods: {
+      getIconClass(color, type) {
+        var classes = ['theme-color', 'theme-color-' + color];
+        if (this.selectedColor === type + '.' + color) {
+          classes.push('active');
+        }
+        return classes.join(' ');
+      },
 
-    addEvents() {
-      document.addEventListener("click", this.handleDocumentClick);
-      document.addEventListener("touchstart", this.handleDocumentClick);
-    },
-    removeEvents() {
-      document.removeEventListener("click", this.handleDocumentClick);
-      document.removeEventListener("touchstart", this.handleDocumentClick);
-    },
-    handleDocumentClick(e) {
-      if (!this.isMenuOver) {
+      addEvents() {
+        document.addEventListener('click', this.handleDocumentClick);
+        document.addEventListener('touchstart', this.handleDocumentClick);
+      },
+      removeEvents() {
+        document.removeEventListener('click', this.handleDocumentClick);
+        document.removeEventListener('touchstart', this.handleDocumentClick);
+      },
+      handleDocumentClick(e) {
+        if (!this.isMenuOver) {
+          this.toggle();
+        }
+      },
+      toggle() {
+        this.isOpen = !this.isOpen;
+      },
+      changeThemeColor(color) {
+        setThemeColor(color);
         this.toggle();
-      }
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      },
+      changeRadius(radius) {
+        if (radius === 'flat') {
+          document.body.classList.remove('rounded');
+        } else {
+          document.body.classList.add('rounded');
+        }
+        setThemeRadius(radius);
+      },
     },
-    toggle() {
-      this.isOpen = !this.isOpen;
+    watch: {
+      isOpen(val) {
+        if (val) {
+          this.addEvents();
+        } else {
+          this.removeEvents();
+        }
+      },
     },
-    changeThemeColor(color) {
-      setThemeColor(color);
-      this.toggle();
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+    beforeDestroy() {
+      this.removeEvents();
     },
-    changeRadius(radius) {
-      if (radius === "flat") {
-        document.body.classList.remove("rounded");
-      } else {
-        document.body.classList.add("rounded");
-      }
-      setThemeRadius(radius);
+    mounted() {
+      const color = getThemeColor();
+      if (color != null && colors.includes(color.split('.')[1]))
+        this.selectedColor = color;
+      else this.selectedColor = getThemeColor();
+      this.changeRadius(this.radius);
     },
-  },
-  watch: {
-    isOpen(val) {
-      if (val) {
-        this.addEvents();
-      } else {
-        this.removeEvents();
-      }
-    },
-  },
-  beforeDestroy() {
-    this.removeEvents();
-  },
-  mounted() {
-    const color = getThemeColor();
-    if (color != null && colors.includes(color.split(".")[1]))
-      this.selectedColor = color;
-    else this.selectedColor = getThemeColor();
-    this.changeRadius(this.radius);
-  },
-};
+  };
 </script>

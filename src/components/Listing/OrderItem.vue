@@ -29,7 +29,7 @@
 </template>
 
 <script>
-export default {
-  props: ["data", "detailPath"],
-};
+  export default {
+    props: ['data', 'detailPath'],
+  };
 </script>

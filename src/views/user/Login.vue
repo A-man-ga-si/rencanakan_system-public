@@ -4,7 +4,7 @@
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">
-            {{ $t("dashboards.login-string-title") }}
+            {{ $t('dashboards.login-string-title') }}
           </p>
           <p class="white mb-0">
             Please use your credentials to login.
@@ -17,7 +17,7 @@
           <router-link to="/">
             <span class="logo-single" />
           </router-link>
-          <h6 class="mb-4">{{ $t("user.login-title") }}</h6>
+          <h6 class="mb-4">{{ $t('user.login-title') }}</h6>
 
           <b-form
             @submit.prevent="formSubmit"
@@ -66,7 +66,7 @@
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
               <router-link to="/user/forgot-password">{{
-                $t("user.forgot-password-question")
+                $t('user.forgot-password-question')
               }}</router-link>
               <b-button
                 type="submit"
@@ -91,7 +91,7 @@
                 <span class="icon fail">
                   <i class="simple-icon-exclamation"></i>
                 </span>
-                <span class="label">{{ $t("user.login-button") }}</span>
+                <span class="label">{{ $t('user.login-button') }}</span>
               </b-button>
             </div>
           </b-form>
@@ -102,74 +102,74 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validationMixin } from "vuelidate";
-const {
-  required,
-  maxLength,
-  minLength,
-  email,
-} = require("vuelidate/lib/validators");
-import { adminRoot } from "../../constants/config";
+  import { mapGetters, mapActions } from 'vuex';
+  import { validationMixin } from 'vuelidate';
+  const {
+    required,
+    maxLength,
+    minLength,
+    email,
+  } = require('vuelidate/lib/validators');
+  import { adminRoot } from '../../constants/config';
 
-export default {
-  data() {
-    return {
+  export default {
+    data() {
+      return {
+        form: {
+          email: 'test@coloredstrategies.com',
+          password: 'xxxxxx',
+        },
+      };
+    },
+    mixins: [validationMixin],
+    validations: {
       form: {
-        email: "test@coloredstrategies.com",
-        password: "xxxxxx",
-      },
-    };
-  },
-  mixins: [validationMixin],
-  validations: {
-    form: {
-      password: {
-        required,
-        maxLength: maxLength(16),
-        minLength: minLength(4),
-      },
-      email: {
-        required,
-        email,
-        minLength: minLength(4),
+        password: {
+          required,
+          maxLength: maxLength(16),
+          minLength: minLength(4),
+        },
+        email: {
+          required,
+          email,
+          minLength: minLength(4),
+        },
       },
     },
-  },
-  computed: {
-    ...mapGetters(["currentUser", "processing", "loginError"]),
-  },
-  methods: {
-    ...mapActions(["login"]),
-    formSubmit() {
-      this.$v.$touch();
-      this.form.email = "piaf-vue@coloredstrategies.com";
-      this.form.password = "piaf123";
-      this.$v.form.$touch();
-      // if (!this.$v.form.$anyError) {
-      this.login({
-        email: this.form.email,
-        password: this.form.password,
-      });
-      //}
+    computed: {
+      ...mapGetters(['currentUser', 'processing', 'loginError']),
     },
-  },
-  watch: {
-    currentUser(val) {
-      if (val && val.uid && val.uid.length > 0) {
-        this.$router.push({
-          name: "Dashboard",
+    methods: {
+      ...mapActions(['login']),
+      formSubmit() {
+        this.$v.$touch();
+        this.form.email = 'piaf-vue@coloredstrategies.com';
+        this.form.password = 'piaf123';
+        this.$v.form.$touch();
+        // if (!this.$v.form.$anyError) {
+        this.login({
+          email: this.form.email,
+          password: this.form.password,
         });
-      }
+        //}
+      },
     },
-    loginError(val) {
-      if (val != null) {
-        this.$notify("error", "Login Error", val, {
-          duration: 3000,
-          permanent: false,
-        });
-      }
+    watch: {
+      currentUser(val) {
+        if (val && val.uid && val.uid.length > 0) {
+          this.$router.push({
+            name: 'Dashboard',
+          });
+        }
+      },
+      loginError(val) {
+        if (val != null) {
+          this.$notify('error', 'Login Error', val, {
+            duration: 3000,
+            permanent: false,
+          });
+        }
+      },
     },
-  },
-};
+  };
 </script>

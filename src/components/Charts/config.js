@@ -1,4 +1,4 @@
-import { chartTooltip } from "./utils";
+import { chartTooltip } from './utils';
 
 export const lineChartOptions = {
   legend: {
@@ -18,7 +18,7 @@ export const lineChartOptions = {
         gridLines: {
           display: true,
           lineWidth: 1,
-          color: "rgba(0,0,0,0.1)",
+          color: 'rgba(0,0,0,0.1)',
           drawBorder: false,
         },
         ticks: {
@@ -41,7 +41,7 @@ export const lineChartOptions = {
 };
 export const polarAreaChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,
@@ -76,7 +76,7 @@ export const areaChartOptions = {
         gridLines: {
           display: true,
           lineWidth: 1,
-          color: "rgba(0,0,0,0.1)",
+          color: 'rgba(0,0,0,0.1)',
           drawBorder: false,
         },
         ticks: {
@@ -100,7 +100,7 @@ export const areaChartOptions = {
 
 export const scatterChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,
@@ -115,7 +115,7 @@ export const scatterChartOptions = {
         gridLines: {
           display: true,
           lineWidth: 1,
-          color: "rgba(0,0,0,0.1)",
+          color: 'rgba(0,0,0,0.1)',
           drawBorder: false,
         },
         ticks: {
@@ -132,7 +132,7 @@ export const scatterChartOptions = {
         gridLines: {
           display: true,
           lineWidth: 1,
-          color: "rgba(0,0,0,0.1)",
+          color: 'rgba(0,0,0,0.1)',
         },
       },
     ],
@@ -142,7 +142,7 @@ export const scatterChartOptions = {
 
 export const barChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,
@@ -157,7 +157,7 @@ export const barChartOptions = {
         gridLines: {
           display: true,
           lineWidth: 1,
-          color: "rgba(0,0,0,0.1)",
+          color: 'rgba(0,0,0,0.1)',
           drawBorder: false,
         },
         ticks: {
@@ -182,7 +182,7 @@ export const barChartOptions = {
 
 export const radarChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,
@@ -201,7 +201,7 @@ export const radarChartOptions = {
 
 export const pieChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,
@@ -223,7 +223,7 @@ export const pieChartOptions = {
 
 export const doughnutChartOptions = {
   legend: {
-    position: "bottom",
+    position: 'bottom',
     labels: {
       padding: 30,
       usePointStyle: true,

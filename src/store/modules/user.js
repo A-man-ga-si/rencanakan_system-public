@@ -1,22 +1,24 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import { currentUser, isAuthGuardActive } from "../../constants/config";
-import { setCurrentUser, getCurrentUser } from "../../utils";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { currentUser, isAuthGuardActive } from '../../constants/config';
+import { setCurrentUser, getCurrentUser } from '../../utils';
 
 export default {
   state: {
     currentUser: isAuthGuardActive ? getCurrentUser() : currentUser,
     loginError: null,
     processing: false,
+    isLoggedIn: false,
     forgotMailSuccess: null,
     resetPasswordSuccess: null,
   },
   getters: {
-    currentUser: (state) => state.currentUser,
-    processing: (state) => state.processing,
-    loginError: (state) => state.loginError,
-    forgotMailSuccess: (state) => state.forgotMailSuccess,
-    resetPasswordSuccess: (state) => state.resetPasswordSuccess,
+    currentUser: state => state.currentUser,
+    processing: state => state.processing,
+    loginError: state => state.loginError,
+    getIsLoggedIn: state => state.isLoggedIn,
+    forgotMailSuccess: state => state.forgotMailSuccess,
+    resetPasswordSuccess: state => state.resetPasswordSuccess,
   },
   mutations: {
     setUser(state, payload) {
@@ -56,76 +58,68 @@ export default {
   },
   actions: {
     login({ commit }, payload) {
-      commit("clearError");
-      commit("setProcessing", true);
+      commit('clearError');
+      commit('setProcessing', true);
       firebase
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(
-          (user) => {
+          user => {
             const item = { uid: user.user.uid, ...currentUser };
             setCurrentUser(item);
-            commit("setUser", item);
+            commit('setUser', item);
           },
-          (err) => {
+          err => {
             setCurrentUser(null);
-            commit("setError", err.message);
+            commit('setError', err.message);
             setTimeout(() => {
-              commit("clearError");
+              commit('clearError');
             }, 3000);
           }
         );
     },
     forgotPassword({ commit }, payload) {
-      commit("clearError");
-      commit("setProcessing", true);
+      commit('clearError');
+      commit('setProcessing', true);
       firebase
         .auth()
         .sendPasswordResetEmail(payload.email)
         .then(
-          (user) => {
-            commit("clearError");
-            commit("setForgotMailSuccess");
+          user => {
+            commit('clearError');
+            commit('setForgotMailSuccess');
           },
-          (err) => {
-            commit("setError", err.message);
+          err => {
+            commit('setError', err.message);
             setTimeout(() => {
-              commit("clearError");
+              commit('clearError');
             }, 3000);
           }
         );
     },
     resetPassword({ commit }, payload) {
-      commit("clearError");
-      commit("setProcessing", true);
+      commit('clearError');
+      commit('setProcessing', true);
       firebase
         .auth()
         .confirmPasswordReset(payload.resetPasswordCode, payload.newPassword)
         .then(
-          (user) => {
-            commit("clearError");
-            commit("setResetPasswordSuccess");
+          user => {
+            commit('clearError');
+            commit('setResetPasswordSuccess');
           },
-          (err) => {
-            commit("setError", err.message);
+          err => {
+            commit('setError', err.message);
             setTimeout(() => {
-              commit("clearError");
+              commit('clearError');
             }, 3000);
           }
         );
     },
 
     signOut({ commit }) {
-      firebase
-        .auth()
-        .signOut()
-        .then(
-          () => {
-            setCurrentUser(null);
-            commit("setLogout");
-          },
-          (_error) => {}
-        );
+      setCurrentUser(null);
+      commit('setLogout');
     },
   },
 };

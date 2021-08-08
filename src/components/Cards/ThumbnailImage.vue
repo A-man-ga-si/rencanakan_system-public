@@ -9,7 +9,7 @@
   />
 </template>
 <script>
-export default {
-  props: ["alt", "src", "className", "rounded", "small"],
-};
+  export default {
+    props: ['alt', 'src', 'className', 'rounded', 'small'],
+  };
 </script>

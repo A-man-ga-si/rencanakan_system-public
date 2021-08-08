@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import RadialProgressBar from "vue-radial-progress";
-export default {
-  props: ["title", "percent", "noSuffle"],
-  components: {
-    "radial-progress-bar": RadialProgressBar,
-  },
-};
+  import RadialProgressBar from 'vue-radial-progress';
+  export default {
+    props: ['title', 'percent', 'noSuffle'],
+    components: {
+      'radial-progress-bar': RadialProgressBar,
+    },
+  };
 </script>

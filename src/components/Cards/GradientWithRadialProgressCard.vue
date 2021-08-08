@@ -26,38 +26,38 @@
 </template>
 
 <script>
-import RadialProgressBar from "vue-radial-progress";
-export default {
-  components: {
-    "radial-progress-bar": RadialProgressBar,
-  },
-  props: ["icon", "title", "detail", "percent", "progressText"],
-  data() {
-    return {
-      diameterDefault: 125,
-      strokeWidthDefault: 5,
-      diameter: this.diameterDefault,
-      strokeWidth: this.strokeWidthDefault,
-    };
-  },
-  mounted() {
-    window.addEventListener("resize", this.handleWindowResize);
-    this.handleWindowResize();
-  },
-  methods: {
-    handleWindowResize(event) {
-      if (event && !event.isTrusted) {
-        return;
-      }
-      const windowWidth = window.innerWidth;
-      if (windowWidth <= 1200) {
-        this.diameter = 84;
-        this.strokeWidth = 2;
-      } else {
-        this.diameter = this.diameterDefault;
-        this.strokeWidth = this.strokeWidthDefault;
-      }
+  import RadialProgressBar from 'vue-radial-progress';
+  export default {
+    components: {
+      'radial-progress-bar': RadialProgressBar,
     },
-  },
-};
+    props: ['icon', 'title', 'detail', 'percent', 'progressText'],
+    data() {
+      return {
+        diameterDefault: 125,
+        strokeWidthDefault: 5,
+        diameter: this.diameterDefault,
+        strokeWidth: this.strokeWidthDefault,
+      };
+    },
+    mounted() {
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize();
+    },
+    methods: {
+      handleWindowResize(event) {
+        if (event && !event.isTrusted) {
+          return;
+        }
+        const windowWidth = window.innerWidth;
+        if (windowWidth <= 1200) {
+          this.diameter = 84;
+          this.strokeWidth = 2;
+        } else {
+          this.diameter = this.diameterDefault;
+          this.strokeWidth = this.strokeWidthDefault;
+        }
+      },
+    },
+  };
 </script>
