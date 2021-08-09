@@ -221,7 +221,7 @@
     methods: {
       async formSubmit() {
         try {
-          const data = await this.register({
+          await this.register({
             first_name: this.firstName,
             last_name: this.lastName,
             job: this.job,
