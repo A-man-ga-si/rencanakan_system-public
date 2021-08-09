@@ -13,7 +13,7 @@ module.exports = {
     hot: true,
     contentBase: 'dist',
     compress: true,
-    open: true,
+    // open: true,
     overlay: { warnings: false, errors: true },
     publicPath: '/',
     quiet: true,

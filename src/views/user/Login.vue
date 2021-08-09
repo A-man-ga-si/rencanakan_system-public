@@ -65,34 +65,44 @@
               >
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
-              <router-link to="/user/forgot-password">{{
-                $t('user.forgot-password-question')
-              }}</router-link>
-              <b-button
-                type="submit"
-                variant="primary"
-                size="lg"
-                :disabled="processing"
-                :class="{
-                  'btn-multiple-state btn-shadow': true,
-                  'show-spinner': processing,
-                  'show-success': !processing && loginError === false,
-                  'show-fail': !processing && loginError,
-                }"
-              >
-                <span class="spinner d-inline-block">
-                  <span class="bounce1"></span>
-                  <span class="bounce2"></span>
-                  <span class="bounce3"></span>
-                </span>
-                <span class="icon success">
-                  <i class="simple-icon-check"></i>
-                </span>
-                <span class="icon fail">
-                  <i class="simple-icon-exclamation"></i>
-                </span>
-                <span class="label">{{ $t('user.login-button') }}</span>
-              </b-button>
+              <div class="left">
+                <router-link to="/user/forgot-password">{{
+                  $t('user.forgot-password-question')
+                }}</router-link>
+              </div>
+              <div class="right">
+                <router-link
+                  :to="{ name: 'Register' }"
+                  class="mr-3 register-bt text-primary"
+                >
+                  {{ $t('user.register-button') }}
+                </router-link>
+                <b-button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  :disabled="processing"
+                  :class="{
+                    'btn-multiple-state btn-shadow': true,
+                    'show-spinner': processing,
+                    'show-success': !processing && loginError === false,
+                    'show-fail': !processing && loginError,
+                  }"
+                >
+                  <span class="spinner d-inline-block">
+                    <span class="bounce1"></span>
+                    <span class="bounce2"></span>
+                    <span class="bounce3"></span>
+                  </span>
+                  <span class="icon success">
+                    <i class="simple-icon-check"></i>
+                  </span>
+                  <span class="icon fail">
+                    <i class="simple-icon-exclamation"></i>
+                  </span>
+                  <span class="label">{{ $t('user.login-button') }}</span>
+                </b-button>
+              </div>
             </div>
           </b-form>
         </div>
@@ -173,3 +183,9 @@
     },
   };
 </script>
+
+<style scoped>
+  .register-bt {
+    font-size: 14px !important;
+  }
+</style>

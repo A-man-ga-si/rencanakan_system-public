@@ -1,6 +1,7 @@
+import axios from 'axios';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { currentUser, isAuthGuardActive } from '../../constants/config';
+import { currentUser, isAuthGuardActive, apiUrl } from '../../constants/config';
 import { setCurrentUser, getCurrentUser } from '../../utils';
 
 export default {
@@ -77,6 +78,22 @@ export default {
             }, 3000);
           }
         );
+    },
+    register({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        commit('clearError');
+        commit('setProcessing', true);
+        axios
+          .post(`${apiUrl}/auth/register`, payload)
+          .then(data => {
+            resolve(data);
+          })
+          .catch(reject)
+          .finally(() => {
+            commit('clearError');
+            commit('setProcessing', false);
+          });
+      });
     },
     forgotPassword({ commit }, payload) {
       commit('clearError');

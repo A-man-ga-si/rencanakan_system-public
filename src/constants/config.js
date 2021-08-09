@@ -4,7 +4,8 @@ export const defaultMenuType = 'menu-sub-hidden'; // 'menu-default', 'menu-sub-h
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;
 export const buyUrl = 'https://1.envato.market/nEyZa';
-export const apiUrl = 'https://api.coloredstrategies.com';
+export const apiUrl = 'http://localhost:8000/api';
+// export const apiUrl = 'https://api.coloredstrategies.com';
 
 export const subHiddenBreakpoint = 1440;
 export const menuHiddenBreakpoint = 768;
