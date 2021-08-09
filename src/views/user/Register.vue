@@ -147,7 +147,7 @@
                 />
                 <span
                   :class="{ 'text-danger': errors.password_confirmation }"
-                  >{{ $t('user.password') }}</span
+                  >{{ $t('user.password-confirmation') }}</span
                 >
               </label>
               <span
