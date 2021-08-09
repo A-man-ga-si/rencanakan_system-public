@@ -239,11 +239,16 @@
             name: 'Login',
           });
         } catch (err) {
-          switch (err.response.status) {
+          switch (err.response?.status) {
             case 422:
               this.markInvalids(err.response.data);
               break;
             default:
+              Swal.fire(
+                this.$t('alert.error'),
+                this.$t('user.register-error-message'),
+                'error'
+              );
               console.error(err);
           }
         }

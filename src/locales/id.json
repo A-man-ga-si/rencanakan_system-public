@@ -25,7 +25,8 @@
     "reset-password-button": "RESET",
     "buy": "BUY",
     "username": "Username",
-    "register-success-message": "Registrasi user berhasil, periksa E-Mail anda untuk mengaktifkan akun"
+    "register-success-message": "Registrasi user berhasil, periksa E-Mail anda untuk mengaktifkan akun",
+    "register-error-message": "Terjadi kesalahan saat mencoba untuk registrasi"
   },
   "menu": {
     "home": "Home",
