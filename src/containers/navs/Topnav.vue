@@ -136,14 +136,11 @@
             <span>
               <img
                 :alt="currentUser ? currentUser.title : ''"
-                :src="currentUser ? currentUser.img : ''"
+                :src="profileImage"
               />
             </span>
           </template>
           <b-dropdown-item>Account</b-dropdown-item>
-          <b-dropdown-item>Features</b-dropdown-item>
-          <b-dropdown-item>History</b-dropdown-item>
-          <b-dropdown-item>Support</b-dropdown-item>
           <b-dropdown-divider />
           <b-dropdown-item @click="logout">Sign out</b-dropdown-item>
         </b-dropdown>
@@ -171,6 +168,8 @@
     getThemeColor,
     setThemeColor,
   } from '../../utils';
+  import { apiDomain } from './../../constants/config';
+
   export default {
     components: {
       'menu-icon': MenuIcon,
@@ -190,6 +189,7 @@
         notifications,
         isDarkActive: false,
         adminRoot,
+        apiDomain,
       };
     },
     methods: {
@@ -280,6 +280,11 @@
         menuClickCount: 'getMenuClickCount',
         selectedMenuHasSubItems: 'getSelectedMenuHasSubItems',
       }),
+      profileImage() {
+        return this.currentUser
+          ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`
+          : '#';
+      },
     },
     beforeDestroy() {
       document.removeEventListener('click', this.handleDocumentforMobileSearch);

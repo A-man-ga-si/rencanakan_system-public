@@ -2,16 +2,22 @@ import axios from 'axios';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { currentUser, isAuthGuardActive, apiUrl } from '../../constants/config';
-import { setCurrentUser, getCurrentUser } from '../../utils';
+import {
+  setCurrentUser,
+  getCurrentUser,
+  setToken,
+  getToken,
+} from '../../utils';
 
 export default {
   state: {
-    currentUser: isAuthGuardActive ? getCurrentUser() : currentUser,
+    currentUser: isAuthGuardActive ? getCurrentUser() : {},
     loginError: null,
     processing: false,
     isLoggedIn: false,
     forgotMailSuccess: null,
     resetPasswordSuccess: null,
+    token: null,
   },
   getters: {
     currentUser: state => state.currentUser,
@@ -56,28 +62,59 @@ export default {
     clearError(state) {
       state.loginError = null;
     },
+    setToken(state, token) {
+      state.token = token;
+    },
+    clearToken(state) {
+      state.token = null;
+    },
   },
   actions: {
     login({ commit }, payload) {
-      commit('clearError');
-      commit('setProcessing', true);
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
-        .then(
-          user => {
-            const item = { uid: user.user.uid, ...currentUser };
-            setCurrentUser(item);
-            commit('setUser', item);
-          },
-          err => {
-            setCurrentUser(null);
-            commit('setError', err.message);
-            setTimeout(() => {
-              commit('clearError');
-            }, 3000);
-          }
-        );
+      return new Promise((resolve, reject) => {
+        commit('clearError');
+        commit('setProcessing', true);
+        axios
+          .post(`${apiUrl}/auth/login`, payload)
+          .then(data => {
+            const { user, token } = data.data.data;
+            const userData = {
+              id: user.hashid,
+              img: user.photo,
+              role: 0,
+              permissions: user.roles[0].permissions?.map(e => e.name),
+              title: `${user.first_name} ${user.last_name}`,
+            };
+            const parsedToken = token.plainTextToken.split('|')[1];
+            setCurrentUser(userData);
+            setToken(parsedToken);
+            commit('setUser', userData);
+            commit('setToken', parsedToken);
+            resolve(data);
+          })
+          .catch(reject)
+          .finally(() => {
+            commit('clearError');
+            commit('setProcessing', false);
+          });
+      });
+      // firebase
+      //   .auth()
+      //   .signInWithEmailAndPassword(payload.email, payload.password)
+      //   .then(
+      //     user => {
+      //       const item = { uid: user.user.uid, ...currentUser };
+      //       setCurrentUser(item);
+      //       commit('setUser', item);
+      //     },
+      //     err => {
+      //       setCurrentUser(null);
+      //       commit('setError', err.message);
+      //       setTimeout(() => {
+      //         commit('clearError');
+      //       }, 3000);
+      //     }
+      //   );
     },
     register({ commit }, payload) {
       return new Promise((resolve, reject) => {
@@ -134,9 +171,25 @@ export default {
         );
     },
 
-    signOut({ commit }) {
-      setCurrentUser(null);
-      commit('setLogout');
+    signOut({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${apiUrl}/auth/logout`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+          .then(res => {
+            setCurrentUser(null);
+            commit('setLogout');
+            resolve(res);
+          })
+          .catch(reject);
+      });
     },
   },
 };

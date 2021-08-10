@@ -177,3 +177,12 @@ export const setCurrentUser = user => {
     console.log('>>>> src/utils/index.js : setCurrentUser -> error', error);
   }
 };
+
+export const setToken = token => {
+  if (token) window.localStorage.setItem('token', token);
+  else window.localStorage.removeItem('token');
+};
+
+export const getToken = () => {
+  return window.localStorage.getItem('token');
+};

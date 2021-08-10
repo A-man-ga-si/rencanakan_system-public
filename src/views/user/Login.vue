@@ -9,8 +9,10 @@
           <p class="white mb-0">
             Please use your credentials to login.
             <br />If you are not a member, please
-            <router-link to="/user/register" class="white">register</router-link
-            >.
+            <router-link :to="{ name: 'Register' }" class="white">
+              register
+            </router-link>
+            .
           </p>
         </div>
         <div class="form-side">
@@ -32,18 +34,16 @@
                 v-model="$v.form.email.$model"
                 :state="!$v.form.email.$error"
               />
-              <b-form-invalid-feedback v-if="!$v.form.email.required"
-                >Please enter your email address</b-form-invalid-feedback
-              >
-              <b-form-invalid-feedback v-else-if="!$v.form.email.email"
-                >Please enter a valid email address</b-form-invalid-feedback
-              >
+              <b-form-invalid-feedback v-if="!$v.form.email.required">
+                Please enter your email address
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback v-else-if="!$v.form.email.email">
+                Please enter a valid email address
+              </b-form-invalid-feedback>
               <b-form-invalid-feedback v-else-if="!$v.form.email.minLength"
-                >Your email must be minimum 4
-                characters</b-form-invalid-feedback
-              >
+                >Your email must be minimum 4 characters
+              </b-form-invalid-feedback>
             </b-form-group>
-
             <b-form-group
               :label="$t('user.password')"
               class="has-float-label mb-4"
@@ -121,13 +121,14 @@
     email,
   } = require('vuelidate/lib/validators');
   import { adminRoot } from '../../constants/config';
+  import Swal from 'sweetalert2';
 
   export default {
     data() {
       return {
         form: {
-          email: 'test@coloredstrategies.com',
-          password: 'xxxxxx',
+          email: '',
+          password: '',
         },
       };
     },
@@ -151,17 +152,35 @@
     },
     methods: {
       ...mapActions(['login']),
-      formSubmit() {
-        this.$v.$touch();
-        this.form.email = 'piaf-vue@coloredstrategies.com';
-        this.form.password = 'piaf123';
-        this.$v.form.$touch();
-        // if (!this.$v.form.$anyError) {
-        this.login({
-          email: this.form.email,
-          password: this.form.password,
-        });
-        //}
+      async formSubmit() {
+        try {
+          this.$v.$touch();
+          this.$v.form.$touch();
+          const data = await this.login({
+            email: this.form.email,
+            password: this.form.password,
+          });
+          this.$router.replace({
+            name: 'Dashboard',
+          });
+        } catch (err) {
+          switch (err.response?.status) {
+            case 401:
+              Swal.fire(
+                this.$t('alert.error'),
+                this.$t('user.login-wrong-credentials'),
+                'error'
+              );
+              break;
+            default:
+              Swal.fire(
+                this.$t('alert.error'),
+                this.$t('user.register-error-message'),
+                'error'
+              );
+              console.error(err);
+          }
+        }
       },
     },
     watch: {

@@ -26,7 +26,8 @@
     "buy": "BUY",
     "username": "Username",
     "register-success-message": "Registrasi user berhasil, periksa E-Mail anda untuk mengaktifkan akun",
-    "register-error-message": "Terjadi kesalahan saat mencoba untuk registrasi"
+    "register-error-message": "Terjadi kesalahan saat mencoba untuk registrasi",
+    "login-wrong-credentials": "E-Mail / Password salah"
   },
   "menu": {
     "home": "Home",
