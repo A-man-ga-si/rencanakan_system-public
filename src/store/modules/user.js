@@ -14,7 +14,7 @@ export default {
     currentUser: isAuthGuardActive ? getCurrentUser() : {},
     loginError: null,
     processing: false,
-    isLoggedIn: false,
+    isTokenVerified: false,
     forgotMailSuccess: null,
     resetPasswordSuccess: null,
     token: null,
@@ -23,7 +23,7 @@ export default {
     currentUser: state => state.currentUser,
     processing: state => state.processing,
     loginError: state => state.loginError,
-    getIsLoggedIn: state => state.isLoggedIn,
+    isTokenVerified: state => state.isTokenVerified,
     forgotMailSuccess: state => state.forgotMailSuccess,
     resetPasswordSuccess: state => state.resetPasswordSuccess,
   },
@@ -37,6 +37,8 @@ export default {
       state.currentUser = null;
       state.processing = false;
       state.loginError = null;
+      state.isTokenVerified = false;
+      state.token = null;
     },
     setProcessing(state, payload) {
       state.processing = payload;
@@ -65,8 +67,8 @@ export default {
     setToken(state, token) {
       state.token = token;
     },
-    clearToken(state) {
-      state.token = null;
+    setTokenVerificationStatus(state, status) {
+      state.isTokenVerified = status;
     },
   },
   actions: {
@@ -98,23 +100,6 @@ export default {
             commit('setProcessing', false);
           });
       });
-      // firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(payload.email, payload.password)
-      //   .then(
-      //     user => {
-      //       const item = { uid: user.user.uid, ...currentUser };
-      //       setCurrentUser(item);
-      //       commit('setUser', item);
-      //     },
-      //     err => {
-      //       setCurrentUser(null);
-      //       commit('setError', err.message);
-      //       setTimeout(() => {
-      //         commit('clearError');
-      //       }, 3000);
-      //     }
-      //   );
     },
     register({ commit }, payload) {
       return new Promise((resolve, reject) => {
@@ -170,7 +155,30 @@ export default {
           }
         );
     },
-
+    verifyToken({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${apiUrl}/auth/verify`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+          .then(data => {
+            commit('setTokenVerificationStatus', true);
+            resolve(data);
+          })
+          .catch(err => {
+            setCurrentUser(null);
+            setToken(null);
+            commit('setLogout');
+            reject(err);
+          });
+      });
+    },
     signOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         axios
@@ -185,6 +193,7 @@ export default {
           )
           .then(res => {
             setCurrentUser(null);
+            setToken(null);
             commit('setLogout');
             resolve(res);
           })

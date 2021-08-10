@@ -7,8 +7,10 @@
 
 <script>
   import ColorSwitcher from './components/Common/ColorSwitcher';
+  import axios from 'axios';
 
   import { getDirection } from './utils';
+  import { getToken } from './utils';
 
   export default {
     components: {
@@ -25,6 +27,11 @@
         document.dir = 'ltr';
         document.body.classList.remove('rtl');
       }
+    },
+    methods: {
+      // verifyToken() {
+      //   const token = getToken();
+      // },
     },
   };
 </script>
