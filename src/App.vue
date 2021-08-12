@@ -6,25 +6,32 @@
 </template>
 
 <script>
-import ColorSwitcher from "./components/Common/ColorSwitcher";
+  import ColorSwitcher from './components/Common/ColorSwitcher';
+  import axios from 'axios';
 
-import { getDirection } from "./utils";
+  import { getDirection } from './utils';
+  import { getToken } from './utils';
 
-export default {
-  components: {
-    "color-switcher": ColorSwitcher,
-  },
-  beforeMount() {
-    const direction = getDirection();
-    if (direction.isRtl) {
-      document.body.classList.add("rtl");
-      document.dir = "rtl";
-      document.body.classList.remove("ltr");
-    } else {
-      document.body.classList.add("ltr");
-      document.dir = "ltr";
-      document.body.classList.remove("rtl");
-    }
-  },
-};
+  export default {
+    components: {
+      'color-switcher': ColorSwitcher,
+    },
+    beforeMount() {
+      const direction = getDirection();
+      if (direction.isRtl) {
+        document.body.classList.add('rtl');
+        document.dir = 'rtl';
+        document.body.classList.remove('ltr');
+      } else {
+        document.body.classList.add('ltr');
+        document.dir = 'ltr';
+        document.body.classList.remove('rtl');
+      }
+    },
+    methods: {
+      // verifyToken() {
+      //   const token = getToken();
+      // },
+    },
+  };
 </script>

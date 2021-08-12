@@ -4,7 +4,7 @@
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">
-            {{ $t("dashboards.magic-is-in-the-details") }}
+            {{ $t('dashboards.magic-is-in-the-details') }}
           </p>
           <p class="white mb-0">
             Please use your e-mail to reset your password.
@@ -17,7 +17,7 @@
           <router-link to="/">
             <span class="logo-single" />
           </router-link>
-          <h6 class="mb-4">{{ $t("user.forgot-password") }}</h6>
+          <h6 class="mb-4">{{ $t('user.forgot-password') }}</h6>
           <b-form
             @submit.prevent="formSubmit"
             class="av-tooltip tooltip-label-bottom"
@@ -44,7 +44,7 @@
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
               <router-link to="/user/forgot-password">{{
-                $t("user.forgot-password-question")
+                $t('user.forgot-password-question')
               }}</router-link>
               <b-button
                 type="submit"
@@ -70,7 +70,7 @@
                   <i class="simple-icon-exclamation"></i>
                 </span>
                 <span class="label">{{
-                  $t("user.reset-password-button")
+                  $t('user.reset-password-button')
                 }}</span>
               </b-button>
             </div>
@@ -82,69 +82,69 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validationMixin } from "vuelidate";
-const {
-  required,
-  maxLength,
-  minLength,
-  email,
-} = require("vuelidate/lib/validators");
+  import { mapGetters, mapActions } from 'vuex';
+  import { validationMixin } from 'vuelidate';
+  const {
+    required,
+    maxLength,
+    minLength,
+    email,
+  } = require('vuelidate/lib/validators');
 
-export default {
-  data() {
-    return {
+  export default {
+    data() {
+      return {
+        form: {
+          email: 'test@coloredstrategies.com',
+        },
+      };
+    },
+    mixins: [validationMixin],
+    validations: {
       form: {
-        email: "test@coloredstrategies.com",
-      },
-    };
-  },
-  mixins: [validationMixin],
-  validations: {
-    form: {
-      email: {
-        required,
-        email,
-        minLength: minLength(4),
+        email: {
+          required,
+          email,
+          minLength: minLength(4),
+        },
       },
     },
-  },
-  computed: {
-    ...mapGetters(["processing", "loginError", "forgotMailSuccess"]),
-  },
-  methods: {
-    ...mapActions(["forgotPassword"]),
-    formSubmit() {
-      this.$v.form.$touch();
-      if (!this.$v.form.$anyError) {
-        this.forgotPassword({
-          email: this.form.email,
-        });
-      }
+    computed: {
+      ...mapGetters(['processing', 'loginError', 'forgotMailSuccess']),
     },
-  },
-  watch: {
-    loginError(val) {
-      if (val != null) {
-        this.$notify("error", "Forgot Password Error", val, {
-          duration: 3000,
-          permanent: false,
-        });
-      }
+    methods: {
+      ...mapActions(['forgotPassword']),
+      formSubmit() {
+        this.$v.form.$touch();
+        if (!this.$v.form.$anyError) {
+          this.forgotPassword({
+            email: this.form.email,
+          });
+        }
+      },
     },
-    forgotMailSuccess(val) {
-      if (val) {
-        this.$notify(
-          "success",
-          "Forgot Password Success",
-          "Please check your email.",
-          {
+    watch: {
+      loginError(val) {
+        if (val != null) {
+          this.$notify('error', 'Forgot Password Error', val, {
             duration: 3000,
             permanent: false,
-          }
-        );
-      }
+          });
+        }
+      },
+      forgotMailSuccess(val) {
+        if (val) {
+          this.$notify(
+            'success',
+            'Forgot Password Success',
+            'Please check your email.',
+            {
+              duration: 3000,
+              permanent: false,
+            }
+          );
+        }
+      },
     },
-  },
-};
+  };
 </script>

@@ -45,12 +45,12 @@
 </template>
 
 <script>
-export default {
-  props: ["data"],
-  methods: {
-    selectContact(userId) {
-      this.$emit("select-contact", userId);
+  export default {
+    props: ['data'],
+    methods: {
+      selectContact(userId) {
+        this.$emit('select-contact', userId);
+      },
     },
-  },
-};
+  };
 </script>

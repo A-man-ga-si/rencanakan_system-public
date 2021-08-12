@@ -17,33 +17,33 @@
 </template>
 
 <script>
-export default {
-  name: "Stars",
-  props: ["value", "disabled"],
-  data() {
-    return {
-      tempValue: null,
-      ratings: [1, 2, 3, 4, 5],
-      onMouseOver: false,
-    };
-  },
-  methods: {
-    star_over: function (rate) {
-      if (!this.disabled) {
-        this.tempValue = rate;
-        this.onMouseOver = true;
-      }
+  export default {
+    name: 'Stars',
+    props: ['value', 'disabled'],
+    data() {
+      return {
+        tempValue: null,
+        ratings: [1, 2, 3, 4, 5],
+        onMouseOver: false,
+      };
     },
-    star_out: function () {
-      this.onMouseOver = false;
-    },
+    methods: {
+      star_over: function (rate) {
+        if (!this.disabled) {
+          this.tempValue = rate;
+          this.onMouseOver = true;
+        }
+      },
+      star_out: function () {
+        this.onMouseOver = false;
+      },
 
-    set: function (value) {
-      if (!this.disabled) {
-        this.tempValue = value;
-        this.$emit("input", this.tempValue);
-      }
+      set: function (value) {
+        if (!this.disabled) {
+          this.tempValue = value;
+          this.$emit('input', this.tempValue);
+        }
+      },
     },
-  },
-};
+  };
 </script>

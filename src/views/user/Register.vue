@@ -1,10 +1,10 @@
 <template>
-  <b-row class="h-100">
+  <b-row class="h-100 mt-5">
     <b-colxx xxs="12" md="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">
-            {{ $t("dashboards.magic-is-in-the-details") }}
+            {{ $t('dashboards.magic-is-in-the-details') }}
           </p>
           <p class="white mb-0">
             Please use this form to register. <br />If you are a member, please
@@ -13,28 +13,178 @@
         </div>
         <div class="form-side">
           <router-link to="/"><span class="logo-single" /></router-link>
-          <h6 class="mb-4">{{ $t("user.register") }}</h6>
+          <h6 class="mb-4">{{ $t('user.register') }}</h6>
           <b-form @submit.prevent="formSubmit">
-            <label class="form-group has-float-label mb-4">
-              <input type="text" class="form-control" v-model="fullname" />
-              <span>{{ $t("user.fullname") }}</span>
-            </label>
-            <label class="form-group has-float-label mb-4">
-              <input type="email" class="form-control" v-model="email" />
-              <span>{{ $t("user.email") }}</span>
-            </label>
-            <label class="form-group has-float-label mb-4">
-              <input type="password" class="form-control" v-model="password" />
-              <span>{{ $t("user.password") }}</span>
-            </label>
+            <b-row class="mb-4">
+              <b-col :sm="6">
+                <label class="form-group has-float-label mb-0">
+                  <input
+                    type="text"
+                    class="form-control"
+                    :class="{ 'border-danger': errors.first_name }"
+                    v-model="firstName"
+                  />
+                  <span :class="{ 'text-danger': errors.first_name }">
+                    {{ $t('user.first-name') }}
+                  </span>
+                </label>
+                <span
+                  v-if="errors.first_name"
+                  for=""
+                  class="mt-1 d-block text-danger error-msg"
+                >
+                  {{ errors.first_name }}
+                </span>
+              </b-col>
+              <b-col :sm="6">
+                <label class="form-group has-float-label mb-0">
+                  <input
+                    type="text"
+                    :class="{ 'border-danger': errors.last_name }"
+                    class="form-control"
+                    v-model="lastName"
+                  />
+                  <span :class="{ 'text-danger': errors.last_name }">{{
+                    $t('user.last-name')
+                  }}</span>
+                </label>
+                <span
+                  v-if="errors.last_name"
+                  for=""
+                  class="mt-1 d-block text-danger error-msg"
+                >
+                  {{ errors.last_name }}
+                </span>
+              </b-col>
+            </b-row>
+            <div class="mb-4">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  :class="{ 'border-danger': errors.email }"
+                  v-model="email"
+                />
+                <span :class="{ 'text-danger': errors.email }">{{
+                  $t('user.email')
+                }}</span>
+              </label>
+              <span
+                v-if="errors.email"
+                for=""
+                class="mt-1 d-block text-danger error-msg"
+              >
+                {{ errors.email }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  type="tel"
+                  class="form-control"
+                  :class="{ 'border-danger': errors.phone }"
+                  v-model="phone"
+                />
+                <span :class="{ 'text-danger': errors.phone }">{{
+                  $t('user.phone')
+                }}</span>
+              </label>
+              <span
+                v-if="errors.phone"
+                for=""
+                class="mt-1 d-block text-danger error-msg"
+              >
+                {{ errors.phone }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  type="tel"
+                  class="form-control"
+                  :class="{ 'border-danger': errors.job }"
+                  v-model="job"
+                />
+                <span :class="{ 'text-danger': errors.job }">{{
+                  $t('user.job')
+                }}</span>
+              </label>
+              <span
+                v-if="errors.job"
+                for=""
+                class="mt-1 d-block text-danger error-msg"
+              >
+                {{ errors.job }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  type="password"
+                  class="form-control"
+                  :class="{ 'border-danger': errors.password }"
+                  v-model="password"
+                />
+                <span :class="{ 'text-danger': errors.password }">{{
+                  $t('user.password')
+                }}</span>
+              </label>
+              <span
+                v-if="errors.password"
+                for=""
+                class="mt-1 d-block text-danger error-msg"
+              >
+                {{ errors.password }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  type="password"
+                  class="form-control"
+                  :class="{ 'border-danger': errors.password_confirmation }"
+                  v-model="passwordConfirmation"
+                />
+                <span
+                  :class="{ 'text-danger': errors.password_confirmation }"
+                  >{{ $t('user.password-confirmation') }}</span
+                >
+              </label>
+              <span
+                v-if="errors.password_confirmation"
+                for=""
+                class="mt-1 d-block text-danger error-msg"
+              >
+                {{ errors.password_confirmation }}
+              </span>
+            </div>
             <div class="d-flex justify-content-end align-items-center">
+              <router-link
+                :to="{ name: 'Login' }"
+                class="mr-3 login-bt text-primary"
+              >
+                {{ $t('user.login-button') }}
+              </router-link>
               <b-button
                 type="submit"
                 variant="primary"
+                :disabled="processing"
                 size="lg"
                 class="btn-shadow"
-                >{{ $t("user.register-button") }}</b-button
+                :class="{
+                  'btn-multiple-state btn-shadow': true,
+                  'show-spinner': processing,
+                }"
               >
+                <span class="spinner d-inline-block">
+                  <span class="bounce1"></span>
+                  <span class="bounce2"></span>
+                  <span class="bounce3"></span>
+                </span>
+                <span class="label">
+                  {{ $t('user.register-button') }}
+                </span>
+              </b-button>
             </div>
           </b-form>
         </div>
@@ -43,21 +193,85 @@
   </b-row>
 </template>
 <script>
-import { adminRoot } from "../../constants/config";
+  import { mapActions, mapGetters } from 'vuex';
+  import { adminRoot } from '../../constants/config';
+  import Swal from 'sweetalert2';
 
-export default {
-  data() {
-    return {
-      fullname: "",
-      email: "",
-      password: "",
-    };
-  },
-  methods: {
-    formSubmit() {
-      console.log("register");
-      this.$router.push(adminRoot);
+  export default {
+    data() {
+      return {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        job: '',
+        password: '',
+        passwordConfirmation: '',
+        errors: {
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: '',
+          job: '',
+          password: '',
+          password_confirmation: '',
+        },
+      };
     },
-  },
-};
+    methods: {
+      async formSubmit() {
+        try {
+          await this.register({
+            first_name: this.firstName,
+            last_name: this.lastName,
+            job: this.job,
+            email: this.email,
+            phone: this.phone,
+            password: this.password,
+            password_confirmation: this.passwordConfirmation,
+          });
+          await Swal.fire(
+            this.$t('alert.success'),
+            this.$t('user.register-success-message'),
+            'success'
+          );
+          this.$router.push({
+            name: 'Login',
+          });
+        } catch (err) {
+          switch (err.response?.status) {
+            case 422:
+              this.markInvalids(err.response.data);
+              break;
+            default:
+              Swal.fire(
+                this.$t('alert.error'),
+                this.$t('user.register-error-message'),
+                'error'
+              );
+              console.error(err);
+          }
+        }
+      },
+      markInvalids(invalids) {
+        this.resetInvalid();
+        for (const invalidField in invalids.errors) {
+          this.errors[invalidField] = invalids.errors[invalidField][0];
+        }
+      },
+      resetInvalid() {
+        this.errors = {};
+      },
+      ...mapActions(['register']),
+    },
+    computed: {
+      ...mapGetters(['processing']),
+    },
+  };
 </script>
+
+<style scoped>
+  .login-bt {
+    font-size: 14px !important;
+  }
+</style>

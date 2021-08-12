@@ -141,21 +141,21 @@
   </div>
 </template>
 <script>
-export default {
-  props: ["currentUser", "otherUser", "messages"],
-  methods: {
-    scrollToEnd() {
-      setTimeout(() => {
-        const container = this.$refs.chatArea.$el;
-        container.scrollTop = container.scrollHeight;
-      }, 0);
+  export default {
+    props: ['currentUser', 'otherUser', 'messages'],
+    methods: {
+      scrollToEnd() {
+        setTimeout(() => {
+          const container = this.$refs.chatArea.$el;
+          container.scrollTop = container.scrollHeight;
+        }, 0);
+      },
     },
-  },
-  mounted() {
-    this.scrollToEnd();
-  },
-  updated() {
-    this.scrollToEnd();
-  },
-};
+    mounted() {
+      this.scrollToEnd();
+    },
+    updated() {
+      this.scrollToEnd();
+    },
+  };
 </script>

@@ -35,11 +35,11 @@
   </b-card>
 </template>
 <script>
-import ThumbnailImage from "./ThumbnailImage";
-export default {
-  props: ["link", "data"],
-  components: {
-    ThumbnailImage,
-  },
-};
+  import ThumbnailImage from './ThumbnailImage';
+  export default {
+    props: ['link', 'data'],
+    components: {
+      ThumbnailImage,
+    },
+  };
 </script>

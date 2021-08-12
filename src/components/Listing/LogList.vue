@@ -17,7 +17,7 @@
 </template>
 
 <script>
-export default {
-  props: ["logs"],
-};
+  export default {
+    props: ['logs'],
+  };
 </script>

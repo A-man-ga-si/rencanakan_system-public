@@ -35,7 +35,7 @@
         :disabled="!currentActive > 0"
         @click="previousTab()"
       >
-        {{ $t("wizard.prev") }}
+        {{ $t('wizard.prev') }}
       </button>
       <button
         type="button"
@@ -43,96 +43,96 @@
         :disabled="currentActive > totalTabs - 1"
         @click="nextTab()"
       >
-        {{ $t("wizard.next") }}
+        {{ $t('wizard.next') }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "form-wizard",
-  props: {
-    navClass: {
-      default: "justify-content-center",
-    },
-    lastStepEnd: {
-      default: false,
-    },
-    topNavDisabled: {
-      default: false,
-    },
-    withValidate: {
-      default: false,
-    },
-    done: {
-      type: Function,
-      default: () => {
-        console.log("called done!");
+  export default {
+    name: 'form-wizard',
+    props: {
+      navClass: {
+        default: 'justify-content-center',
+      },
+      lastStepEnd: {
+        default: false,
+      },
+      topNavDisabled: {
+        default: false,
+      },
+      withValidate: {
+        default: false,
+      },
+      done: {
+        type: Function,
+        default: () => {
+          console.log('called done!');
+        },
       },
     },
-  },
-  data() {
-    return {
-      tabs: [],
-      currentActive: 0,
-      totalTabs: 0,
-      isCompleted: false,
-    };
-  },
+    data() {
+      return {
+        tabs: [],
+        currentActive: 0,
+        totalTabs: 0,
+        isCompleted: false,
+      };
+    },
 
-  created() {
-    this.tabs = this.$children;
-  },
-  mounted() {
-    this.totalTabs = this.tabs.filter((x) => x.type != "done").length;
-  },
-  methods: {
-    tabStatusFix() {
-      this.tabs.forEach((tab, tabIndex) => {
-        let isDone = tab.isDone;
-        if (!isDone) {
-          isDone = this.currentActive > tabIndex;
+    created() {
+      this.tabs = this.$children;
+    },
+    mounted() {
+      this.totalTabs = this.tabs.filter(x => x.type != 'done').length;
+    },
+    methods: {
+      tabStatusFix() {
+        this.tabs.forEach((tab, tabIndex) => {
+          let isDone = tab.isDone;
+          if (!isDone) {
+            isDone = this.currentActive > tabIndex;
+          }
+          tab.isDone = isDone;
+          tab.isActive = false;
+        });
+      },
+      clickedTab(tabIndex) {
+        if (!this.topNavDisabled) {
+          if (!(this.lastStepEnd && this.isCompleted)) {
+            this.currentActive = tabIndex;
+            this.tabStatusFix();
+            this.tabs[this.currentActive].isActive = true;
+          }
         }
-        tab.isDone = isDone;
-        tab.isActive = false;
-      });
-    },
-    clickedTab(tabIndex) {
-      if (!this.topNavDisabled) {
-        if (!(this.lastStepEnd && this.isCompleted)) {
-          this.currentActive = tabIndex;
-          this.tabStatusFix();
-          this.tabs[this.currentActive].isActive = true;
-        }
-      }
-    },
-    previousTab() {
-      this.currentActive--;
-      this.tabStatusFix();
-      this.tabs[this.currentActive].isActive = true;
-    },
-
-    nextTab() {
-      let valid = true;
-      if (this.withValidate) {
-        valid = this.tabs[this.currentActive].validate();
-        if (valid) this.tabs[this.currentActive].submit();
-      }
-
-      if (valid) {
-        this.currentActive++;
+      },
+      previousTab() {
+        this.currentActive--;
         this.tabStatusFix();
-        if (this.currentActive >= this.totalTabs) {
-          this.isCompleted = true;
-          const doneTab = this.tabs.find((x) => x.type == "done");
-          if (doneTab) {
-            doneTab.isActive = true;
-          } else this.tabs[this.currentActive - 1].isActive = true;
-          this.done();
-        } else this.tabs[this.currentActive].isActive = true;
-      }
+        this.tabs[this.currentActive].isActive = true;
+      },
+
+      nextTab() {
+        let valid = true;
+        if (this.withValidate) {
+          valid = this.tabs[this.currentActive].validate();
+          if (valid) this.tabs[this.currentActive].submit();
+        }
+
+        if (valid) {
+          this.currentActive++;
+          this.tabStatusFix();
+          if (this.currentActive >= this.totalTabs) {
+            this.isCompleted = true;
+            const doneTab = this.tabs.find(x => x.type == 'done');
+            if (doneTab) {
+              doneTab.isActive = true;
+            } else this.tabs[this.currentActive - 1].isActive = true;
+            this.done();
+          } else this.tabs[this.currentActive].isActive = true;
+        }
+      },
     },
-  },
-};
+  };
 </script>

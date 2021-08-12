@@ -105,8 +105,8 @@
   }
 
   tbody {
-    > tr[role="row"] > td:first-child:before,
-    > tr[role="row"] > th:first-child:before {
+    > tr[role='row'] > td:first-child:before,
+    > tr[role='row'] > th:first-child:before {
       top: unset;
       box-shadow: initial;
       background-color: $theme-color-1;
@@ -139,7 +139,7 @@
   th.empty {
     &:before,
     &:after {
-      content: "";
+      content: '';
     }
   }
 
@@ -203,7 +203,7 @@
     .sorted-asc_disabled:before,
     .sorted-desc_disabled:before {
       right: 1em;
-      content: "\2191";
+      content: '\2191';
     }
     .sortable:after,
     .sorted-asc:after,
@@ -211,7 +211,7 @@
     .sorted-asc_disabled:after,
     .sorted-desc_disabled:after {
       right: 0.5em;
-      content: "\2193";
+      content: '\2193';
     }
   }
 }

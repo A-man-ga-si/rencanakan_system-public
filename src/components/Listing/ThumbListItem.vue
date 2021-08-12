@@ -48,12 +48,12 @@
 </template>
 
 <script>
-export default {
-  props: ["data", "selectedItems"],
-  methods: {
-    toggleItem(event, itemId) {
-      this.$emit("toggle-item", event, itemId);
+  export default {
+    props: ['data', 'selectedItems'],
+    methods: {
+      toggleItem(event, itemId) {
+        this.$emit('toggle-item', event, itemId);
+      },
     },
-  },
-};
+  };
 </script>

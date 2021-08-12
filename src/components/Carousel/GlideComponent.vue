@@ -41,106 +41,106 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+  import { mapGetters } from 'vuex';
 
-import Glide from "@glidejs/glide";
-import "@glidejs/glide/dist/css/glide.core.min.css";
+  import Glide from '@glidejs/glide';
+  import '@glidejs/glide/dist/css/glide.core.min.css';
 
-import { getDirection } from "../../utils";
+  import { getDirection } from '../../utils';
 
-export default {
-  props: {
-    settings: Object,
-    // {
-    //     type: String,
-    //     startAt: Number,
-    //     perView: Number,
-    //     focusAt: Number,
-    //     gap: Number,
-    //     autoplay: Boolean,
-    //     hoverpause: Boolean,
-    //     keyboard: Boolean,
-    //     bound: Boolean,
-    //     swipeThreshold: [Number, Boolean],
-    //     dragThreshold: [Number, Boolean],
-    //     perTouch: [Number, Boolean],
-    //     touchRatio: Number,
-    //     touchAngle: Number,
-    //     animationDuration: Number,
-    //     rewind: Boolean,
-    //     rewindDuration: Number,
-    //     animationTimingFunc: String,
-    //     direction: String,
-    //     peek: Object,
-    //     breakpoints: Object,
-    //     classes: Object,
-    //     throttle: Number,
-    //     data: Array,
-    // },
-    id: String,
-    className: String,
-  },
-  data() {
-    return {
-      total: 0,
-      mountTimeOut: -1,
-      resizeTimeOut: -1,
-      selfWidth: 0,
-    };
-  },
-  computed: {
-    ...mapGetters({
-      menuType: "getMenuType",
-    }),
-  },
-  watch: {
-    menuType: function (val) {
-      this.onResize();
+  export default {
+    props: {
+      settings: Object,
+      // {
+      //     type: String,
+      //     startAt: Number,
+      //     perView: Number,
+      //     focusAt: Number,
+      //     gap: Number,
+      //     autoplay: Boolean,
+      //     hoverpause: Boolean,
+      //     keyboard: Boolean,
+      //     bound: Boolean,
+      //     swipeThreshold: [Number, Boolean],
+      //     dragThreshold: [Number, Boolean],
+      //     perTouch: [Number, Boolean],
+      //     touchRatio: Number,
+      //     touchAngle: Number,
+      //     animationDuration: Number,
+      //     rewind: Boolean,
+      //     rewindDuration: Number,
+      //     animationTimingFunc: String,
+      //     direction: String,
+      //     peek: Object,
+      //     breakpoints: Object,
+      //     classes: Object,
+      //     throttle: Number,
+      //     data: Array,
+      // },
+      id: String,
+      className: String,
     },
-  },
-  mounted() {
-    this.initGlide();
-  },
-  updated() {
-    this.destroyGlide();
-    this.initGlide();
-  },
-  beforeDestroy() {
-    this.destroyGlide();
-  },
-  methods: {
-    initGlide() {
-      this.selfWidth = this.$el.offsetWidth;
-      this.glideCarousel = new Glide(this.$refs.carouselImages, {
-        ...this.settings,
-        direction: getDirection().direction,
-      });
-      this.glideCarousel.mount();
-      this.total = this.glideCarousel._c.Html.slides.length;
-      this.glideCarousel.on("resize", this.onResize);
-      this.mountTimeOut = setTimeout(() => {
-        var event = document.createEvent("HTMLEvents");
-        event.initEvent("resize", false, false);
-        window.dispatchEvent(event);
-      }, 500);
+    data() {
+      return {
+        total: 0,
+        mountTimeOut: -1,
+        resizeTimeOut: -1,
+        selfWidth: 0,
+      };
     },
-    destroyGlide() {
-      clearTimeout(this.resizeTimeOut);
-      clearTimeout(this.mountTimeOut);
-      if (this.glideCarousel) {
-        this.glideCarousel.destroy();
-      }
+    computed: {
+      ...mapGetters({
+        menuType: 'getMenuType',
+      }),
     },
-    onResize() {
-      clearTimeout(this.resizeTimeOut);
-      this.selfWidth = this.$el.offsetWidth;
-      this.resizeTimeOut = setTimeout(() => {
-        if (this.$el.offsetWidth !== this.selfWidth) {
-          this.glideCarousel.update();
+    watch: {
+      menuType: function (val) {
+        this.onResize();
+      },
+    },
+    mounted() {
+      this.initGlide();
+    },
+    updated() {
+      this.destroyGlide();
+      this.initGlide();
+    },
+    beforeDestroy() {
+      this.destroyGlide();
+    },
+    methods: {
+      initGlide() {
+        this.selfWidth = this.$el.offsetWidth;
+        this.glideCarousel = new Glide(this.$refs.carouselImages, {
+          ...this.settings,
+          direction: getDirection().direction,
+        });
+        this.glideCarousel.mount();
+        this.total = this.glideCarousel._c.Html.slides.length;
+        this.glideCarousel.on('resize', this.onResize);
+        this.mountTimeOut = setTimeout(() => {
+          var event = document.createEvent('HTMLEvents');
+          event.initEvent('resize', false, false);
+          window.dispatchEvent(event);
+        }, 500);
+      },
+      destroyGlide() {
+        clearTimeout(this.resizeTimeOut);
+        clearTimeout(this.mountTimeOut);
+        if (this.glideCarousel) {
+          this.glideCarousel.destroy();
         }
-        this.resizeTimeOut = -1;
-      }, 500);
+      },
+      onResize() {
+        clearTimeout(this.resizeTimeOut);
+        this.selfWidth = this.$el.offsetWidth;
+        this.resizeTimeOut = setTimeout(() => {
+          if (this.$el.offsetWidth !== this.selfWidth) {
+            this.glideCarousel.update();
+          }
+          this.resizeTimeOut = -1;
+        }, 500);
+      },
     },
-  },
-};
+  };
 </script>

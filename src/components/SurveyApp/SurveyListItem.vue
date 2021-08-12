@@ -61,18 +61,18 @@
 </template>
 
 <script>
-import { adminRoot } from "../../constants/config";
-export default {
-  props: ["data", "selectedItems"],
-  data() {
-    return {
-      adminRoot,
-    };
-  },
-  methods: {
-    toggleItem(event, itemId) {
-      this.$emit("toggle-item", event, itemId);
+  import { adminRoot } from '../../constants/config';
+  export default {
+    props: ['data', 'selectedItems'],
+    data() {
+      return {
+        adminRoot,
+      };
     },
-  },
-};
+    methods: {
+      toggleItem(event, itemId) {
+        this.$emit('toggle-item', event, itemId);
+      },
+    },
+  };
 </script>

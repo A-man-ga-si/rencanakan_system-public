@@ -4,7 +4,7 @@
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">
-            {{ $t("dashboards.magic-is-in-the-details") }}
+            {{ $t('dashboards.magic-is-in-the-details') }}
           </p>
           <p class="white mb-0">
             Please use your credentials to login.
@@ -17,7 +17,7 @@
           <router-link to="/">
             <span class="logo-single" />
           </router-link>
-          <h6 class="mb-4">{{ $t("user.login-title") }}</h6>
+          <h6 class="mb-4">{{ $t('user.login-title') }}</h6>
 
           <b-form
             @submit.prevent="formSubmit"
@@ -63,7 +63,7 @@
 
             <div class="d-flex justify-content-between align-items-center">
               <router-link to="/user/forgot-password">{{
-                $t("user.forgot-password-question")
+                $t('user.forgot-password-question')
               }}</router-link>
               <b-button
                 type="submit"
@@ -89,7 +89,7 @@
                   <i class="simple-icon-exclamation"></i>
                 </span>
                 <span class="label">{{
-                  $t("user.reset-password-button")
+                  $t('user.reset-password-button')
                 }}</span>
               </b-button>
             </div>
@@ -101,81 +101,81 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validationMixin } from "vuelidate";
-const {
-  required,
-  maxLength,
-  minLength,
-  email,
-  sameAs,
-} = require("vuelidate/lib/validators");
+  import { mapGetters, mapActions } from 'vuex';
+  import { validationMixin } from 'vuelidate';
+  const {
+    required,
+    maxLength,
+    minLength,
+    email,
+    sameAs,
+  } = require('vuelidate/lib/validators');
 
-export default {
-  data() {
-    return {
+  export default {
+    data() {
+      return {
+        form: {
+          password: '',
+          passwordAgain: '',
+        },
+      };
+    },
+    mixins: [validationMixin],
+    validations: {
       form: {
-        password: "",
-        passwordAgain: "",
-      },
-    };
-  },
-  mixins: [validationMixin],
-  validations: {
-    form: {
-      password: {
-        required,
-        maxLength: maxLength(16),
-        minLength: minLength(4),
-      },
-      passwordAgain: {
-        required,
-        sameAsPassword: sameAs("password"),
+        password: {
+          required,
+          maxLength: maxLength(16),
+          minLength: minLength(4),
+        },
+        passwordAgain: {
+          required,
+          sameAsPassword: sameAs('password'),
+        },
       },
     },
-  },
-  computed: {
-    ...mapGetters([
-      "currentUser",
-      "processing",
-      "loginError",
-      "resetPasswordSuccess",
-    ]),
-  },
-  methods: {
-    ...mapActions(["resetPassword"]),
-    formSubmit() {
-      this.$v.form.$touch();
-      if (!this.$v.form.$anyError) {
-        this.resetPassword({
-          newPassword: this.form.password,
-          resetPasswordCode: this.$route.query.oobCode || "",
-        });
-      }
+    computed: {
+      ...mapGetters([
+        'currentUser',
+        'processing',
+        'loginError',
+        'resetPasswordSuccess',
+      ]),
     },
-  },
-  watch: {
-    loginError(val) {
-      if (val != null) {
-        this.$notify("error", "Reset Password Error", val, {
-          duration: 3000,
-          permanent: false,
-        });
-      }
+    methods: {
+      ...mapActions(['resetPassword']),
+      formSubmit() {
+        this.$v.form.$touch();
+        if (!this.$v.form.$anyError) {
+          this.resetPassword({
+            newPassword: this.form.password,
+            resetPasswordCode: this.$route.query.oobCode || '',
+          });
+        }
+      },
     },
-    resetPasswordSuccess(val) {
-      if (val) {
-        this.$notify(
-          "success",
-          "Reset Password Success",
-          "Reset password success",
-          {
+    watch: {
+      loginError(val) {
+        if (val != null) {
+          this.$notify('error', 'Reset Password Error', val, {
             duration: 3000,
             permanent: false,
-          }
-        );
-      }
+          });
+        }
+      },
+      resetPasswordSuccess(val) {
+        if (val) {
+          this.$notify(
+            'success',
+            'Reset Password Success',
+            'Reset password success',
+            {
+              duration: 3000,
+              permanent: false,
+            }
+          );
+        }
+      },
     },
-  },
-};
+  };
 </script>

@@ -51,7 +51,7 @@
 @mixin clearfix() {
   &::after {
     display: block;
-    content: "";
+    content: '';
     clear: both;
   }
 }
@@ -104,10 +104,10 @@ $breakpoints: (
 }
 
 @function encodecolor($string) {
-  @if type-of($string) == "color" {
+  @if type-of($string) == 'color' {
     $hex: str-slice(ie-hex-str($string), 4);
-    $string: unquote("#{$hex}");
+    $string: unquote('#{$hex}');
   }
-  $string: "%23" + $string;
+  $string: '%23' + $string;
   @return $string;
 }

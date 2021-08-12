@@ -1,21 +1,21 @@
-const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   pages: {
     index: {
-      entry: "src/index.js",
-      template: "public/index.html",
-      filename: "index.html",
+      entry: 'src/index.js',
+      template: 'public/index.html',
+      filename: 'index.html',
     },
   },
   devServer: {
-    clientLogLevel: "warning",
+    clientLogLevel: 'warning',
     hot: true,
-    contentBase: "dist",
+    contentBase: 'dist',
     compress: true,
-    open: true,
+    // open: true,
     overlay: { warnings: false, errors: true },
-    publicPath: "/",
+    publicPath: '/',
     quiet: true,
     watchOptions: {
       poll: false,
@@ -23,24 +23,24 @@ module.exports = {
     },
   },
 
-  chainWebpack: (config) => {
-    config.plugins.delete("prefetch-index"),
+  chainWebpack: config => {
+    config.plugins.delete('prefetch-index'),
       config.module
-        .rule("vue")
-        .use("vue-loader")
-        .tap((args) => {
-          args.compilerOptions.whitespace = "preserve";
+        .rule('vue')
+        .use('vue-loader')
+        .tap(args => {
+          args.compilerOptions.whitespace = 'preserve';
         });
   },
   productionSourceMap: false,
-  assetsDir: "./assets/",
+  assetsDir: './assets/',
   configureWebpack: {
     plugins: [
       new CopyPlugin({
         patterns: [
-          { from: "src/assets/img", to: "assets/img" },
-          { from: "src/assets/logos", to: "assets/logos" },
-          { from: "src/assets/fonts", to: "assets/fonts" },
+          { from: 'src/assets/img', to: 'assets/img' },
+          { from: 'src/assets/logos', to: 'assets/logos' },
+          { from: 'src/assets/fonts', to: 'assets/fonts' },
         ],
       }),
     ],

@@ -14,9 +14,9 @@
                   <router-link to="/">
                     <span class="logo-single" />
                   </router-link>
-                  <h6 class="mb-4">{{ $t("pages.error-title") }}</h6>
+                  <h6 class="mb-4">{{ $t('pages.error-title') }}</h6>
                   <p class="mb-0 text-muted text-small mb-0">
-                    {{ $t("pages.error-code") }}
+                    {{ $t('pages.error-code') }}
                   </p>
                   <p class="display-1 font-weight-bold mb-5">404</p>
                   <b-button
@@ -25,7 +25,7 @@
                     size="lg"
                     class="btn-shadow"
                     @click="goBack"
-                    >{{ $t("pages.go-back-home") }}</b-button
+                    >{{ $t('pages.go-back-home') }}</b-button
                   >
                 </div>
               </b-card>
@@ -37,18 +37,18 @@
   </div>
 </template>
 <script>
-import { adminRoot } from "../constants/config";
-export default {
-  methods: {
-    goBack() {
-      this.$router.push(adminRoot);
+  import { adminRoot } from '../constants/config';
+  export default {
+    methods: {
+      goBack() {
+        this.$router.push(adminRoot);
+      },
     },
-  },
-  mounted: function () {
-    document.body.classList.add("background");
-  },
-  beforeDestroy() {
-    document.body.classList.remove("background");
-  },
-};
+    mounted: function () {
+      document.body.classList.add('background');
+    },
+    beforeDestroy() {
+      document.body.classList.remove('background');
+    },
+  };
 </script>

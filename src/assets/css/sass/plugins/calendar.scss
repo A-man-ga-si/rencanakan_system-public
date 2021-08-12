@@ -89,13 +89,13 @@
         margin-right: 5px;
         white-space: nowrap;
         overflow: hidden;
-        font-family: "simple-line-icons";
+        font-family: 'simple-line-icons';
         padding-right: 6px;
 
         &::after {
           font-size: 0.76rem;
           padding-left: 5px;
-          content: "\e605";
+          content: '\e605';
         }
       }
 
@@ -103,13 +103,13 @@
         margin-left: 5px;
         white-space: nowrap;
         overflow: hidden;
-        font-family: "simple-line-icons";
+        font-family: 'simple-line-icons';
         padding-right: 6px;
 
         &::after {
           font-size: 0.76rem;
           padding-left: 8px;
-          content: "\e606";
+          content: '\e606';
         }
       }
     }
@@ -216,7 +216,7 @@
         .endTime {
           color: inherit !important;
           font-weight: 700;
-          content: " \21e2 ";
+          content: ' \21e2 ';
         }
 
         &.primary {

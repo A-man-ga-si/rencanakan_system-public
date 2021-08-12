@@ -1,4 +1,4 @@
-import { ThemeColors } from "../../utils";
+import { ThemeColors } from '../../utils';
 
 const colors = ThemeColors();
 
@@ -47,17 +47,17 @@ export const centerTextPlugin = {
         : activePercentage;
     }
 
-    ctx.font = "36px Nunito, sans-serif";
+    ctx.font = '36px Nunito, sans-serif';
     ctx.fillStyle = colors.primaryColor;
-    ctx.textBaseline = "middle";
+    ctx.textBaseline = 'middle';
 
-    var text = activePercentage + "%";
+    var text = activePercentage + '%';
     var textX = Math.round((width - ctx.measureText(text).width) / 2);
     var textY = height / 2;
     ctx.fillText(text, textX, textY);
 
-    ctx.font = "14px Nunito, sans-serif";
-    ctx.textBaseline = "middle";
+    ctx.font = '14px Nunito, sans-serif';
+    ctx.textBaseline = 'middle';
 
     var text2 = activeLabel;
     var textX2 = Math.round((width - ctx.measureText(text2).width) / 2);
@@ -77,14 +77,14 @@ export const centerTextPlugin = {
   },
 };
 
-export const addCommas = (nStr) => {
-  nStr += "";
-  var x = nStr.split(".");
+export const addCommas = nStr => {
+  nStr += '';
+  var x = nStr.split('.');
   var x1 = x[0];
-  var x2 = x.length > 1 ? "." + x[1] : "";
+  var x2 = x.length > 1 ? '.' + x[1] : '';
   var rgx = /(\d+)(\d{3})/;
   while (rgx.test(x1)) {
-    x1 = x1.replace(rgx, "$1" + "," + "$2");
+    x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }
   return x1 + x2;
 };

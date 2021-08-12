@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import Stars from "../Common/Stars";
-export default {
-  components: {
-    stars: Stars,
-  },
-  props: ["data", "detailPath"],
-};
+  import Stars from '../Common/Stars';
+  export default {
+    components: {
+      stars: Stars,
+    },
+    props: ['data', 'detailPath'],
+  };
 </script>
