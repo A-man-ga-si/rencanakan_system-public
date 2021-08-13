@@ -22,6 +22,7 @@
     "username": "Username"
   },
   "menu": {
+    "company-profile": "Company Profile",
     "home": "Home",
     "app": "Home",
     "dashboards": "Dashboards",
@@ -70,6 +71,8 @@
     "popover-tooltip": "Popover & Tooltip",
     "sortable": "Sortable",
     "menu": "Menu",
+    "change-email": "Change E-Mail",
+    "change-password": "Change Password",
     "subhidden": "Subhidden",
     "hidden": "Hidden",
     "visible": "Visible",
@@ -93,6 +96,7 @@
     "videos": "Videos",
     "blank-page": "Blank Page",
     "types": "Menu Types",
+    "user-profile": "User Profile",
     "levels": "Menu Levels",
     "third-level-1": "Third Level 1",
     "third-level-2": "Third Level 2",
@@ -253,7 +257,33 @@
       "address": "Address (Optional)",
       "province": "Province",
       "fiscal-year": "Fiscal Year",
-      "margin-profit": "Margin Profit (%)"
+      "margin-profit": "Margin Profit (%)",
+      "no-project-alert": "Tap \"Create New Project\" button to create your first RAB!"
+    },
+    "account": {
+      "profile": {
+        "change-photo": "Change Photo",
+        "first-name": "First Name",
+        "last-name": "Last Name",
+        "phone": "Phone Number",
+        "job": "Job",
+        "save-btn": "Save"
+      },
+      "company-profile": {
+        "add-company-profile-bt": "Add Company Profile",
+        "no-company-profile-msg": "No company profile found"
+      },
+      "change-email": {
+        "old-email": "Email",
+        "new-email": "New Email",
+        "save-btn": "Save"
+      },
+      "change-password": {
+        "old-password": "Old Password",
+        "new-password": "New Password",
+        "confirm-new-password": "New Password Confirmation",
+        "save-btn": "Save"
+      }
     }
   },
   "chat": {
@@ -320,6 +350,7 @@
     "error": "Error",
     "filled": "Filled",
     "primary-text": "This is a primary alert—check it out!",
+    "email-not-verified": "Please verify your e-mail first to unlock all features",
     "secondary-text": "This is a secondary alert—check it out!",
     "success-text": "This is a success alert—check it out!",
     "danger-text": "This is a danger alert—check it out!",

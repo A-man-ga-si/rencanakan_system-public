@@ -30,6 +30,8 @@
     "login-wrong-credentials": "E-Mail / Password salah"
   },
   "menu": {
+    "user-profile": "Profil User",
+    "company-profile": "Profil Perusahaan",
     "home": "Home",
     "app": "Home",
     "dashboards": "Dasbor",
@@ -75,6 +77,8 @@
     "popover-tooltip": "Popover & Tooltip",
     "sortable": "Sortable",
     "menu": "Menu",
+    "change-email": "Ganti E-Mail",
+    "change-password": "Ganti Kata Sandi",
     "projects": "Projek Saya",
     "token": "Token Saya",
     "account": "Akun",
@@ -261,7 +265,33 @@
       "address": "Alamat (Optional)",
       "province": "Provinsi",
       "fiscal-year": "Tahun Anggaran",
-      "margin-profit": "Profit Margin (%)"
+      "margin-profit": "Profit Margin (%)",
+      "no-project-alert": "Tekan tombol \"Buat Proyek Baru\" untuk membuat RAB Pertamamu!"
+    },
+    "account": {
+      "profile": {
+        "change-photo": "Ganti Foto",
+        "first-name": "Nama Depan",
+        "last-name": "Nama Belakang",
+        "phone": "Nomor Telepon",
+        "job": "Pekerjaan",
+        "save-btn": "Simpan"
+      },
+      "company-profile": {
+        "add-company-profile-bt": "Tambah Profil Perusahaan",
+        "no-company-profile-msg": "Tidak ada profil perusahaan"
+      },
+      "change-email": {
+        "old-email": "Email",
+        "new-email": "Email Baru",
+        "save-btn": "Simpan"
+      },
+      "change-password": {
+        "old-password": "Kata Sandi Lama",
+        "new-password": "Kata Sandi Baru",
+        "confirm-new-password": "Konfirmasi Kata Sandi Baru",
+        "save-btn": "Simpan"
+      }
     }
   },
   "chat": {
@@ -338,7 +368,8 @@
     "default": "Default Alert",
     "dismissing": "Dismissing Alert",
     "dismissing-text": "Holy guacamole! You should check in on some of those fields below.",
-    "dismissing-without-animate-text": "I am an alert and I can be dismissed without animating!"
+    "dismissing-without-animate-text": "I am an alert and I can be dismissed without animating!",
+    "email-not-verified": "Verifikasi e-mail Anda terlebih dahulu untuk membuka semua fitur"
   },
   "badge": {
     "sizes": "Sizes",

@@ -6,6 +6,9 @@
         <div class="separator mb-5"></div>
       </b-colxx>
     </b-row>
+    <b-alert show variant="danger" class="rounded mb-4">
+      {{ $t('alert.email-not-verified') }}
+    </b-alert>
     <b-row>
       <b-colxx xxs="12">
         <b-card class="mb-4">
@@ -16,7 +19,7 @@
               </div>
               <div class="right">
                 <b-btn v-b-modal.add-project-modal variant="primary">
-                  Buat Projek Baru
+                  {{ $t('pages.projects.add-project-modal-title') }}
                 </b-btn>
               </div>
             </div>
@@ -29,12 +32,14 @@
                 fluid
               />
               <p class="mt-3 no-project-msg">
-                Tekan tombol "Buat Proyek Baru" untuk membuat RAB Pertamamu!
+                {{ $t('pages.projects.no-project-alert') }}
               </p>
             </b-col>
           </b-row>
           <b-row v-else>
-            <b-col> </b-col>
+            <b-col>
+              <ProjectListTable />
+            </b-col>
           </b-row>
         </b-card>
       </b-colxx>
@@ -47,6 +52,7 @@
   import AppLayout from './../../../layouts/AppLayout.vue';
   import AddProject from './../../../components/Project/AddProject.vue';
   import { mapActions, mapGetters } from 'vuex';
+  import ProjectListTable from './../../../components/Project/ProjectListTable.vue';
 
   export default {
     data: () => ({
@@ -64,6 +70,7 @@
     components: {
       AppLayout,
       AddProject,
+      ProjectListTable,
     },
   };
 </script>

@@ -62,6 +62,53 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "token" */ './../views/app/token'),
       },
+      {
+        path: `account`,
+        name: 'account',
+        meta: {
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        redirect: {
+          name: 'profile-account',
+        },
+        component: () =>
+          import(/* webpackChunkName: "account" */ './../views/app/account'),
+        children: [
+          {
+            path: 'profile',
+            name: 'profile-account',
+            component: () =>
+              import(
+                /* webpackChunkName: "accountProfile" */ './../views/app/account/profile.vue'
+              ),
+          },
+          {
+            path: 'company-profile',
+            name: 'company-profile',
+            component: () =>
+              import(
+                /* webpackChunkName: "companyProfile" */ './../views/app/account/company-profile.vue'
+              ),
+          },
+          {
+            path: 'change-email',
+            name: 'change-email',
+            component: () =>
+              import(
+                /* webpackChunkName: "changeEmail" */ './../views/app/account/change-email.vue'
+              ),
+          },
+          {
+            path: 'change-password',
+            name: 'change-password',
+            component: () =>
+              import(
+                /* webpackChunkName: "changePassword" */ './../views/app/account/change-password.vue'
+              ),
+          },
+        ],
+      },
     ],
   },
   {

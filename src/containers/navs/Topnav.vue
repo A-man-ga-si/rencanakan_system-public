@@ -140,7 +140,9 @@
               />
             </span>
           </template>
-          <b-dropdown-item>Account</b-dropdown-item>
+          <b-dropdown-item>
+            <router-link :to="{ name: 'account' }">Account</router-link>
+          </b-dropdown-item>
           <b-dropdown-divider />
           <b-dropdown-item @click="logout">Sign out</b-dropdown-item>
         </b-dropdown>

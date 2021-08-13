@@ -200,5 +200,17 @@ export default {
           .catch(reject);
       });
     },
+    fetchUserInfo(ctx, userId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${apiUrl}/user/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          })
+          .then(resolve)
+          .catch(reject);
+      });
+    },
   },
 };
