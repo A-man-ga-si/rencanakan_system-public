@@ -42,6 +42,26 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "dashboard" */ './../views/app/settings'),
       },
+      {
+        path: `projects`,
+        name: 'project',
+        meta: {
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        component: () =>
+          import(/* webpackChunkName: "project" */ './../views/app/projects'),
+      },
+      {
+        path: `token`,
+        name: 'token',
+        meta: {
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        component: () =>
+          import(/* webpackChunkName: "token" */ './../views/app/token'),
+      },
     ],
   },
   {

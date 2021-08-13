@@ -37,6 +37,9 @@
     "search": "Search",
     "invoice": "Invoice",
     "mailing": "Mailing",
+    "projects": "My Projects",
+    "token": "My Token",
+    "account": "Account",
     "login": "Login",
     "register": "Register",
     "forgot-password": "Forgot Password",
@@ -237,7 +240,20 @@
       "247Support": "24/7 Support",
       "useractionsauditlog": "User actions audit log",
       "featurecomparison": "Feature Comparison",
-      "pricecomparison": "Price Comparison"
+      "pricecomparison": "Top-Up"
+    },
+    "token": {
+      "choose-package": "Choose Package"
+    },
+    "projects": {
+      "add-project-modal-title": "Create New Project",
+      "project-name": "Project Name",
+      "activity": "Activity",
+      "job": "Job",
+      "address": "Address (Optional)",
+      "province": "Province",
+      "fiscal-year": "Fiscal Year",
+      "margin-profit": "Margin Profit (%)"
     }
   },
   "chat": {
@@ -557,6 +573,8 @@
     "launch-right-modal": "Launch Right Modal",
     "nested-modal": "Nested Modal",
     "size": "Size",
+    "save-bt": "Save",
+    "cancel-bt": "Cancel",
     "launch-large-modal": "Launch Large Modal",
     "launch-small-modal": "Launch Small Modal"
   },

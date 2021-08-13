@@ -6,6 +6,8 @@ export const searchPath = `${adminRoot}/#`;
 export const buyUrl = 'https://1.envato.market/nEyZa';
 export const apiDomain = 'http://localhost:8000';
 export const apiUrl = `${apiDomain}/api`;
+export const apiProvinces =
+  'http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json';
 // export const apiUrl = 'https://api.coloredstrategies.com';
 
 export const subHiddenBreakpoint = 1440;

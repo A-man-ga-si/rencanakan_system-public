@@ -75,6 +75,9 @@
     "popover-tooltip": "Popover & Tooltip",
     "sortable": "Sortable",
     "menu": "Menu",
+    "projects": "Projek Saya",
+    "token": "Token Saya",
+    "account": "Akun",
     "subhidden": "Subhidden",
     "hidden": "Hidden",
     "visible": "Visible",
@@ -245,7 +248,20 @@
       "247Support": "24/7 Support",
       "useractionsauditlog": "User actions audit log",
       "featurecomparison": "Feature Comparison",
-      "pricecomparison": "Price Comparison"
+      "pricecomparison": "Top-Up"
+    },
+    "token": {
+      "choose-package": "Pilih Paket"
+    },
+    "projects": {
+      "add-project-modal-title": "Buat Pekerjaan Baru",
+      "project-name": "Nama Pekerjaan",
+      "activity": "Kegiatan",
+      "job": "Pekerjaan",
+      "address": "Alamat (Optional)",
+      "province": "Provinsi",
+      "fiscal-year": "Tahun Anggaran",
+      "margin-profit": "Profit Margin (%)"
     }
   },
   "chat": {
@@ -565,6 +581,8 @@
     "launch-right-modal": "Launch Right Modal",
     "nested-modal": "Nested Modal",
     "size": "Size",
+    "save-bt": "Simpan",
+    "cancel-bt": "Batal",
     "launch-large-modal": "Launch Large Modal",
     "launch-small-modal": "Launch Small Modal"
   },
