@@ -258,7 +258,9 @@
       "province": "Province",
       "fiscal-year": "Fiscal Year",
       "margin-profit": "Margin Profit (%)",
-      "no-project-alert": "Tap \"Create New Project\" button to create your first RAB!"
+      "no-project-alert": "Tap \"Create New Project\" button to create your first RAB!",
+      "table-project-title": "Project Name",
+      "table-created-at": "Created At"
     },
     "account": {
       "profile": {

@@ -19,10 +19,9 @@
         <b-card>
           <vuetable
             ref="vuetable"
-            :api-url="apiBase"
-            :query-params="makeQueryParams"
+            :api-mode="false"
+            :data="datas"
             :per-page="perPage"
-            :reactive-api-url="true"
             :fields="fields"
             pagination-path
             :row-class="onRowClass"
@@ -31,10 +30,9 @@
             @vuetable:cell-rightclicked="rightClicked"
           >
             <template slot="actions" slot-scope="props">
-              <b-form-checkbox
-                :checked="selectedItems.includes(props.rowData.id)"
-                class="itemCheck mb-0"
-              ></b-form-checkbox>
+              <a href="#" :id="props.rowData.id" class="rab-icon-bt">
+                <i class="iconsminds-book"></i>
+              </a>
             </template>
           </vuetable>
         </b-card>
@@ -47,10 +45,6 @@
     </b-row>
 
     <v-contextmenu ref="contextmenu">
-      <v-contextmenu-item @click="onContextMenuAction('copy')">
-        <i class="simple-icon-docs" />
-        <span>Copy</span>
-      </v-contextmenu-item>
       <v-contextmenu-item @click="onContextMenuAction('move-to-archive')">
         <i class="simple-icon-drawer" />
         <span>Move to archive</span>
@@ -88,43 +82,33 @@
         total: 0,
         lastPage: 0,
         items: [],
+        datas: [
+          {
+            title: 'Project Jembatan ABC',
+            created_at: '20 August 2021 18:20',
+          },
+        ],
         selectedItems: [],
         fields: [
           {
             name: 'title',
             sortField: 'title',
-            title: 'Name',
+            title: this.$t('pages.projects.table-project-title'),
             titleClass: '',
             dataClass: 'list-item-heading',
-            width: '50%',
+            width: '35%',
           },
           {
-            name: 'sales',
-            sortField: 'sales',
-            title: 'Sales',
+            name: 'created_at',
+            sortField: 'created_at',
+            title: this.$t('pages.projects.table-created-at'),
             titleClass: '',
             dataClass: 'text-muted',
             width: '10%',
-          },
-          {
-            name: 'stock',
-            sortField: 'stock',
-            title: 'Stock',
-            titleClass: '',
-            dataClass: 'text-muted',
-            width: '10%',
-          },
-          {
-            name: 'category',
-            sortField: 'category',
-            title: 'Category',
-            titleClass: '',
-            dataClass: 'text-muted',
-            width: '25%',
           },
           {
             name: '__slot:actions',
-            title: '',
+            title: 'RAB',
             titleClass: 'center aligned text-right',
             dataClass: 'center aligned text-right',
             width: '5%',
@@ -258,3 +242,9 @@
     },
   };
 </script>
+
+<style scoped>
+  .rab-icon-bt {
+    font-size: 17px;
+  }
+</style>

@@ -1,29 +1,17 @@
 <template>
   <div>
-    <b-row>
+    <!-- <b-row>
       <b-colxx xxs="12">
         <piaf-breadcrumb :heading="$t('menu.projects')" />
         <div class="separator mb-5"></div>
       </b-colxx>
-    </b-row>
+    </b-row> -->
     <b-alert show variant="danger" class="rounded mb-4">
       {{ $t('alert.email-not-verified') }}
     </b-alert>
     <b-row>
       <b-colxx xxs="12">
         <b-card class="mb-4">
-          <b-card-title>
-            <div class="d-flex justify-content-between">
-              <div class="left">
-                {{ $t('menu.projects') }}
-              </div>
-              <div class="right">
-                <b-btn v-b-modal.add-project-modal variant="primary">
-                  {{ $t('pages.projects.add-project-modal-title') }}
-                </b-btn>
-              </div>
-            </div>
-          </b-card-title>
           <b-row v-if="getProjects.length <= 0">
             <b-col :xl="4" :md="5" :sm="6" class="mx-auto text-center">
               <b-img
@@ -34,6 +22,9 @@
               <p class="mt-3 no-project-msg">
                 {{ $t('pages.projects.no-project-alert') }}
               </p>
+              <b-btn v-b-modal.add-project-modal variant="primary">{{
+                $t('pages.projects.add-project-modal-title')
+              }}</b-btn>
             </b-col>
           </b-row>
           <b-row v-else>

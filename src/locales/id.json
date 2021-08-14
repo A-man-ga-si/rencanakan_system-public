@@ -266,7 +266,9 @@
       "province": "Provinsi",
       "fiscal-year": "Tahun Anggaran",
       "margin-profit": "Profit Margin (%)",
-      "no-project-alert": "Tekan tombol \"Buat Proyek Baru\" untuk membuat RAB Pertamamu!"
+      "no-project-alert": "Tekan tombol \"Buat Proyek Baru\" untuk membuat RAB Pertamamu!",
+      "table-project-title": "Nama Projek",
+      "table-created-at": "Dibuat Tanggal"
     },
     "account": {
       "profile": {
