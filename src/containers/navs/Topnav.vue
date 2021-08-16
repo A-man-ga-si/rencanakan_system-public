@@ -36,18 +36,25 @@
             v-for="(l, index) in localeOptions"
             :key="index"
             @click="changeLocale(l.id, l.direction)"
-            >{{ l.name }}</b-dropdown-item
           >
+            {{ l.name }}
+          </b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
-      <span class="logo d-none d-xs-block"></span>
-      <span class="logo-mobile d-block d-xs-none"></span>
+      <b-img src="./../../assets/logos/rencanakan-logo.png" fluid></b-img>
+      <!-- <img src="./../../assets/logos/rencanakan-logo.png" alt="" /> -->
+      <!-- <span class="logo d-none d-xs-block"></span>
+      <span class="logo-mobile d-block d-xs-none"></span> -->
     </router-link>
 
     <div class="navbar-right">
-      <div class="d-none d-md-inline-block align-middle mr-3">
+      <h5 class="d-inline-block mr-2">
+        <i class="iconsminds-coins-2"></i>
+        1,000
+      </h5>
+      <!-- <div class="d-none d-md-inline-block align-middle mr-3">
         <switches
           id="tool-mode-switch"
           v-model="isDarkActive"
@@ -60,9 +67,9 @@
           placement="left"
           title="Dark Mode"
         ></b-tooltip>
-      </div>
-      <div class="header-icons d-inline-block align-middle">
-        <div class="position-relative d-none d-sm-inline-block">
+      </div> -->
+      <!-- <div class="header-icons d-inline-block align-middle"> -->
+      <!-- <div class="position-relative d-none d-sm-inline-block">
           <b-dropdown
             variant="empty"
             size="sm"
@@ -101,8 +108,8 @@
               </router-link>
             </div>
           </b-dropdown>
-        </div>
-        <div class="position-relative d-none d-sm-inline-block">
+        </div> -->
+      <!-- <div class="position-relative d-none d-sm-inline-block">
           <div class="btn-group">
             <b-button
               variant="empty"
@@ -118,8 +125,8 @@
               />
             </b-button>
           </div>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
       <div class="user d-inline-block">
         <b-dropdown
           class="dropdown-menu-right"
@@ -130,9 +137,9 @@
           no-caret
         >
           <template slot="button-content">
-            <span class="name mr-1">{{
-              currentUser ? currentUser.title : ''
-            }}</span>
+            <h5 class="name mr-1 d-inline-block">
+              {{ currentUser ? currentUser.title : '' }}
+            </h5>
             <span>
               <img
                 :alt="currentUser ? currentUser.title : ''"

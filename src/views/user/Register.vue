@@ -3,16 +3,38 @@
     <b-colxx xxs="12" md="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
-          <p class="text-white h2">
-            {{ $t('dashboards.magic-is-in-the-details') }}
-          </p>
-          <p class="white mb-0">
-            Please use this form to register. <br />If you are a member, please
-            <router-link to="/user/login" class="white">login</router-link>.
-          </p>
+          <div
+            class="dark-overlay"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              background-color: rgba(0, 0, 0, 0.6);
+            "
+          ></div>
+          <div class="trans-overlay position-relative" style="z-index: 9">
+            <p class="text-white h2">
+              {{ $t('dashboards.magic-is-in-the-details') }}
+            </p>
+            <p class="white mb-0">
+              Please use this form to register. <br />If you are a member,
+              please
+              <router-link to="/user/login" class="white">login</router-link>.
+            </p>
+          </div>
         </div>
         <div class="form-side">
-          <router-link to="/"><span class="logo-single" /></router-link>
+          <router-link to="/">
+            <b-img
+              src="./../../assets/logos/rencanakan-logo.png"
+              style="max-width: 250px"
+              class="mb-5"
+              fluid
+            ></b-img>
+            <!-- <span class="logo-single" /> -->
+          </router-link>
           <h6 class="mb-4">{{ $t('user.register') }}</h6>
           <b-form @submit.prevent="formSubmit">
             <b-row class="mb-4">

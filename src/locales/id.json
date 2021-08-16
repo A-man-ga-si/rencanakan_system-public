@@ -268,7 +268,8 @@
       "margin-profit": "Profit Margin (%)",
       "no-project-alert": "Tekan tombol \"Buat Proyek Baru\" untuk membuat RAB Pertamamu!",
       "table-project-title": "Nama Projek",
-      "table-created-at": "Dibuat Tanggal"
+      "table-created-at": "Tanggal Dibuat",
+      "table-project-last-opened": "Terakhir Dibuka"
     },
     "account": {
       "profile": {

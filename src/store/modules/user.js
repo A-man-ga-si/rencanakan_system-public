@@ -7,6 +7,7 @@ import {
   getCurrentUser,
   setToken,
   getToken,
+  setCurrentUserPhoto,
 } from '../../utils';
 
 export default {
@@ -32,6 +33,9 @@ export default {
       state.currentUser = payload;
       state.processing = false;
       state.loginError = null;
+    },
+    setUserPhoto(state, photo) {
+      state.currentUser.photo = photo;
     },
     setLogout(state) {
       state.currentUser = null;
@@ -209,6 +213,49 @@ export default {
             },
           })
           .then(resolve)
+          .catch(reject);
+      });
+    },
+    updateUserInfo({ commit }, { userId, data }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${apiUrl}/user/${userId}`, data, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          })
+          .then(data => {
+            const { hashid, first_name, last_name, photo, roles } =
+              data.data.data.user;
+            const userData = {
+              id: hashid,
+              img: photo,
+              role: 0,
+              permissions: roles[0].permissions?.map(e => e.name),
+              title: `${first_name} ${last_name}`,
+            };
+            setCurrentUser(userData);
+            commit('setUser', userData);
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    },
+    updateUserPhoto({ commit }, { userId, formData }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${apiUrl}/user/${userId}`, formData, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+              'Content-Type': 'multipart/formdata',
+            },
+          })
+          .then(data => {
+            const { photo } = data.data.data.user;
+            commit('setUserPhoto', photo);
+            setCurrentUserPhoto(photo);
+            resolve(data);
+          })
           .catch(reject);
       });
     },

@@ -6370,6 +6370,11 @@ normalize-url@^3.0.0:
   resolved "https://registry.npmjs.org/normalize-url/-/normalize-url-3.3.0.tgz"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
+notiflix@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/notiflix/-/notiflix-3.0.1.tgz#da4a0f6c371eb9e08bd9643f4984f7af6e842f14"
+  integrity sha512-KdipbFspL2AgqsrWQAdvaK5Bl3/LoKojVqrsex3a+Vkz5ZMN2bWQtsDJp0UWFzL/7w/ykK8JmRFH8W4uTh3ddw==
+
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-2.0.2.tgz"

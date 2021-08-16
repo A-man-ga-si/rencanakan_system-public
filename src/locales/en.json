@@ -260,7 +260,8 @@
       "margin-profit": "Margin Profit (%)",
       "no-project-alert": "Tap \"Create New Project\" button to create your first RAB!",
       "table-project-title": "Project Name",
-      "table-created-at": "Created At"
+      "table-created-at": "Created At",
+      "table-project-last-opened": "Last Opened"
     },
     "account": {
       "profile": {

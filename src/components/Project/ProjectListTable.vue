@@ -30,9 +30,24 @@
             @vuetable:cell-rightclicked="rightClicked"
           >
             <template slot="actions" slot-scope="props">
-              <a href="#" :id="props.rowData.id" class="rab-icon-bt">
+              <router-link
+                :to="`/app/projects/${props.rowData.id}/rab`"
+                class="rab-icon-bt mx-1"
+              >
+                <i class="simple-icon-trash" />
+              </router-link>
+              <router-link
+                :to="`/app/projects/${props.rowData.id}/rab`"
+                class="rab-icon-bt mx-1"
+              >
+                <i class="simple-icon-drawer" />
+              </router-link>
+              <router-link
+                :to="`/app/projects/${props.rowData.id}/rab`"
+                class="rab-icon-bt mx-1"
+              >
                 <i class="iconsminds-book"></i>
-              </a>
+              </router-link>
             </template>
           </vuetable>
         </b-card>
@@ -84,8 +99,10 @@
         items: [],
         datas: [
           {
+            id: 1,
             title: 'Project Jembatan ABC',
             created_at: '20 August 2021 18:20',
+            last_opened: '20 August 2021 19:35',
           },
         ],
         selectedItems: [],
@@ -99,16 +116,24 @@
             width: '35%',
           },
           {
+            name: 'last_opened',
+            sortField: 'last_opened',
+            title: this.$t('pages.projects.table-project-last-opened'),
+            titleClass: '',
+            dataClass: 'list-item-heading',
+            width: '10%',
+          },
+          {
             name: 'created_at',
             sortField: 'created_at',
             title: this.$t('pages.projects.table-created-at'),
             titleClass: '',
-            dataClass: 'text-muted',
+            dataClass: 'list-item-heading',
             width: '10%',
           },
           {
             name: '__slot:actions',
-            title: 'RAB',
+            title: 'Aksi',
             titleClass: 'center aligned text-right',
             dataClass: 'center aligned text-right',
             width: '5%',

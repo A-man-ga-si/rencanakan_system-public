@@ -178,6 +178,18 @@ export const setCurrentUser = user => {
   }
 };
 
+export const setCurrentUserPhoto = photo => {
+  try {
+    if (photo) {
+      const currentData = getCurrentUser();
+      currentData.photo = photo;
+      setCurrentUser(currentData);
+    }
+  } catch (error) {
+    console.log('>>>> src/utils/index.js : setCurrentUser -> error', error);
+  }
+};
+
 export const setToken = token => {
   if (token) window.localStorage.setItem('token', token);
   else window.localStorage.removeItem('token');

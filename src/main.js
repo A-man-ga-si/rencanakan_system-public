@@ -28,6 +28,7 @@ import VueScrollTo from 'vue-scrollto';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { getCurrentLanguage } from './utils';
+import Notiflix from 'notiflix';
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
@@ -39,6 +40,12 @@ const i18n = new VueI18n({
   locale: locale,
   fallbackLocale: 'en',
   messages,
+});
+
+Notiflix.Notify.init({
+  fontFamily: 'roboto',
+  cssAnimation: true,
+  cssAnimationStyle: 'from-right',
 });
 
 Vue.use(Notifications);
