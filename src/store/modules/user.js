@@ -35,7 +35,7 @@ export default {
       state.loginError = null;
     },
     setUserPhoto(state, photo) {
-      state.currentUser.photo = photo;
+      state.currentUser.img = photo;
     },
     setLogout(state) {
       state.currentUser = null;
@@ -87,6 +87,7 @@ export default {
             const userData = {
               id: user.hashid,
               img: user.photo,
+              email: user.email,
               role: 0,
               permissions: user.roles[0].permissions?.map(e => e.name),
               title: `${user.first_name} ${user.last_name}`,
@@ -172,6 +173,18 @@ export default {
             }
           )
           .then(data => {
+            const { hashid, first_name, last_name, photo, roles, email } =
+              data.data.data.user;
+            const userData = {
+              id: hashid,
+              img: photo,
+              role: 0,
+              email,
+              permissions: roles[0].permissions?.map(e => e.name),
+              title: `${first_name} ${last_name}`,
+            };
+            setCurrentUser(userData);
+            commit('setUser', userData);
             commit('setTokenVerificationStatus', true);
             resolve(data);
           })
@@ -225,12 +238,25 @@ export default {
             },
           })
           .then(data => {
-            const { hashid, first_name, last_name, photo, roles } =
-              data.data.data.user;
+            const {
+              hashid,
+              first_name,
+              last_name,
+              photo,
+              roles,
+              email,
+              oldPassword,
+              password,
+              passwordConfirmation,
+            } = data.data.data.user;
             const userData = {
               id: hashid,
               img: photo,
               role: 0,
+              email,
+              old_password: oldPassword,
+              password,
+              password_confirmation: passwordConfirmation,
               permissions: roles[0].permissions?.map(e => e.name),
               title: `${first_name} ${last_name}`,
             };

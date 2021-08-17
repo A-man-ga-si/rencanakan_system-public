@@ -3,7 +3,18 @@
     <b-row>
       <b-col :md="6" class="mx-auto">
         <div class="text-center">
-          <b-img :src="profileImage" alt="" fluid class="profile-img" />
+          <b-avatar
+            class="border-0"
+            variant="white"
+            size="8rem"
+            :src="profileImage"
+          />
+          <!-- <div
+            class="img-container rounded-circle d-inline-block"
+            style="overflow: hidden; height: 160px; width: 160px"
+          >
+            <b-img :src="profileImage" alt="" class="profile-img" />
+          </div> -->
           <a
             class="d-block mt-3 change-foto text-link text-primary"
             href="#"
@@ -213,6 +224,7 @@
       },
       async updateProfilePhoto(formData) {
         try {
+          this.processing = true;
           await this.updateUserPhoto({
             userId: this.currentUser.id,
             formData,
@@ -220,7 +232,11 @@
           Notify.success('Berhasil mengupdate foto profil');
         } catch (err) {
           console.error(err);
+          if (err.response?.status == 422)
+            Notify.failure(err.response.data.errors['photo-update'][0]);
           Notify.failure('Gagal mengupdate foto profil');
+        } finally {
+          this.processing = false;
         }
       },
       markInvalids(invalids) {
