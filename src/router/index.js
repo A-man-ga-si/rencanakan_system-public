@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthGuard from './../utils/auth.guard';
 import App from './../views/app';
-import { adminRoot } from './../constants/config';
+import { adminRoot, defaultTitle, titleSuffix } from './../constants/config';
 import { UserRole } from './../utils/auth.roles';
 
 Vue.use(VueRouter);
@@ -26,6 +26,7 @@ const routes = [
         path: `dashboard`,
         name: 'Dashboard',
         meta: {
+          title: 'Dashboard',
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
@@ -36,6 +37,7 @@ const routes = [
         path: `settings`,
         name: 'Settings',
         meta: {
+          title: 'Setting',
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
@@ -46,6 +48,7 @@ const routes = [
         path: `projects`,
         name: 'project',
         meta: {
+          title: 'My Projects',
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
@@ -56,6 +59,7 @@ const routes = [
         path: `token`,
         name: 'token',
         meta: {
+          title: 'My Token',
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
@@ -78,6 +82,9 @@ const routes = [
           {
             path: 'profile',
             name: 'profile-account',
+            meta: {
+              title: 'Account Profile',
+            },
             component: () =>
               import(
                 /* webpackChunkName: "accountProfile" */ './../views/app/account/profile.vue'
@@ -86,6 +93,9 @@ const routes = [
           {
             path: 'company-profile',
             name: 'company-profile',
+            meta: {
+              title: 'Company Profile',
+            },
             component: () =>
               import(
                 /* webpackChunkName: "companyProfile" */ './../views/app/account/company-profile.vue'
@@ -94,6 +104,9 @@ const routes = [
           {
             path: 'change-email',
             name: 'change-email',
+            meta: {
+              title: 'Change Email',
+            },
             component: () =>
               import(
                 /* webpackChunkName: "changeEmail" */ './../views/app/account/change-email.vue'
@@ -102,6 +115,9 @@ const routes = [
           {
             path: 'change-password',
             name: 'change-password',
+            meta: {
+              title: 'Change Password',
+            },
             component: () =>
               import(
                 /* webpackChunkName: "changePassword" */ './../views/app/account/change-password.vue'
@@ -120,12 +136,18 @@ const routes = [
       {
         path: 'login',
         name: 'Login',
+        meta: {
+          title: 'Login',
+        },
         component: () =>
           import(/* webpackChunkName: "login" */ './../views/user/Login'),
       },
       {
         path: 'register',
         name: 'Register',
+        meta: {
+          title: 'Register',
+        },
         component: () =>
           import(/* webpackChunkName: "register" */ './../views/user/Register'),
       },
@@ -143,6 +165,17 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "resetPassword" */ './../views/user/ResetPassword'
+          ),
+      },
+      {
+        path: 'verification/callback',
+        name: 'VerificationCallback',
+        meta: {
+          title: 'Email Verification Status',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "emailVerificationCallback" */ './../views/user/VerificationCallback'
           ),
       },
     ],
@@ -163,6 +196,9 @@ const router = new VueRouter({
   mode: 'history',
 });
 
-router.beforeEach(AuthGuard);
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title || defaultTitle} ${titleSuffix}`;
+  AuthGuard(to, from, next);
+});
 
 export default router;

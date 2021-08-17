@@ -8,6 +8,11 @@
   },
   "user": {
     "login-title": "Login",
+    "email-verify-title": "Email Verification",
+    "email-verified-ok-message": "Email has been verified successfully",
+    "email-verified-fail-message": "Email verfication failed",
+    "back-to-login": "Back to Login",
+    "back-to-register": "Back to Register",
     "register": "Register",
     "forgot-password": "Forgot Password",
     "email": "E-mail",

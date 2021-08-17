@@ -9,6 +9,10 @@
   "user": {
     "login-title": "Login",
     "register": "Register",
+    "email-verified-ok-message": "Email sukses terverifikasi",
+    "back-to-login": "Kembali ke Login",
+    "back-to-register": "Kembali ke Registrasi",
+    "email-verified-fail-message": "Email gagal di verifikasi",
     "forgot-password": "Forgot Password",
     "email": "E-mail",
     "password": "Kata Sandi",

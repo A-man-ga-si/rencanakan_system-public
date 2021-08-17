@@ -1,5 +1,7 @@
 import { UserRole } from '../utils/auth.roles';
 
+export const defaultTitle = 'Untitled';
+export const titleSuffix = ' | Rencanakan.id';
 export const defaultMenuType = 'menu-default'; // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;
