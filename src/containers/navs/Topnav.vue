@@ -52,7 +52,7 @@
     <div class="navbar-right">
       <h5 class="d-inline-block mr-2">
         <i class="iconsminds-coins-2"></i>
-        1,000
+        {{ userToken }}
       </h5>
       <!-- <div class="d-none d-md-inline-block align-middle mr-3">
         <switches
@@ -287,6 +287,10 @@
         menuClickCount: 'getMenuClickCount',
         selectedMenuHasSubItems: 'getSelectedMenuHasSubItems',
       }),
+      userToken() {
+        const formatter = new Intl.NumberFormat('id');
+        return formatter.format(this.currentUser.token_amount);
+      },
       profileImage() {
         return this.currentUser
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`

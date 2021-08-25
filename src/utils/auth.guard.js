@@ -28,7 +28,7 @@ export default async (to, from, next) => {
             name: 'Login',
           });
         }
-      } else {
+    } else {
         setCurrentUser(null);
         next({
           name: 'Login',

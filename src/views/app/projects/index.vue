@@ -22,9 +22,9 @@
               <p class="mt-3 no-project-msg">
                 {{ $t('pages.projects.no-project-alert') }}
               </p>
-              <b-btn v-b-modal.add-project-modal variant="primary">{{
-                $t('pages.projects.add-project-modal-title')
-              }}</b-btn>
+              <b-btn v-b-modal.add-project-modal variant="primary">
+                {{ $t('pages.projects.add-project-modal-title') }}
+              </b-btn>
             </b-col>
           </b-row>
           <b-row v-else>

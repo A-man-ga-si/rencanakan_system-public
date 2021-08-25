@@ -74,6 +74,9 @@ export default {
     setTokenVerificationStatus(state, status) {
       state.isTokenVerified = status;
     },
+    setTokenAmount(state, tokenAmount) {
+      state.currentUser.token_amount = tokenAmount;
+    },
   },
   actions: {
     login({ commit }, payload) {
@@ -88,6 +91,7 @@ export default {
               id: user.hashid,
               img: user.photo,
               email: user.email,
+              token_amount: user.token_amount,
               role: 0,
               permissions: user.roles[0].permissions?.map(e => e.name),
               title: `${user.first_name} ${user.last_name}`,
@@ -173,11 +177,19 @@ export default {
             }
           )
           .then(data => {
-            const { hashid, first_name, last_name, photo, roles, email } =
-              data.data.data.user;
+            const {
+              hashid,
+              first_name,
+              last_name,
+              photo,
+              roles,
+              email,
+              token_amount,
+            } = data.data.data.user;
             const userData = {
               id: hashid,
               img: photo,
+              token_amount,
               role: 0,
               email,
               permissions: roles[0].permissions?.map(e => e.name),
@@ -246,6 +258,7 @@ export default {
               roles,
               email,
               oldPassword,
+              token_amount,
               password,
               passwordConfirmation,
             } = data.data.data.user;
@@ -254,6 +267,7 @@ export default {
               img: photo,
               role: 0,
               email,
+              token_amount,
               old_password: oldPassword,
               password,
               password_confirmation: passwordConfirmation,
@@ -284,6 +298,9 @@ export default {
           })
           .catch(reject);
       });
+    },
+    mutateToken({ commit }, token) {
+      commit('setTokenAmount', token);
     },
   },
 };

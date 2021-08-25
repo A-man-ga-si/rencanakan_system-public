@@ -56,6 +56,48 @@ const routes = [
           import(/* webpackChunkName: "project" */ './../views/app/projects'),
       },
       {
+        path: 'projects/:id/rab',
+        name: 'rab',
+        redirect: {
+          name: 'RabSummary',
+        },
+        meta: {
+          title: 'RAB',
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        component: () =>
+          import(/* webpackChunkName: "rab" */ './../views/app/projects/rabs'),
+        children: [
+          {
+            path: 'summary',
+            name: 'RabSummary',
+            meta: {
+              title: 'RAB Summary',
+              loginRequired: true,
+              permissions: ['read dashboard', 'read home'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "rabSummary" */ './../views/app/projects/rabs/summary.vue'
+              ),
+          },
+          {
+            path: 'ahs',
+            name: 'RabAhs',
+            meta: {
+              title: 'AHS',
+              loginRequired: true,
+              permissions: ['read dashboard', 'read home'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "rabAhs" */ './../views/app/projects/rabs/ahs.vue'
+              ),
+          },
+        ],
+      },
+      {
         path: `token`,
         name: 'token',
         meta: {

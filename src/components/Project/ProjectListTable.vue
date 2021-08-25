@@ -75,7 +75,7 @@
   import Vuetable from 'vuetable-2/src/components/Vuetable';
   import VuetablePaginationBootstrap from './../Common/VuetablePaginationBootstrap.vue';
   import { apiUrl } from './../../constants/config';
-  import DatatableHeading from './../../containers/datatable/DatatableHeading.vue';
+  import DatatableHeading from '../../containers/datatable/Projects/IndexDatatableHeading.vue';
 
   export default {
     props: ['title'],

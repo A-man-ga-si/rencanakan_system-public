@@ -52,6 +52,7 @@
     "invoice": "Invoice",
     "mailing": "Mailing",
     "login": "Login",
+    "rab": "RAB",
     "register": "Register",
     "forgot-password": "Forgot Password",
     "reset-password": "Reset Password",
@@ -273,7 +274,16 @@
       "no-project-alert": "Tekan tombol \"Buat Proyek Baru\" untuk membuat RAB Pertamamu!",
       "table-project-title": "Nama Projek",
       "table-created-at": "Tanggal Dibuat",
-      "table-project-last-opened": "Terakhir Dibuka"
+      "table-project-last-opened": "Terakhir Dibuka",
+      "rab": {
+        "rab-tab": "RAB",
+        "ahs-tab": "AHS",
+        "unit-tab": "Harga Satuan",
+        "tools-price-tab": "Analisa Harga Peralatan",
+        "summary": {
+          "export-btn": "Ekspor RAB"
+        }
+      }
     },
     "account": {
       "profile": {

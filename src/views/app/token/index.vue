@@ -13,7 +13,7 @@
             <h1 class="mb-0 pb-0 font-weight-bold">Saldo Saya</h1>
             <h1 class="mb-0 pb-0 font-weight-bold">
               <i class="iconsminds-coins-2"></i>
-              1,000
+              {{ currentUserToken }}
             </h1>
           </div>
         </b-card>
@@ -31,7 +31,13 @@
               class="col-item mb-4"
               :key="`price_${pIndex}`"
             >
-              <PriceCard :data="item" :id="`token-${item.id}`" />
+              <PriceCard
+                @choose="choose"
+                @unchoose="unchoose"
+                :data="item"
+                :index="pIndex"
+                :id="`token-${item.id}`"
+              />
             </b-colxx>
           </b-row>
         </b-card>
@@ -39,23 +45,24 @@
           <b-card-title>
             <h5 class="font-weight-bold mb-4">Plan Summary</h5>
           </b-card-title>
-          <ul class="p-0 pricing-list mb-0">
-            <li class="p-0 d-flex justify-content-between">
-              <p class="font-weight-bold">Starter Package (5 Token)</p>
-              <p class="font-weight-bold">Rp. 50,000</p>
-            </li>
-            <li class="p-0 d-flex justify-content-between">
-              <p class="font-weight-bold">Starter Package (10 Token)</p>
-              <p class="font-weight-bold">Rp. 70,000</p>
+          <ul class="p-0 pricing-list mb-0" v-if="selectedItems.length">
+            <li
+              class="p-0 d-flex justify-content-between"
+              v-for="(selectedPackage, idx) in selectedItems"
+              :key="idx"
+            >
+              <p class="font-weight-bold">{{ selectedPackage.title }}</p>
+              <p class="font-weight-bold">{{ selectedPackage.price }}</p>
             </li>
           </ul>
+          <p v-else>No Item Selected</p>
           <hr class="mt-0" />
           <div class="d-flex justify-content-between">
             <h5 class="font-weight-bold">Total</h5>
-            <h5 class="font-weight-bold">Rp. 120,000</h5>
+            <h5 class="font-weight-bold">{{ subtotal }}</h5>
           </div>
         </b-card>
-        <b-card class="mt-3 text-right">
+        <b-card @click.prevent="checkoutToken" class="mt-3 text-right">
           <b-btn variant="primary">Checkout</b-btn>
         </b-card>
       </b-colxx>
@@ -64,8 +71,10 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
   import PriceCard from './../../../containers/pages/PriceCard';
   import AppLayout from './../../../layouts/AppLayout.vue';
+  import { Notify } from 'notiflix';
 
   export default {
     data: () => ({
@@ -77,6 +86,7 @@
             title: 'Starter',
             value: '5',
             price: 'Rp. 100,000',
+            priceRaw: 100000,
             detail: 'User/Month',
             link: '#',
             features: [
@@ -90,7 +100,8 @@
             id: 2,
             title: 'Save 10%',
             value: '10',
-            price: 'Rp. 100,000',
+            price: 'Rp. 150,000',
+            priceRaw: 150000,
             detail: 'User/Month Up to 10 Users',
             link: '#',
             features: [
@@ -106,7 +117,8 @@
             id: 3,
             title: 'Save 20%',
             value: '20',
-            price: 'Rp. 100,000',
+            price: 'Rp. 200,000',
+            priceRaw: 200000,
             detail: 'User/Month 10+ Users',
             link: '#',
             features: [
@@ -122,7 +134,8 @@
             id: 4,
             title: 'Best Deal',
             value: '50',
-            price: 'Rp. 100,000',
+            price: 'Rp. 250,000',
+            priceRaw: 250000,
             detail: 'User/Month 10+ Users',
             link: '#',
             features: [
@@ -135,7 +148,54 @@
           },
         ],
       },
+      selectedItems: [],
     }),
+    methods: {
+      ...mapActions(['fetchSnapToken', 'demoAddToken', 'mutateToken']),
+      choose({ data, index }) {
+        this.selectedItems.push(data);
+      },
+      unchoose({ data, index }) {
+        this.selectedItems = this.selectedItems.filter(
+          selData => selData.id != data.id
+        );
+      },
+      async checkoutToken() {
+        const { data } = await this.fetchSnapToken(this.selectedItems);
+        window.snap.pay(data.data.token, {
+          onSuccess: this.onPaymentSuccess,
+        });
+      },
+      async onPaymentSuccess() {
+        // Update token
+        const { data } = await this.demoAddToken(
+          this.selectedItems
+            .map(el => el.value)
+            .reduce((acc, curr) => parseInt(acc) + parseInt(curr))
+        );
+        await this.mutateToken(data.data.current_token_amount);
+        Notify.success('Berhasil melakukan pembelian token');
+      },
+    },
+    computed: {
+      ...mapGetters(['currentUser']),
+      subtotal() {
+        if (this.selectedItems.length) {
+          const formatter = new Intl.NumberFormat('id');
+          return `Rp. ${formatter.format(
+            this.selectedItems
+              .map(data => data.priceRaw)
+              .reduce((acc, curr) => acc + curr)
+          )}`;
+        } else {
+          return `Rp. 0`;
+        }
+      },
+      currentUserToken() {
+        const formatter = new Intl.NumberFormat('id');
+        return formatter.format(this.currentUser.token_amount);
+      },
+    },
     components: {
       AppLayout,
       PriceCard,

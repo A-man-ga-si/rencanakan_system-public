@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.4.1",
+    "@handsontable/vue": "^9.0.2",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
     "chart.js": "2.9.4",
     "core-js": "^3.14.0",
     "firebase": "^8.6.5",
+    "handsontable": "^9.0.2",
     "notiflix": "^3.0.1",
     "sweetalert2": "^11.1.2",
     "v-contextmenu": "^2.9.0",

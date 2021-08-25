@@ -198,3 +198,9 @@ export const setToken = token => {
 export const getToken = () => {
   return window.localStorage.getItem('token');
 };
+
+export const setTokenAmount = tokenAmount => {
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  user.token_amount = tokenAmount;
+  window.localStorage.setItem('user', JSON.stringify(user));
+};

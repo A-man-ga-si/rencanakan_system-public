@@ -42,9 +42,9 @@
           </li>
         </ul>
         <div class="text-center">
-          <b-btn @click="choose = !choose" variant="primary">{{
-            $t('pages.token.choose-package')
-          }}</b-btn>
+          <b-btn @click="chooseCard" variant="primary">
+            {{ $t('pages.token.choose-package') }}
+          </b-btn>
           <!-- <router-link :to="data.link" class="btn btn-link btn-empty btn-lg">
             {{ $t('pages.purchase') }} <i class="simple-icon-arrow-right"></i>
           </router-link> -->
@@ -59,7 +59,23 @@
     data: () => ({
       choose: false,
     }),
-    props: ['data'],
+    methods: {
+      chooseCard() {
+        this.choose = !this.choose;
+        if (this.choose) {
+          this.$emit('choose', {
+            data: this.data,
+            index: this.index,
+          });
+        } else {
+          this.$emit('unchoose', {
+            data: this.data,
+            index: this.index,
+          });
+        }
+      },
+    },
+    props: ['data', 'index'],
   };
 </script>
 

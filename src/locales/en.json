@@ -34,6 +34,7 @@
     "default": "Default",
     "analytics": "Analytics",
     "ecommerce": "Ecommerce",
+    "rab": "RAB",
     "content": "Content",
     "pages": "Pages",
     "data-list": "Data List",
@@ -76,6 +77,8 @@
     "popover-tooltip": "Popover & Tooltip",
     "sortable": "Sortable",
     "menu": "Menu",
+    "summary": "RAB Detail",
+    "ahs": "AHS",
     "change-email": "Change E-Mail",
     "change-password": "Change Password",
     "subhidden": "Subhidden",
@@ -266,7 +269,16 @@
       "no-project-alert": "Tap \"Create New Project\" button to create your first RAB!",
       "table-project-title": "Project Name",
       "table-created-at": "Created At",
-      "table-project-last-opened": "Last Opened"
+      "table-project-last-opened": "Last Opened",
+      "rab": {
+        "summary": {
+          "export-btn": "Export RAB"
+        },
+        "rab-tab": "RAB",
+        "ahs-tab": "AHS",
+        "unit-tab": "Unit Price",
+        "tools-price-tab": "Equipment Price Analysis"
+      }
     },
     "account": {
       "profile": {
