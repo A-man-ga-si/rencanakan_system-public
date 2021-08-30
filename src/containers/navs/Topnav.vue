@@ -43,7 +43,7 @@
       </div>
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
-      <b-img src="./../../assets/logos/rencanakan-logo.png" fluid></b-img>
+      <b-img src="/assets/logos/rencanakan-logo.png" fluid></b-img>
       <!-- <img src="./../../assets/logos/rencanakan-logo.png" alt="" /> -->
       <!-- <span class="logo d-none d-xs-block"></span>
       <span class="logo-mobile d-block d-xs-none"></span> -->
