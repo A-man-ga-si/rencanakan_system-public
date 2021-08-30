@@ -7,18 +7,22 @@
             {{ $t('dashboards.magic-is-in-the-details') }}
           </p>
           <p class="white mb-0">
-            Please use your credentials to login.
-            <br />If you are not a member, please
-            <router-link to="/user/register" class="white">register</router-link
-            >.
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus,
+            similique!
           </p>
         </div>
         <div class="form-side">
           <router-link to="/">
-            <span class="logo-single" />
+            <b-img
+              src="./../../assets/logos/rencanakan-logo.png"
+              style="max-width: 250px"
+              class="mb-5"
+              fluid
+            ></b-img>
+            <!-- <span class="logo-single" /> -->
           </router-link>
-          <h6 class="mb-4">{{ $t('user.login-title') }}</h6>
-
+          <h6>{{ $t('user.reset-password-title') }}</h6>
+          <p class="mb-4">{{ $t('user.reset-password-instruction') }}</p>
           <b-form
             @submit.prevent="formSubmit"
             class="av-tooltip tooltip-label-bottom"
@@ -61,10 +65,7 @@
               >
             </b-form-group>
 
-            <div class="d-flex justify-content-between align-items-center">
-              <router-link to="/user/forgot-password">{{
-                $t('user.forgot-password-question')
-              }}</router-link>
+            <div class="d-flex justify-content-end">
               <b-button
                 type="submit"
                 variant="primary"
@@ -125,8 +126,7 @@
       form: {
         password: {
           required,
-          maxLength: maxLength(16),
-          minLength: minLength(4),
+          minLength: minLength(6),
         },
         passwordAgain: {
           required,
@@ -144,13 +144,27 @@
     },
     methods: {
       ...mapActions(['resetPassword']),
-      formSubmit() {
-        this.$v.form.$touch();
-        if (!this.$v.form.$anyError) {
-          this.resetPassword({
-            newPassword: this.form.password,
-            resetPasswordCode: this.$route.query.oobCode || '',
-          });
+      async formSubmit() {
+        try {
+          this.$v.form.$touch();
+          if (!this.$v.form.$anyError) {
+            await this.resetPassword({
+              token: this.$route.query.token,
+              password: this.form.password,
+              passwordConfirmation: this.form.passwordAgain || '',
+            });
+            this.$router.replace({ name: 'Login' });
+          }
+        } catch (err) {
+          this.$notify(
+            'error',
+            this.$t('alert.success'),
+            this.$t('user.reset-password-error-msg'),
+            {
+              duration: 3000,
+              permanent: false,
+            }
+          );
         }
       },
     },

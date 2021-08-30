@@ -137,7 +137,6 @@
     email,
   } = require('vuelidate/lib/validators');
   import { adminRoot } from '../../constants/config';
-  import Swal from 'sweetalert2';
 
   export default {
     data() {
@@ -172,27 +171,37 @@
         try {
           this.$v.$touch();
           this.$v.form.$touch();
-          const data = await this.login({
-            email: this.form.email,
-            password: this.form.password,
-          });
-          this.$router.replace({
-            name: 'Dashboard',
-          });
+          if (this.form.email && this.form.password) {
+            const data = await this.login({
+              email: this.form.email,
+              password: this.form.password,
+            });
+            this.$router.replace({
+              name: 'Dashboard',
+            });
+          }
         } catch (err) {
           switch (err.response?.status) {
             case 401:
-              Swal.fire(
+              this.$notify(
+                'error',
                 this.$t('alert.error'),
                 this.$t('user.login-wrong-credentials'),
-                'error'
+                {
+                  duration: 3000,
+                  permanent: false,
+                }
               );
               break;
             default:
-              Swal.fire(
+              this.$notify(
+                'error',
                 this.$t('alert.error'),
                 this.$t('user.register-error-message'),
-                'error'
+                {
+                  duration: 3000,
+                  permanent: false,
+                }
               );
               console.error(err);
           }

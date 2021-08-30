@@ -252,10 +252,14 @@
             password: this.password,
             password_confirmation: this.passwordConfirmation,
           });
-          await Swal.fire(
+          this.$notify(
+            'success',
             this.$t('alert.success'),
             this.$t('user.register-success-message'),
-            'success'
+            {
+              duration: 3000,
+              permanent: false,
+            }
           );
           this.$router.push({
             name: 'Login',
@@ -266,10 +270,14 @@
               this.markInvalids(err.response.data);
               break;
             default:
-              Swal.fire(
-                this.$t('alert.error'),
+              this.$notify(
+                'error',
+                this.$t('alert.success'),
                 this.$t('user.register-error-message'),
-                'error'
+                {
+                  duration: 3000,
+                  permanent: false,
+                }
               );
               console.error(err);
           }

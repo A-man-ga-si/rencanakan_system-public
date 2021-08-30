@@ -17,7 +17,7 @@
     "email": "E-mail",
     "password": "Kata Sandi",
     "password-confirmation": "Konfirmasi Kata Sandi",
-    "password-again": "Password Again",
+    "password-again": "Konfirmasi Kata Sandi",
     "forgot-password-question": "Forget password?",
     "fullname": "Full Name",
     "first-name": "Nama Depan",
@@ -32,7 +32,10 @@
     "register-success-message": "Registrasi user berhasil, periksa E-Mail anda untuk mengaktifkan akun",
     "register-error-message": "Terjadi kesalahan saat mencoba untuk registrasi",
     "login-wrong-credentials": "E-Mail / Password salah",
-    "already-have-account": "Sudah punya akun?"
+    "already-have-account": "Sudah punya akun?",
+    "reset-password-title": "Reset Password",
+    "reset-password-instruction": "Masukkan kata sandi baru anda",
+    "reset-password-error-msg": "Kesalahan internal pada server, gagal melakukan reset password"
   },
   "menu": {
     "user-profile": "Profil User",

@@ -4,6 +4,9 @@ import AuthGuard from './../utils/auth.guard';
 import App from './../views/app';
 import { adminRoot, defaultTitle, titleSuffix } from './../constants/config';
 import { UserRole } from './../utils/auth.roles';
+import PasswordResetGuard from './../utils/password-reset.guard';
+
+import store from './../store';
 
 Vue.use(VueRouter);
 
@@ -207,6 +210,9 @@ const routes = [
       {
         path: 'reset-password',
         name: 'ResetPassword',
+        meta: {
+          title: 'Reset Password',
+        },
         component: () =>
           import(
             /* webpackChunkName: "resetPassword" */ './../views/user/ResetPassword'
@@ -243,6 +249,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title || defaultTitle} ${titleSuffix}`;
+  PasswordResetGuard(to, from, next);
   AuthGuard(to, from, next);
 });
 

@@ -126,35 +126,20 @@ export default {
           });
       });
     },
-    forgotPassword({ commit }, {email}) {
+    forgotPassword({ commit }, { email }) {
       return new Promise((resolve, reject) => {
         commit('clearError');
         commit('setProcessing', true);
-        axios.post(`${apiUrl}/auth/forgot-password`, {
-          email
-        })
-          .then(resolve)
+        axios
+          .post(`${apiUrl}/auth/forgot-password`, {
+            email,
+          })
+          .then(data => {
+            commit('setForgotMailSuccess', true);
+            resolve(data);
+          })
           .catch(reject);
       });
-    },
-    resetPassword({ commit }, payload) {
-      commit('clearError');
-      commit('setProcessing', true);
-      firebase
-        .auth()
-        .confirmPasswordReset(payload.resetPasswordCode, payload.newPassword)
-        .then(
-          user => {
-            commit('clearError');
-            commit('setResetPasswordSuccess');
-          },
-          err => {
-            commit('setError', err.message);
-            setTimeout(() => {
-              commit('clearError');
-            }, 3000);
-          }
-        );
     },
     verifyToken({ commit }) {
       return new Promise((resolve, reject) => {
@@ -198,6 +183,25 @@ export default {
             commit('setLogout');
             reject(err);
           });
+      });
+    },
+    verifyResetPasswordToken({ commit }, token) {
+      return axios.post(`${apiUrl}/auth/reset-password/verify-token`, {
+        reset_password_token: token,
+      });
+    },
+    resetPassword({ commit }, { token, password, passwordConfirmation }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${apiUrl}/auth/reset-password/${token}`, {
+            password,
+            password_confirmation: passwordConfirmation,
+          })
+          .then(data => {
+            commit('setResetPasswordSuccess', true);
+            resolve(data);
+          })
+          .catch(reject);
       });
     },
     signOut({ commit, state }) {

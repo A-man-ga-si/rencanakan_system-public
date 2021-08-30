@@ -49,7 +49,7 @@
               >
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
-              <router-link :to="{name: 'Login'}">{{
+              <router-link :to="{ name: 'Login' }">{{
                 $t('user.already-have-account')
               }}</router-link>
               <b-button
@@ -90,6 +90,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import { validationMixin } from 'vuelidate';
+  import Swal from 'sweetalert2';
   const {
     required,
     maxLength,
@@ -120,30 +121,23 @@
     },
     methods: {
       ...mapActions(['forgotPassword']),
-      formSubmit() {
+      async formSubmit() {
         this.$v.form.$touch();
         if (!this.$v.form.$anyError) {
-          this.forgotPassword({
+          await this.forgotPassword({
             email: this.form.email,
           });
+          this.$router.replace({ name: 'Login' });
         }
       },
     },
     watch: {
-      loginError(val) {
-        if (val != null) {
-          this.$notify('error', 'Forgot Password Error', val, {
-            duration: 3000,
-            permanent: false,
-          });
-        }
-      },
       forgotMailSuccess(val) {
         if (val) {
           this.$notify(
             'success',
             'Forgot Password Success',
-            'Please check your email.',
+            'We have sent you a confirmation mail if your E-Mail registered',
             {
               duration: 3000,
               permanent: false,
