@@ -126,24 +126,16 @@ export default {
           });
       });
     },
-    forgotPassword({ commit }, payload) {
-      commit('clearError');
-      commit('setProcessing', true);
-      firebase
-        .auth()
-        .sendPasswordResetEmail(payload.email)
-        .then(
-          user => {
-            commit('clearError');
-            commit('setForgotMailSuccess');
-          },
-          err => {
-            commit('setError', err.message);
-            setTimeout(() => {
-              commit('clearError');
-            }, 3000);
-          }
-        );
+    forgotPassword({ commit }, {email}) {
+      return new Promise((resolve, reject) => {
+        commit('clearError');
+        commit('setProcessing', true);
+        axios.post(`${apiUrl}/auth/forgot-password`, {
+          email
+        })
+          .then(resolve)
+          .catch(reject);
+      });
     },
     resetPassword({ commit }, payload) {
       commit('clearError');

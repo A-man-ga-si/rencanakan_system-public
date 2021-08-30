@@ -82,7 +82,7 @@
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
               <div class="left">
-                <router-link to="/user/forgot-password">{{
+                <router-link :to="{name: 'ForgotPassword'}">{{
                   $t('user.forgot-password-question')
                 }}</router-link>
               </div>

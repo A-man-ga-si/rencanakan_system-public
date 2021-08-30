@@ -4,7 +4,7 @@
       rab-card-single
       position-relative
       mb-3
-      border
+      custom-nice-border
       p-4
       rounded-md
       shadow-sm
@@ -15,6 +15,9 @@
         <h5>I. Pekerjaan Persiapan</h5>
       </div>
       <div class="right">
+        <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 text-success ml-1" :class="{'text-primary': mainCardCollapsed}">
+          <i class="iconsmind simple-icon-plus"></i>
+        </a>
         <a href="#" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
@@ -23,7 +26,7 @@
         </a>
       </div>
     </div>
-    <div class="body mt-2">
+    <div class="body mt-2" v-show="!mainCardCollapsed">
       <table class="table text-left">
         <thead>
           <tr>
@@ -38,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="sub-header">
+          <tr class="sub-header bg-primary">
             <th colspan="7">A. Pekerjaan Tanah</th>
             <td>
               <a href="#" class="text-danger action-close">
@@ -156,7 +159,7 @@
               <a href="#" class="d-block w-100"> + Tambah baris </a>
             </td>
           </tr>
-          <tr class="sub-header">
+          <tr class="sub-header bg-primary">
             <th colspan="7">B. Pekerjaan Lainnya</th>
             <td>
               <a href="#" class="text-danger action-close">
@@ -207,13 +210,28 @@
         </tbody>
       </table>
       <hr />
-      <div class="d-flex justify-content-between">
+    </div>
+    <div class="summary-footer">
+      <div class="d-flex justify-content-between mt-3">
         <h5>Total</h5>
         <h5>Rp.150,000</h5>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    mainCardCollapsed: false,
+  }),
+  methods: {
+    toggleMaincardCollapse() {
+      this.mainCardCollapsed = !this.mainCardCollapsed;
+    }
+  }
+}
+</script>
 
 <style scoped>
   .sub-header {
@@ -226,5 +244,9 @@
 
   .action-close {
     font-size: 17px;
+  }
+
+  .custom-nice-border {
+    border: 2px solid #ddd;
   }
 </style>

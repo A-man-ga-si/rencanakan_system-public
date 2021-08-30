@@ -15,7 +15,13 @@
         </div>
         <div class="form-side">
           <router-link to="/">
-            <span class="logo-single" />
+            <b-img
+              src="./../../assets/logos/rencanakan-logo.png"
+              style="max-width: 250px"
+              class="mb-5"
+              fluid
+            ></b-img>
+            <!-- <span class="logo-single" /> -->
           </router-link>
           <h6 class="mb-4">{{ $t('user.forgot-password') }}</h6>
           <b-form
@@ -43,8 +49,8 @@
               >
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
-              <router-link to="/user/forgot-password">{{
-                $t('user.forgot-password-question')
+              <router-link :to="{name: 'Login'}">{{
+                $t('user.already-have-account')
               }}</router-link>
               <b-button
                 type="submit"
@@ -95,7 +101,7 @@
     data() {
       return {
         form: {
-          email: 'test@coloredstrategies.com',
+          email: '',
         },
       };
     },

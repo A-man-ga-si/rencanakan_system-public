@@ -24,7 +24,8 @@
     "register-button": "REGISTER",
     "reset-password-button": "RESET",
     "buy": "BUY",
-    "username": "Username"
+    "username": "Username",
+    "already-have-account": "Already have an account?"
   },
   "menu": {
     "company-profile": "Company Profile",

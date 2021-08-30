@@ -31,7 +31,8 @@
     "username": "Username",
     "register-success-message": "Registrasi user berhasil, periksa E-Mail anda untuk mengaktifkan akun",
     "register-error-message": "Terjadi kesalahan saat mencoba untuk registrasi",
-    "login-wrong-credentials": "E-Mail / Password salah"
+    "login-wrong-credentials": "E-Mail / Password salah",
+    "already-have-account": "Sudah punya akun?"
   },
   "menu": {
     "user-profile": "Profil User",
