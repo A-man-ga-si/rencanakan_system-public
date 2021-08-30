@@ -41,10 +41,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="sub-header bg-primary">
+          <tr class="bg-primary">
             <th colspan="7">A. Pekerjaan Tanah</th>
             <td>
-              <a href="#" class="text-danger action-close">
+              <a href="#" class="text-white action-close">
                 <i class="iconminds simple-icon-close"></i>
               </a>
             </td>
@@ -159,10 +159,10 @@
               <a href="#" class="d-block w-100"> + Tambah baris </a>
             </td>
           </tr>
-          <tr class="sub-header bg-primary">
+          <tr class="bg-primary">
             <th colspan="7">B. Pekerjaan Lainnya</th>
             <td>
-              <a href="#" class="text-danger action-close">
+              <a href="#" class="text-white action-close">
                 <i class="iconminds simple-icon-close"></i>
               </a>
             </td>
@@ -234,10 +234,6 @@ export default {
 </script>
 
 <style scoped>
-  .sub-header {
-    background-color: #ddd;
-  }
-
   .inline-edit {
     border: none;
   }
