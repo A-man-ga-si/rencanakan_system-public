@@ -26,16 +26,7 @@
       :label="$t('pages.projects.province')"
       class="has-float-label"
     >
-      <b-form-select v-model="form.provinceId">
-        <b-form-select-option
-          v-for="(province, idx) in provinces"
-          :key="idx"
-          :value="province.id"
-          :selected="idx == 0"
-        >
-          {{ province.name }}
-        </b-form-select-option>
-      </b-form-select>
+      <v-select :options="processedProvinces" />
     </b-form-group>
     <b-form-group
       :label="$t('pages.projects.fiscal-year')"
@@ -74,6 +65,7 @@
         fiscalYear: new Date().getFullYear(),
         marginProfit: 0,
       },
+      processedProvinces: [],
     }),
     props: {
       provinces: Array,
@@ -87,6 +79,16 @@
         this.hideModal(this.modalId);
       },
       ...mapActions(['createProject']),
+    },
+    watch: {
+      provinces() {
+        this.processedProvinces = this.provinces
+          ? this.provinces.map(data => ({
+              code: data.id,
+              label: data.name,
+            }))
+          : [];
+      },
     },
   };
 </script>
