@@ -20,7 +20,7 @@
 <style scoped>
   .floating-action-button {
     position: fixed;
-    right: 60px;
+    right: 45px;
     bottom: 46px;
     width: 60px;
     height: 60px;
