@@ -59,23 +59,17 @@
               />
             </td>
             <td>
-              <select
+              <v-select
                 name=""
+                :options="codesList"
                 id=""
-                style="
-                  border: none;
-                  height: 100%;
-                  width: 100%;
-                  background-color: transparent;
-                "
-              >
-                <option value="">-</option>
-                <option value="">Kode 1</option>
-                <option value="">Kode 2</option>
-              </select>
+                v-model="defaultSelectedCode"
+              />
             </td>
             <td>1,00</td>
-            <td>Buah</td>
+            <td>
+              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
+            </td>
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
             <td>
@@ -94,58 +88,17 @@
               />
             </td>
             <td>
-              <select
+              <v-select
                 name=""
+                :options="codesList"
                 id=""
-                style="
-                  border: none;
-                  height: 100%;
-                  width: 100%;
-                  background-color: transparent;
-                "
-              >
-                <option value="">-</option>
-                <option value="">Kode 1</option>
-                <option value="">Kode 2</option>
-              </select>
-            </td>
-            <td>1,00</td>
-            <td>Buah</td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
-            <td>
-              <a href="#" class="text-danger action-close">
-                <i class="iconminds simple-icon-close"></i>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>3.</td>
-            <td>
-              <input
-                type="text"
-                class="inline-edit w-100"
-                value="1 m 1 utizet trase saluran"
+                v-model="defaultSelectedCode"
               />
             </td>
+            <td>1,00</td>
             <td>
-              <select
-                name=""
-                id=""
-                style="
-                  border: none;
-                  height: 100%;
-                  width: 100%;
-                  background-color: transparent;
-                "
-              >
-                <option value="">-</option>
-                <option value="">Kode 1</option>
-                <option value="">Kode 2</option>
-              </select>
+              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
             </td>
-            <td>1.700,00</td>
-            <td>m1</td>
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
             <td>
@@ -177,23 +130,17 @@
               />
             </td>
             <td>
-              <select
+              <v-select
                 name=""
+                :options="codesList"
                 id=""
-                style="
-                  border: none;
-                  height: 100%;
-                  width: 100%;
-                  background-color: transparent;
-                "
-              >
-                <option value="">-</option>
-                <option value="">Kode 1</option>
-                <option value="">Kode 2</option>
-              </select>
+                v-model="defaultSelectedCode"
+              />
             </td>
             <td>1,00</td>
-            <td>Buah</td>
+            <td>
+              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
+            </td>
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
             <td>
@@ -224,6 +171,19 @@
 export default {
   data: () => ({
     mainCardCollapsed: false,
+    defaultSelectedCode: 'Kode 1',
+    defaultSelectedUnit: 'Buah',
+    codesList: [
+      'Kode 1',
+      'Kode 2',
+      'Kode 3'
+    ],
+    unitsList: [
+      'Buah',
+      'm1',
+      'm3',
+      'OH'
+    ],
   }),
   methods: {
     toggleMaincardCollapse() {
@@ -244,5 +204,16 @@ export default {
 
   .custom-nice-border {
     border: 2px solid #ddd;
+  }
+
+  .rab-table-selector {
+    border: none !important;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  td {
+    vertical-align: middle;
   }
 </style>

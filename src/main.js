@@ -29,9 +29,13 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { getCurrentLanguage } from './utils';
 import Notiflix from 'notiflix';
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
+
+Vue.component('v-select', vSelect);
 
 const messages = { en: en, es: es, id: id };
 const locale = getCurrentLanguage();
