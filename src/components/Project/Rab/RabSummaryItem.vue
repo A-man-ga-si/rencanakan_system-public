@@ -15,7 +15,12 @@
         <h5>I. Pekerjaan Persiapan</h5>
       </div>
       <div class="right">
-        <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 text-success ml-1" :class="{'text-primary': mainCardCollapsed}">
+        <a
+          href="#"
+          @click.prevent="toggleMaincardCollapse"
+          class="h4 text-success ml-1"
+          :class="{ 'text-primary': mainCardCollapsed }"
+        >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
         <a href="#" class="h4 text-primary ml-1">
@@ -168,29 +173,20 @@
 </template>
 
 <script>
-export default {
-  data: () => ({
-    mainCardCollapsed: false,
-    defaultSelectedCode: 'Kode 1',
-    defaultSelectedUnit: 'Buah',
-    codesList: [
-      'Kode 1',
-      'Kode 2',
-      'Kode 3'
-    ],
-    unitsList: [
-      'Buah',
-      'm1',
-      'm3',
-      'OH'
-    ],
-  }),
-  methods: {
-    toggleMaincardCollapse() {
-      this.mainCardCollapsed = !this.mainCardCollapsed;
-    }
-  }
-}
+  export default {
+    data: () => ({
+      mainCardCollapsed: false,
+      defaultSelectedCode: 'Kode 1',
+      defaultSelectedUnit: 'Buah',
+      codesList: ['Kode 1', 'Kode 2', 'Kode 3'],
+      unitsList: ['Buah', 'm1', 'm3', 'OH'],
+    }),
+    methods: {
+      toggleMaincardCollapse() {
+        this.mainCardCollapsed = !this.mainCardCollapsed;
+      },
+    },
+  };
 </script>
 
 <style scoped>

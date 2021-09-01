@@ -98,6 +98,19 @@ const routes = [
                 /* webpackChunkName: "rabAhs" */ './../views/app/projects/rabs/ahs.vue'
               ),
           },
+          {
+            path: 'item-price',
+            name: 'ItemPrice',
+            meta: {
+              title: 'Item Price',
+              loginRequired: true,
+              permissions: ['read dashboard', 'read home'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/item-price.vue'
+              ),
+          },
         ],
       },
       {

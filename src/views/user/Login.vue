@@ -18,10 +18,6 @@
                 <li>Management project (coming soon)</li>
                 <li>Group project (coming soon) </li>
               </ul>
-              <!-- <br />If you are not a member, please -->
-              <!-- <router-link :to="{ name: 'Register' }" class="white">
-                register
-              </router-link> -->
             </p>
           </div>
         </div>

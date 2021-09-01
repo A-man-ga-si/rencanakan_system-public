@@ -25,7 +25,7 @@
             <b-nav-item :to="{ name: 'RabAhs' }">
               {{ $t('pages.projects.rab.ahs-tab') }}
             </b-nav-item>
-            <b-nav-item>
+            <b-nav-item :to="{ name: 'ItemPrice' }">
               {{ $t('pages.projects.rab.unit-tab') }}
             </b-nav-item>
             <b-nav-item>
@@ -40,7 +40,9 @@
 </template>
 
 <style>
-  .rab-card-single .heading {
+  .rab-card-single .heading,
+  .ahs-card-single .heading,
+  .item-price-card-single .heading {
     border-bottom: 1px solid #ddd;
     padding-bottom: 7px;
   }
