@@ -55,13 +55,6 @@ const data = [
     permissions: ['read-dahboard'],
     to: `${adminRoot}/settings`,
   },
-  // {
-  //   id: 'projects',
-  //   icon: 'iconsminds-user',
-  //   label: 'menu.account',
-  //   permissions: ['read-dashboard'],
-  //   to: `${adminRoot}/token`,
-  // },
 ];
 
 export default data;

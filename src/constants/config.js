@@ -1,5 +1,3 @@
-import { UserRole } from '../utils/auth.roles';
-
 export const defaultTitle = 'Untitled';
 export const titleSuffix = ' | Rencanakan.id';
 export const defaultMenuType = 'menu-default'; // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
@@ -21,25 +19,6 @@ export const localeOptions = [
   { id: 'en', name: 'English', direction: 'ltr' },
   { id: 'id', name: 'Indonesian', direction: 'ltr' },
 ];
-
-export const firebaseConfig = {
-  apiKey: 'AIzaSyDe94G7L-3soXVSpVbsYlB5DfYH2L91aTU',
-  authDomain: 'piaf-vue-login.firebaseapp.com',
-  databaseURL: 'https://piaf-vue-login.firebaseio.com',
-  projectId: 'piaf-vue-login',
-  storageBucket: 'piaf-vue-login.appspot.com',
-  messagingSenderId: '557576321564',
-  appId: '1:557576321564:web:bc2ce73477aff5c2197dd9',
-};
-
-export const currentUser = {
-  id: 1,
-  title: 'Sarah Kortney',
-  img: '/assets/img/profiles/l-1.jpg',
-  date: 'Last seen today 15:24',
-  role: UserRole.Admin,
-  permissions: ['read dashboard'],
-};
 
 export const isAuthGuardActive = true;
 export const themeRadiusStorageKey = 'theme_radius';
