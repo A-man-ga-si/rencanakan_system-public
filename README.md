@@ -23,4 +23,4 @@ npm run build
 ## Standarts
 
 This application should be following this standart  
-(Vue.JS Official Style Guide)[https://vuejs.org/v2/style-guide/]
+[Vue.JS Official Style Guide](https://vuejs.org/v2/style-guide)
