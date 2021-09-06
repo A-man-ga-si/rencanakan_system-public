@@ -1,5 +1,7 @@
 # Rencanakan ID Frontend
 
+This is Front End Source Code for Rencanakan.id
+
 ## Project setup
 
 ```
@@ -18,6 +20,7 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
+## Standarts
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This application should be following this standart  
+(https://vuejs.org/v2/style-guide/)[Vue.JS Official Style Guid]
