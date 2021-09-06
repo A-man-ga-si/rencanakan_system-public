@@ -14,7 +14,7 @@
         <div class="form-side">
           <router-link to="/">
             <b-img
-              src="./../../assets/logos/rencanakan-logo.png"
+              src="./../../assets/logos/rencanakan-logo-min.png"
               style="max-width: 250px"
               class="mb-5"
               fluid

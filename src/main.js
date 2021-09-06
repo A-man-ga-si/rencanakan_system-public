@@ -8,7 +8,6 @@ import router from './router';
 import store from './store';
 // Multi Language Add
 import en from './locales/en.json';
-import es from './locales/es.json';
 import id from './locales/id.json';
 import VueI18n from 'vue-i18n';
 import { firebaseConfig } from './constants/config';
@@ -37,7 +36,7 @@ Vue.use(VueI18n);
 
 Vue.component('v-select', vSelect);
 
-const messages = { en: en, es: es, id: id };
+const messages = { en: en, id: id };
 const locale = getCurrentLanguage();
 
 const i18n = new VueI18n({

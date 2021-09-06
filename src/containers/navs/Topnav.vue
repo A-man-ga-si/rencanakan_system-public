@@ -43,7 +43,7 @@
       </div>
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
-      <b-img src="/assets/logos/rencanakan-logo.png" fluid></b-img>
+      <b-img src="/assets/logos/rencanakan-logo-min.png" fluid></b-img>
     </router-link>
 
     <div class="navbar-right">
@@ -82,7 +82,6 @@
 
 <script>
   import Switches from 'vue-switches';
-  import notifications from '../../data/notifications';
 
   import { mapGetters, mapMutations, mapActions } from 'vuex';
   import { MenuIcon, MobileMenuIcon } from '../../components/Svg';
@@ -117,7 +116,6 @@
         searchPath,
         localeOptions,
         buyUrl,
-        notifications,
         isDarkActive: false,
         adminRoot,
         apiDomain,
