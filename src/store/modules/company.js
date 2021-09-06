@@ -77,5 +77,20 @@ export default {
           .catch(reject);
       });
     },
+    updateCompany({ commit }, { companyId, form }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${apiUrl}/company/${companyId}`, form, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          })
+          .then(data => {
+            console.log(data);
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    },
   },
 };
