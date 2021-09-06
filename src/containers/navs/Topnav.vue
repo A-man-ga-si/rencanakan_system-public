@@ -44,9 +44,6 @@
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
       <b-img src="/assets/logos/rencanakan-logo.png" fluid></b-img>
-      <!-- <img src="./../../assets/logos/rencanakan-logo.png" alt="" /> -->
-      <!-- <span class="logo d-none d-xs-block"></span>
-      <span class="logo-mobile d-block d-xs-none"></span> -->
     </router-link>
 
     <div class="navbar-right">
@@ -54,79 +51,6 @@
         <i class="iconsminds-coins-2"></i>
         {{ userToken }}
       </h5>
-      <!-- <div class="d-none d-md-inline-block align-middle mr-3">
-        <switches
-          id="tool-mode-switch"
-          v-model="isDarkActive"
-          theme="custom"
-          class="vue-switcher-small"
-          color="primary"
-        />
-        <b-tooltip
-          target="tool-mode-switch"
-          placement="left"
-          title="Dark Mode"
-        ></b-tooltip>
-      </div> -->
-      <!-- <div class="header-icons d-inline-block align-middle"> -->
-      <!-- <div class="position-relative d-none d-sm-inline-block">
-          <b-dropdown
-            variant="empty"
-            size="sm"
-            right
-            toggle-class="header-icon"
-            menu-class="position-absolute mt-3 iconMenuDropdown"
-            no-caret
-          >
-            <template slot="button-content">
-              <i class="simple-icon-grid" />
-            </template>
-            <div>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-shop-4 d-block" />
-                {{ $t('menu.dashboards') }}
-              </router-link>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-pantone d-block" />
-                {{ $t('menu.ui') }}
-              </router-link>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-bar-chart-4 d-block" />
-                {{ $t('menu.charts') }}
-              </router-link>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-speach-bubble d-block" />
-                {{ $t('menu.chat') }}
-              </router-link>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-formula d-block" />
-                {{ $t('menu.survey') }}
-              </router-link>
-              <router-link to="#" class="icon-menu-item">
-                <i class="iconsminds-check d-block" />
-                {{ $t('menu.todo') }}
-              </router-link>
-            </div>
-          </b-dropdown>
-        </div> -->
-      <!-- <div class="position-relative d-none d-sm-inline-block">
-          <div class="btn-group">
-            <b-button
-              variant="empty"
-              class="header-icon btn-sm"
-              @click="toggleFullScreen"
-            >
-              <i
-                :class="{
-                  'd-inline-block': true,
-                  'simple-icon-size-actual': fullScreen,
-                  'simple-icon-size-fullscreen': !fullScreen,
-                }"
-              />
-            </b-button>
-          </div>
-        </div> -->
-      <!-- </div> -->
       <div class="user d-inline-block">
         <b-dropdown
           class="dropdown-menu-right"
@@ -202,29 +126,6 @@
     methods: {
       ...mapMutations(['changeSideMenuStatus', 'changeSideMenuForMobile']),
       ...mapActions(['setLang', 'signOut']),
-      search() {
-        this.$router.push(`${this.searchPath}?search=${this.searchKeyword}`);
-        this.searchKeyword = '';
-      },
-      searchClick() {
-        if (window.innerWidth < this.menuHiddenBreakpoint) {
-          if (!this.isMobileSearch) {
-            this.isMobileSearch = true;
-          } else {
-            this.search();
-            this.isMobileSearch = false;
-          }
-        } else {
-          this.search();
-        }
-      },
-      handleDocumentforMobileSearch() {
-        if (!this.isSearchOver) {
-          this.isMobileSearch = false;
-          this.searchKeyword = '';
-        }
-      },
-
       changeLocale(locale, direction) {
         const currentDirection = getDirection().direction;
         if (direction !== currentDirection) {
@@ -325,19 +226,6 @@
           setTimeout(() => {
             window.location.reload();
           }, 500);
-        }
-      },
-      isMobileSearch(val) {
-        if (val) {
-          document.addEventListener(
-            'click',
-            this.handleDocumentforMobileSearch
-          );
-        } else {
-          document.removeEventListener(
-            'click',
-            this.handleDocumentforMobileSearch
-          );
         }
       },
     },

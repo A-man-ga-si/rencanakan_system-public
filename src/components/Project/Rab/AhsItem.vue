@@ -66,7 +66,7 @@
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
           </tr>
-          <tr class="bg-secondary font-weight-bold">
+          <tr class="font-weight-bold">
             <td colspan="6" class="text-right">Total Tenaga Kerja</td>
             <td colspan="2">Rp. 400,000</td>
           </tr>
@@ -82,7 +82,7 @@
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
           </tr>
-          <tr class="bg-secondary font-weight-bold">
+          <tr class="font-weight-bold">
             <td colspan="6" class="text-right">Total Bahan</td>
             <td colspan="2">Rp. 200,000</td>
           </tr>
@@ -98,7 +98,7 @@
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
           </tr>
-          <tr class="bg-secondary font-weight-bold">
+          <tr class="font-weight-bold">
             <td colspan="6" class="text-right">Total Perlatan</td>
             <td colspan="2">Rp. 200,000</td>
           </tr>

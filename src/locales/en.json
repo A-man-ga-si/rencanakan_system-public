@@ -34,6 +34,10 @@
     "company-profile": "Company Profile",
     "home": "Home",
     "app": "Home",
+    "item-price": "Item Price",
+    "equipment-price-master": "Item Price Master",
+    "item-price-master": "Item Price Master",
+    "ahp": "Equipment Price Analysis",
     "dashboards": "Dashboards",
     "default": "Default",
     "analytics": "Analytics",
@@ -276,12 +280,17 @@
       "table-project-last-opened": "Last Opened",
       "rab": {
         "summary": {
-          "export-btn": "Export RAB"
+          "export-btn": "Export RAB",
+          "item-price-tab": "Harga Satuan",
+          "ahp-master-tab": "AHP Master"
         },
+        "unit-master-tab": "Harga Satuan",
+        "ahp-master-tab": "AHP Master",
         "rab-tab": "RAB",
         "ahs-tab": "AHS",
         "unit-tab": "Unit Price",
-        "tools-price-tab": "Equipment Price Analysis"
+        "tools-price-tab": "Equipment Price Analysis",
+        "item-price-master-tab": "Master Harga Satuan"
       }
     },
     "account": {
@@ -295,7 +304,11 @@
       },
       "company-profile": {
         "add-company-profile-bt": "Add Company Profile",
-        "no-company-profile-msg": "No company profile found"
+        "no-company-profile-msg": "No company profile found",
+        "name": "Company Name",
+        "email": "E-Mail",
+        "director": "Director",
+        "phone-number": "Phone Number"
       },
       "change-email": {
         "old-email": "Email",
@@ -367,6 +380,7 @@
     "vue-notifications": "Notifications",
     "outline": "Outline",
     "primary": "Primary",
+    "email-no-active-company": "No active company set ! please set your active company first",
     "secondary": "Secondary",
     "info": "Info",
     "success": "Success",

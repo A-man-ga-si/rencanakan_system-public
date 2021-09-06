@@ -93,6 +93,7 @@ export default {
               email: user.email,
               token_amount: user.token_amount,
               role: 0,
+              _active_company: user._active_company,
               permissions: user.roles[0].permissions?.map(e => e.name),
               title: `${user.first_name} ${user.last_name}`,
             };
@@ -101,6 +102,8 @@ export default {
             setToken(parsedToken);
             commit('setUser', userData);
             commit('setToken', parsedToken);
+            commit('setCompanies', user.company);
+            commit('setActiveCompany', user._active_company);
             resolve(data);
           })
           .catch(reject)
@@ -161,12 +164,15 @@ export default {
               photo,
               roles,
               email,
+              _active_company,
               token_amount,
+              company,
             } = data.data.data.user;
             const userData = {
               id: hashid,
               img: photo,
               token_amount,
+              _active_company,
               role: 0,
               email,
               permissions: roles[0].permissions?.map(e => e.name),
@@ -175,6 +181,8 @@ export default {
             setCurrentUser(userData);
             commit('setUser', userData);
             commit('setTokenVerificationStatus', true);
+            commit('setCompanies', company);
+            commit('setActiveCompany', _active_company);
             resolve(data);
           })
           .catch(err => {
@@ -254,6 +262,7 @@ export default {
               roles,
               email,
               oldPassword,
+              _active_company,
               token_amount,
               password,
               passwordConfirmation,
@@ -263,6 +272,7 @@ export default {
               img: photo,
               role: 0,
               email,
+              _active_company,
               token_amount,
               old_password: oldPassword,
               password,

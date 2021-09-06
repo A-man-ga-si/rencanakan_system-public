@@ -17,8 +17,8 @@
     </b-row>
     <b-row>
       <b-col>
-        <b-card class="mb-4">
-          <b-nav class="mb-5" pills>
+        <b-card>
+          <b-nav pills>
             <b-nav-item :to="{ name: 'RabSummary' }">
               {{ $t('pages.projects.rab.rab-tab') }}
             </b-nav-item>
@@ -28,7 +28,7 @@
             <b-nav-item :to="{ name: 'ItemPrice' }">
               {{ $t('pages.projects.rab.unit-tab') }}
             </b-nav-item>
-            <b-nav-item>
+            <b-nav-item :to="{ name: 'RabAhp' }">
               {{ $t('pages.projects.rab.tools-price-tab') }}
             </b-nav-item>
           </b-nav>

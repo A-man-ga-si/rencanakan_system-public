@@ -1,6 +1,6 @@
 <template>
-  <div class="ahs-page mt-5">
-    <b-row>
+  <div>
+    <b-row class="">
       <b-col :lg="6" :xl="3">
         <div class="text-right mb-2 position-relative">
           <label class="form-group has-float-label mb-0">
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import ItemPriceItem from './../../../../components/Project/Rab/ItemPriceItem.vue';
+  import ItemPriceItem from './../../../../../components/Project/Rab/ItemPriceItem.vue';
 
   export default {
     components: {

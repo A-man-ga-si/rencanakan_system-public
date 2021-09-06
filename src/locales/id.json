@@ -41,6 +41,10 @@
     "user-profile": "Profil User",
     "company-profile": "Profil Perusahaan",
     "home": "Home",
+    "item-price": "Harga Satuan",
+    "equipment-price-master": "Master Harga Satuan",
+    "item-price-master": "Master Harga Satuan",
+    "ahp": "Analisa Harga Peralatan",
     "app": "Home",
     "dashboards": "Dasbor",
     "default": "Default",
@@ -283,7 +287,11 @@
         "rab-tab": "RAB",
         "ahs-tab": "AHS",
         "unit-tab": "Harga Satuan",
+        "unit-master-tab": "Harga Satuan",
         "tools-price-tab": "Analisa Harga Peralatan",
+        "item-price-tab": "Harga Satuan",
+        "ahp-master-tab": "Master AHP",
+        "item-price-master-tab": "Master Harga Satuan",
         "summary": {
           "export-btn": "Ekspor RAB"
         }
@@ -300,7 +308,11 @@
       },
       "company-profile": {
         "add-company-profile-bt": "Tambah Profil Perusahaan",
-        "no-company-profile-msg": "Tidak ada profil perusahaan"
+        "no-company-profile-msg": "Tidak ada profil perusahaan",
+        "name": "Nama Perusahaan",
+        "email": "E-Mail",
+        "director": "Nama Direktur",
+        "phone-number": "Nomor Telepon"
       },
       "change-email": {
         "old-email": "Email",
@@ -373,6 +385,7 @@
     "outline": "Outline",
     "primary": "Primary",
     "secondary": "Secondary",
+    "email-no-active-company": "Tidak ada perusahaan aktif, silahkan buat / aktifkan perusahaan anda terlebih dahulu",
     "info": "Info",
     "success": "Sukses",
     "warning": "Warning",

@@ -7,6 +7,7 @@ import user from './modules/user';
 import province from './modules/province';
 import project from './modules/project';
 import payment from './modules/payment';
+import company from './modules/company';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -30,5 +31,6 @@ export default new Vuex.Store({
     province,
     project,
     payment,
+    company,
   },
 });

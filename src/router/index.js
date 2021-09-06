@@ -106,9 +106,53 @@ const routes = [
               loginRequired: true,
               permissions: ['read dashboard', 'read home'],
             },
+            redirect: {
+              name: 'RabItemPriceMaster',
+            },
             component: () =>
               import(
-                /* webpackChunkName */ './../views/app/projects/rabs/item-price.vue'
+                /* webpackChunkName: "itemPrice" */ './../views/app/projects/rabs/item-price'
+              ),
+            children: [
+              {
+                path: 'item-price-master',
+                name: 'RabItemPriceMaster',
+                meta: {
+                  title: 'Harga Satuan',
+                  loginRequired: true,
+                  permissions: ['read dashboard', 'read home'],
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: "itemPriceMaster" */ './../views/app/projects/rabs/item-price/item-price-master.vue'
+                  ),
+              },
+              {
+                path: 'equipment-price-master',
+                name: 'RabEquipmentPriceMaster',
+                meta: {
+                  title: 'Harga Satuan Peralatan',
+                  loginRequired: true,
+                  permissions: ['read dashboard', 'read home'],
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: "equipmentItemPriceMaster" */ './../views/app/projects/rabs/item-price/equipment-item-price-master.vue'
+                  ),
+              },
+            ],
+          },
+          {
+            path: 'ahp',
+            name: 'RabAhp',
+            meta: {
+              title: 'Equipments Price Analysis',
+              loginRequired: true,
+              permissions: ['read dashboard', 'read home'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/ahp.vue'
               ),
           },
         ],

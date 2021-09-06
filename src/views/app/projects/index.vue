@@ -6,9 +6,11 @@
         <div class="separator mb-5"></div>
       </b-colxx>
     </b-row> -->
-    <b-alert show variant="danger" class="rounded mb-4">
-      {{ $t('alert.email-not-verified') }}
-    </b-alert>
+    <a href="#" v-if="!getActiveCompany">
+      <b-alert show variant="danger" class="rounded mb-4">
+        {{ $t('alert.email-no-active-company') }}
+      </b-alert>
+    </a>
     <b-row>
       <b-colxx xxs="12">
         <b-card class="mb-4">
@@ -56,7 +58,7 @@
       ...mapActions(['fetchProvinces']),
     },
     computed: {
-      ...mapGetters(['getProvinces', 'getProjects']),
+      ...mapGetters(['getProvinces', 'getProjects', 'getActiveCompany']),
     },
     components: {
       AppLayout,
