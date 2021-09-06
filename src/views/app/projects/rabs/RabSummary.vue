@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  import RabSummaryItem from './../../../../components/Project/Rab/RabSummaryItem.vue';
-  import FloatingActionButton from './../../../../components/Project/FloatingActionButton.vue';
+  import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
+  import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
 
   export default {
     mounted() {},

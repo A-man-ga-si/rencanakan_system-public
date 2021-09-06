@@ -3,10 +3,7 @@ import VueRouter from 'vue-router';
 import AuthGuard from './../utils/auth.guard';
 import App from './../views/app';
 import { adminRoot, defaultTitle, titleSuffix } from './../constants/config';
-import { UserRole } from './../utils/auth.roles';
 import PasswordResetGuard from './../utils/password-reset.guard';
-
-import store from './../store';
 
 Vue.use(VueRouter);
 
@@ -34,7 +31,9 @@ const routes = [
           permissions: ['read dashboard', 'read home'],
         },
         component: () =>
-          import(/* webpackChunkName: "dashboard" */ './../views/app/single'),
+          import(
+            /* webpackChunkName: "dashboard" */ './../views/app/dashboard'
+          ),
       },
       {
         path: `settings`,
@@ -82,7 +81,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "rabSummary" */ './../views/app/projects/rabs/summary.vue'
+                /* webpackChunkName: "rabSummary" */ './../views/app/projects/rabs/RabSummary.vue'
               ),
           },
           {
@@ -95,7 +94,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "rabAhs" */ './../views/app/projects/rabs/ahs.vue'
+                /* webpackChunkName: "rabAhs" */ './../views/app/projects/rabs/Ahs.vue'
               ),
           },
           {
@@ -124,11 +123,11 @@ const routes = [
                 },
                 component: () =>
                   import(
-                    /* webpackChunkName: "itemPriceMaster" */ './../views/app/projects/rabs/item-price/item-price-master.vue'
+                    /* webpackChunkName: "itemPriceMaster" */ './../views/app/projects/rabs/item-price/ItemPriceMaster.vue'
                   ),
               },
               {
-                path: 'equipment-price-master',
+                path: 'equipment-item-price-master',
                 name: 'RabEquipmentPriceMaster',
                 meta: {
                   title: 'Harga Satuan Peralatan',
@@ -137,7 +136,7 @@ const routes = [
                 },
                 component: () =>
                   import(
-                    /* webpackChunkName: "equipmentItemPriceMaster" */ './../views/app/projects/rabs/item-price/equipment-item-price-master.vue'
+                    /* webpackChunkName: "equipmentItemPriceMaster" */ './../views/app/projects/rabs/item-price/EquipmentItemPriceMaster.vue'
                   ),
               },
             ],
@@ -152,7 +151,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName */ './../views/app/projects/rabs/ahp.vue'
+                /* webpackChunkName */ './../views/app/projects/rabs/Ahp.vue'
               ),
           },
         ],
@@ -189,7 +188,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "accountProfile" */ './../views/app/account/profile.vue'
+                /* webpackChunkName: "accountProfile" */ './../views/app/account/Profile.vue'
               ),
           },
           {
@@ -200,7 +199,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "companyProfile" */ './../views/app/account/company-profile.vue'
+                /* webpackChunkName: "companyProfile" */ './../views/app/account/CompanyProfile.vue'
               ),
           },
           {
@@ -211,7 +210,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "changeEmail" */ './../views/app/account/change-email.vue'
+                /* webpackChunkName: "changeEmail" */ './../views/app/account/ChangeEmail.vue'
               ),
           },
           {
@@ -222,7 +221,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName: "changePassword" */ './../views/app/account/change-password.vue'
+                /* webpackChunkName: "changePassword" */ './../views/app/account/ChangePassword.vue'
               ),
           },
         ],

@@ -1,21 +1,13 @@
 <template>
   <div class="h-100">
     <router-view />
-    <color-switcher />
   </div>
 </template>
 
 <script>
-  import ColorSwitcher from './components/Common/ColorSwitcher';
-  import axios from 'axios';
-
   import { getDirection } from './utils';
-  import { getToken } from './utils';
 
   export default {
-    components: {
-      'color-switcher': ColorSwitcher,
-    },
     beforeMount() {
       const direction = getDirection();
       if (direction.isRtl) {
@@ -27,11 +19,6 @@
         document.dir = 'ltr';
         document.body.classList.remove('rtl');
       }
-    },
-    methods: {
-      // verifyToken() {
-      //   const token = getToken();
-      // },
     },
   };
 </script>

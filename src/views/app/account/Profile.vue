@@ -135,7 +135,7 @@
 <script>
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
-  import { apiDomain } from './../../../constants/config';
+  import { apiDomain } from '../../../constants/config';
 
   export default {
     data: () => ({

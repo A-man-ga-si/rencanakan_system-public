@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import ItemPriceItem from './../../../../../components/Project/Rab/ItemPriceItem.vue';
+  import ItemPriceItem from '../../../../../components/Project/Rab/ItemPriceItem.vue';
 
   export default {
     components: {

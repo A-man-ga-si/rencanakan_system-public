@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import AhsItem from './../../../../components/Project/Rab/AhsItem.vue';
-  import FloatingActionButton from './../../../../components/Project/FloatingActionButton.vue';
+  import AhsItem from '../../../../components/Project/Rab/AhsItem.vue';
+  import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
 
   export default {
     components: {
