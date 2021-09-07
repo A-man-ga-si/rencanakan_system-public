@@ -1,96 +1,61 @@
-import axios from 'axios';
-import { apiUrl } from '../../constants/config';
-import { getToken } from '../../utils';
+// prettier-ignore
+import { deleteCompany, getCompany, postCompany } from '../../services/company.service';
+
+const state = {
+  companies: [],
+  activeCompany: null,
+};
+
+const getters = {
+  getCompanies: state => state.companies,
+  getActiveCompany: state => state.activeCompany,
+};
+
+const mutations = {
+  setCompanies: (state, companies) => (state.companies = companies),
+  addCompanies: (state, company) => state.companies.push(company),
+  deleteCompany: (state, companyId) => {
+    state.companies = state.companies.filter(data => {
+      return data.id != companyId;
+    });
+  },
+  setActiveCompany: (state, activeCompany) => {
+    // prettier-ignore
+    const filterCompanies = state.companies.filter(company => company.id == activeCompany.id);
+    this.activeCompany = filterCompanies.length > 0 ? filterCompanies[0] : null;
+  },
+  setActiveCompany: (state, activeCompany) =>
+    (state.activeCompany = activeCompany),
+};
+
+const actions = {
+  async addCompanyProfile({ commit }, payload) {
+    const res = await postCompany('', payload);
+    commit('addCompanies', res.data.data.company);
+    return res;
+  },
+  async setActiveCompany({ commit }, companyId) {
+    const res = await getCompany(`${companyId}/set-active`);
+    const { companies, active_company } = res.data.data;
+    commit('setCompanies', companies);
+    commit('setActiveCompany', active_company);
+    return res;
+  },
+  async deleteCompany({ commit }, companyId) {
+    const res = await deleteCompany(companyId);
+    commit('deleteCompany', companyId);
+    return res;
+  },
+  async updateCompany({ commit }, { companyId, form }) {
+    const res = await postCompany(companyId, form);
+    console.log(res);
+    return res;
+  },
+};
 
 export default {
-  state: {
-    companies: [],
-    activeCompany: null,
-  },
-  getters: {
-    getCompanies: state => state.companies,
-    getActiveCompany: state => state.activeCompany,
-  },
-  mutations: {
-    setCompanies: (state, companies) => (state.companies = companies),
-    addCompanies: (state, company) => state.companies.push(company),
-    deleteCompany: (state, companyId) => {
-      state.companies = state.companies.filter(data => {
-        return data.id != companyId;
-      });
-    },
-    setActiveCompany: (state, activeCompany) => {
-      const filterCompanies = state.companies.filter(
-        company => company.id == activeCompany.id
-      );
-      this.activeCompany =
-        filterCompanies.length > 0 ? filterCompanies[0] : null;
-    },
-    setActiveCompany: (state, activeCompany) =>
-      (state.activeCompany = activeCompany),
-  },
-  actions: {
-    addCompanyProfile({ commit, state }, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(`${apiUrl}/company`, payload, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(data => {
-            commit('addCompanies', data.data.data.company);
-            resolve(data);
-          })
-          .catch(reject);
-      });
-    },
-    setActiveCompany({ commit }, companyId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`${apiUrl}/company/${companyId}/set-active`, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(data => {
-            const { companies, active_company } = data.data.data;
-            commit('setCompanies', companies);
-            commit('setActiveCompany', active_company);
-            resolve(data);
-          })
-          .catch(reject);
-      });
-    },
-    deleteCompany({ commit }, companyId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .delete(`${apiUrl}/company/${companyId}`, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(data => {
-            commit('deleteCompany', companyId);
-            resolve(data);
-          })
-          .catch(reject);
-      });
-    },
-    updateCompany({ commit }, { companyId, form }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(`${apiUrl}/company/${companyId}`, form, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(data => {
-            console.log(data);
-            resolve(data);
-          })
-          .catch(reject);
-      });
-    },
-  },
+  state,
+  getters,
+  mutations,
+  actions,
 };

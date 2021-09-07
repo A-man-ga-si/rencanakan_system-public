@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import app from '../main';
+import auth from './modules/auth';
 import menu from './modules/menu';
 import user from './modules/user';
 import province from './modules/province';
@@ -32,5 +33,6 @@ export default new Vuex.Store({
     project,
     payment,
     company,
+    auth,
   },
 });
