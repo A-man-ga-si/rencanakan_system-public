@@ -73,7 +73,7 @@
           </template>
           <b-dropdown-item :to="{ name: 'account' }"> Account </b-dropdown-item>
           <b-dropdown-divider />
-          <b-dropdown-item @click="logout">Sign out</b-dropdown-item>
+          <b-dropdown-item @click="userLogout">Log out</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -123,7 +123,7 @@
     },
     methods: {
       ...mapMutations(['changeSideMenuStatus', 'changeSideMenuForMobile']),
-      ...mapActions(['setLang', 'signOut']),
+      ...mapActions(['setLang', 'logout']),
       changeLocale(locale, direction) {
         const currentDirection = getDirection().direction;
         if (direction !== currentDirection) {
@@ -132,8 +132,8 @@
 
         this.setLang(locale);
       },
-      logout() {
-        this.signOut().then(() => {
+      userLogout() {
+        this.logout().then(() => {
           this.$router.push({
             name: 'Login',
           });

@@ -177,6 +177,7 @@
             });
           }
         } catch (err) {
+          console.error(err);
           switch (err.response?.status) {
             case 401:
               this.$notify(

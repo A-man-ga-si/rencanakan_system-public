@@ -23,6 +23,8 @@ export default async (to, from, next) => {
             next('/unauthorized');
           }
         } catch (err) {
+          console.log('Snap !');
+          console.error(err);
           next({
             name: 'Login',
           });

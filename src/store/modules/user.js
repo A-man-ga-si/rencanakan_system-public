@@ -1,7 +1,5 @@
 import axios from 'axios';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { currentUser, isAuthGuardActive, apiUrl } from '../../constants/config';
+import { isAuthGuardActive, apiUrl } from '../../constants/config';
 import {
   setCurrentUser,
   getCurrentUser,
@@ -9,6 +7,8 @@ import {
   getToken,
   setCurrentUserPhoto,
 } from '../../utils';
+
+import { postAuth, getAuth } from '../../services/auth.service';
 
 export default {
   state: {
@@ -79,215 +79,138 @@ export default {
     },
   },
   actions: {
-    login({ commit }, payload) {
-      return new Promise((resolve, reject) => {
+    async login({ commit }, payload) {
+      try {
         commit('clearError');
         commit('setProcessing', true);
-        axios
-          .post(`${apiUrl}/auth/login`, payload)
-          .then(data => {
-            const { user, token } = data.data.data;
-            const userData = {
-              id: user.hashid,
-              img: user.photo,
-              email: user.email,
-              token_amount: user.token_amount,
-              role: 0,
-              _active_company: user._active_company,
-              permissions: user.roles[0].permissions?.map(e => e.name),
-              title: `${user.first_name} ${user.last_name}`,
-            };
-            const parsedToken = token.plainTextToken.split('|')[1];
-            setCurrentUser(userData);
-            setToken(parsedToken);
-            commit('setUser', userData);
-            commit('setToken', parsedToken);
-            commit('setCompanies', user.company);
-            commit('setActiveCompany', user._active_company);
-            resolve(data);
-          })
-          .catch(reject)
-          .finally(() => {
-            commit('clearError');
-            commit('setProcessing', false);
-          });
-      });
+
+        const res = await postAuth('login', payload);
+
+        const { user, token } = res.data.data;
+
+        const userData = {
+          id: user.hashid,
+          img: user.photo,
+          email: user.email,
+          token_amount: user.token_amount,
+          role: 0,
+          _active_company: user._active_company,
+          permissions: user.roles[0].permissions?.map(e => e.name),
+          title: `${user.first_name} ${user.last_name}`,
+        };
+
+        const parsedToken = token.plainTextToken.split('|')[1];
+
+        setCurrentUser(userData);
+        setToken(parsedToken);
+        commit('setUser', userData);
+        commit('setToken', parsedToken);
+        commit('setCompanies', user.company);
+        commit('setActiveCompany', user._active_company);
+
+        return res;
+      } catch (err) {
+        throw err;
+      } finally {
+        commit('clearError');
+        commit('setProcessing', false);
+      }
     },
-    register({ commit }, payload) {
-      return new Promise((resolve, reject) => {
+    async register({ commit }, payload) {
+      try {
         commit('clearError');
         commit('setProcessing', true);
-        axios
-          .post(`${apiUrl}/auth/register`, payload)
-          .then(data => {
-            resolve(data);
-          })
-          .catch(reject)
-          .finally(() => {
-            commit('clearError');
-            commit('setProcessing', false);
-          });
-      });
+        return await postAuth('register', payload);
+      } catch (err) {
+        throw err;
+      } finally {
+        commit('clearError');
+        commit('setProcessing', false);
+      }
     },
-    forgotPassword({ commit }, { email }) {
-      return new Promise((resolve, reject) => {
+    async forgotPassword({ commit }, { email }) {
+      try {
         commit('clearError');
         commit('setProcessing', true);
-        axios
-          .post(`${apiUrl}/auth/forgot-password`, {
-            email,
-          })
-          .then(data => {
-            commit('setForgotMailSuccess', true);
-            resolve(data);
-          })
-          .catch(reject);
-      });
+        const res = await postAuth('forgot-password', { email });
+        commit('setForgotMailSuccess', true);
+        return res;
+      } catch (err) {
+        throw err;
+      }
     },
-    verifyToken({ commit }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `${apiUrl}/auth/verify`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${getToken()}`,
-              },
-            }
-          )
-          .then(data => {
-            const {
-              hashid,
-              first_name,
-              last_name,
-              photo,
-              roles,
-              email,
-              _active_company,
-              token_amount,
-              company,
-            } = data.data.data.user;
-            const userData = {
-              id: hashid,
-              img: photo,
-              token_amount,
-              _active_company,
-              role: 0,
-              email,
-              permissions: roles[0].permissions?.map(e => e.name),
-              title: `${first_name} ${last_name}`,
-            };
-            setCurrentUser(userData);
-            commit('setUser', userData);
-            commit('setTokenVerificationStatus', true);
-            commit('setCompanies', company);
-            commit('setActiveCompany', _active_company);
-            resolve(data);
-          })
-          .catch(err => {
-            setCurrentUser(null);
-            setToken(null);
-            commit('setLogout');
-            reject(err);
-          });
-      });
+    async verifyToken({ commit }) {
+      try {
+        const res = await postAuth('verify');
+        const user = res.data.data.user;
+        const userData = {
+          id: user.hashid,
+          title: `${user.first_name} ${user.last_name}`,
+          img: user.photo,
+          email: user.email,
+          permissions: user.roles[0].permissions?.map(e => e.name),
+          token_amount: user.token_amount,
+          _active_company: user._active_company,
+          role: 0,
+        };
+        setCurrentUser(userData);
+        commit('setUser', userData);
+        commit('setTokenVerificationStatus', true);
+        commit('setCompanies', user.company);
+        commit('setActiveCompany', user._active_company);
+        return res;
+      } catch (err) {
+        setCurrentUser(null);
+        setToken(null);
+        commit('setLogout');
+        throw err;
+      }
     },
-    verifyResetPasswordToken({ commit }, token) {
-      return axios.post(`${apiUrl}/auth/reset-password/verify-token`, {
+    async verifyResetPasswordToken(ctx, token) {
+      return await postAuth('reset-password/verify-token', {
         reset_password_token: token,
       });
     },
-    resetPassword({ commit }, { token, password, passwordConfirmation }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(`${apiUrl}/auth/reset-password/${token}`, {
-            password,
-            password_confirmation: passwordConfirmation,
-          })
-          .then(data => {
-            commit('setResetPasswordSuccess', true);
-            resolve(data);
-          })
-          .catch(reject);
+    async resetPassword({ commit }, { token, password, passwordConfirmation }) {
+      const res = await postAuth(`reset-password/${token}`, {
+        password,
+        password_confirmation: passwordConfirmation,
       });
+      commit('setResetPasswordSuccess', true);
+      return res;
     },
-    signOut({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `${apiUrl}/auth/logout`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${getToken()}`,
-              },
-            }
-          )
-          .then(res => {
-            setCurrentUser(null);
-            setToken(null);
-            commit('setLogout');
-            resolve(res);
-          })
-          .catch(reject);
-      });
+    async logout({ commit }) {
+      const res = await postAuth('logout');
+      setCurrentUser(null);
+      setToken(null);
+      commit('setLogout');
+      return res;
     },
-    fetchUserInfo(ctx, userId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`${apiUrl}/user/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(resolve)
-          .catch(reject);
-      });
+    async fetchUserInfo(ctx, userId) {
+      return await getAuth('user', userId);
     },
-    updateUserInfo({ commit }, { userId, data }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(`${apiUrl}/user/${userId}`, data, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          })
-          .then(data => {
-            const {
-              hashid,
-              first_name,
-              last_name,
-              photo,
-              roles,
-              email,
-              oldPassword,
-              _active_company,
-              token_amount,
-              password,
-              passwordConfirmation,
-            } = data.data.data.user;
-            const userData = {
-              id: hashid,
-              img: photo,
-              role: 0,
-              email,
-              _active_company,
-              token_amount,
-              old_password: oldPassword,
-              password,
-              password_confirmation: passwordConfirmation,
-              permissions: roles[0].permissions?.map(e => e.name),
-              title: `${first_name} ${last_name}`,
-            };
-            setCurrentUser(userData);
-            commit('setUser', userData);
-            resolve(data);
-          })
-          .catch(reject);
-      });
+    async updateUserInfo({ commit }, { userId, data }) {
+      const res = await postAuth(`user/${userId}`, data);
+      const user = res.data.data.user;
+      const userData = {
+        id: user.hashid,
+        img: user.photo,
+        role: 0,
+        email: user.email,
+        _active_company: user._active_company,
+        token_amount: user.token_amount,
+        old_password: user.oldPassword,
+        password: user.password,
+        password_confirmation: user.passwordConfirmation,
+        permissions: user.roles[0].permissions?.map(e => e.name),
+        title: `${user.first_name} ${user.last_name}`,
+      };
+      setCurrentUser(userData);
+      commit('setUser', userData);
+      resolve(data);
     },
-    updateUserPhoto({ commit }, { userId, formData }) {
+    async updateUserPhoto({ commit }, { userId, formData }) {
+      const res = await postAuth('user');
       return new Promise((resolve, reject) => {
         axios
           .post(`${apiUrl}/user/${userId}`, formData, {

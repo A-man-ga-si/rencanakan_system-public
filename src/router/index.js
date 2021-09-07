@@ -16,7 +16,7 @@ const routes = [
   },
   {
     path: adminRoot,
-    name: 'root',
+    name: 'Root',
     redirect: {
       name: 'Dashboard',
     },

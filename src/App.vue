@@ -6,6 +6,7 @@
 
 <script>
   import { getDirection } from './utils';
+  import { rounded } from './constants/config';
 
   export default {
     beforeMount() {
@@ -19,6 +20,9 @@
         document.dir = 'ltr';
         document.body.classList.remove('rtl');
       }
+    },
+    beforeMount() {
+      if (rounded) document.body.classList.add('rounded');
     },
   };
 </script>
