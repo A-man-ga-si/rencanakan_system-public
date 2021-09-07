@@ -37,18 +37,18 @@ const routes = [
       },
       {
         path: `settings`,
-        name: 'Settings',
+        name: 'Setting',
         meta: {
           title: 'Setting',
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
         component: () =>
-          import(/* webpackChunkName: "dashboard" */ './../views/app/settings'),
+          import(/* webpackChunkName: "settings" */ './../views/app/settings'),
       },
       {
         path: `projects`,
-        name: 'project',
+        name: 'Project',
         meta: {
           title: 'My Projects',
           loginRequired: true,
@@ -59,7 +59,7 @@ const routes = [
       },
       {
         path: 'projects/:id/rab',
-        name: 'rab',
+        name: 'Rab',
         redirect: {
           name: 'RabSummary',
         },
@@ -158,7 +158,7 @@ const routes = [
       },
       {
         path: `token`,
-        name: 'token',
+        name: 'Token',
         meta: {
           title: 'My Token',
           loginRequired: true,
@@ -169,31 +169,31 @@ const routes = [
       },
       {
         path: `account`,
-        name: 'account',
+        name: 'Account',
         meta: {
           loginRequired: true,
           permissions: ['read dashboard', 'read home'],
         },
         redirect: {
-          name: 'profile-account',
+          name: 'ProfileAccount',
         },
         component: () =>
           import(/* webpackChunkName: "account" */ './../views/app/account'),
         children: [
           {
             path: 'profile',
-            name: 'profile-account',
+            name: 'ProfileAccount',
             meta: {
               title: 'Account Profile',
             },
             component: () =>
               import(
-                /* webpackChunkName: "accountProfile" */ './../views/app/account/Profile.vue'
+                /* webpackChunkName: "profileAccount" */ './../views/app/account/Profile.vue'
               ),
           },
           {
             path: 'company-profile',
-            name: 'company-profile',
+            name: 'CompanyProfile',
             meta: {
               title: 'Company Profile',
             },
@@ -204,7 +204,7 @@ const routes = [
           },
           {
             path: 'change-email',
-            name: 'change-email',
+            name: 'ChangeEmail',
             meta: {
               title: 'Change Email',
             },
@@ -215,7 +215,7 @@ const routes = [
           },
           {
             path: 'change-password',
-            name: 'change-password',
+            name: 'ChangePassword',
             meta: {
               title: 'Change Password',
             },

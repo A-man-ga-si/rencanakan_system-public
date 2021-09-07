@@ -1,5 +1,4 @@
 import { adminRoot } from './config';
-import { UserRole } from '../utils/auth.roles';
 
 const data = [
   {
