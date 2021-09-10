@@ -8,18 +8,20 @@
     </b-row>
     <b-row>
       <b-colxx xxs="12">
-        <b-card class="mb-4" :title="$t('menu.settings')"> </b-card>
+        <b-card class="mb-4" :title="$t('menu.settings')">
+          <UnderDevelopment />
+        </b-card>
       </b-colxx>
     </b-row>
   </div>
 </template>
 
 <script>
-  import AppLayout from './../../../layouts/AppLayout.vue';
+  import UnderDevelopment from './../../../components/Common/UnderDevelopment.vue';
 
   export default {
     components: {
-      AppLayout,
+      UnderDevelopment,
     },
   };
 </script>
