@@ -46,7 +46,7 @@
     "item-price-master": "Master Harga Satuan",
     "ahp": "Analisa Harga Peralatan",
     "app": "Home",
-    "dashboards": "Dasbor",
+    "dashboards": "Dashboard",
     "default": "Default",
     "analytics": "Analytics",
     "ecommerce": "Ecommerce",
@@ -147,7 +147,7 @@
     "second": "Second",
     "start": "Start",
     "single": "Single",
-    "dashboard": "Dasbor",
+    "dashboard": "Dashboard",
     "settings": "Pengaturan"
   },
   "dashboards": {

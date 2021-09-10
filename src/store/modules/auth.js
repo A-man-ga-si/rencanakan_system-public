@@ -74,7 +74,6 @@ const actions = {
         email: user.email,
         token_amount: user.token_amount,
         role: 0,
-        _active_company: user._active_company,
         permissions: user.roles[0].permissions?.map(e => e.name),
         title: `${user.first_name} ${user.last_name}`,
       };
@@ -85,8 +84,7 @@ const actions = {
       setToken(parsedToken);
       commit('setUser', userData);
       commit('setToken', parsedToken);
-      commit('setCompanies', user.company);
-      commit('setActiveCompany', user._active_company);
+      commit('setCompany', user.company);
 
       return res;
     } catch (err) {
@@ -130,14 +128,12 @@ const actions = {
         email: user.email,
         permissions: user.roles[0].permissions?.map(e => e.name),
         token_amount: user.token_amount,
-        _active_company: user._active_company,
         role: 0,
       };
       setCurrentUser(userData);
       commit('setUser', userData);
       commit('setTokenVerificationStatus', true);
-      commit('setCompanies', user.company);
-      commit('setActiveCompany', user._active_company);
+      commit('setCompany', user.company);
       return res;
     } catch (err) {
       setCurrentUser(null);

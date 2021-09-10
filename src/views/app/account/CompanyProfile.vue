@@ -1,19 +1,9 @@
 <template>
   <div class="company-profile">
-    <div class="companies-list" v-if="getCompanies.length">
-      <div class="text-right">
-        <b-btn v-b-modal.add-company variant="primary">
-          {{ $t('pages.account.company-profile.add-company-profile-bt') }}
-        </b-btn>
-      </div>
-      <b-row class="mt-4">
-        <b-col
-          v-for="(company, idx) in getCompanies"
-          :key="idx"
-          :lg="6"
-          class="mb-3"
-        >
-          <CompanyProfileItem :company="company" />
+    <div class="companies-list" v-if="getCompany">
+      <b-row>
+        <b-col class="mx-auto" :md="8" :xl="5">
+          <EditCompanyProfile />
         </b-col>
       </b-row>
     </div>
@@ -36,17 +26,17 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
   import AddCompanyProfile from '../../../components/Account/CompanyProfile/AddCompanyProfile.vue';
-  import CompanyProfileItem from '../../../components/Account/CompanyProfile/CompanyProfileItem.vue';
+  import EditCompanyProfile from '../../../components/Account/CompanyProfile/EditCompanyProfile.vue';
 
   export default {
     computed: {
-      ...mapGetters(['getCompanies']),
+      ...mapGetters(['getCompany']),
     },
     components: {
       AddCompanyProfile,
-      CompanyProfileItem,
+      EditCompanyProfile,
     },
   };
 </script>

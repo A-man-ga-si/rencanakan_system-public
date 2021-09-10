@@ -9,12 +9,6 @@
             size="8rem"
             :src="profileImage"
           />
-          <!-- <div
-            class="img-container rounded-circle d-inline-block"
-            style="overflow: hidden; height: 160px; width: 160px"
-          >
-            <b-img :src="profileImage" alt="" class="profile-img" />
-          </div> -->
           <a
             class="d-block mt-3 change-foto text-link text-primary"
             href="#"

@@ -71,7 +71,7 @@
               />
             </span>
           </template>
-          <b-dropdown-item :to="{ name: 'account' }"> Account </b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'Account' }"> Account </b-dropdown-item>
           <b-dropdown-divider />
           <b-dropdown-item @click="userLogout">Log out</b-dropdown-item>
         </b-dropdown>

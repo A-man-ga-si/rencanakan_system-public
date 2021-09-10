@@ -1,12 +1,6 @@
 <template>
   <div>
-    <!-- <b-row>
-      <b-colxx xxs="12">
-        <piaf-breadcrumb :heading="$t('menu.projects')" />
-        <div class="separator mb-5"></div>
-      </b-colxx>
-    </b-row> -->
-    <a href="#" v-if="!getActiveCompany">
+    <a href="#" v-if="!getCompany">
       <b-alert show variant="danger" class="rounded mb-4">
         {{ $t('alert.email-no-active-company') }}
       </b-alert>
@@ -58,7 +52,7 @@
       ...mapActions(['fetchProvinces']),
     },
     computed: {
-      ...mapGetters(['getProvinces', 'getProjects', 'getActiveCompany']),
+      ...mapGetters(['getProvinces', 'getProjects', 'getCompany']),
     },
     components: {
       AppLayout,
