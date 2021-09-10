@@ -32,6 +32,7 @@
               :key="`price_${pIndex}`"
             >
               <PriceCard
+                ref="price-card"
                 @choose="choose"
                 @unchoose="unchoose"
                 :data="item"
@@ -150,6 +151,7 @@
       },
       selectedItems: [],
     }),
+    mounted() {},
     methods: {
       ...mapActions(['fetchSnapToken', 'demoAddToken', 'mutateToken']),
       choose({ data, index }) {
@@ -174,7 +176,12 @@
             .reduce((acc, curr) => parseInt(acc) + parseInt(curr))
         );
         await this.mutateToken(data.data.current_token_amount);
+        this.resetTokenCart();
         Notify.success('Berhasil melakukan pembelian token');
+      },
+      resetTokenCart() {
+        this.selectedItems = [];
+        for (const pc of this.$refs['price-card']) pc.choose = false;
       },
     },
     computed: {
