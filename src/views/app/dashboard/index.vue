@@ -8,7 +8,7 @@
     </b-row>
     <b-row>
       <b-colxx xxs="12">
-        <b-card class="mb-4" :title="$t('menu.single')">
+        <b-card class="mb-4 py-4">
           <UnderDevelopment />
         </b-card>
       </b-colxx>
