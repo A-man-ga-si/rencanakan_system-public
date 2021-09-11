@@ -3,18 +3,8 @@
     <b-colxx xxs="12" md="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
-          <div
-            class="dark-overlay"
-            style="
-              position: absolute;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              background-color: rgba(0, 0, 0, 0.6);
-            "
-          ></div>
-          <div class="trans-overlay position-relative" style="z-index: 9">
+          <div class="dark-overlay"></div>
+          <div class="trans-overlay position-relative" style="z-index: 1">
             <p class="text-white h2">
               {{ $t('dashboards.magic-is-in-the-details') }}
             </p>

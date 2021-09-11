@@ -3,15 +3,19 @@
     <b-colxx xxs="12" md="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
-          <p class="text-white h2">
-            {{ $t('dashboards.magic-is-in-the-details') }}
-          </p>
-          <p class="white mb-0">
-            Please use your e-mail to reset your password.
-            <br />If you are not a member, please
-            <router-link to="/user/register" class="white">register</router-link
-            >.
-          </p>
+          <div class="dark-overlay"></div>
+          <div style="z-index: 1" class="trans-overlay position-relative">
+            <p class="text-white h2">
+              {{ $t('dashboards.magic-is-in-the-details') }}
+            </p>
+            <p class="white mb-0">
+              Please use your e-mail to reset your password.
+              <br />If you are not a member, please
+              <router-link to="/user/register" class="white"
+                >register</router-link
+              >.
+            </p>
+          </div>
         </div>
         <div class="form-side">
           <router-link to="/">
