@@ -48,6 +48,27 @@ const data = [
     ],
   },
   {
+    id: 'master',
+    icon: 'iconsminds-big-data',
+    label: 'menu.master-data',
+    permissions: ['read-dashboard'],
+    to: `${adminRoot}/master/`,
+    subs: [
+      {
+        label: 'menu.master-unit',
+        to: `${adminRoot}/master/unit`,
+      },
+      {
+        label: 'menu.master-item-price',
+        to: `${adminRoot}/master/item-price`,
+      },
+      {
+        label: 'menu.master-item-price-group',
+        to: `${adminRoot}/master/group-item-price`,
+      },
+    ],
+  },
+  {
     id: 'settings',
     icon: 'iconsminds-gear',
     label: 'menu.settings',

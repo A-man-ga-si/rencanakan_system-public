@@ -226,6 +226,45 @@ const routes = [
           },
         ],
       },
+      {
+        path: `master`,
+        name: 'Master',
+        meta: {
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        redirect: {
+          name: 'ProfileAccount',
+        },
+        component: () =>
+          import(/* webpackChunkName: "master" */ './../views/app/master'),
+        children: [
+          {
+            path: 'unit',
+            name: 'MasterUnit',
+            meta: {
+              title: 'Master Unit'
+            },
+            component: () => import(/* webpackChunkName: "masterUnit" */ './../views/app/master/Unit.vue'),
+          },
+          {
+            path: 'group-item-price',
+            name: 'MasterItemPriceGroup',
+            meta: {
+              title: 'Master Item Price Group'
+            },
+            component: () => import(/* webpackChunkName: "masterItemPriceGroup" */ './../views/app/master/ItemPriceGroup.vue'),
+          },
+          {
+            path: 'item-price',
+            name: 'MasterItemPrice',
+            meta: {
+              title: 'Master Item Price'
+            },
+            component: () => import(/* webpackChunkName: "masterItemPrice" */ './../views/app/master/ItemPrice.vue'),
+          },
+        ]
+      }
     ],
   },
   {

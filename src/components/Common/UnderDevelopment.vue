@@ -9,7 +9,7 @@
           class="under-development-img"
           fluid
         />
-        <h5>This Page is Under Development</h5>
+        <h5>This page / feature is under development</h5>
       </b-col>
     </b-row>
   </div>

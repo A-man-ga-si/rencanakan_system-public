@@ -50,6 +50,10 @@
     "default": "Default",
     "analytics": "Analytics",
     "ecommerce": "Ecommerce",
+    "master-data": "Master Data",
+    "master-unit": "Satuan",
+    "master-item-price": "Harga Satuan",
+    "master-item-price-group": "Kelompok Harga Satuan",
     "content": "Content",
     "pages": "Pages",
     "data-list": "Data List",
@@ -324,6 +328,12 @@
         "new-password": "Kata Sandi Baru",
         "confirm-new-password": "Konfirmasi Kata Sandi Baru",
         "save-btn": "Simpan"
+      }
+    },
+    "master": {
+      "unit": {
+        "add-unit-bt": "Tambah Satuan",
+        "unit-name": "Nama Satuan"
       }
     }
   },

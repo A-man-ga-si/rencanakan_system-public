@@ -85,6 +85,10 @@
     "popover-tooltip": "Popover & Tooltip",
     "sortable": "Sortable",
     "menu": "Menu",
+    "master-data": "Master Data",
+    "master-unit": "Unit",
+    "master-item-price": "Item Price",
+    "master-item-price-group": "Item Price Group",
     "summary": "RAB Detail",
     "ahs": "AHS",
     "change-email": "Change E-Mail",
@@ -320,6 +324,11 @@
         "new-password": "New Password",
         "confirm-new-password": "New Password Confirmation",
         "save-btn": "Save"
+      }
+    },
+    "master": {
+      "unit": {
+        "add-unit-bt": "Add Unit"
       }
     }
   },
