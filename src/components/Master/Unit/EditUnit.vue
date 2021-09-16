@@ -3,13 +3,13 @@
     <b-modal
       :id="modalId"
       :ref="modalId"
-      :title="$t('pages.master.unit.add-unit-bt')"
+      :title="$t('pages.master.unit.update-unit-bt')"
     >
       <ValidationInput
         :label="'Name'"
         field-name="name"
         @keydown.enter="submit"
-        v-model="form.unitName"
+        v-model="form.name"
       />
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
@@ -31,25 +31,32 @@
 
   export default {
     mixins: [validationMixin],
-    data: () => ({
-      form: {
-        unitName: '',
-      },
-      modalId: 'add-unit',
-    }),
+    props: ['selectedUnit'],
+    data() {
+      return {
+        form: {
+          name: '',
+        },
+        modalId: 'edit-unit',
+      };
+    },
     methods: {
-      ...mapActions(['storeUnit']),
+      ...mapActions(['updateUnit']),
       hideModal(refname) {
         this.$refs[refname].hide();
       },
       async submit() {
         try {
+          console.log(this.selectedUnit);
           this.resetInvalid();
-          await this.storeUnit({
-            name: this.form.unitName,
+          await this.updateUnit({
+            id: this.selectedUnit.hashid,
+            data: {
+              name: this.form.name,
+            },
           });
-          Notify.success('Berhasil menambah satuan');
-          this.$emit('unit-added');
+          Notify.success('Berhasil mengupdate satuan');
+          this.$emit('unit-updated');
           this.resetForm();
           this.hideModal(this.modalId);
         } catch (err) {
@@ -60,6 +67,11 @@
         for (const formIdx in this.form) {
           this.form[formIdx] = '';
         }
+      },
+    },
+    watch: {
+      selectedUnit(ctx) {
+        this.form.name = this.selectedUnit.name;
       },
     },
     components: {

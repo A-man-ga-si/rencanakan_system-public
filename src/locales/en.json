@@ -329,6 +329,7 @@
     "master": {
       "unit": {
         "add-unit-bt": "Add Unit",
+        "update-unit-bt": "Update Unit",
         "unit-name": "Unit Name"
       }
     }

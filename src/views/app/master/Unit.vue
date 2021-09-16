@@ -15,7 +15,7 @@
         <a
           href=""
           class="text-primary mr-2"
-          @click.prevent="editUnit(row.row.rowData.hashid)"
+          @click.prevent="editUnit(row.row.rowData)"
         >
           <i class="simple-icon-pencil"></i>
         </a>
@@ -29,11 +29,13 @@
       </template>
     </CustomDataTable>
     <AddUnit @unit-added="reload" />
+    <EditUnit :selected-unit="selectedUnit" @unit-updated="reload" />
   </div>
 </template>
 
 <script>
   import AddUnit from '@/components/Master/Unit/AddUnit';
+  import EditUnit from '@/components/Master/Unit/EditUnit';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
   import unitTableFields from './../../../data/fields/unit-table-field';
   import { apiUrl } from '../../../constants/config';
@@ -44,6 +46,7 @@
   export default {
     data: () => ({
       fetchUnitAPI: `${apiUrl}/master/unit`,
+      selectedUnit: {},
       fields: unitTableFields,
     }),
     methods: {
@@ -67,13 +70,15 @@
           console.error(err);
         }
       },
-      editUnit(id) {
-        console.log(`Editing unit ${id}`);
+      editUnit(data) {
+        this.$bvModal.show('edit-unit');
+        this.selectedUnit = data;
       },
     },
     components: {
       AddUnit,
       CustomDataTable,
+      EditUnit,
     },
   };
 </script>
