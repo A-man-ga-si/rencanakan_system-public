@@ -218,6 +218,6 @@ export const showConfirmButton = ({
     showCancelButton: true,
     confirmButtonColor: '#153245',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Delete',
+    confirmButtonText: 'Confirm',
   });
 };

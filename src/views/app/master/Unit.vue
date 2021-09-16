@@ -39,6 +39,7 @@
   import { apiUrl } from '../../../constants/config';
   import { showConfirmButton } from '../../../utils';
   import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     data: () => ({
@@ -58,7 +59,7 @@
           });
           if (isConfirmed) {
             await this.destroyUnit(id);
-            this.$notify('success', 'Berhasil menghapus unit');
+            Notify.success('Berhasil menghapus satuan');
             this.reload();
           }
         } catch (err) {
