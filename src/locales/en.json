@@ -328,7 +328,8 @@
     },
     "master": {
       "unit": {
-        "add-unit-bt": "Add Unit"
+        "add-unit-bt": "Add Unit",
+        "unit-name": "Unit Name"
       }
     }
   },
