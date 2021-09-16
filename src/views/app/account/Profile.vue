@@ -20,86 +20,30 @@
         </div>
         <div class="form-section mt-4">
           <form @submit.prevent="updateProfile" class="profile-update-form">
-            <div class="mb-4">
-              <label class="form-group has-float-label mb-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="{ 'border-danger': errors.first_name }"
-                  v-model="form.firstName"
-                />
-                <span :class="{ 'text-danger': errors.first_name }">
-                  {{ $t('pages.account.profile.first-name') }}
-                </span>
-              </label>
-              <span
-                v-if="errors.first_name"
-                for=""
-                class="mt-1 d-block text-danger error-msg"
-              >
-                {{ errors.first_name }}
-              </span>
-            </div>
-            <div class="mb-4">
-              <label class="form-group has-float-label mb-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="{ 'border-danger': errors.last_name }"
-                  v-model="form.lastName"
-                />
-                <span :class="{ 'text-danger': errors.last_name }">
-                  {{ $t('pages.account.profile.last-name') }}
-                </span>
-              </label>
-              <span
-                v-if="errors.last_name"
-                for=""
-                class="mt-1 d-block text-danger error-msg"
-              >
-                {{ errors.last_name }}
-              </span>
-            </div>
-            <div class="mb-4">
-              <label class="form-group has-float-label mb-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="{ 'border-danger': errors.phone }"
-                  v-model="form.phone"
-                />
-                <span :class="{ 'text-danger': errors.phone }">
-                  {{ $t('pages.account.profile.phone') }}
-                </span>
-              </label>
-              <span
-                v-if="errors.phone"
-                for=""
-                class="mt-1 d-block text-danger error-msg"
-              >
-                {{ errors.phone }}
-              </span>
-            </div>
-            <div class="mb-4">
-              <label class="form-group has-float-label mb-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="{ 'border-danger': errors.job }"
-                  v-model="form.job"
-                />
-                <span :class="{ 'text-danger': errors.job }">
-                  {{ $t('pages.account.profile.job') }}
-                </span>
-              </label>
-              <span
-                v-if="errors.job"
-                for=""
-                class="mt-1 d-block text-danger error-msg"
-              >
-                {{ errors.job }}
-              </span>
-            </div>
+            <ValidationInput
+              class="mb-3"
+              v-model="form.firstName"
+              field-name="first_name"
+              :label="$t('pages.account.profile.first-name')"
+            />
+            <ValidationInput
+              class="mb-3"
+              v-model="form.lastName"
+              field-name="last_name"
+              :label="$t('pages.account.profile.last-name')"
+            />
+            <ValidationInput
+              class="mb-3"
+              v-model="form.phone"
+              field-name="phone"
+              :label="$t('pages.account.profile.phone')"
+            />
+            <ValidationInput
+              class="mb-3"
+              v-model="form.job"
+              field-name="job"
+              :label="$t('pages.account.profile.job')"
+            />
             <b-btn
               type="submit"
               variant="primary"
@@ -127,11 +71,14 @@
 </template>
 
 <script>
+  import validationMixin from './../../../mixins/validation-mixins';
+  import ValidationInput from './../../../components/Common/ValidationInput.vue';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
   import { apiDomain } from '../../../constants/config';
 
   export default {
+    mixins: [validationMixin],
     data: () => ({
       formDisabled: true,
       processing: false,
@@ -202,16 +149,7 @@
           });
           Notify.success('Berhasil mengupdate profil');
         } catch (err) {
-          // TODO: Make validation process general
-          switch (err.response?.status) {
-            case 422:
-              this.markInvalids(err.response.data);
-              break;
-            default:
-              Notify.failure('Gagal mengupdate profil');
-              console.error(err);
-              break;
-          }
+          this.checkForInvalidResponse(err);
         } finally {
           this.processing = false;
         }
@@ -233,15 +171,6 @@
           this.processing = false;
         }
       },
-      markInvalids(invalids) {
-        this.resetInvalid();
-        for (const invalidField in invalids.errors) {
-          this.errors[invalidField] = invalids.errors[invalidField][0];
-        }
-      },
-      resetInvalid() {
-        this.errors = {};
-      },
       ...mapActions(['fetchUserInfo', 'updateUserInfo', 'updateUserPhoto']),
     },
     computed: {
@@ -251,6 +180,9 @@
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`
           : '#';
       },
+    },
+    components: {
+      ValidationInput,
     },
   };
 </script>

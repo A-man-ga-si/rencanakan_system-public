@@ -3,66 +3,27 @@
     <b-row>
       <b-col :md="6" class="mx-auto">
         <form @submit.prevent="updatePassword">
-          <div class="mb-4">
-            <label class="form-group has-float-label mb-0">
-              <input
-                type="password"
-                class="form-control"
-                :class="{ 'border-danger': errors.old_password }"
-                v-model="form.oldPassword"
-              />
-              <span :class="{ 'text-danger': errors.old_password }">
-                {{ $t('pages.account.change-password.old-password') }}
-              </span>
-            </label>
-            <span
-              v-if="errors.old_password"
-              for=""
-              class="mt-1 d-block text-danger error-msg"
-            >
-              {{ errors.old_password }}
-            </span>
-          </div>
-          <div class="mb-4">
-            <label class="form-group has-float-label mb-0">
-              <input
-                type="password"
-                class="form-control"
-                :class="{ 'border-danger': errors.password }"
-                v-model="form.password"
-              />
-              <span :class="{ 'text-danger': errors.password }">
-                {{ $t('pages.account.change-password.new-password') }}
-              </span>
-            </label>
-            <span
-              v-if="errors.password"
-              for=""
-              class="mt-1 d-block text-danger error-msg"
-            >
-              {{ errors.password }}
-            </span>
-          </div>
-          <div class="mb-4">
-            <label class="form-group has-float-label mb-0">
-              <input
-                type="password"
-                class="form-control"
-                :class="{ 'border-danger': errors.password_confirmation }"
-                v-model="form.passwordConfirmation"
-              />
-              <span :class="{ 'text-danger': errors.password_confirmation }">
-                {{ $t('pages.account.change-password.confirm-new-password') }}
-              </span>
-            </label>
-            <span
-              v-if="errors.password_confirmation"
-              for=""
-              class="mt-1 d-block text-danger error-msg"
-            >
-              {{ errors.password_confirmation }}
-            </span>
-          </div>
+          <ValidationInput
+            type="password"
+            class="mb-4"
+            v-model="form.oldPassword"
+            :label="$t('pages.account.change-password.old-password')"
+            field-name="old_password"
+          />
+          <ValidationInput
+            type="password"
+            class="mb-4"
+            v-model="form.password"
+            :label="$t('pages.account.change-password.new-password')"
+            field-name="password"
+          />
+          <ValidationInput
+            type="password"
+            class="mb-4"
+            v-model="form.passwordConfirmation"
+            :label="$t('pages.account.change-password.confirm-new-password')"
+            field-name="password_confirmation"
+          />
           <b-btn
             type="submit"
             variant="primary"
@@ -88,15 +49,14 @@
 </template>
 
 <script>
+  import ValidationInput from './../../../components/Common/ValidationInput.vue';
+  import validationMixin from './../../../mixins/validation-mixins';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
+
   export default {
+    mixins: [validationMixin],
     data: () => ({
-      errors: {
-        old_password: '',
-        password: '',
-        password_confirmation: '',
-      },
       form: {
         oldPassword: '',
         password: '',
@@ -122,34 +82,23 @@
           });
           Notify.success('Berhasil mengupdate kata sandi');
         } catch (err) {
-          switch (err.response?.status) {
-            case 422:
-              this.markInvalids(err.response.data);
-              break;
-            default:
-              Notify.failure('Gagal mengupdate email');
-              console.error(err);
-              break;
-          }
+          this.checkForInvalidResponse(err);
         } finally {
           this.processing = false;
-          this.form = {
-            password: '',
-            oldPassword: '',
-            passwordConfirmation: '',
-          };
+          this.resetForm();
         }
       },
-      markInvalids(invalids) {
-        this.resetInvalid();
-        for (const invalidField in invalids.errors) {
-          this.errors[invalidField] = invalids.errors[invalidField][0];
-        }
-      },
-      resetInvalid() {
-        this.errors = {};
+      resetForm() {
+        this.form = {
+          password: '',
+          oldPassword: '',
+          passwordConfirmation: '',
+        };
       },
       ...mapActions(['updateUserInfo']),
+    },
+    components: {
+      ValidationInput,
     },
   };
 </script>

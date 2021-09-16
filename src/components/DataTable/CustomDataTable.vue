@@ -9,7 +9,7 @@
       :http-options="httpOptions"
       @vuetable:pagination-data="onPaginationData"
     >
-      <template slot="actions" scope="data">
+      <template slot="actions" slot-scope="data">
         <slot name="actions" :row="data" />
       </template>
     </Vuetable>

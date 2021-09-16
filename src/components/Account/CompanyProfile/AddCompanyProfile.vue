@@ -4,30 +4,30 @@
     :ref="modalId"
     :title="$t('pages.account.company-profile.add-company-profile-bt')"
   >
-    <b-form-group
+    <ValidationInput
+      v-model="form.name"
+      class="mb-3"
+      field-name="name"
       :label="$t('pages.account.company-profile.name')"
-      class="has-float-label"
-    >
-      <b-form-input type="text" v-model="form.name" />
-    </b-form-group>
-    <b-form-group
+    />
+    <ValidationInput
+      v-model="form.email"
+      class="mb-3"
+      field-name="email"
       :label="$t('pages.account.company-profile.email')"
-      class="has-float-label"
-    >
-      <b-form-input type="text" v-model="form.email" />
-    </b-form-group>
-    <b-form-group
+    />
+    <ValidationInput
+      v-model="form.directorName"
+      class="mb-3"
+      field-name="director_name"
       :label="$t('pages.account.company-profile.director')"
-      class="has-float-label"
-    >
-      <b-form-input type="text" v-model="form.directorName" />
-    </b-form-group>
-    <b-form-group
+    />
+    <ValidationInput
+      v-model="form.phoneNumber"
+      class="mb-3"
+      field-name="phone_number"
       :label="$t('pages.account.company-profile.phone-number')"
-      class="has-float-label"
-    >
-      <b-form-input type="text" v-model="form.phoneNumber" />
-    </b-form-group>
+    />
     <template slot="modal-footer">
       <b-button @click.prevent="submit" variant="primary" class="mr-1">
         {{ $t('modal.save-bt') }}
@@ -40,8 +40,12 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import validationMixin from './../../../mixins/validation-mixins';
+  import ValidationInput from './../../Common/ValidationInput.vue';
+  import { mapActions } from 'vuex';
+
   export default {
+    mixins: [validationMixin],
     data: () => ({
       form: {
         name: '',
@@ -66,8 +70,9 @@
       },
       async submit() {
         try {
+          this.resetInvalid();
           const { name, email, directorName, phoneNumber } = this.form;
-          const data = await this.addCompanyProfile({
+          await this.addCompanyProfile({
             name,
             email,
             director_name: directorName,
@@ -76,18 +81,12 @@
           this.hideModal(this.modalId);
           this.resetForm();
         } catch (err) {
-          console.error(err);
-          this.$notify(
-            'error',
-            'Server Error',
-            'Error when trying to create company profile',
-            {
-              duration: 3000,
-              permanent: false,
-            }
-          );
+          this.checkForInvalidResponse(err);
         }
       },
+    },
+    components: {
+      ValidationInput,
     },
   };
 </script>

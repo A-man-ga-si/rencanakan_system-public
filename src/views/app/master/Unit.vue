@@ -11,7 +11,7 @@
       title="Daftar Satuan"
       :fields="fields"
     >
-      <template slot="actions" scope="row">
+      <template slot="actions" slot-scope="row">
         <a
           href=""
           class="text-primary mr-2"

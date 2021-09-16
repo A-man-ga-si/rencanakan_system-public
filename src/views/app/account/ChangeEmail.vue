@@ -9,26 +9,12 @@
           >
             <b-form-input type="text" :value="currentUser.email" disabled />
           </b-form-group>
-          <div class="mb-4">
-            <label class="form-group has-float-label mb-0">
-              <input
-                type="text"
-                class="form-control"
-                :class="{ 'border-danger': errors.email }"
-                v-model="form.email"
-              />
-              <span :class="{ 'text-danger': errors.email }">
-                {{ $t('pages.account.change-email.new-email') }}
-              </span>
-            </label>
-            <span
-              v-if="errors.email"
-              for=""
-              class="mt-1 d-block text-danger error-msg"
-            >
-              {{ errors.email }}
-            </span>
-          </div>
+          <ValidationInput
+            class="mb-3"
+            field-name="email"
+            :label="$t('pages.account.change-email.new-email')"
+            v-model="form.email"
+          />
           <b-btn
             type="submit"
             variant="primary"
@@ -54,10 +40,13 @@
 </template>
 
 <script>
+  import ValidationInput from './../../../components/Common/ValidationInput.vue';
+  import validationMixin from './../../../mixins/validation-mixins';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
+    mixins: [validationMixin],
     data: () => ({
       processing: false,
       form: {
@@ -70,6 +59,7 @@
     methods: {
       async updateUserEmail() {
         try {
+          this.resetInvalid();
           this.processing = true;
           await this.updateUserInfo({
             userId: this.currentUser.id,
@@ -80,32 +70,18 @@
           Notify.success('Berhasil mengupdate email');
           this.form.email = '';
         } catch (err) {
-          switch (err.response?.status) {
-            case 422:
-              this.markInvalids(err.response.data);
-              break;
-            default:
-              Notify.failure('Gagal mengupdate email');
-              console.error(err);
-              break;
-          }
+          this.checkForInvalidResponse(err);
         } finally {
           this.processing = false;
         }
-      },
-      markInvalids(invalids) {
-        this.resetInvalid();
-        for (const invalidField in invalids.errors) {
-          this.errors[invalidField] = invalids.errors[invalidField][0];
-        }
-      },
-      resetInvalid() {
-        this.errors = {};
       },
       ...mapActions(['fetchUserInfo', 'updateUserInfo']),
     },
     computed: {
       ...mapGetters(['currentUser']),
+    },
+    components: {
+      ValidationInput,
     },
   };
 </script>

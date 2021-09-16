@@ -19,15 +19,26 @@ export default {
     },
     resetInvalid() {
       const mainSelector = `.can-invalid`;
-      const input = document.querySelector(
+      const input = document.querySelectorAll(
         `${mainSelector} input.form-control`
       );
-      const label = document.querySelector(`${mainSelector} span`);
-      const errorMsg = document.querySelector(`${mainSelector} + .error-msg`);
-      input.classList.remove('border-danger');
-      label.classList.remove('text-danger');
-      errorMsg.classList.add('d-none');
-      errorMsg.innerHTML = '';
+      const label = document.querySelectorAll(`${mainSelector} span`);
+      const errorMsg = document.querySelectorAll(
+        `${mainSelector} + .error-msg`
+      );
+
+      input.forEach(input => {
+        input.classList.remove('border-danger');
+      });
+
+      label.forEach(label => {
+        label.classList.remove('text-danger');
+      });
+
+      errorMsg.forEach(errorMsg => {
+        errorMsg.classList.add('d-none');
+        errorMsg.innerHTML = '';
+      });
     },
     checkForInvalidResponse(err) {
       switch (err.response?.status) {

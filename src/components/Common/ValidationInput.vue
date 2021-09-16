@@ -5,7 +5,7 @@
       :class="fieldName"
     >
       <input
-        type="text"
+        :type="type"
         class="form-control"
         :value="value"
         @input="$emit('input', $event.target.value)"
@@ -19,6 +19,25 @@
 <script>
   // NOTE: Validation input require validation mixin to work !
   export default {
-    props: ['value', 'fieldName', 'label'],
+    props: {
+      value: {
+        type: String,
+        required: false,
+      },
+      fieldName: {
+        type: String,
+        required: true,
+      },
+      label: {
+        type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: false,
+        default: 'text',
+      },
+      // ['value', 'fieldName', 'label']
+    },
   };
 </script>

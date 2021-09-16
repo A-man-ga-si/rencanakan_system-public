@@ -26,30 +26,30 @@
         />
       </div>
       <div class="company-profile-form">
-        <b-form-group
+        <ValidationInput
+          v-model="form.name"
+          class="mb-3"
+          field-name="name"
           :label="$t('pages.account.company-profile.name')"
-          class="has-float-label"
-        >
-          <b-form-input type="text" v-model="form.name" />
-        </b-form-group>
-        <b-form-group
+        />
+        <ValidationInput
+          v-model="form.email"
+          class="mb-3"
+          field-name="email"
           :label="$t('pages.account.company-profile.email')"
-          class="has-float-label"
-        >
-          <b-form-input type="text" v-model="form.email" />
-        </b-form-group>
-        <b-form-group
+        />
+        <ValidationInput
+          v-model="form.directorName"
+          class="mb-3"
+          field-name="director_name"
           :label="$t('pages.account.company-profile.director')"
-          class="has-float-label"
-        >
-          <b-form-input type="text" v-model="form.directorName" />
-        </b-form-group>
-        <b-form-group
+        />
+        <ValidationInput
+          v-model="form.phoneNumber"
+          class="mb-3"
+          field-name="phone_number"
           :label="$t('pages.account.company-profile.phone-number')"
-          class="has-float-label"
-        >
-          <b-form-input type="text" v-model="form.phoneNumber" />
-        </b-form-group>
+        />
       </div>
       <b-btn type="submit" variant="primary">Update</b-btn>
     </form>
@@ -57,11 +57,14 @@
 </template>
 
 <script>
+  import validationMixin from './../../../mixins/validation-mixins';
+  import ValidationInput from './../../Common/ValidationInput.vue';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
   import { apiDomain } from '../../../constants/config';
 
   export default {
+    mixins: [validationMixin],
     data: () => ({
       form: {
         name: '',
@@ -102,6 +105,7 @@
       ...mapActions(['updateCompany']),
       async updateCompanyProfile() {
         try {
+          this.resetInvalid();
           await this.updateCompany({
             companyId: this.getCompany.id,
             form: {
@@ -113,8 +117,7 @@
           });
           Notify.success('Berhasil mengupdate profil perusahaan');
         } catch (err) {
-          console.error(err);
-          Notify.failure('Error saat mencoba mengupdate profil perusahaan');
+          this.checkForInvalidResponse(err);
         }
       },
       async updateCompanyPicture() {
@@ -129,6 +132,9 @@
           Notify.failure('Error saat mencoba mengupdate profil perusahaan');
         }
       },
+    },
+    components: {
+      ValidationInput,
     },
   };
 </script>
