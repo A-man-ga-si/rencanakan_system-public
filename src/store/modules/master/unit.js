@@ -1,4 +1,4 @@
-import { postUnit } from '../../../services/master/unit.service';
+import { getUnit, postUnit } from '../../../services/master/unit.service';
 
 const state = {};
 
@@ -11,6 +11,10 @@ const actions = {
     const data = await postUnit('', {
       name,
     });
+    return data;
+  },
+  async destroyUnit(ctx, id) {
+    const data = await getUnit(`${id}/delete`);
     return data;
   },
 };

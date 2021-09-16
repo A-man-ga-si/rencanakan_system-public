@@ -6,51 +6,70 @@
       </b-btn>
     </div>
     <CustomDataTable
-      api="https://api.coloredstrategies.com/cakes/fordatatable"
-      title="Unit"
-      component-ref="unit-table"
-      sort-by="id"
+      ref="unit-data-table"
+      :api="fetchUnitAPI"
+      title="Daftar Satuan"
       :fields="fields"
-      :per-page="10"
-      :total-rows="50"
-    />
-    <AddUnit />
+    >
+      <template slot="actions" scope="row">
+        <a
+          href=""
+          class="text-primary mr-2"
+          @click.prevent="editUnit(row.row.rowData.hashid)"
+        >
+          <i class="simple-icon-pencil"></i>
+        </a>
+        <a
+          href=""
+          class="text-danger"
+          @click.prevent="deleteUnit(row.row.rowData.hashid)"
+        >
+          <i class="simple-icon-trash"></i>
+        </a>
+      </template>
+    </CustomDataTable>
+    <AddUnit @unit-added="reload" />
   </div>
 </template>
 
 <script>
   import AddUnit from '@/components/Master/Unit/AddUnit';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
+  import unitTableFields from './../../../data/fields/unit-table-field';
+  import { apiUrl } from '../../../constants/config';
+  import { showConfirmButton } from '../../../utils';
+  import { mapActions } from 'vuex';
 
   export default {
     data: () => ({
-      fields: [
-        {
-          key: 'id',
-          label: '#',
-          sortable: true,
-          tdClass: 'list-item-heading',
-        },
-        {
-          key: 'name',
-          label: 'Name',
-          sortable: true,
-          tdClass: 'list-item-heading',
-        },
-      ],
-      localData: [
-        {
-          id: 1,
-          name: 'OH',
-        },
-        {
-          id: 2,
-          name: 'CM3',
-        },
-      ],
-      tabulator: null,
+      fetchUnitAPI: `${apiUrl}/master/unit`,
+      fields: unitTableFields,
     }),
-    methods: {},
+    methods: {
+      ...mapActions(['destroyUnit']),
+      reload() {
+        this.$refs['unit-data-table'].reloadTable();
+      },
+      async deleteUnit(id) {
+        try {
+          const { isConfirmed } = await showConfirmButton({
+            title: 'Hapus Data Satuan ?',
+            text: 'Aksi ini tidak dapat dibatalkan !',
+          });
+          if (isConfirmed) {
+            await this.destroyUnit(id);
+            this.$notify('success', 'Berhasil menghapus unit');
+            this.reload();
+          }
+        } catch (err) {
+          this.$notify('error', 'Gagal menghapus unit');
+          console.error(err);
+        }
+      },
+      editUnit(id) {
+        console.log(`Editing unit ${id}`);
+      },
+    },
     components: {
       AddUnit,
       CustomDataTable,

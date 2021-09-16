@@ -6,6 +6,7 @@ import {
   localeOptions,
   defaultLocale,
 } from '../constants/config';
+import Swal from 'sweetalert2';
 
 export const mapOrder = (array, order, key) => {
   array.sort(function (a, b) {
@@ -203,4 +204,20 @@ export const setTokenAmount = tokenAmount => {
   const user = JSON.parse(window.localStorage.getItem('user'));
   user.token_amount = tokenAmount;
   window.localStorage.setItem('user', JSON.stringify(user));
+};
+
+export const showConfirmButton = ({
+  title = 'Confirmation',
+  text = 'Confirm your action ?',
+  icon = 'warning',
+}) => {
+  return Swal.fire({
+    title,
+    text,
+    icon,
+    showCancelButton: true,
+    confirmButtonColor: '#153245',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Delete',
+  });
 };

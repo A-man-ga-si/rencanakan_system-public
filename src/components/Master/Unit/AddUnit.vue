@@ -39,11 +39,18 @@
         this.$refs[refname].hide();
       },
       async submit() {
-        const data = await this.storeUnit({
+        await this.storeUnit({
           name: this.form.unitName,
         });
         Notify.success('Berhasil menambah satuan');
+        this.$emit('unit-added');
+        this.resetForm();
         this.hideModal(this.modalId);
+      },
+      resetForm() {
+        for (const formIdx in this.form) {
+          this.form[formIdx] = '';
+        }
       },
     },
   };
