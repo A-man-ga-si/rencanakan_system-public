@@ -206,7 +206,7 @@ export const setTokenAmount = tokenAmount => {
   window.localStorage.setItem('user', JSON.stringify(user));
 };
 
-export const showConfirmButton = ({
+export const showConfirmAlert = ({
   title = 'Confirmation',
   text = 'Confirm your action ?',
   icon = 'warning',

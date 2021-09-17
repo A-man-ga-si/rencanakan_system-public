@@ -1,3 +1,5 @@
+import { Notify } from 'notiflix';
+
 export default {
   methods: {
     setInvalid(fieldName, text) {

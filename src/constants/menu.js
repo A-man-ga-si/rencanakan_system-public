@@ -59,12 +59,12 @@ const data = [
         to: `${adminRoot}/master/unit`,
       },
       {
-        label: 'menu.master-item-price',
-        to: `${adminRoot}/master/item-price`,
-      },
-      {
         label: 'menu.master-item-price-group',
         to: `${adminRoot}/master/group-item-price`,
+      },
+      {
+        label: 'menu.master-item-price',
+        to: `${adminRoot}/master/item-price`,
       },
     ],
   },

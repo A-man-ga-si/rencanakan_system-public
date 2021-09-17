@@ -3,13 +3,13 @@
     <b-modal
       :id="modalId"
       :ref="modalId"
-      :title="$t('pages.master.unit.update-unit-bt')"
+      :title="$t('pages.master.item-price-group.add-item-price-group')"
     >
       <ValidationInput
         :label="'Name'"
         field-name="name"
         @keydown.enter="submit"
-        v-model="form.name"
+        v-model="form.unitName"
       />
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
@@ -24,53 +24,42 @@
 </template>
 
 <script>
-  import validationMixin from './../../../mixins/validation-mixins';
   import ValidationInput from './../../Common/ValidationInput.vue';
+  import validationMixins from './../../../mixins/validation-mixins';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
 
   export default {
-    mixins: [validationMixin],
-    props: ['selectedUnit'],
-    data() {
-      return {
-        form: {
-          name: '',
-        },
-        modalId: 'edit-unit',
-      };
-    },
-    methods: {
-      ...mapActions(['updateUnit']),
-      hideModal(refname) {
-        this.$refs[refname].hide();
+    mixins: [validationMixins],
+    data: () => ({
+      modalId: 'add-item-price-group',
+      form: {
+        unitName: '',
       },
+    }),
+    methods: {
+      ...mapActions(['storeItemPriceGroup']),
       async submit() {
         try {
           this.resetInvalid();
-          await this.updateUnit({
-            id: this.selectedUnit.hashid,
-            data: {
-              name: this.form.name,
-            },
+          await this.storeItemPriceGroup({
+            name: this.form.unitName,
           });
-          Notify.success('Berhasil mengupdate satuan');
-          this.$emit('unit-updated');
           this.resetForm();
           this.hideModal(this.modalId);
+          Notify.success('Berhasil menambahkan data kelompok harga satuan');
+          this.$emit('item-price-group-added');
         } catch (err) {
           this.checkForInvalidResponse(err);
         }
       },
-      resetForm() {
-        for (const formIdx in this.form) {
-          this.form[formIdx] = '';
-        }
+      hideModal(refname) {
+        this.$refs[refname].hide();
       },
-    },
-    watch: {
-      selectedUnit(ctx) {
-        this.form.name = this.selectedUnit.name;
+      resetForm() {
+        this.form = {
+          unitName: '',
+        };
       },
     },
     components: {

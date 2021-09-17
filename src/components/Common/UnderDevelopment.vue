@@ -2,7 +2,7 @@
   <div class="under-construction">
     <b-row>
       <b-col class="mx-auto text-center" :md="8">
-        <h2 class="h2 d-block font-weight-bold mb-0">Coming Soon !</h2>
+        <h2 class="h2 d-block font-weight-bold mb-0">Coming Soon</h2>
         <b-img
           src="./../../assets/img/custom/under_development.svg"
           alt="Under development image"

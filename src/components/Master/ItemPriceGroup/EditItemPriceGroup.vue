@@ -1,9 +1,9 @@
 <template>
-  <div class="add-unit">
+  <div class="edit-item-price-group">
     <b-modal
       :id="modalId"
       :ref="modalId"
-      :title="$t('pages.master.unit.update-unit-bt')"
+      :title="$t('pages.master.item-price-group.update-item-price-group')"
     >
       <ValidationInput
         :label="'Name'"
@@ -31,31 +31,31 @@
 
   export default {
     mixins: [validationMixin],
-    props: ['selectedUnit'],
+    props: ['selectedItemPriceGroup'],
     data() {
       return {
         form: {
           name: '',
         },
-        modalId: 'edit-unit',
+        modalId: 'edit-item-price-group',
       };
     },
     methods: {
-      ...mapActions(['updateUnit']),
+      ...mapActions(['updateItemPriceGroup']),
       hideModal(refname) {
         this.$refs[refname].hide();
       },
       async submit() {
         try {
           this.resetInvalid();
-          await this.updateUnit({
-            id: this.selectedUnit.hashid,
+          await this.updateItemPriceGroup({
+            id: this.selectedItemPriceGroup.hashid,
             data: {
               name: this.form.name,
             },
           });
-          Notify.success('Berhasil mengupdate satuan');
-          this.$emit('unit-updated');
+          Notify.success('Berhasil mengupdate kelompok harga satuan');
+          this.$emit('item-price-group-updated');
           this.resetForm();
           this.hideModal(this.modalId);
         } catch (err) {
@@ -69,8 +69,8 @@
       },
     },
     watch: {
-      selectedUnit(ctx) {
-        this.form.name = this.selectedUnit.name;
+      selectedItemPriceGroup(ctx) {
+        this.form.name = this.selectedItemPriceGroup.name;
       },
     },
     components: {

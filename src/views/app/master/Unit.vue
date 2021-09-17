@@ -12,20 +12,8 @@
       :fields="fields"
     >
       <template slot="actions" slot-scope="row">
-        <a
-          href=""
-          class="text-primary mr-2"
-          @click.prevent="editUnit(row.row.rowData)"
-        >
-          <i class="simple-icon-pencil"></i>
-        </a>
-        <a
-          href=""
-          class="text-danger"
-          @click.prevent="deleteUnit(row.row.rowData.hashid)"
-        >
-          <i class="simple-icon-trash"></i>
-        </a>
+        <EditButton @click.prevent="editUnit(row.row.rowData)" />
+        <DeleteButton @click.prevent="deleteUnit(row.row.rowData.hashid)" />
       </template>
     </CustomDataTable>
     <AddUnit @unit-added="reload" />
@@ -38,8 +26,10 @@
   import EditUnit from '@/components/Master/Unit/EditUnit';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
   import unitTableFields from './../../../data/fields/unit-table-field';
+  import EditButton from '@/components/DataTable/Actions/EditButton.vue';
+  import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
   import { apiUrl } from '../../../constants/config';
-  import { showConfirmButton } from '../../../utils';
+  import { showConfirmAlert } from '../../../utils';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
 
@@ -56,7 +46,7 @@
       },
       async deleteUnit(id) {
         try {
-          const { isConfirmed } = await showConfirmButton({
+          const { isConfirmed } = await showConfirmAlert({
             title: 'Hapus Data Satuan ?',
             text: 'Aksi ini tidak dapat dibatalkan !',
           });
@@ -79,6 +69,8 @@
       AddUnit,
       CustomDataTable,
       EditUnit,
+      EditButton,
+      DeleteButton,
     },
   };
 </script>

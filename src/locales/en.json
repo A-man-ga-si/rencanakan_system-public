@@ -331,6 +331,11 @@
         "add-unit-bt": "Add Unit",
         "update-unit-bt": "Update Unit",
         "unit-name": "Unit Name"
+      },
+      "item-price-group": {
+        "add-item-price-group": "Add Item Price Group",
+        "update-item-price-group": "Update Item Price Group",
+        "item-price-group-name": "Name"
       }
     }
   },

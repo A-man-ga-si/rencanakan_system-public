@@ -9,9 +9,9 @@
     <b-row>
       <b-colxx xxs="12">
         <b-alert variant="danger" :show="true" class="rounded">
-          <b>Perhatian !</b>
-          Menghapus data master bersifat destruktif ! harap konfirmasi dengan
-          seksama sebelum menghapus
+          <b>Warning !</b>
+          Menghapus data master bersifat destruktif ! harap konfirmasi ulang
+          sebelum menghapus
         </b-alert>
         <b-card class="mb-4 py-4">
           <SlideXRightTransition mode="out-in">
