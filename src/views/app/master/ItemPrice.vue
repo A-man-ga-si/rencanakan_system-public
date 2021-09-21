@@ -31,7 +31,10 @@
       @item-deleted="loadItemPrices"
     />
     <AddItemPrice @item-price-added="loadItemPrices" />
-    <EditItemPrice :selected-item-price="edit.selectedItemPrice" />
+    <EditItemPrice
+      @item-price-updated="loadItemPrices"
+      :selected-item-price="edit.selectedItemPrice"
+    />
   </div>
 </template>
 

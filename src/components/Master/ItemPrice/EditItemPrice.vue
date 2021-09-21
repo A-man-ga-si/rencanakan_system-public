@@ -8,8 +8,9 @@
       <div class="labeled-select position-relative mb-4">
         <span class="px-1"> Kelompok</span>
         <v-select
-          name=""
-          :options="masterData.itemPriceGroup"
+          label="name"
+          :reduce="priceGroup => priceGroup.hashid"
+          :options="getPriceGroups"
           id=""
           v-model="form.itemPriceGroup"
         />
@@ -29,8 +30,9 @@
       <div class="labeled-select position-relative mb-4">
         <span class="px-1"> Satuan</span>
         <v-select
-          name=""
-          :options="masterData.unit"
+          label="name"
+          :reduce="unit => unit.hashid"
+          :options="getUnit"
           id=""
           v-model="form.unit"
         />
@@ -50,6 +52,8 @@
 <script>
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixin from '@/mixins/validation-mixins';
+  import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     mixins: [validationMixin],
@@ -62,15 +66,29 @@
           unit: '',
           itemPriceGroup: '',
         },
-        masterData: {
-          unit: ['OH', 'cm3'],
-          itemPriceGroup: ['Item Price 1', 'Item Price 2'],
-        },
         modalId: 'edit-item-price',
       };
     },
+    computed: {
+      ...mapGetters(['getUnit', 'getPriceGroups']),
+    },
     methods: {
-      async submit() {},
+      ...mapActions(['updateItemPrice']),
+      async submit() {
+        const { id, name, unit, itemPriceGroup } = this.form;
+        await this.updateItemPrice({
+          id: this.selectedItemPrice.id,
+          form: {
+            id,
+            name,
+            unit_id: unit,
+            item_price_group_id: itemPriceGroup,
+          },
+        });
+        Notify.success('Berhasil mengupdate data harga satuan');
+        this.$emit('item-price-updated');
+        this.hideModal(this.modalId);
+      },
       hideModal(refname) {
         this.$refs[refname].hide();
       },
@@ -80,12 +98,12 @@
     },
     watch: {
       selectedItemPrice() {
-        const { id, name, unit, item_price_group_id } = this.selectedItemPrice;
+        const { id, name, unit, item_price_group } = this.selectedItemPrice;
         this.form = {
           id,
           name,
           unit: unit.hashid,
-          itempriceGroup: item_price_group_id,
+          itemPriceGroup: item_price_group.hashid,
         };
       },
     },

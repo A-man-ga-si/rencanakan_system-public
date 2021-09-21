@@ -33,6 +33,10 @@ const actions = {
     const data = await postItemPrices(`${id}/set-price`, form);
     return data;
   },
+  async updateItemPrice(ctx, { id, form }) {
+    const data = await postItemPrices(`${id}`, form);
+    return data;
+  },
 };
 
 export default {
