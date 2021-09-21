@@ -1,12 +1,29 @@
-import { getUnit, postUnit } from '../../../services/master/unit.service';
+import {
+  getUnit,
+  postUnit,
+  queryUnit,
+} from '../../../services/master/unit.service';
 
-const state = {};
+const state = {
+  units: [],
+};
 
-const getters = {};
+const getters = {
+  getUnit: state => state.units,
+};
 
-const mutations = {};
+const mutations = {
+  setUnits(state, data) {
+    state.units = data;
+  },
+};
 
 const actions = {
+  async fetchUnit({ commit }) {
+    const data = await queryUnit('', 'datatable=false');
+    commit('setUnits', data.data.data.units);
+    return data;
+  },
   async storeUnit(ctx, { name }) {
     const data = await postUnit('', {
       name,

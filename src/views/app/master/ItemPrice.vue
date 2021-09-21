@@ -8,10 +8,10 @@
         >
           <span class="px-1"> Provinsi</span>
           <v-select
-            name=""
+            label="name"
+            :reduce="province => province.hashid"
             :options="provinces"
-            id=""
-            v-model="form.selectedProvince"
+            v-model="selectedProvince"
           />
         </div>
       </div>
@@ -21,9 +21,15 @@
         </b-btn>
       </div>
     </div>
-    <ItemPriceItem />
-    <AddItemPrice />
-    <EditItemPrice />
+    <ItemPriceItem
+      v-for="(itemPriceGroup, idx) in itemPriceGroups"
+      :key="idx"
+      :idx="idx"
+      :item="itemPriceGroup"
+      @edit-item-clicked="editItem"
+    />
+    <AddItemPrice @item-price-added="loadItemPrices" />
+    <EditItemPrice :selected-item-price="edit.selectedItemPrice" />
   </div>
 </template>
 
@@ -36,21 +42,39 @@
 
   export default {
     data: () => ({
+      itemPriceGroups: [],
       provinces: [],
+      selectedProvince: '',
+      edit: {
+        selectedItemPrice: {},
+      },
       form: {
-        selectedProvince: '',
         searchQuery: '',
       },
     }),
-    created() {
-      this.loadProvinces();
+    async created() {
+      await this.loadProvinces();
+      await this.loadItemPrices();
     },
     methods: {
-      ...mapActions(['fetchProvinces']),
+      ...mapActions(['fetchProvinces', 'fetchItemPrices']),
       async loadProvinces() {
         const data = await this.fetchProvinces();
-        this.provinces = data.map(province => province.name);
-        console.log(this.provinces);
+        this.provinces = data;
+        this.selectedProvince = data[0].hashid;
+      },
+      async loadItemPrices() {
+        const { data } = await this.fetchItemPrices(this.selectedProvince);
+        this.itemPriceGroups = data.data.itemPriceGroups;
+      },
+      async editItem(item) {
+        this.edit.selectedItemPrice = item;
+        this.$bvModal.show('edit-item-price');
+      },
+    },
+    watch: {
+      selectedProvince() {
+        this.loadItemPrices();
       },
     },
     components: {

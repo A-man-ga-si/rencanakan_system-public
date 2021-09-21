@@ -8,8 +8,9 @@
       <div class="labeled-select position-relative mb-4">
         <span class="px-1"> Kelompok</span>
         <v-select
-          name=""
-          :options="masterData.itemPriceGroup"
+          label="name"
+          :reduce="itemPrice => itemPrice.hashid"
+          :options="getPriceGroups"
           id=""
           v-model="form.itemPriceGroup"
         />
@@ -29,8 +30,9 @@
       <div class="labeled-select position-relative mb-4">
         <span class="px-1"> Satuan</span>
         <v-select
-          name=""
-          :options="masterData.unit"
+          label="name"
+          :reduce="unit => unit.hashid"
+          :options="getUnit"
           id=""
           v-model="form.unit"
         />
@@ -50,6 +52,8 @@
 <script>
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixin from '@/mixins/validation-mixins';
+  import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     mixins: [validationMixin],
@@ -57,20 +61,44 @@
       form: {
         id: '',
         name: '',
-        unit: 'cm3',
-        itemPriceGroup: '',
-      },
-      masterData: {
-        unit: ['OH', 'cm3'],
-        itemPriceGroup: ['Item Price 1', 'Item Price 2'],
+        unit: '',
+        itemPriceGroup: [],
       },
       modalId: 'add-item-price',
     }),
+    created() {
+      this.fetchUnit();
+      this.fetchItemPriceGroup();
+    },
     methods: {
-      async submit() {},
+      ...mapActions(['fetchItemPriceGroup', 'fetchUnit', 'storeItemPrice']),
+      async submit() {
+        const { id, name, unit, itemPriceGroup } = this.form;
+        const data = await this.storeItemPrice({
+          id,
+          name,
+          unit_id: unit,
+          item_price_group_id: itemPriceGroup,
+        });
+        this.$emit('item-price-added', data);
+        this.hideModal(this.modalId);
+        this.resetForm();
+        Notify.success('Berhasil menambahkan data harga satuan');
+      },
+      resetForm() {
+        this.form = {
+          id: '',
+          name: '',
+          unit: '',
+          itemPriceGroup: [],
+        };
+      },
       hideModal(refname) {
         this.$refs[refname].hide();
       },
+    },
+    computed: {
+      ...mapGetters(['getUnit', 'getPriceGroups']),
     },
     components: {
       ValidationInput,

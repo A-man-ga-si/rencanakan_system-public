@@ -11,7 +11,7 @@
     "
   >
     <div class="heading mb-3">
-      <h5>I. UPAH TENAGA KERJA</h5>
+      <h5>{{ idx + 1 }}. {{ item.name }}</h5>
     </div>
     <div class="body">
       <table class="table text-left">
@@ -26,15 +26,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1.</td>
-            <td>Pekerja</td>
-            <td>OH</td>
-            <td>L.01</td>
-            <td>180,000</td>
+          <tr v-for="(item, idx) in item.item_price" :key="idx">
+            <td>{{ idx + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.unit.name }}</td>
+            <td>{{ item.id }}</td>
             <td>
-              <EditButton @click.prevent="editItemPrice(id)" />
-              <DeleteButton @click.prevent="deleteItemPrice(id)" />
+              <input
+                type="text"
+                class="rab-inline-editor"
+                :value="item.price.length ? item.price[0].price : ''"
+              />
+            </td>
+            <td>
+              <EditButton @click.prevent="editItemPrice(item)" />
+              <DeleteButton @click.prevent="deleteItemPrice(item)" />
             </td>
           </tr>
         </tbody>
@@ -53,9 +59,10 @@
       EditButton,
       DeleteButton,
     },
+    props: ['item', 'idx'],
     methods: {
-      editItemPrice() {
-        this.$bvModal.show('edit-item-price');
+      editItemPrice(item) {
+        this.$emit('edit-item-clicked', item);
       },
       async deleteItemPrice() {
         const { isConfirmed } = await showConfirmAlert({
@@ -82,5 +89,10 @@
 
   td {
     vertical-align: middle;
+  }
+
+  .rab-inline-editor {
+    width: 100%;
+    border: none !important;
   }
 </style>

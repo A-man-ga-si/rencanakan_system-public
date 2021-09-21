@@ -53,19 +53,22 @@
 
   export default {
     mixins: [validationMixin],
-    data: () => ({
-      form: {
-        id: '',
-        name: '',
-        unit: 'cm3',
-        itemPriceGroup: '',
-      },
-      masterData: {
-        unit: ['OH', 'cm3'],
-        itemPriceGroup: ['Item Price 1', 'Item Price 2'],
-      },
-      modalId: 'edit-item-price',
-    }),
+    props: ['selectedItemPrice'],
+    data() {
+      return {
+        form: {
+          id: '',
+          name: '',
+          unit: '',
+          itemPriceGroup: '',
+        },
+        masterData: {
+          unit: ['OH', 'cm3'],
+          itemPriceGroup: ['Item Price 1', 'Item Price 2'],
+        },
+        modalId: 'edit-item-price',
+      };
+    },
     methods: {
       async submit() {},
       hideModal(refname) {
@@ -74,6 +77,17 @@
     },
     components: {
       ValidationInput,
+    },
+    watch: {
+      selectedItemPrice() {
+        const { id, name, unit, item_price_group_id } = this.selectedItemPrice;
+        this.form = {
+          id,
+          name,
+          unit: unit.hashid,
+          itempriceGroup: item_price_group_id,
+        };
+      },
     },
   };
 </script>

@@ -10,6 +10,7 @@ import project from './modules/project';
 import payment from './modules/payment';
 import company from './modules/company';
 import unit from './modules/master/unit';
+import itemPrice from './modules/master/item-price';
 import itemPriceGroup from './modules/master/item-price-group';
 import { setCurrentLanguage } from '../utils';
 
@@ -37,6 +38,7 @@ export default new Vuex.Store({
     company,
     auth,
     unit,
+    itemPrice,
     itemPriceGroup,
   },
 });
