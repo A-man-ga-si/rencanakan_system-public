@@ -15,6 +15,7 @@ const mutations = {
 
 const actions = {
   async addCompanyProfile({ commit }, payload) {
+    console.log(payload);
     const res = await postCompany('', payload);
     commit('setCompany', res.data.data.company);
     return res;

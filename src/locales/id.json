@@ -335,6 +335,15 @@
         "add-unit-bt": "Tambah Satuan",
         "update-unit-bt": "Update Unit",
         "unit-name": "Nama Satuan"
+      },
+      "item-price-group": {
+        "add-item-price-group": "Tambah Kelompok Harga Satuan",
+        "update-item-price-group": "Update kelompok Harga Satuan",
+        "item-price-group-name": "Nama"
+      },
+      "item-price": {
+        "add-item-price": "Tambah Harga Satuan",
+        "update-item-price": "Update Harga Satuan"
       }
     }
   },

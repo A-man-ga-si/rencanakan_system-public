@@ -18,8 +18,9 @@
         :target="id"
         placement="top"
         :disabled="true"
-        >{{ message }}</b-tooltip
       >
+        {{ message }}
+      </b-tooltip>
       <span class="spinner d-inline-block">
         <span class="bounce1"></span>
         <span class="bounce2"></span>

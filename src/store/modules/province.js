@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getProvinces } from './../../services/master/province.service';
 import { apiProvinces } from '../../constants/config';
 
 const state = {
@@ -16,16 +17,11 @@ const mutations = {
 };
 
 const actions = {
-  fetchProvinces({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(apiProvinces)
-        .then(data => {
-          commit('setProvinces', data.data);
-          resolve(data);
-        })
-        .catch(reject);
-    });
+  async fetchProvinces({ commit, state }) {
+    if (state.provinces.length) return state.provinces;
+    const data = await getProvinces();
+    commit('setProvinces', data.data.data.provinces);
+    return data.data.data.provinces;
   },
 };
 
