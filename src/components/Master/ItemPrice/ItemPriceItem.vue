@@ -33,6 +33,7 @@
             <td>{{ item.id }}</td>
             <td>
               <input
+                @change="doUpdatePrice(item, $event)"
                 type="text"
                 class="rab-inline-editor"
                 :value="item.price.length ? item.price[0].price : ''"
@@ -40,7 +41,7 @@
             </td>
             <td>
               <EditButton @click.prevent="editItemPrice(item)" />
-              <DeleteButton @click.prevent="deleteItemPrice(item)" />
+              <DeleteButton @click.prevent="destroyItemPrice(item)" />
             </td>
           </tr>
         </tbody>
@@ -53,21 +54,39 @@
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
   import { showConfirmAlert } from './../../../utils';
+  import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     components: {
       EditButton,
       DeleteButton,
     },
-    props: ['item', 'idx'],
+    // FIXME: Please move activeProvince system to state management !
+    props: ['item', 'idx', 'activeProvince'],
     methods: {
+      ...mapActions(['deleteItemPrice', 'updatePrice']),
       editItemPrice(item) {
         this.$emit('edit-item-clicked', item);
       },
-      async deleteItemPrice() {
+      async destroyItemPrice(item) {
         const { isConfirmed } = await showConfirmAlert({
           title: 'Hapus Data Harga Satuan ?',
           text: 'Aksi ini tidak dapat dibatalkan !',
+        });
+        if (isConfirmed) {
+          await this.deleteItemPrice(item.id);
+          Notify.success('Berhasil menghapus data harga satuan');
+          this.$emit('item-deleted');
+        }
+      },
+      async doUpdatePrice(item, ref) {
+        await this.updatePrice({
+          id: item.id,
+          form: {
+            province_id: this.activeProvince,
+            price: ref.target.value,
+          },
         });
       },
     },

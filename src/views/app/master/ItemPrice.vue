@@ -25,8 +25,10 @@
       v-for="(itemPriceGroup, idx) in itemPriceGroups"
       :key="idx"
       :idx="idx"
+      :active-province="selectedProvince"
       :item="itemPriceGroup"
       @edit-item-clicked="editItem"
+      @item-deleted="loadItemPrices"
     />
     <AddItemPrice @item-price-added="loadItemPrices" />
     <EditItemPrice :selected-item-price="edit.selectedItemPrice" />

@@ -8,7 +8,7 @@
     </b-row>
     <b-row>
       <b-colxx xxs="12">
-        <b-alert variant="danger" :show="true" class="rounded">
+        <b-alert variant="secondary" :show="true" class="rounded">
           <b>Warning !</b>
           Menghapus data master bersifat destruktif ! harap konfirmasi ulang
           sebelum menghapus
