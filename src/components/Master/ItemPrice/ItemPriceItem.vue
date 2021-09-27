@@ -11,7 +11,7 @@
     "
   >
     <div class="heading mb-3">
-      <h5>{{ idx + 1 }}. {{ item.name }}</h5>
+      <h5>{{ processAlphabeticNumber(idx + 1) }}. {{ item.name }}</h5>
     </div>
     <div class="body">
       <table class="table text-left">
@@ -53,7 +53,7 @@
 <script>
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
-  import { showConfirmAlert } from './../../../utils';
+  import { showConfirmAlert, convertNumberToAlphabet } from './../../../utils';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
 
@@ -68,6 +68,9 @@
       ...mapActions(['deleteItemPrice', 'updatePrice']),
       editItemPrice(item) {
         this.$emit('edit-item-clicked', item);
+      },
+      processAlphabeticNumber(num) {
+        return convertNumberToAlphabet(num);
       },
       async destroyItemPrice(item) {
         const { isConfirmed } = await showConfirmAlert({

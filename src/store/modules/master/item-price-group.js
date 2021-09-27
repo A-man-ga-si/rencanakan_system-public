@@ -20,7 +20,7 @@ const mutations = {
 
 const actions = {
   async fetchItemPriceGroup({ commit }) {
-    const data = await queryItemPriceGroup('', 'datatable=false');
+    const data = await queryItemPriceGroup('?datatable=false');
     commit('setItemPriceGroups', data.data.data.itemPriceGroups);
     return data;
   },

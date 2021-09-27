@@ -38,7 +38,7 @@
 
   export default {
     data: () => ({
-      itemPriceGroupAPI: `${apiUrl}/master/item-price-group/`,
+      itemPriceGroupAPI: `${apiUrl}/master/item-price-group`,
       fields: itemPriceGroupField,
       selectedItemPriceGroup: {},
     }),

@@ -50,18 +50,15 @@
       itemPriceGroups: [],
       provinces: [],
       selectedProvince: '',
-      edit: {
-        selectedItemPrice: {},
-      },
-      form: {
-        searchQuery: '',
-      },
+      edit: { selectedItemPrice: {} },
+      form: { searchQuery: '' },
     }),
     async created() {
       await this.loadProvinces();
       await this.loadItemPrices();
     },
     methods: {
+      // TODO: Make provinces fetches more efficient
       ...mapActions(['fetchProvinces', 'fetchItemPrices']),
       async loadProvinces() {
         const data = await this.fetchProvinces();

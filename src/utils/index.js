@@ -221,3 +221,11 @@ export const showConfirmAlert = ({
     confirmButtonText: 'Confirm',
   });
 };
+
+export const convertNumberToAlphabet = number => {
+  if (number < 1 || number > 26) {
+    return -1;
+  } else {
+    return String.fromCharCode(number + 64);
+  }
+};

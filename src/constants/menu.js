@@ -66,6 +66,10 @@ const data = [
         label: 'menu.master-item-price',
         to: `${adminRoot}/master/item-price`,
       },
+      {
+        label: 'menu.master-ahs',
+        to: `${adminRoot}/master/ahs`,
+      },
     ],
   },
   {

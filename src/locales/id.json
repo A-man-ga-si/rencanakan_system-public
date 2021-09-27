@@ -38,6 +38,7 @@
     "reset-password-error-msg": "Kesalahan internal pada server, gagal melakukan reset password"
   },
   "menu": {
+    "master": "Master Data",
     "user-profile": "Profil User",
     "company-profile": "Profil Perusahaan",
     "home": "Home",
@@ -152,7 +153,8 @@
     "start": "Start",
     "single": "Single",
     "dashboard": "Dashboard",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "master-ahs": "Master AHS"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",

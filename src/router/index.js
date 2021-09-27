@@ -243,28 +243,48 @@ const routes = [
             path: 'unit',
             name: 'MasterUnit',
             meta: {
-              title: 'Master Unit'
+              title: 'Master Unit',
             },
-            component: () => import(/* webpackChunkName: "masterUnit" */ './../views/app/master/Unit.vue'),
+            component: () =>
+              import(
+                /* webpackChunkName: "masterUnit" */ './../views/app/master/Unit.vue'
+              ),
           },
           {
             path: 'group-item-price',
             name: 'MasterItemPriceGroup',
             meta: {
-              title: 'Master Item Price Group'
+              title: 'Master Item Price Group',
             },
-            component: () => import(/* webpackChunkName: "masterItemPriceGroup" */ './../views/app/master/ItemPriceGroup.vue'),
+            component: () =>
+              import(
+                /* webpackChunkName: "masterItemPriceGroup" */ './../views/app/master/ItemPriceGroup.vue'
+              ),
           },
           {
             path: 'item-price',
             name: 'MasterItemPrice',
             meta: {
-              title: 'Master Item Price'
+              title: 'Master Item Price',
             },
-            component: () => import(/* webpackChunkName: "masterItemPrice" */ './../views/app/master/ItemPrice.vue'),
+            component: () =>
+              import(
+                /* webpackChunkName: "masterItemPrice" */ './../views/app/master/ItemPrice.vue'
+              ),
           },
-        ]
-      }
+          {
+            path: 'ahs',
+            name: 'MasterAhs',
+            meta: {
+              title: 'Master AHS',
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "masterAhs" */ './../views/app/master/Ahs.vue'
+              ),
+          },
+        ],
+      },
     ],
   },
   {

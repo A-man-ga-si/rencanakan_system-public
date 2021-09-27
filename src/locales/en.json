@@ -31,6 +31,7 @@
     "reset-password-error-msg": "Internal server error, failed to reset your password"
   },
   "menu": {
+    "master": "Master Data",
     "company-profile": "Company Profile",
     "home": "Home",
     "app": "Home",
@@ -147,7 +148,8 @@
     "start": "Start",
     "single": "Single",
     "dashboard": "Dashboard",
-    "settings": "Setting"
+    "settings": "Setting",
+    "master-ahs": "Master AHS"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",
