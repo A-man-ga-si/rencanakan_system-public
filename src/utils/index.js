@@ -229,3 +229,14 @@ export const convertNumberToAlphabet = number => {
     return String.fromCharCode(number + 64);
   }
 };
+
+export const ahsItemable = ahsItemableStr => {
+  const ahsItemableArr = ahsItemableStr.split('\\');
+  return ahsItemableArr[ahsItemableArr.length - 1];
+};
+
+export const isItemPrice = ahsItemableStr => {
+  return ahsItemable(ahsItemableStr) === 'ItemPrice';
+};
+
+export const formatCurrency = number => new Intl.NumberFormat().format(number);

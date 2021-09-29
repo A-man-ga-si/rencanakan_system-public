@@ -16,32 +16,65 @@
         </div>
       </div>
     </div>
-    <AhsItem />
+    <ul class="ahs-item-list">
+      <li v-for="(ahs, idx) in getAhs" :key="idx">
+        <AhsItem
+          :codes-list="codesList"
+          :units-list="getUnit"
+          :ahs-itemable-list="getAhsItemableIds"
+          :ahs-item="ahs"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
   import AhsItem from '@/components/Master/Ahs/AhsItem.vue';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     data: () => ({
+      codesList: ['L.01'],
+      unitsList: ['OH'],
       provinces: [],
       selectedProvince: '',
     }),
     created() {
       this.loadProvinces();
+      this.fetchUnit();
+      this.fetchAhsItemableIds();
     },
     methods: {
-      ...mapActions(['fetchProvinces']),
+      ...mapActions([
+        'fetchProvinces',
+        'fetchAhs',
+        'fetchUnit',
+        'fetchAhsItemableIds',
+      ]),
       async loadProvinces() {
         const data = await this.fetchProvinces();
         this.provinces = data;
         this.selectedProvince = data[0].hashid;
       },
     },
+    computed: {
+      ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds']),
+    },
     components: {
       AhsItem,
     },
+    watch: {
+      selectedProvince() {
+        this.fetchAhs(this.selectedProvince);
+      },
+    },
   };
 </script>
+
+<style scoped>
+  .ahs-item-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+</style>

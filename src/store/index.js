@@ -2,16 +2,18 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import app from '../main';
-import auth from './modules/auth';
-import menu from './modules/menu';
-import user from './modules/user';
-import province from './modules/province';
-import project from './modules/project';
-import payment from './modules/payment';
-import company from './modules/company';
-import unit from './modules/master/unit';
-import itemPrice from './modules/master/item-price';
-import itemPriceGroup from './modules/master/item-price-group';
+import auth from './modules/auth.module';
+import menu from './modules/menu.module';
+import user from './modules/user.module';
+import province from './modules/province.module';
+import project from './modules/project.module';
+import payment from './modules/payment.module';
+import company from './modules/company.module';
+import unit from './modules/master/unit.module';
+import itemPrice from './modules/master/item-price.module';
+import itemPriceGroup from './modules/master/item-price-group.module';
+import ahs from './modules/master/ahs.module';
+import ahsItem from './modules/master/ahs-item.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -38,7 +40,9 @@ export default new Vuex.Store({
     company,
     auth,
     unit,
+    ahs,
     itemPrice,
     itemPriceGroup,
+    ahsItem,
   },
 });
