@@ -18,7 +18,7 @@ const mutations = {
 
 const actions = {
   async fetchItemPrices({ commit }, province) {
-    const data = await queryItemPrice('', `province=${province}`);
+    const data = await queryItemPrice('', `province=${province}&grouped=true`);
     return data;
   },
   async storeItemPrice(ctx, payload) {

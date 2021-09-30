@@ -341,7 +341,8 @@
       },
       "item-price": {
         "add-item-price": "Add Item Price",
-        "update-item-price": "Update Item Price"
+        "update-item-price": "Update Item Price",
+        "add-item-price-batch": "Batch Update Price"
       }
     }
   },

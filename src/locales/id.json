@@ -345,7 +345,8 @@
       },
       "item-price": {
         "add-item-price": "Tambah Harga Satuan",
-        "update-item-price": "Update Harga Satuan"
+        "update-item-price": "Update Harga Satuan",
+        "add-item-price-batch": "Batch Update Harga"
       }
     }
   },

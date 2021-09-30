@@ -16,7 +16,14 @@
         </div>
       </div>
       <div class="right">
-        <b-btn v-b-modal.add-item-price variant="primary">
+        <b-btn
+          v-b-modal.batch-update-price-modal
+          variant="outline-primary"
+          class="mr-1"
+        >
+          {{ $t('pages.master.item-price.add-item-price-batch') }}
+        </b-btn>
+        <b-btn v-b-modal.add-item-price variant="primary" class="mr-1">
           {{ $t('pages.master.item-price.add-item-price') }}
         </b-btn>
       </div>
@@ -31,6 +38,7 @@
       @item-deleted="loadItemPrices"
     />
     <AddItemPrice @item-price-added="loadItemPrices" />
+    <BatchUpdatePriceItemPrice :provinces="provinces" />
     <EditItemPrice
       @item-price-updated="loadItemPrices"
       :selected-item-price="edit.selectedItemPrice"
@@ -43,6 +51,7 @@
   import AddItemPrice from '@/components/Master/ItemPrice/AddItemPrice.vue';
   import EditItemPrice from '@/components/Master/ItemPrice/EditItemPrice.vue';
   import ValidationInput from '@/components/Common/ValidationInput.vue';
+  import BatchUpdatePriceItemPrice from '@/components/Master/ItemPrice/BatchUpdatePriceItemPrice';
   import { mapActions } from 'vuex';
 
   export default {
@@ -55,7 +64,6 @@
     }),
     async created() {
       await this.loadProvinces();
-      await this.loadItemPrices();
     },
     methods: {
       // TODO: Make provinces fetches more efficient
@@ -67,7 +75,7 @@
       },
       async loadItemPrices() {
         const { data } = await this.fetchItemPrices(this.selectedProvince);
-        this.itemPriceGroups = data.data.itemPriceGroups;
+        this.itemPriceGroups = data.data.itemPrices;
       },
       async editItem(item) {
         this.edit.selectedItemPrice = item;
@@ -84,6 +92,7 @@
       AddItemPrice,
       ValidationInput,
       EditItemPrice,
+      BatchUpdatePriceItemPrice,
     },
   };
 </script>
