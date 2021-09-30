@@ -17,6 +17,7 @@
       </div>
       <div class="right">
         <b-btn
+          @click="loadUngroupedItemPrice"
           v-b-modal.batch-update-price-modal
           variant="outline-primary"
           class="mr-1"
@@ -38,7 +39,10 @@
       @item-deleted="loadItemPrices"
     />
     <AddItemPrice @item-price-added="loadItemPrices" />
-    <BatchUpdatePriceItemPrice :provinces="provinces" />
+    <BatchUpdatePriceItemPrice
+      @item-price-batch-updated="loadItemPrices"
+      :item-prices="getUngroupedItemPrices"
+    />
     <EditItemPrice
       @item-price-updated="loadItemPrices"
       :selected-item-price="edit.selectedItemPrice"
@@ -52,10 +56,11 @@
   import EditItemPrice from '@/components/Master/ItemPrice/EditItemPrice.vue';
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import BatchUpdatePriceItemPrice from '@/components/Master/ItemPrice/BatchUpdatePriceItemPrice';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     data: () => ({
+      ungroupedItemPrices: [],
       itemPriceGroups: [],
       provinces: [],
       selectedProvince: '',
@@ -67,7 +72,11 @@
     },
     methods: {
       // TODO: Make provinces fetches more efficient
-      ...mapActions(['fetchProvinces', 'fetchItemPrices']),
+      ...mapActions([
+        'fetchProvinces',
+        'fetchItemPrices',
+        'fetchUngroupedItemPrices',
+      ]),
       async loadProvinces() {
         const data = await this.fetchProvinces();
         this.provinces = data;
@@ -81,6 +90,13 @@
         this.edit.selectedItemPrice = item;
         this.$bvModal.show('edit-item-price');
       },
+      async loadUngroupedItemPrice() {
+        const data = await this.fetchUngroupedItemPrices();
+        console.log(data);
+      },
+    },
+    computed: {
+      ...mapGetters(['getUngroupedItemPrices']),
     },
     watch: {
       selectedProvince() {
