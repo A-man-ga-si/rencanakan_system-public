@@ -6,14 +6,16 @@
         type="text"
         class="inline-edit"
         v-model="name"
+        @change="submitUpdateAhsItem"
         :disabled="ahsItemableType == 'ItemPrice'"
       />
     </td>
     <td>
       <v-select
         label="id"
+        @input="submitUpdateAhsItem"
         :reduce="
-          ahsItemable => `${ahsItemable.ahs_itemable_type}-${ahsItemable.id}`
+          ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
         "
         :options="getAhsItemableList"
         v-model="ahsItemableId"
@@ -24,12 +26,19 @@
       <v-select
         label="name"
         :reduce="unit => unit.hashid"
+        @input="submitUpdateAhsItem"
         v-model="unitId"
         :options="unitsList"
+        :disabled="ahsItemableType === 'ItemPrice'"
       />
     </td>
     <td>
-      <input type="number" v-model="coefficient" class="inline-edit" />
+      <input
+        type="number"
+        v-model="coefficient"
+        @change="submitUpdateAhsItem"
+        class="inline-edit"
+      />
     </td>
     <td>{{ getItemPrice }}</td>
     <td>{{ getSubtotalPrice }}</td>
@@ -37,7 +46,9 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
   import { isItemPrice, ahsItemable, formatCurrency } from './../../../utils';
+  import { Notify } from 'notiflix';
 
   export default {
     props: ['ahsItem', 'idx', 'codesList', 'unitsList', 'ahsItemableList'],
@@ -46,7 +57,7 @@
         name: isItemPrice(this.ahsItem.ahs_itemable_type)
           ? this.ahsItem.ahs_itemable.name
           : this.ahsItem.name,
-        ahsItemableId: `${ahsItemable(this.ahsItem.ahs_itemable_type)}-${
+        ahsItemableId: `${ahsItemable(this.ahsItem.ahs_itemable_type)}~${
           this.ahsItem.ahs_itemable_id
         }`,
         unitId: isItemPrice(this.ahsItem.ahs_itemable_type)
@@ -54,6 +65,31 @@
           : this.ahsItem.unit?.hashid,
         coefficient: this.ahsItem.coefficient,
       };
+    },
+    methods: {
+      ...mapActions(['updateAhsItem']),
+      async submitUpdateAhsItem() {
+        const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
+        const ahsItemableIdType = this.ahsItemableId.split('~');
+        const dataToUpdate = {};
+
+        if (ahsType === 'Ahs') {
+          dataToUpdate.name = this.name;
+          dataToUpdate.unit_id = this.unitId;
+        }
+
+        dataToUpdate.ahs_itemable_id = ahsItemableIdType[1];
+        dataToUpdate.ahs_itemable_type = ahsItemableIdType[0];
+        dataToUpdate.coefficient = this.coefficient;
+
+        const data = await this.updateAhsItem({
+          ahsItemId: this.ahsItem.id,
+          form: dataToUpdate,
+        });
+
+        Notify.success('Berhasil mengupdate item AHS');
+        this.$emit('ahs-item-updated');
+      },
     },
     computed: {
       ahsItemableType() {
@@ -77,6 +113,11 @@
       },
       getSubtotalPrice() {
         return `Rp. ${formatCurrency(this.ahsItem.subtotal)}`;
+      },
+    },
+    watch: {
+      coefficient(e) {
+        console.log(e);
       },
     },
   };

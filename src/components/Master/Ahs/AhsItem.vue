@@ -26,7 +26,7 @@
         <a href="#" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a class="h4 text-danger ml-1" href="#">
+        <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteAhs">
           <i class="iconsmind simple-icon-close"> </i>
         </a>
       </div>
@@ -54,10 +54,17 @@
             :ahs-itemable-list="ahsItemableList"
             :idx="idx"
             :ahs-item="laborAhs"
+            @ahs-item-updated="onAhsItemUpdated"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah Baris </a>
+              <a
+                href="#"
+                @click.prevent="addAhsItem('labor')"
+                class="d-block w-100"
+              >
+                + Tambah Baris
+              </a>
             </td>
           </tr>
           <AhsFooterRow title="Total Tenaga Kerja" :value="totalTenagaKerja" />
@@ -70,10 +77,17 @@
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="ingredientsAhs"
+            @ahs-item-updated="onAhsItemUpdated"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah Baris </a>
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addAhsItem('ingredients')"
+              >
+                + Tambah Baris
+              </a>
             </td>
           </tr>
           <AhsFooterRow title="Total Bahan" :value="totalBahan" />
@@ -88,10 +102,17 @@
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="toolsAhs"
+            @ahs-item-updated="onAhsItemUpdated"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah Baris </a>
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addAhsItem('tools')"
+              >
+                + Tambah Baris
+              </a>
             </td>
           </tr>
           <AhsFooterRow title="Total Peralatan" :value="totalPeralatan" />
@@ -104,10 +125,17 @@
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="othersAhs"
+            @ahs-item-updated="onAhsItemUpdated"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah Baris </a>
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addAhsItem('others')"
+              >
+                + Tambah Baris
+              </a>
             </td>
           </tr>
           <AhsFooterRow title="Total Lain Lain" :value="totalLainLain" />
@@ -129,18 +157,22 @@
           />
         </tbody>
       </table>
-      <FloatingActionButton />
       <hr />
     </div>
   </div>
 </template>
 
 <script>
-  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AhsItemRow from '@/components/Master/Ahs/AhsItemRow.vue';
   import AhsHeaderRow from '@/components/Master/Ahs/AhsHeaderRow.vue';
   import AhsFooterRow from '@/components/Master/Ahs/AhsFooterRow.vue';
-  import { formatCurrency } from './../../../utils';
+  import {
+    formatCurrency,
+    showConfirmAlert,
+    ahsItemable,
+  } from './../../../utils';
+  import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     data: () => ({
@@ -148,6 +180,45 @@
     }),
     props: ['ahsItem', 'codesList', 'unitsList', 'ahsItemableList'],
     methods: {
+      ...mapActions(['destroyAhs', 'storeAhsItem']),
+      async deleteAhs() {
+        try {
+          const { isConfirmed } = await showConfirmAlert({
+            title: 'Hapus AHS',
+            text: 'AHS akan dihapus secara permanent !',
+          });
+          if (isConfirmed) {
+            await this.destroyAhs(this.ahsItem.id);
+            this.$emit('ahs-deleted');
+            Notify.success('Berhasil menghapus AHS');
+          }
+        } catch (err) {
+          console.error(err);
+          Notify.failure('Gagal menghapus AHS');
+        }
+      },
+      onAhsItemUpdated() {
+        this.$emit('ahs-item-updated');
+      },
+      async addAhsItem(section) {
+        if (this.ahsItemableList.length <= 0) {
+          Notify.failure(
+            'Tidak ada data untuk di referensi, buat minimal 1 harga satuan terlebih dahulu'
+          );
+        } else {
+          const data = await this.storeAhsItem({
+            ahsId: this.ahsItem.id,
+            form: {
+              section,
+              ahs_itemable_id: this.ahsItemableList[0].id,
+              ahs_itemable_type: ahsItemable(
+                this.ahsItemableList[0].ahs_itemable_type
+              ),
+            },
+          });
+          this.$emit('ahs-item-added');
+        }
+      },
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
@@ -207,7 +278,6 @@
       },
     },
     components: {
-      FloatingActionButton,
       AhsItemRow,
       AhsHeaderRow,
       AhsFooterRow,

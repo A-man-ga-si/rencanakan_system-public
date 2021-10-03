@@ -240,3 +240,9 @@ export const isItemPrice = ahsItemableStr => {
 };
 
 export const formatCurrency = number => new Intl.NumberFormat().format(number);
+
+export const checkQueryPath = (basePath, path) => {
+  return `${basePath}${
+    path && !String(path).startsWith('?') ? `/${path}` : path
+  }`;
+};

@@ -1,4 +1,8 @@
-import { queryAhs } from '../../../services/master/ahs.service';
+import {
+  queryAhs,
+  postAhs,
+  getAhs,
+} from '../../../services/master/ahs.service';
 
 const state = {
   ahs: [],
@@ -18,6 +22,14 @@ const actions = {
   async fetchAhs({ commit }, province) {
     const data = await queryAhs('', `arrange=true&province=${province}`);
     commit('setAhs', data.data.data.ahs);
+    return data;
+  },
+  async storeAhs(ctx, payload) {
+    const data = await postAhs('', payload);
+    return data;
+  },
+  async destroyAhs(ctx, ahsId) {
+    const data = await getAhs(`${ahsId}/delete`);
     return data;
   },
 };

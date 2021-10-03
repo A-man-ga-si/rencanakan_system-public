@@ -23,14 +23,21 @@
           :units-list="getUnit"
           :ahs-itemable-list="getAhsItemableIds"
           :ahs-item="ahs"
+          @ahs-deleted="fetchAhs(selectedProvince)"
+          @ahs-item-added="fetchAhs(selectedProvince)"
+          @ahs-item-updated="fetchAhs(selectedProvince)"
         />
       </li>
     </ul>
+    <AddAhs @ahs-added="fetchAhs(selectedProvince)" />
+    <FloatingActionButton v-b-modal.add-ahs-modal />
   </div>
 </template>
 
 <script>
+  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AhsItem from '@/components/Master/Ahs/AhsItem.vue';
+  import AddAhs from '@/components/Master/Ahs/AddAhs.vue';
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
@@ -63,6 +70,8 @@
     },
     components: {
       AhsItem,
+      FloatingActionButton,
+      AddAhs,
     },
     watch: {
       selectedProvince() {

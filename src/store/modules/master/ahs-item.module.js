@@ -1,4 +1,7 @@
-import { getAhsItem } from '../../../services/master/ahs-item.service';
+import {
+  getAhsItem,
+  postAhsItem,
+} from '../../../services/master/ahs-item.service';
 
 const state = {
   ahsItemableIds: [],
@@ -18,6 +21,14 @@ const actions = {
   async fetchAhsItemableIds({ commit }) {
     const data = await getAhsItem('itemable-ids');
     commit('setAhsItemableIds', data.data.data.ahsItemableIds);
+    return data;
+  },
+  async storeAhsItem(ctx, { ahsId, form }) {
+    const data = await postAhsItem(ahsId, form);
+    return data;
+  },
+  async updateAhsItem(ctx, { ahsItemId, form }) {
+    const data = await postAhsItem(`${ahsItemId}/update`, form);
     return data;
   },
 };

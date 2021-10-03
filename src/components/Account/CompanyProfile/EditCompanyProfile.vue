@@ -117,6 +117,7 @@
           });
           Notify.success('Berhasil mengupdate profil perusahaan');
         } catch (err) {
+          console.error(err);
           this.checkForInvalidResponse(err);
         }
       },
@@ -129,6 +130,7 @@
           this.companyProfileInput.value = '';
           Notify.success('Berhasil mengupdate profil perusahaan');
         } catch (err) {
+          console.error(err);
           Notify.failure('Error saat mencoba mengupdate profil perusahaan');
         }
       },
