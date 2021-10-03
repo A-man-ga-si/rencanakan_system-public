@@ -31,6 +31,11 @@ const actions = {
     const data = await postAhsItem(`${ahsItemId}/update`, form);
     return data;
   },
+  async deleteAhsItem(ctx, ahsItemId) {
+    const data = await getAhsItem(`${ahsItemId}/delete`);
+    console.log(data);
+    return data;
+  },
 };
 
 export default {

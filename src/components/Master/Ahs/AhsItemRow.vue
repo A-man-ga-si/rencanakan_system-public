@@ -42,13 +42,18 @@
     </td>
     <td>{{ getItemPrice }}</td>
     <td>{{ getSubtotalPrice }}</td>
+    <td>
+      <DeleteButton @click.prevent="submitDeleteAhsItem" />
+    </td>
   </tr>
 </template>
 
 <script>
+  import DeleteButton from '@/components/DataTable/Actions/DeleteButton';
   import { mapActions } from 'vuex';
   import { isItemPrice, ahsItemable, formatCurrency } from './../../../utils';
   import { Notify } from 'notiflix';
+  import { showConfirmAlert } from './../../../utils';
 
   export default {
     props: ['ahsItem', 'idx', 'codesList', 'unitsList', 'ahsItemableList'],
@@ -67,7 +72,7 @@
       };
     },
     methods: {
-      ...mapActions(['updateAhsItem']),
+      ...mapActions(['updateAhsItem', 'deleteAhsItem']),
       async submitUpdateAhsItem() {
         const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
         const ahsItemableIdType = this.ahsItemableId.split('~');
@@ -90,10 +95,22 @@
         Notify.success('Berhasil mengupdate item AHS');
         this.$emit('ahs-item-updated');
       },
+      async submitDeleteAhsItem() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus Item AHS',
+          text: 'Aksi ini tidak dapat dibatalkan',
+        });
+        if (isConfirmed) {
+          await this.deleteAhsItem(this.ahsItem.id);
+          Notify.success('Berhasil menghapus item ahs');
+          this.$emit('ahs-item-deleted');
+        }
+      },
     },
     computed: {
       ahsItemableType() {
-        return ahsItemable(this.ahsItem.ahs_itemable_type);
+        const ahsItemableData = this.ahsItem.ahs_itemable_type;
+        return ahsItemable(ahsItemableData);
       },
       ahsItemName() {
         return this.ahsItemableType == 'ItemPrice'
@@ -115,9 +132,20 @@
         return `Rp. ${formatCurrency(this.ahsItem.subtotal)}`;
       },
     },
+    components: {
+      DeleteButton,
+    },
     watch: {
       coefficient(e) {
         console.log(e);
+      },
+      ahsItem(e) {
+        this.name = isItemPrice(e.ahs_itemable_type)
+          ? e.ahs_itemable.name
+          : e.name;
+        this.unitId = isItemPrice(this.ahsItem.ahs_itemable_type)
+          ? this.ahsItem.ahs_itemable.unit.hashid
+          : this.ahsItem.unit?.hashid;
       },
     },
   };

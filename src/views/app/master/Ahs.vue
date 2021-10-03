@@ -26,10 +26,11 @@
           @ahs-deleted="fetchAhs(selectedProvince)"
           @ahs-item-added="fetchAhs(selectedProvince)"
           @ahs-item-updated="fetchAhs(selectedProvince)"
+          @ahs-item-deleted="fetchAhs(selectedProvince)"
         />
       </li>
     </ul>
-    <AddAhs @ahs-added="fetchAhs(selectedProvince)" />
+    <AddAhs @ahs-added="ahsAdded" />
     <FloatingActionButton v-b-modal.add-ahs-modal />
   </div>
 </template>
@@ -59,6 +60,11 @@
         'fetchUnit',
         'fetchAhsItemableIds',
       ]),
+      ahsAdded() {
+        this.fetchUnit();
+        this.fetchAhsItemableIds();
+        this.fetchAhs(this.selectedProvince);
+      },
       async loadProvinces() {
         const data = await this.fetchProvinces();
         this.provinces = data;

@@ -42,6 +42,7 @@
             <th scope="col">Koefisien</th>
             <th scope="col">Harga Sat (Rp.)</th>
             <th scope="col">Jumlah (Rp.)</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +56,7 @@
             :idx="idx"
             :ahs-item="laborAhs"
             @ahs-item-updated="onAhsItemUpdated"
+            @ahs-item-deleted="onAhsItemDeleted"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
@@ -78,6 +80,7 @@
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="ingredientsAhs"
             @ahs-item-updated="onAhsItemUpdated"
+            @ahs-item-deleted="onAhsItemDeleted"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
@@ -91,9 +94,7 @@
             </td>
           </tr>
           <AhsFooterRow title="Total Bahan" :value="totalBahan" />
-          <tr class="bg-primary">
-            <th colspan="7">C. PERALATAN</th>
-          </tr>
+          <AhsHeaderRow title="C. PERALATAN" />
           <AhsItemRow
             v-for="(toolsAhs, idx) in ahsItem.item_arranged.tools"
             :key="`C-${idx}`"
@@ -103,6 +104,7 @@
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="toolsAhs"
             @ahs-item-updated="onAhsItemUpdated"
+            @ahs-item-deleted="onAhsItemDeleted"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
@@ -126,6 +128,7 @@
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="othersAhs"
             @ahs-item-updated="onAhsItemUpdated"
+            @ahs-item-deleted="onAhsItemDeleted"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
@@ -193,8 +196,11 @@
             Notify.success('Berhasil menghapus AHS');
           }
         } catch (err) {
-          console.error(err);
-          Notify.failure('Gagal menghapus AHS');
+          if (err.response) {
+            Notify.failure(err.response.data.message);
+          } else {
+            Notify.failure('Gagal menghapus AHS');
+          }
         }
       },
       onAhsItemUpdated() {
@@ -218,6 +224,9 @@
           });
           this.$emit('ahs-item-added');
         }
+      },
+      onAhsItemDeleted() {
+        this.$emit('ahs-item-deleted');
       },
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;

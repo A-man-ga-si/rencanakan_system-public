@@ -78,9 +78,17 @@
           text: 'Aksi ini tidak dapat dibatalkan !',
         });
         if (isConfirmed) {
-          await this.deleteItemPrice(item.id);
-          Notify.success('Berhasil menghapus data harga satuan');
-          this.$emit('item-deleted');
+          try {
+            await this.deleteItemPrice(item.id);
+            Notify.success('Berhasil menghapus data harga satuan');
+            this.$emit('item-deleted');
+          } catch (err) {
+            if (err.response) {
+              Notify.failure(err.response.data.message);
+            } else {
+              Notify.failure('Gagal saat mencoba menghapus harga satuan');
+            }
+          }
         }
       },
       async doUpdatePrice(item, ref) {
