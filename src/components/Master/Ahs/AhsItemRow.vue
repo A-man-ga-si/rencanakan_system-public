@@ -136,9 +136,6 @@
       DeleteButton,
     },
     watch: {
-      coefficient(e) {
-        console.log(e);
-      },
       ahsItem(e) {
         this.name = isItemPrice(e.ahs_itemable_type)
           ? e.ahs_itemable.name

@@ -15,6 +15,9 @@
         <h5>{{ ahsItem.id }} | {{ ahsItem.name }}</h5>
       </div>
       <div class="right">
+        <h3 class="d-inline-block mb-0" style="vertical-align: top">
+          {{ ahsItemSubtotal }} |
+        </h3>
         <a
           href="#"
           @click.prevent="toggleMaincardCollapse"
@@ -149,19 +152,15 @@
           <AhsFooterRow title="Total Lain Lain" :value="totalLainLain" />
           <AhsHeaderRow
             title="E. JUMLAH HARGA TENAGA, BAHAN, DAN PERALATAN"
-            tooltip="Hello World"
+            tooltip="(A + B + C)"
             value="Rp.0 "
           />
-          <AhsHeaderRow
-            title="F. BIAYA OVERHEAD"
-            tooltip="Hello World"
-            value="Rp.0 "
-          />
-          <AhsHeaderRow title="G. PROFIT" tooltip="Hello World" value="Rp.0 " />
+          <AhsHeaderRow title="F. BIAYA OVERHEAD" tooltip="0%" value="Rp.0 " />
+          <AhsHeaderRow title="G. PROFIT" tooltip="0%" value="Rp.0 " />
           <AhsHeaderRow
             title="H. HARGA SATUAN PEKERJAAN"
-            tooltip="Hello World"
-            value="Rp.0 "
+            tooltip="(D + E)"
+            :value="ahsItemSubtotal"
           />
         </tbody>
       </table>
@@ -292,6 +291,9 @@
         }
 
         return `Rp. ${formatCurrency(val)}`;
+      },
+      ahsItemSubtotal() {
+        return `Rp. ${formatCurrency(this.ahsItem.subtotal)}`;
       },
     },
     components: {

@@ -9,7 +9,7 @@
         v-b-popover.hover="tooltip"
       />
     </th>
-    <td v-if="value != null" colspan="2">Rp. 0</td>
+    <td v-if="value != null" colspan="2">{{ value }}</td>
   </tr>
 </template>
 
