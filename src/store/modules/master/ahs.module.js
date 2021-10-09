@@ -32,6 +32,10 @@ const actions = {
     const data = await getAhs(`${ahsId}/delete`);
     return data;
   },
+  async updateAhs(ctx, { ahsId, form }) {
+    const data = await postAhs(`${ahsId}/update`, form);
+    return data;
+  },
 };
 
 export default {

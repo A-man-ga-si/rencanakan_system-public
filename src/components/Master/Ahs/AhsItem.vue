@@ -23,7 +23,12 @@
         >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a href="#" class="h4 text-primary ml-1">
+        <a
+          v-b-modal.edit-ahs-modal
+          @click.prevent="editAhs"
+          href="#"
+          class="h4 text-primary ml-1"
+        >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
         <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteAhs">
@@ -50,7 +55,7 @@
           <AhsItemRow
             v-for="(laborAhs, idx) in ahsItem.item_arranged.labor"
             :key="`A-${idx}`"
-            :codes-list="codesList"
+            :codes-list="ahsItemableList"
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :idx="idx"
@@ -75,7 +80,7 @@
             v-for="(ingredientsAhs, idx) in ahsItem.item_arranged.ingredients"
             :key="`B-${idx}`"
             :idx="idx"
-            :codes-list="codesList"
+            :codes-list="ahsItemableList"
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="ingredientsAhs"
@@ -99,7 +104,7 @@
             v-for="(toolsAhs, idx) in ahsItem.item_arranged.tools"
             :key="`C-${idx}`"
             :idx="idx"
-            :codes-list="codesList"
+            :codes-list="ahsItemableList"
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="toolsAhs"
@@ -123,7 +128,7 @@
             v-for="(othersAhs, idx) in ahsItem.item_arranged.others"
             :key="`D-${idx}`"
             :idx="idx"
-            :codes-list="codesList"
+            :codes-list="ahsItemableList"
             :units-list="unitsList"
             :ahs-itemable-list="ahsItemableList"
             :ahs-item="othersAhs"
@@ -205,6 +210,9 @@
       },
       onAhsItemUpdated() {
         this.$emit('ahs-item-updated');
+      },
+      editAhs() {
+        this.$emit('ahs-item-edit-clicked', this.ahsItem);
       },
       async addAhsItem(section) {
         if (this.ahsItemableList.length <= 0) {

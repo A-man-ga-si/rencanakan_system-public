@@ -27,10 +27,15 @@
           @ahs-item-added="fetchAhs(selectedProvince)"
           @ahs-item-updated="fetchAhs(selectedProvince)"
           @ahs-item-deleted="fetchAhs(selectedProvince)"
+          @ahs-item-edit-clicked="editAhs"
         />
       </li>
     </ul>
     <AddAhs @ahs-added="ahsAdded" />
+    <EditAhs
+      @ahs-updated="fetchAhs(selectedProvince)"
+      :selected-ahs="selectedAhs"
+    />
     <FloatingActionButton v-b-modal.add-ahs-modal />
   </div>
 </template>
@@ -39,6 +44,7 @@
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AhsItem from '@/components/Master/Ahs/AhsItem.vue';
   import AddAhs from '@/components/Master/Ahs/AddAhs.vue';
+  import EditAhs from '@/components/Master/Ahs/EditAhs.vue';
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
@@ -47,6 +53,7 @@
       unitsList: ['OH'],
       provinces: [],
       selectedProvince: '',
+      selectedAhs: {},
     }),
     created() {
       this.loadProvinces();
@@ -70,6 +77,9 @@
         this.provinces = data;
         this.selectedProvince = data[0].hashid;
       },
+      editAhs(ahs) {
+        this.selectedAhs = ahs;
+      },
     },
     computed: {
       ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds']),
@@ -78,6 +88,7 @@
       AhsItem,
       FloatingActionButton,
       AddAhs,
+      EditAhs,
     },
     watch: {
       selectedProvince() {
