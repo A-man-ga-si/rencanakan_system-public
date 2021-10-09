@@ -70,6 +70,10 @@ const data = [
         label: 'menu.master-ahs',
         to: `${adminRoot}/master/ahs`,
       },
+      {
+        label: 'menu.master-ahp',
+        to: `${adminRoot}/master/ahp`,
+      },
     ],
   },
   {

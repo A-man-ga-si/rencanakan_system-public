@@ -154,7 +154,8 @@
     "single": "Single",
     "dashboard": "Dashboard",
     "settings": "Pengaturan",
-    "master-ahs": "Master AHS"
+    "master-ahs": "Master AHS",
+    "master-ahp": "Master AHP"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",
