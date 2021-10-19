@@ -283,6 +283,17 @@ const routes = [
                 /* webpackChunkName: "masterAhs" */ './../views/app/master/Ahs.vue'
               ),
           },
+          {
+            path: 'ahp',
+            name: 'MasterAhp',
+            meta: {
+              title: 'Master AHP',
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "masterAhp" */ './../views/app/master/Ahp.vue'
+              ),
+          },
         ],
       },
     ],

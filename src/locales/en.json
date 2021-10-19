@@ -150,6 +150,7 @@
     "dashboard": "Dashboard",
     "settings": "Setting",
     "master-ahs": "Master AHS",
+    "master-equipment": "Master Equipment",
     "master-ahp": "Master AHP"
   },
   "dashboards": {
