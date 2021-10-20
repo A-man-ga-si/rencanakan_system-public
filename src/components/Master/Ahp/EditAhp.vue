@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="modalId" :ref="modalId" :title="'Tambah AHP'">
+  <b-modal :id="modalId" :ref="modalId" :title="'Edit AHP'">
     <ValidationInput
       class="mb-4"
       label="Kode"
@@ -32,14 +32,15 @@
   export default {
     mixins: [validationMixin],
     data: () => ({
-      modalId: 'add-ahp-modal',
+      modalId: 'edit-ahp-modal',
       form: {
         id: '',
         name: '',
       },
     }),
+    props: ['selectedAhp'],
     methods: {
-      ...mapActions(['storeAhp']),
+      ...mapActions(['updateAhp']),
       hideModal(refname) {
         this.$refs[refname].hide();
       },
@@ -50,14 +51,23 @@
       async submitForm() {
         try {
           this.resetInvalid();
-          const data = await this.storeAhp(this.form);
+          const data = await this.updateAhp({
+            ahpId: this.selectedAhp.id,
+            form: this.form,
+          });
           this.hideModal(this.modalId);
-          this.$emit('ahp-added');
-          Notify.success('Sukses Membuat AHP Baru');
+          this.$emit('ahp-updated');
+          Notify.success('Sukses Update AHP');
           this.resetForm();
         } catch (err) {
           this.checkForInvalidResponse(err);
         }
+      },
+    },
+    watch: {
+      selectedAhp() {
+        this.form.id = this.selectedAhp.id;
+        this.form.name = this.selectedAhp.name;
       },
     },
     components: {

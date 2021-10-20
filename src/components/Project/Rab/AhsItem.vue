@@ -171,12 +171,12 @@
     border: none;
   }
 
-  .action-close {
-    font-size: 17px;
-  }
-
   .custom-nice-border {
     border: 2px solid #ddd;
+  }
+
+  .action-close {
+    font-size: 17px;
   }
 
   td {
