@@ -45,18 +45,16 @@
             <th scope="col">Kode</th>
             <th scope="col">Koefisien</th>
             <th scope="col">Satuan</th>
-            <th scope="col">Keterangan</th>
           </tr>
         </thead>
         <tbody>
           <tr class="bg-primary">
-            <th colspan="6">A. URAIAN PERALATAN</th>
+            <th colspan="5">A. URAIAN PERALATAN</th>
           </tr>
           <tr>
             <td>1.</td>
             <td>Jenis Peralatan</td>
             <td>{{ ahpItem.id }}</td>
-            <td>-</td>
             <td>-</td>
             <td>-</td>
           </tr>
@@ -67,13 +65,14 @@
             :name="ahpAItem.name"
             :code="ahpAItem.code"
             :unit="ahpAItem.unit"
+            :tooltip="ahpAItem.tooltip"
             :coefficient="formattedAhpNumerics[ahpAItem.code]"
             :editableCoefficient="ahpAItem.editableCoefficient"
             :description="ahpAItem.description"
             @value-changed="onAhpItemChanged($event, ahpAItem)"
           />
           <tr class="bg-primary font-weight-bold">
-            <th colspan="7">B. LAIN - LAIN</th>
+            <th colspan="5">B. LAIN - LAIN</th>
           </tr>
           <AhpItemRow
             v-for="(ahpBItem, key, idx) in getAhpItemRowsData.B"
@@ -82,13 +81,14 @@
             :name="ahpBItem.name"
             :code="ahpBItem.code"
             :unit="ahpBItem.unit"
+            :tooltip="ahpBItem.tooltip"
             :coefficient="formattedAhpNumerics[ahpBItem.code]"
             :editableCoefficient="ahpBItem.editableCoefficient"
             :description="ahpBItem.description"
             @value-changed="onAhpItemChanged($event, ahpBItem)"
           />
           <tr class="bg-primary">
-            <th colspan="6">C. BIAYA PASTI PER JAM KERJA</th>
+            <th colspan="5">C. BIAYA PASTI PER JAM KERJA</th>
           </tr>
           <AhpItemRow
             v-for="(ahpCItem, key, idx) in getAhpItemRowsData.C"
@@ -97,12 +97,13 @@
             :name="ahpCItem.name"
             :code="ahpCItem.code"
             :unit="ahpCItem.unit"
+            :tooltip="replaceTooltip(ahpCItem.tooltip)"
             :coefficient="formattedAhpNumerics[ahpCItem.code]"
             :editableCoefficient="ahpCItem.editableCoefficient"
             :description="ahpCItem.description"
           />
           <tr class="bg-primary">
-            <th colspan="6">D. BIAYA OPERASI PER JAM KERJA</th>
+            <th colspan="5">D. BIAYA OPERASI PER JAM KERJA</th>
           </tr>
           <AhpItemRow
             v-for="(ahpDItem, key, idx) in getAhpItemRowsData.D"
@@ -111,13 +112,14 @@
             :name="ahpDItem.name"
             :code="ahpDItem.code"
             :unit="ahpDItem.unit"
+            :tooltip="replaceTooltip(ahpDItem.tooltip)"
             :coefficient="formattedAhpNumerics[ahpDItem.code]"
             :editableCoefficient="ahpDItem.editableCoefficient"
             :description="ahpDItem.description"
           />
           <tr class="font-weight-bold">
-            <td colspan="5" class="text-right">Total Bahan</td>
-            <td colspan="2">Rp. {{ formattedAhpNumerics.S }}</td>
+            <td colspan="4" class="text-right">TOTAL BIAYA SEWA ALAT / JAM</td>
+            <td colspan="1">Rp. {{ formattedAhpNumerics.S }}</td>
           </tr>
         </tbody>
       </table>
@@ -178,6 +180,14 @@
     },
     methods: {
       ...mapActions(['destroyAhp', 'updateAhp']),
+      replaceTooltip(tooltip = '') {
+        tooltip = tooltip.replace(/<%p%>/g, this.ahpItem.p);
+        tooltip = tooltip.replace(/<%pbb%>/g, this.ahpItem.pbb);
+        tooltip = tooltip.replace(/<%ppl%>/g, this.ahpItem.ppl);
+        tooltip = tooltip.replace(/<%pbk%>/g, this.ahpItem.pbk);
+        tooltip = tooltip.replace(/<%ppp%>/g, this.ahpItem.ppp);
+        return tooltip;
+      },
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },

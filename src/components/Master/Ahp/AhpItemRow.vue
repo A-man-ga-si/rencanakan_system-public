@@ -1,7 +1,15 @@
 <template>
   <tr>
     <td>{{ number }}.</td>
-    <td>{{ name }}</td>
+    <td>
+      {{ name }}
+      <i
+        v-if="tooltip != null"
+        @click.prevent
+        class="text-primary ml-1 iconsminds simple-icon-question"
+        v-b-popover.hover="tooltip"
+      />
+    </td>
     <td>{{ code }}</td>
     <td>
       <input
@@ -17,9 +25,6 @@
     <td>
       {{ unit }}
     </td>
-    <td>
-      <input type="text" class="inline-edit" :value="description" />
-    </td>
   </tr>
 </template>
 
@@ -33,6 +38,7 @@
       'coefficient',
       'editableCoefficient',
       'description',
+      'tooltip',
     ],
     methods: {
       valueChanged(newValue) {
