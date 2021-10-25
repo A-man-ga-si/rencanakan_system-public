@@ -59,15 +59,17 @@
     props: ['ahsItem', 'idx', 'codesList', 'unitsList', 'ahsItemableList'],
     data() {
       return {
-        name: isItemPrice(this.ahsItem.ahs_itemable_type)
-          ? this.ahsItem.ahs_itemable.name
-          : this.ahsItem.name,
+        name:
+          ahsItemable(this.ahsItem.ahs_itemable_type) === 'ItemPrice'
+            ? this.ahsItem.ahs_itemable.name
+            : this.ahsItem.name,
         ahsItemableId: `${ahsItemable(this.ahsItem.ahs_itemable_type)}~${
           this.ahsItem.ahs_itemable_id
         }`,
-        unitId: isItemPrice(this.ahsItem.ahs_itemable_type)
-          ? this.ahsItem.ahs_itemable.unit.hashid
-          : this.ahsItem.unit?.hashid,
+        unitId:
+          ahsItemable(this.ahsItem.ahs_itemable_type) === 'ItemPrice'
+            ? this.ahsItem.ahs_itemable.unit.hashid
+            : this.ahsItem.unit?.hashid,
         coefficient: this.ahsItem.coefficient,
       };
     },
@@ -78,7 +80,7 @@
         const ahsItemableIdType = this.ahsItemableId.split('~');
         const dataToUpdate = {};
 
-        if (ahsType === 'Ahs') {
+        if (ahsType === 'Ahs' || ahsType == 'Ahp') {
           dataToUpdate.name = this.name;
           dataToUpdate.unit_id = this.unitId;
         }
