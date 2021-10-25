@@ -23,7 +23,7 @@ const mutations = {
 
 const actions = {
   async fetchAhs({ commit }, province) {
-    commit('emptyAhs');
+    // commit('emptyAhs');
     const data = await queryAhs('', `arrange=true&province=${province}`);
     commit('setAhs', data.data.data.ahs);
     return data;

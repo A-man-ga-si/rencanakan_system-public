@@ -120,12 +120,18 @@
           : this.ahsItem.name;
       },
       getAhsItemableList() {
-        return this.ahsItemableList.map(ahsItemableItem => {
-          ahsItemableItem.ahs_itemable_type = ahsItemable(
-            ahsItemableItem.ahs_itemable_type
-          );
-          return ahsItemableItem;
-        });
+        const ctx = this;
+        return this.ahsItemableList
+          .filter(ahsItemableItem => {
+            return ahsItemableItem.id != ctx.ahsItem.ahs_id;
+          })
+          .map(ahsItemableItem => {
+            // console.log(ahsItemableItem);
+            ahsItemableItem.ahs_itemable_type = ahsItemable(
+              ahsItemableItem.ahs_itemable_type
+            );
+            return ahsItemableItem;
+          });
       },
       getItemPrice() {
         return `Rp. ${formatCurrency(this.ahsItem.ahs_itemable.subtotal)}`;
