@@ -1,3 +1,5 @@
+import { postProject } from '../../services/project.service';
+
 const state = {
   projects: [],
 };
@@ -17,11 +19,29 @@ const mutations = {
 
 const actions = {
   fetchProject() {},
-  createProject({ commit }, data) {
-    return new Promise((resolve, reject) => {
-      commit('pushProject', data);
-      resolve();
+  async createProject(
+    { commit },
+    {
+      activity,
+      address,
+      name,
+      job,
+      fiscalYear: fiscal_year,
+      marginProfit: profit_margin,
+      provinceId: province_id,
+    }
+  ) {
+    const res = await postProject('', {
+      activity,
+      address,
+      name,
+      fiscal_year,
+      job,
+      profit_margin,
+      province_id,
     });
+    commit('pushProject', res.data.data.project);
+    return res;
   },
 };
 

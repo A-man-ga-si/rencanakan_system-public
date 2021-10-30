@@ -26,7 +26,12 @@
       :label="$t('pages.projects.province')"
       class="has-float-label"
     >
-      <v-select :options="processedProvinces" />
+      <v-select
+        v-model="form.provinceId"
+        label="name"
+        :reduce="province => province.hashid"
+        :options="provinces"
+      />
     </b-form-group>
     <b-form-group
       :label="$t('pages.projects.fiscal-year')"
@@ -79,16 +84,6 @@
         this.hideModal(this.modalId);
       },
       ...mapActions(['createProject']),
-    },
-    watch: {
-      provinces() {
-        this.processedProvinces = this.provinces
-          ? this.provinces.map(data => ({
-              code: data.id,
-              label: data.name,
-            }))
-          : [];
-      },
     },
   };
 </script>

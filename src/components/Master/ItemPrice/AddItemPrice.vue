@@ -4,6 +4,7 @@
       :id="modalId"
       :ref="modalId"
       :title="$t('pages.master.item-price.add-item-price')"
+      no-close-on-backdrop
     >
       <div class="labeled-select position-relative mb-4">
         <span class="px-1"> Kelompok</span>
