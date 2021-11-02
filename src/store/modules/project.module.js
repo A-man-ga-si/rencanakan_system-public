@@ -1,4 +1,4 @@
-import { postProject } from '../../services/project.service';
+import { postProject, getProject } from '../../services/project.service';
 
 const state = {
   projects: [],
@@ -41,6 +41,14 @@ const actions = {
       province_id,
     });
     commit('pushProject', res.data.data.project);
+    return res;
+  },
+  async destroyProject(ctx, projectId) {
+    const res = await getProject(`${projectId}/delete`);
+    return res;
+  },
+  async updateProject(ctx, { projectId, form }) {
+    const res = await postProject(projectId, form);
     return res;
   },
 };

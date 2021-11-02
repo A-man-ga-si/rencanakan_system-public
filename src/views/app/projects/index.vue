@@ -1,5 +1,11 @@
 <template>
   <div>
+    <b-row class="mb-3">
+      <b-colxx xxs="12">
+        <piaf-breadcrumb heading="Projects" />
+        <div class="separator"></div>
+      </b-colxx>
+    </b-row>
     <a href="#" v-if="!getCompany">
       <b-alert show variant="danger" class="rounded mb-4">
         {{ $t('alert.email-no-active-company') }}
@@ -7,7 +13,11 @@
     </a>
     <b-row>
       <b-colxx xxs="12">
-        <b-card class="mb-4">
+        <ProjectItem
+          ref="project-item"
+          @edit-project-clicked="setEditedProject"
+        />
+        <!-- <b-card class="mb-4">
           <b-row v-if="getProjects.length <= 0">
             <b-col :xl="4" :md="5" :sm="6" class="mx-auto text-center">
               <b-img
@@ -25,13 +35,18 @@
           </b-row>
           <b-row v-else>
             <b-col>
-              <ProjectListTable />
+              // TODO: FIll it with ProjectItem component
             </b-col>
           </b-row>
-        </b-card>
+        </b-card> -->
       </b-colxx>
     </b-row>
-    <AddProject :provinces="getProvinces" />
+    <AddProject @project-added="reload" :provinces="getProvinces" />
+    <EditProject
+      @project-edited="reload"
+      :provinces="getProvinces"
+      :selected-project="selectedProject"
+    />
   </div>
 </template>
 
@@ -40,16 +55,25 @@
   import AddProject from './../../../components/Project/AddProject.vue';
   import { mapActions, mapGetters } from 'vuex';
   import ProjectListTable from './../../../components/Project/ProjectListTable.vue';
+  import ProjectItem from '@/components/Project/ProjectItem.vue';
+  import EditProject from '@/components/Project/EditProject.vue';
 
   export default {
     data: () => ({
       provinces: [],
+      selectedProject: {},
     }),
     beforeMount() {
       this.fetchProvinces();
     },
     methods: {
       ...mapActions(['fetchProvinces']),
+      reload() {
+        this.$refs['project-item'].reload();
+      },
+      setEditedProject(project) {
+        this.selectedProject = project;
+      },
     },
     computed: {
       ...mapGetters(['getProvinces', 'getProjects', 'getCompany']),
@@ -58,6 +82,8 @@
       AppLayout,
       AddProject,
       ProjectListTable,
+      ProjectItem,
+      EditProject,
     },
   };
 </script>

@@ -58,10 +58,6 @@
   import { Notify } from 'notiflix';
 
   export default {
-    components: {
-      EditButton,
-      DeleteButton,
-    },
     // FIXME: Please move activeProvince system to state management !
     props: ['item', 'idx', 'activeProvince'],
     methods: {
@@ -100,6 +96,10 @@
           },
         });
       },
+    },
+    components: {
+      EditButton,
+      DeleteButton,
     },
   };
 </script>

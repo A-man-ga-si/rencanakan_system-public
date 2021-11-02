@@ -81,6 +81,7 @@
       },
       async submit() {
         await this.createProject(this.form);
+        this.$emit('project-added');
         this.hideModal(this.modalId);
       },
       ...mapActions(['createProject']),
