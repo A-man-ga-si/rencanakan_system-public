@@ -27,8 +27,6 @@ import Colxx from './components/Common/Colxx';
 
 // Perfect Scrollbar Add
 import vuePerfectScrollbar from 'vue-perfect-scrollbar';
-import contentmenu from 'v-contextmenu';
-import VueLineClamp from 'vue-line-clamp';
 import VueScrollTo from 'vue-scrollto';
 
 import { getCurrentLanguage } from './utils';
@@ -37,6 +35,8 @@ import Notiflix from 'notiflix';
 import vSelect from 'vue-select';
 
 import 'vue-select/dist/vue-select.css';
+import 'pace-js';
+import 'pace-js/themes/blue/pace-theme-minimal.css';
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
@@ -59,13 +59,7 @@ Notiflix.Notify.init({
 });
 
 Vue.use(Notifications);
-Vue.use(require('vue-shortkey'));
-Vue.use(contentmenu);
 Vue.use(VueScrollTo);
-
-Vue.use(VueLineClamp, {
-  importCss: true,
-});
 
 Vue.component('piaf-breadcrumb', Breadcrumb);
 Vue.component('b-refresh-button', RefreshButton);
