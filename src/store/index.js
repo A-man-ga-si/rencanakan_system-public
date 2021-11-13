@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 import app from '../main';
 import auth from './modules/auth.module';
 import menu from './modules/menu.module';
@@ -15,6 +14,7 @@ import itemPriceGroup from './modules/master/item-price-group.module';
 import ahs from './modules/master/ahs.module';
 import ahsItem from './modules/master/ahs-item.module';
 import ahp from './modules/master/ahp.module';
+import rab from './modules/rab.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -46,5 +46,6 @@ export default new Vuex.Store({
     itemPrice,
     itemPriceGroup,
     ahsItem,
+    rab,
   },
 });

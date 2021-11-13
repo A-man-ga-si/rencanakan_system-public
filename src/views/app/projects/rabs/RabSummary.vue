@@ -1,22 +1,32 @@
 <template>
   <div class="rab-summary-page mt-5">
-    <RabSummaryItem />
-    <RabSummaryItem />
+    <RabSummaryItem
+      v-for="(rab, idx) in getRabs"
+      :key="idx"
+      :index="idx"
+      :rab-item="rab"
+    />
     <FloatingActionButton @click="fabClick" />
   </div>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
   import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
   import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
 
   export default {
-    mounted() {},
+    created() {
+      this.fetchRab(this.$route.params.id);
+    },
     methods: {
+      ...mapActions(['fetchRab']),
       fabClick(ref) {
         alert('Hello World');
-        console.log(ref);
       },
+    },
+    computed: {
+      ...mapGetters(['getRabs']),
     },
     components: {
       RabSummaryItem,

@@ -54,7 +54,6 @@
   import AppLayout from './../../../layouts/AppLayout.vue';
   import AddProject from './../../../components/Project/AddProject.vue';
   import { mapActions, mapGetters } from 'vuex';
-  import ProjectListTable from './../../../components/Project/ProjectListTable.vue';
   import ProjectItem from '@/components/Project/ProjectItem.vue';
   import EditProject from '@/components/Project/EditProject.vue';
 
@@ -81,7 +80,6 @@
     components: {
       AppLayout,
       AddProject,
-      ProjectListTable,
       ProjectItem,
       EditProject,
     },

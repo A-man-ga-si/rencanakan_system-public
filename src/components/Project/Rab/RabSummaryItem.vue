@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>I. Pekerjaan Persiapan</h5>
+        <h5>{{ romanizedRabsNumber }}. {{ rabItem.name }}</h5>
       </div>
       <div class="right">
         <a
@@ -46,21 +46,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-primary">
-            <th colspan="7">A. Pekerjaan Tanah</th>
-            <td>
-              <a href="#" class="text-white action-close">
-                <i class="iconminds simple-icon-close"></i>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>1.</td>
+          <tr v-for="(rabItem, idx) in rabItem.rab_item" :key="idx">
+            <td>{{ idx + 1 }}.</td>
             <td>
               <input
                 type="text"
                 class="inline-edit w-100"
-                value="Pekerjaan Tanah"
+                :value="rabItem.name"
               />
             </td>
             <td>
@@ -71,36 +63,13 @@
                 v-model="defaultSelectedCode"
               />
             </td>
-            <td>1,00</td>
-            <td>
-              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
-            </td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
-            <td>
-              <a href="#" class="text-danger action-close">
-                <i class="iconminds simple-icon-close"></i>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>2.</td>
             <td>
               <input
                 type="text"
                 class="inline-edit w-100"
-                value="Sewa direksi keet, los kerja dan gudang"
+                :value="rabItem.volume"
               />
             </td>
-            <td>
-              <v-select
-                name=""
-                :options="codesList"
-                id=""
-                v-model="defaultSelectedCode"
-              />
-            </td>
-            <td>1,00</td>
             <td>
               <v-select v-model="defaultSelectedUnit" :options="unitsList" />
             </td>
@@ -117,21 +86,31 @@
               <a href="#" class="d-block w-100"> + Tambah baris </a>
             </td>
           </tr>
+        </tbody>
+        <tbody
+          v-for="(rabItemHeader, idx) in rabItem.rab_item_header"
+          :key="idx"
+        >
           <tr class="bg-primary">
-            <th colspan="7">B. Pekerjaan Lainnya</th>
+            <th colspan="7">
+              {{ numToAlphabet(idx + 1) }}. {{ rabItemHeader.name }}
+            </th>
             <td>
               <a href="#" class="text-white action-close">
                 <i class="iconminds simple-icon-close"></i>
               </a>
             </td>
           </tr>
-          <tr>
-            <td>1.</td>
+          <tr
+            v-for="(rabItemHeaderItem, idx2) in rabItemHeader.rab_item"
+            :key="idx2"
+          >
+            <td>{{ idx2 + 1 }}.</td>
             <td>
               <input
                 type="text"
                 class="inline-edit w-100"
-                value="Pekerjaan Tanah"
+                :value="rabItemHeaderItem.name"
               />
             </td>
             <td>
@@ -142,7 +121,13 @@
                 v-model="defaultSelectedCode"
               />
             </td>
-            <td>1,00</td>
+            <td>
+              <input
+                type="text"
+                class="inline-edit w-100"
+                :value="rabItemHeaderItem.volume"
+              />
+            </td>
             <td>
               <v-select v-model="defaultSelectedUnit" :options="unitsList" />
             </td>
@@ -173,17 +158,42 @@
 </template>
 
 <script>
+  import { NumberToAlphabet } from 'number-to-alphabet';
+  import { toRoman } from 'roman-numerals';
+
   export default {
+    props: {
+      rabItem: {
+        type: Object,
+        required: true,
+      },
+      index: {
+        type: Number,
+        required: true,
+      },
+    },
     data: () => ({
       mainCardCollapsed: false,
       defaultSelectedCode: 'Kode 1',
       defaultSelectedUnit: 'Buah',
       codesList: ['Kode 1', 'Kode 2', 'Kode 3'],
       unitsList: ['Buah', 'm1', 'm3', 'OH'],
+      numToAlphabetInstance: null,
     }),
+    created() {
+      this.numToAlphabetInstance = new NumberToAlphabet();
+    },
     methods: {
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
+      },
+      numToAlphabet(num) {
+        return this.numToAlphabetInstance.numberToString(num).toUpperCase();
+      },
+    },
+    computed: {
+      romanizedRabsNumber() {
+        return toRoman(this.index + 1) || 0;
       },
     },
   };
