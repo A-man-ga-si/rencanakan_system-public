@@ -5,6 +5,8 @@
       :key="idx"
       :index="idx"
       :rab-item="rab"
+      :ahs-code-list="ahsCodesList"
+      :unit-code-list="unitCodesList"
     />
     <FloatingActionButton @click="fabClick" />
   </div>
@@ -16,17 +18,29 @@
   import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
 
   export default {
+    data() {
+      return {
+        projectProperties: {},
+        projects: {},
+        ahsCodesList: [],
+        unitCodesList: [],
+      };
+    },
     created() {
       this.fetchRab(this.$route.params.id);
+      this.fetchShowProject();
     },
     methods: {
-      ...mapActions(['fetchRab']),
+      ...mapActions(['fetchRab', 'fetchAhs', 'showProject']),
+      async fetchShowProject() {
+        this.projectProperties = await this.showProject(this.$route.params.id);
+      },
       fabClick(ref) {
         alert('Hello World');
       },
     },
     computed: {
-      ...mapGetters(['getRabs']),
+      ...mapGetters(['getRabs', 'getAhs', 'getProjects']),
     },
     components: {
       RabSummaryItem,

@@ -46,41 +46,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(rabItem, idx) in rabItem.rab_item" :key="idx">
-            <td>{{ idx + 1 }}.</td>
-            <td>
-              <input
-                type="text"
-                class="inline-edit w-100"
-                :value="rabItem.name"
-              />
-            </td>
-            <td>
-              <v-select
-                name=""
-                :options="codesList"
-                id=""
-                v-model="defaultSelectedCode"
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                class="inline-edit w-100"
-                :value="rabItem.volume"
-              />
-            </td>
-            <td>
-              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
-            </td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
-            <td>
-              <a href="#" class="text-danger action-close">
-                <i class="iconminds simple-icon-close"></i>
-              </a>
-            </td>
-          </tr>
+          <RabSummaryItemRow
+            v-for="(rabItem, idx) in rabItem.rab_item"
+            :index="idx"
+            :key="idx"
+            :rab-item-data="rabItem"
+          />
           <tr>
             <td colspan="8" class="font-weight-bold">
               <a href="#" class="d-block w-100"> + Tambah baris </a>
@@ -160,6 +131,7 @@
 <script>
   import { NumberToAlphabet } from 'number-to-alphabet';
   import { toRoman } from 'roman-numerals';
+  import RabSummaryItemRow from '@/components/Project/RabSummaryItemRow.vue';
 
   export default {
     props: {
@@ -195,6 +167,9 @@
       romanizedRabsNumber() {
         return toRoman(this.index + 1) || 0;
       },
+    },
+    components: {
+      RabSummaryItemRow,
     },
   };
 </script>

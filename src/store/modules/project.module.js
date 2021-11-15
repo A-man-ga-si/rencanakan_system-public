@@ -18,7 +18,11 @@ const mutations = {
 };
 
 const actions = {
-  fetchProject() {},
+  async showProject(ctx, projectId) {
+    const data = await getProject(projectId);
+    console.log(data);
+    return data;
+  },
   async createProject(
     { commit },
     {
