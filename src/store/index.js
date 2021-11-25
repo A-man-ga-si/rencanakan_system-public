@@ -15,6 +15,7 @@ import ahs from './modules/master/ahs.module';
 import ahsItem from './modules/master/ahs-item.module';
 import ahp from './modules/master/ahp.module';
 import rab from './modules/rab.module';
+import customItemPrice from './modules/custom-item-price.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -47,5 +48,6 @@ export default new Vuex.Store({
     itemPriceGroup,
     ahsItem,
     rab,
+    customItemPrice,
   },
 });

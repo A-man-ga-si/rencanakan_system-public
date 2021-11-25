@@ -14,14 +14,33 @@
         </div>
       </b-col>
     </b-row>
-    <ItemPriceItem />
+    <ItemPriceItem
+      v-for="(itemPriceGroup, idx) in getCustomItemPrice"
+      :key="idx"
+      :item-price-group="itemPriceGroup"
+      :title="itemPriceGroup.name"
+      :index="idx"
+    />
   </div>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
   import ItemPriceItem from '../../../../../components/Project/Rab/ItemPriceItem.vue';
 
   export default {
+    data() {
+      return {};
+    },
+    created() {
+      this.fetchCustomItemPrices(this.$route.params.id);
+    },
+    methods: {
+      ...mapActions(['fetchCustomItemPrices']),
+    },
+    computed: {
+      ...mapGetters(['getCustomItemPrice']),
+    },
     components: {
       ItemPriceItem,
     },

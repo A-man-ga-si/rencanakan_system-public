@@ -11,7 +11,7 @@
     "
   >
     <div class="heading">
-      <h5>I. UPAH TENAGA KERJA</h5>
+      <h5>{{ index + 1 }}. {{ title }}</h5>
     </div>
     <div class="body">
       <table class="table text-left">
@@ -24,34 +24,43 @@
             <th scope="col">Harga</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1.</td>
-            <td>Pekerja</td>
-            <td>OH</td>
-            <td>L.01</td>
-            <td>
-              <input type="text" class="rab-inline-editor" value="90,000" />
-            </td>
-          </tr>
-          <tr>
-            <td>2.</td>
-            <td>Tukang</td>
-            <td>OH</td>
-            <td>L.02</td>
-            <td class="text-primary font-weight-bold">
-              <input
-                type="text"
-                class="rab-inline-editor text-primary font-weight-bold"
-                value="80,000"
-              />
-            </td>
-          </tr>
-        </tbody>
+        <tr
+          v-for="(item, idx) in itemPriceGroup.custom_item_price.concat(
+            itemPriceGroup.item_price
+          )"
+          :key="idx"
+        >
+          <td>{{ idx + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.unit.name }}</td>
+          <td>{{ item.project_id ? item.code : item.id }}</td>
+          <td>
+            <input type="text" class="rab-inline-editor" :value="item.price" />
+          </td>
+        </tr>
       </table>
     </div>
   </div>
 </template>
+
+<script>
+  export default {
+    data() {
+      return {
+        mergedItemPrices: [],
+      };
+    },
+    props: ['title', 'index', 'itemPriceGroup'],
+    watch: {
+      itemPriceGroup() {
+        this.mergedItemPrices = this.itemPriceGroup.custom_item_price.concat(
+          this.itemPriceGroup.item_price
+        );
+        console.log(this.itemPriceGroup);
+      },
+    },
+  };
+</script>
 
 <style scoped>
   .inline-edit {
