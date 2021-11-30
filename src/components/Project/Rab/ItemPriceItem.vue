@@ -24,18 +24,21 @@
             <th scope="col">Harga</th>
           </tr>
         </thead>
-        <tr
-          v-for="(item, idx) in itemPriceGroup.custom_item_price.concat(
-            itemPriceGroup.item_price
-          )"
-          :key="idx"
-        >
+        <tr v-for="(item, idx) in concatedItemPrice" :key="idx">
+          <!-- <td>{{ item }}</td> -->
           <td>{{ idx + 1 }}</td>
           <td>{{ item.name }}</td>
-          <td>{{ item.unit.name }}</td>
+          <td>{{ item.unit ? item.unit.name : '' }}</td>
           <td>{{ item.project_id ? item.code : item.id }}</td>
           <td>
             <input type="text" class="rab-inline-editor" :value="item.price" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="8" class="font-weight-bold">
+            <a href="#" @click.prevent="addItemPrice" class="d-block w-100">
+              + Tambah Baris
+            </a>
           </td>
         </tr>
       </table>
@@ -51,12 +54,25 @@
       };
     },
     props: ['title', 'index', 'itemPriceGroup'],
+    methods: {
+      addItemPrice() {
+        console.log(this.itemPriceGroup.hashid);
+      },
+    },
+    computed: {
+      concatedItemPrice() {
+        const ip = this.itemPriceGroup.custom_item_price.concat(
+          this.itemPriceGroup.item_price
+        );
+        console.log(ip);
+        return ip;
+      },
+    },
     watch: {
       itemPriceGroup() {
         this.mergedItemPrices = this.itemPriceGroup.custom_item_price.concat(
           this.itemPriceGroup.item_price
         );
-        console.log(this.itemPriceGroup);
       },
     },
   };
