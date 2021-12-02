@@ -22,6 +22,7 @@ const actions = {
     commit('setCustomItemPrice', data.data.data.customItemPriceGroups);
     return data;
   },
+  deleteCustomItemPrice({ commit }, { projectId, customItemPriceId }) {},
 };
 
 export default {

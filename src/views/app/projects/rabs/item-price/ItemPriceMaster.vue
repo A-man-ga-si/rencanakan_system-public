@@ -17,16 +17,21 @@
     <ItemPriceItem
       v-for="(itemPriceGroup, idx) in getCustomItemPrice"
       :key="idx"
+      :units="getUnit"
       :item-price-group="itemPriceGroup"
       :title="itemPriceGroup.name"
       :index="idx"
     />
+    <FloatingActionButton @click="showAddItemPriceDialog" />
+    <AddItemPriceGroup @custom-item-price-group-added="reloadData" />
   </div>
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
   import ItemPriceItem from '../../../../../components/Project/Rab/ItemPriceItem.vue';
+  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
+  import AddItemPriceGroup from '@/components/Project/Rab/AddItemPriceGroup.vue';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     data() {
@@ -34,15 +39,24 @@
     },
     created() {
       this.fetchCustomItemPrices(this.$route.params.id);
+      this.fetchUnit();
     },
     methods: {
-      ...mapActions(['fetchCustomItemPrices']),
+      ...mapActions(['fetchCustomItemPrices', 'fetchUnit']),
+      showAddItemPriceDialog() {
+        this.$bvModal.show('add-item-price-group');
+      },
+      reloadData() {
+        this.fetchCustomItemPrices(this.$route.params.id);
+      },
     },
     computed: {
-      ...mapGetters(['getCustomItemPrice']),
+      ...mapGetters(['getCustomItemPrice', 'getUnit']),
     },
     components: {
       ItemPriceItem,
+      FloatingActionButton,
+      AddItemPriceGroup,
     },
   };
 </script>

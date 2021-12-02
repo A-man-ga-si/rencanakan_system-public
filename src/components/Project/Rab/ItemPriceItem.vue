@@ -22,18 +22,16 @@
             <th scope="col">Satuan</th>
             <th scope="col">Kode</th>
             <th scope="col">Harga</th>
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
-        <tr v-for="(item, idx) in concatedItemPrice" :key="idx">
-          <!-- <td>{{ item }}</td> -->
-          <td>{{ idx + 1 }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.unit ? item.unit.name : '' }}</td>
-          <td>{{ item.project_id ? item.code : item.id }}</td>
-          <td>
-            <input type="text" class="rab-inline-editor" :value="item.price" />
-          </td>
-        </tr>
+        <ItemPriceItemRow
+          v-for="(item, idx) in concatedItemPrice"
+          :key="idx"
+          :index="idx"
+          :item="item"
+          :units="units"
+        />
         <tr>
           <td colspan="8" class="font-weight-bold">
             <a href="#" @click.prevent="addItemPrice" class="d-block w-100">
@@ -47,25 +45,25 @@
 </template>
 
 <script>
+  import ItemPriceItemRow from '@/components/Project/Rab/ItemPriceItemRow.vue';
+
   export default {
+    props: ['title', 'index', 'itemPriceGroup', 'units'],
     data() {
       return {
         mergedItemPrices: [],
       };
     },
-    props: ['title', 'index', 'itemPriceGroup'],
     methods: {
       addItemPrice() {
-        console.log(this.itemPriceGroup.hashid);
+        this.$bvModal.show('add-item-price-group');
       },
     },
     computed: {
       concatedItemPrice() {
-        const ip = this.itemPriceGroup.custom_item_price.concat(
-          this.itemPriceGroup.item_price
-        );
-        console.log(ip);
-        return ip;
+        const customItemPrice = this.itemPriceGroup.custom_item_price || [];
+        const itemPrice = this.itemPriceGroup.item_price || [];
+        return itemPrice.concat(customItemPrice);
       },
     },
     watch: {
@@ -75,14 +73,13 @@
         );
       },
     },
+    components: {
+      ItemPriceItemRow,
+    },
   };
 </script>
 
 <style scoped>
-  .inline-edit {
-    border: none;
-  }
-
   .action-close {
     font-size: 17px;
   }
@@ -93,10 +90,5 @@
 
   td {
     vertical-align: middle;
-  }
-
-  .rab-inline-editor {
-    /* width: 100%; */
-    border: none !important;
   }
 </style>
