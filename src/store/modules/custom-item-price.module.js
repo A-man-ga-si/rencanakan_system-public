@@ -1,4 +1,7 @@
-import { getCustomItemPrice } from '@/services/custom-item-price.service';
+import {
+  getCustomItemPrice,
+  postCustomItemPrice,
+} from '@/services/custom-item-price.service';
 
 const state = {
   customItemPrice: [],
@@ -20,6 +23,13 @@ const actions = {
       `project/${projectId}/custom-item-price-group`
     );
     commit('setCustomItemPrice', data.data.data.customItemPriceGroups);
+    return data;
+  },
+  async storeCustomItemPrice({ commit }, { projectId, form }) {
+    const data = await postCustomItemPrice(
+      `project/${projectId}/custom-item-price`,
+      form
+    );
     return data;
   },
   deleteCustomItemPrice({ commit }, { projectId, customItemPriceId }) {},

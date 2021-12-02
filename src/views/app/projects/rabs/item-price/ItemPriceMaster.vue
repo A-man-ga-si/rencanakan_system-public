@@ -21,6 +21,8 @@
       :item-price-group="itemPriceGroup"
       :title="itemPriceGroup.name"
       :index="idx"
+      @custom-item-price-group-deleted="reloadData"
+      @custom-item-price-added="reloadData"
     />
     <FloatingActionButton @click="showAddItemPriceDialog" />
     <AddItemPriceGroup @custom-item-price-group-added="reloadData" />

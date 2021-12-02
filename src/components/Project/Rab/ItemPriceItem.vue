@@ -10,8 +10,19 @@
       shadow-sm
     "
   >
-    <div class="heading">
-      <h5>{{ index + 1 }}. {{ title }}</h5>
+    <div class="heading d-flex justify-content-between">
+      <div class="left">
+        <h5>{{ index + 1 }}. {{ title }}</h5>
+      </div>
+      <div v-if="itemPriceGroup.project_id" class="right">
+        <a
+          class="h4 text-danger ml-1"
+          href="#"
+          @click.prevent="deleteCustomItemPriceGroup"
+        >
+          <i class="iconsmind simple-icon-close"> </i>
+        </a>
+      </div>
     </div>
     <div class="body">
       <table class="table text-left">
@@ -46,6 +57,9 @@
 
 <script>
   import ItemPriceItemRow from '@/components/Project/Rab/ItemPriceItemRow.vue';
+  import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix';
+  import { showConfirmAlert } from '@/utils';
 
   export default {
     props: ['title', 'index', 'itemPriceGroup', 'units'],
@@ -55,11 +69,44 @@
       };
     },
     methods: {
-      addItemPrice() {
-        this.$bvModal.show('add-item-price-group');
+      ...mapActions(['destroyCustomItemPriceGroup', 'storeCustomItemPrice']),
+      async addItemPrice() {
+        try {
+          await this.storeCustomItemPrice({
+            projectId: this.$route.params.id,
+            form: {
+              custom_item_priceable_id: this.itemPriceGroup.hashid,
+              custom_item_priceable_type: this.itemPriceGroup.project_id
+                ? 'CustomItemPriceGroup'
+                : 'ItemPriceGroup',
+            },
+          });
+          this.$emit('custom-item-price-added');
+        } catch (err) {
+          Notify.failure('Gagal menambahkan harga satuan');
+        }
+      },
+      async deleteCustomItemPriceGroup() {
+        try {
+          const { isConfirmed } = await showConfirmAlert({
+            title: 'Hapus Kagegori Harga Satuan ?',
+            text: 'Jika anda menghapus kategori ini, maka semua harga satuan di dalam list akan terhapus permanent !',
+          });
+          if (isConfirmed) {
+            await this.destroyCustomItemPriceGroup({
+              projectId: this.$route.params.id,
+              customItemPriceGroupId: this.itemPriceGroup.hashid,
+            });
+            Notify.success('Berhasil menghapus kategori harga satuan');
+            this.$emit('custom-item-price-group-deleted');
+          }
+        } catch (err) {
+          Notify.failure('Gagal menghapus kategori harga satuan');
+        }
       },
     },
     computed: {
+      ...mapGetters(['getUnit']),
       concatedItemPrice() {
         const customItemPrice = this.itemPriceGroup.custom_item_price || [];
         const itemPrice = this.itemPriceGroup.item_price || [];
@@ -67,6 +114,7 @@
       },
     },
     watch: {
+      getUnit() {},
       itemPriceGroup() {
         this.mergedItemPrices = this.itemPriceGroup.custom_item_price.concat(
           this.itemPriceGroup.item_price

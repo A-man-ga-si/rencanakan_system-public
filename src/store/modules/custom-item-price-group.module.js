@@ -1,4 +1,7 @@
-import { postCustomItemPriceGroup } from '../../services/custom-item-price-group.service';
+import {
+  postCustomItemPriceGroup,
+  getCustomItemPriceGroup,
+} from '../../services/custom-item-price-group.service';
 
 const state = {};
 
@@ -13,6 +16,14 @@ const actions = {
       form
     );
     return data;
+  },
+  async destroyCustomItemPriceGroup(
+    ctx,
+    { projectId, customItemPriceGroupId }
+  ) {
+    await getCustomItemPriceGroup(
+      `project/${projectId}/custom-item-price-group/${customItemPriceGroupId}/delete`
+    );
   },
 };
 

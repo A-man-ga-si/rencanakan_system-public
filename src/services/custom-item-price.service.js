@@ -4,3 +4,7 @@ import { post, get } from './api.service';
 export const getCustomItemPrice = (path = '', query = '', headers = {}) => {
   return get(path, query, headers);
 };
+
+export const postCustomItemPrice = (path = '', payload = {}, headers = {}) => {
+  return post(path, payload, headers);
+};
