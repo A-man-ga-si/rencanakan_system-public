@@ -32,7 +32,22 @@ const actions = {
     );
     return data;
   },
-  deleteCustomItemPrice({ commit }, { projectId, customItemPriceId }) {},
+  async deleteCustomItemPrice({ commit }, { projectId, customItemPriceCode }) {
+    const data = await getCustomItemPrice(
+      `project/${projectId}/custom-item-price/${customItemPriceCode}/delete`
+    );
+    return data;
+  },
+  async customItemPricePartialUpdate(
+    ctx,
+    { projectId, customItemPriceId, form }
+  ) {
+    const data = await postCustomItemPrice(
+      `project/${projectId}/custom-item-price/${customItemPriceId}`,
+      form
+    );
+    console.log(data);
+  },
 };
 
 export default {

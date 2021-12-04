@@ -110,7 +110,23 @@
       concatedItemPrice() {
         const customItemPrice = this.itemPriceGroup.custom_item_price || [];
         const itemPrice = this.itemPriceGroup.item_price || [];
-        return itemPrice.concat(customItemPrice);
+
+        if (itemPrice.length) {
+          customItemPrice.forEach((cip, idx) => {
+            for (const ip of itemPrice) {
+              console.log(cip);
+              if (ip.id == cip.code) {
+                ip.price = cip.price;
+                customItemPrice.splice(idx, 1);
+                // delete customItemPrice[idx];
+              }
+            }
+          });
+        }
+
+        const concatedItemPrices = itemPrice.concat(customItemPrice);
+
+        return concatedItemPrices;
       },
     },
     watch: {
