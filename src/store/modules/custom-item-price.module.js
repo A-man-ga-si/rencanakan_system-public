@@ -1,7 +1,12 @@
-import {
-  getCustomItemPrice,
-  postCustomItemPrice,
-} from '@/services/custom-item-price.service';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const customItemPrice = new ApiTwo({
+  basePath: 'custom-item-price',
+});
+
+const customItemPriceGroup = new ApiTwo({
+  basePath: 'custom-item-price-group',
+});
 
 const state = {
   customItemPrice: [],
@@ -18,35 +23,26 @@ const mutations = {
 };
 
 const actions = {
+  // prettier-ignore
   async fetchCustomItemPrices({ commit }, projectId) {
-    const data = await getCustomItemPrice(
-      `project/${projectId}/custom-item-price-group`
-    );
+    const data = await customItemPriceGroup.setPreviousPath(`project/${projectId}`).get();
     commit('setCustomItemPrice', data.data.data.customItemPriceGroups);
     return data;
   },
+
+  // prettier-ignore
   async storeCustomItemPrice({ commit }, { projectId, form }) {
-    const data = await postCustomItemPrice(
-      `project/${projectId}/custom-item-price`,
-      form
-    );
-    return data;
+    return await customItemPrice.setPreviousPath(`project/${projectId}`).post('', form);
   },
+
+  // prettier-ignore
   async deleteCustomItemPrice({ commit }, { projectId, customItemPriceCode }) {
-    const data = await getCustomItemPrice(
-      `project/${projectId}/custom-item-price/${customItemPriceCode}/delete`
-    );
-    return data;
+    return await customItemPrice.setPreviousPath(`project/${projectId}`).get(`${customItemPriceCode}/delete`);
   },
-  async customItemPricePartialUpdate(
-    ctx,
-    { projectId, customItemPriceId, form }
-  ) {
-    const data = await postCustomItemPrice(
-      `project/${projectId}/custom-item-price/${customItemPriceId}`,
-      form
-    );
-    console.log(data);
+
+  // prettier-ignore
+  async customItemPricePartialUpdate(ctx, { projectId, customItemPriceId, form }) {
+    return await customItemPrice.setPreviousPath(`project/${projectId}`).post(customItemPriceId, form);
   },
 };
 

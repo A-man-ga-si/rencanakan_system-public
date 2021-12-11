@@ -1,4 +1,8 @@
-import { getRab } from '../../services/rab.service';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const rabApi = new ApiTwo({
+  basePath: 'rab',
+});
 
 const state = {
   rabs: [],
@@ -16,7 +20,7 @@ const mutations = {
 
 const actions = {
   async fetchRab({ commit, state }, projectId) {
-    const data = await getRab(`project/${projectId}/rab`);
+    const data = await rabApi.setPreviousPath(`project/${projectId}`).get();
     commit('setRabs', data.data.data.rabs);
     return data;
   },

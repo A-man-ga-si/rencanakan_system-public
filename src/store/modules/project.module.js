@@ -1,4 +1,8 @@
-import { postProject, getProject } from '../../services/project.service';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const projectApi = new ApiTwo({
+  basePath: 'project',
+});
 
 const state = {
   projects: [],
@@ -19,23 +23,13 @@ const mutations = {
 
 const actions = {
   async showProject(ctx, projectId) {
-    const data = await getProject(projectId);
-    console.log(data);
+    const data = await projectApi.get(projectId);
     return data;
   },
-  async createProject(
-    { commit },
-    {
-      activity,
-      address,
-      name,
-      job,
-      fiscalYear: fiscal_year,
-      marginProfit: profit_margin,
-      provinceId: province_id,
-    }
-  ) {
-    const res = await postProject('', {
+
+  // prettier-ignore
+  async createProject({ commit }, { activity, address, name, job, fiscalYear: fiscal_year, marginProfit: profit_margin, provinceId: province_id, }) {
+    const res = await projectApi.post('', {
       activity,
       address,
       name,
@@ -47,13 +41,13 @@ const actions = {
     commit('pushProject', res.data.data.project);
     return res;
   },
+
   async destroyProject(ctx, projectId) {
-    const res = await getProject(`${projectId}/delete`);
-    return res;
+    return await projectApi.get(`${projectId}/delete`);
   },
+
   async updateProject(ctx, { projectId, form }) {
-    const res = await postProject(projectId, form);
-    return res;
+    return await projectApi.post(projectId, form);
   },
 };
 

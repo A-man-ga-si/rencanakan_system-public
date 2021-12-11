@@ -1,5 +1,8 @@
-// prettier-ignore
-import { postCompany } from '../../services/company.service';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const companyApi = new ApiTwo({
+  basePath: 'company',
+});
 
 const state = {
   company: {},
@@ -15,12 +18,12 @@ const mutations = {
 
 const actions = {
   async addCompanyProfile({ commit }, payload) {
-    const res = await postCompany('', payload);
+    const res = await companyApi.post('', payload);
     commit('setCompany', res.data.data.company);
     return res;
   },
   async updateCompany({ commit }, { companyId, form }) {
-    const res = await postCompany(companyId, form);
+    const res = await companyApi.post(companyId, form);
     commit('setCompany', res.data.data.company);
     return res;
   },

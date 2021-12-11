@@ -1,7 +1,11 @@
+import ApiTwo from '../../services/ApiTwo.service';
 import { isAuthGuardActive } from '../../constants/config';
-import { postUser, getUser } from '../../services/user.service';
 // prettier-ignore
 import { setCurrentUser, getCurrentUser, setCurrentUserPhoto } from '../../utils';
+
+const userApi = new ApiTwo({
+  basePath: 'user',
+});
 
 const state = {
   currentUser: isAuthGuardActive ? getCurrentUser() : {},
@@ -27,10 +31,10 @@ const mutations = {
 
 const actions = {
   async fetchUserInfo(ctx, userId) {
-    return await getUser(userId, '');
+    return await userApi.get(userId, '');
   },
   async updateUserInfo({ commit }, { userId, data }) {
-    const res = await postUser(userId, data);
+    const res = await userApi.post(userId, data);
     const user = res.data.data.user;
     const userData = {
       id: user.hashid,
@@ -50,7 +54,7 @@ const actions = {
     return res;
   },
   async updateUserPhoto({ commit }, { userId, formData }) {
-    const res = await postUser(userId, formData, {
+    const res = await userApi.post(userId, formData, null, {
       'Content-Type': 'multipart/formdata',
     });
     const { photo } = res.data.data.user;

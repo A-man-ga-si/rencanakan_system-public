@@ -1,7 +1,8 @@
-import {
-  postCustomItemPriceGroup,
-  getCustomItemPriceGroup,
-} from '../../services/custom-item-price-group.service';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const customItemPriceGroupApi = new ApiTwo({
+  basePath: 'custom-item-price-group',
+});
 
 const state = {};
 
@@ -10,20 +11,14 @@ const getters = {};
 const mutations = {};
 
 const actions = {
+  // prettier-ignore
   async storeCustomItemPriceGroup(ctx, { projectId, form }) {
-    const data = await postCustomItemPriceGroup(
-      `project/${projectId}/custom-item-price-group`,
-      form
-    );
-    return data;
+    return await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).post('', form);
   },
-  async destroyCustomItemPriceGroup(
-    ctx,
-    { projectId, customItemPriceGroupId }
-  ) {
-    await getCustomItemPriceGroup(
-      `project/${projectId}/custom-item-price-group/${customItemPriceGroupId}/delete`
-    );
+
+  // prettier-ignore
+  async destroyCustomItemPriceGroup(ctx, { projectId, customItemPriceGroupId }) {
+    await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).get(`${customItemPriceGroupId}/delete`);
   },
 };
 

@@ -1,6 +1,8 @@
-import axios from 'axios';
-import { getProvinces } from './../../services/master/province.service';
-import { apiProvinces } from '../../constants/config';
+import ApiTwo from '../../services/ApiTwo.service';
+
+const provinceApi = new ApiTwo({
+  basePath: 'provinces',
+});
 
 const state = {
   provinces: [],
@@ -19,7 +21,7 @@ const mutations = {
 const actions = {
   async fetchProvinces({ commit, state }) {
     if (state.provinces.length) return state.provinces;
-    const data = await getProvinces();
+    const data = await provinceApi.get();
     commit('setProvinces', data.data.data.provinces);
     return data.data.data.provinces;
   },

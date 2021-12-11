@@ -1,5 +1,9 @@
-import { postAuth } from '../../services/auth.service';
+import ApiTwo from '../../services/ApiTwo.service';
 import { setToken, setCurrentUser } from '../../utils';
+
+const authApi = new ApiTwo({
+  basePath: 'auth',
+});
 
 const state = {
   loginError: null,
@@ -64,7 +68,7 @@ const actions = {
       commit('clearError');
       commit('setProcessing', true);
 
-      const res = await postAuth('login', payload);
+      const res = await authApi.post('login', payload);
 
       const { user, token } = res.data.data;
 
@@ -98,7 +102,7 @@ const actions = {
     try {
       commit('clearError');
       commit('setProcessing', true);
-      return await postAuth('register', payload);
+      return await authApi.post('register', payload);
     } catch (err) {
       throw err;
     } finally {
@@ -110,7 +114,7 @@ const actions = {
     try {
       commit('clearError');
       commit('setProcessing', true);
-      const res = await postAuth('forgot-password', { email });
+      const res = await authApi.post('forgot-password', { email });
       commit('setForgotMailSuccess', true);
       return res;
     } catch (err) {
@@ -119,7 +123,7 @@ const actions = {
   },
   async verifyToken({ commit }) {
     try {
-      const res = await postAuth('verify');
+      const res = await authApi.post('verify');
       const user = res.data.data.user;
       const userData = {
         id: user.hashid,
@@ -143,12 +147,12 @@ const actions = {
     }
   },
   async verifyResetPasswordToken(ctx, token) {
-    return await postAuth('reset-password/verify-token', {
+    return await authApi.post('reset-password/verify-token', {
       reset_password_token: token,
     });
   },
   async resetPassword({ commit }, { token, password, passwordConfirmation }) {
-    const res = await postAuth(`reset-password/${token}`, {
+    const res = await authApi.post(`reset-password/${token}`, {
       password,
       password_confirmation: passwordConfirmation,
     });
@@ -156,7 +160,7 @@ const actions = {
     return res;
   },
   async logout({ commit }) {
-    const res = await postAuth('logout');
+    const res = await authApi.post('logout');
     setCurrentUser(null);
     setToken(null);
     commit('setLogout');

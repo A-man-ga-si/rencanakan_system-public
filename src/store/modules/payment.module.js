@@ -1,17 +1,22 @@
 import { setTokenAmount } from '../../utils';
-import { postPayment } from '../../services/payment.service';
+import ApiTwo from '../../services/ApiTwo.service';
 
 const state = {};
 
+const paymentApi = new ApiTwo({
+  basePath: 'payment',
+});
+
 const actions = {
-  fetchSnapToken(ctx, data) {
-    return postPayment('fetch-snap-token', {
+  async fetchSnapToken(ctx, data) {
+    return await paymentApi.post('fetch-snap-token', {
       carts: data,
     });
   },
+
   // NOTE: For demo purpose only !
   async demoAddToken(ctx, tokenAmount) {
-    const res = await postPayment('demo-add-token', {
+    const res = await paymentApi.post('demo-add-token', {
       token_amount: tokenAmount,
     });
     setTokenAmount(res.data.data.current_token_amount);
