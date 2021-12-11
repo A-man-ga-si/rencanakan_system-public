@@ -37,6 +37,7 @@ import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 import 'pace-js';
 import 'pace-js/themes/blue/pace-theme-minimal.css';
+// import 'pace-js/themes/blue/pace-theme-center-radar.css';
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
