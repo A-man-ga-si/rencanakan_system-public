@@ -1,8 +1,9 @@
-import {
-  postItemPriceGroup,
-  getItemPriceGroup,
-  queryItemPriceGroup,
-} from './../../../services/master/item-price-group.service';
+import ApiTwo from '../../../services/ApiTwo.service';
+
+const masterItemPriceGroup = new ApiTwo({
+  previousPath: 'master',
+  basePath: 'item-price-group',
+});
 
 const state = {
   itemPriceGroups: [],
@@ -20,21 +21,21 @@ const mutations = {
 
 const actions = {
   async fetchItemPriceGroup({ commit }) {
-    const data = await queryItemPriceGroup('?datatable=false');
+    const data = await masterItemPriceGroup.query('', 'datatable=false');
     commit('setItemPriceGroups', data.data.data.itemPriceGroups);
     return data;
   },
+
   async storeItemPriceGroup(ctx, payload) {
-    const data = await postItemPriceGroup('', payload);
-    return data;
+    return await masterItemPriceGroup.post('', payload);
   },
+
   async destroyItemPriceGroup(ctx, id) {
-    const data = await getItemPriceGroup(`${id}/delete`);
-    return data;
+    return await masterItemPriceGroup.get(`${id}/delete`);
   },
+
   async updateItemPriceGroup(ctx, { id, data: payload }) {
-    const data = await postItemPriceGroup(id, payload);
-    return data;
+    return await masterItemPriceGroup.post(id, payload);
   },
 };
 

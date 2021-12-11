@@ -1,6 +1,7 @@
 import ApiTwo from '../../services/ApiTwo.service';
 
 const provinceApi = new ApiTwo({
+  previousPath: 'master',
   basePath: 'provinces',
 });
 

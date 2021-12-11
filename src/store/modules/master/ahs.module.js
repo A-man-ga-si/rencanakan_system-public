@@ -1,8 +1,9 @@
-import {
-  queryAhs,
-  postAhs,
-  getAhs,
-} from '../../../services/master/ahs.service';
+import ApiTwo from '../../../services/ApiTwo.service';
+
+const masterAhsApi = new ApiTwo({
+  previousPath: 'master',
+  basePath: 'ahs',
+});
 
 const state = {
   ahs: [],
@@ -16,6 +17,7 @@ const mutations = {
   setAhs(state, ahs) {
     state.ahs = ahs;
   },
+
   emptyAhs(state) {
     state.ahs = [];
   },
@@ -23,22 +25,22 @@ const mutations = {
 
 const actions = {
   async fetchAhs({ commit }, province) {
-    // commit('emptyAhs');
-    const data = await queryAhs('', `arrange=true&province=${province}`);
+    // prettier-ignore
+    const data = await masterAhsApi.query('', `arrange=true&province=${province}`);
     commit('setAhs', data.data.data.ahs);
     return data;
   },
+
   async storeAhs(ctx, payload) {
-    const data = await postAhs('', payload);
-    return data;
+    return await masterAhsApi.post('', payload);
   },
+
   async destroyAhs(ctx, ahsId) {
-    const data = await getAhs(`${ahsId}/delete`);
-    return data;
+    return await masterAhsApi.get(`${ahsId}/delete`);
   },
+
   async updateAhs(ctx, { ahsId, form }) {
-    const data = await postAhs(`${ahsId}/update`, form);
-    return data;
+    return await masterAhsApi.post(`${ahsId}/update`, form);
   },
 };
 

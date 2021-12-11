@@ -1,7 +1,9 @@
-import {
-  getAhsItem,
-  postAhsItem,
-} from '../../../services/master/ahs-item.service';
+import ApiTwo from '../../../services/ApiTwo.service';
+
+const masterAhsItemApi = new ApiTwo({
+  previousPath: 'master',
+  basePath: 'ahs-item',
+});
 
 const state = {
   ahsItemableIds: [],
@@ -19,22 +21,21 @@ const mutations = {
 
 const actions = {
   async fetchAhsItemableIds({ commit }) {
-    const data = await getAhsItem('itemable-ids');
+    const data = await masterAhsItemApi.get('itemable-ids');
     commit('setAhsItemableIds', data.data.data.ahsItemableIds);
     return data;
   },
+
   async storeAhsItem(ctx, { ahsId, form }) {
-    const data = await postAhsItem(ahsId, form);
-    return data;
+    return await masterAhsItemApi.post(ahsId, form);
   },
+
   async updateAhsItem(ctx, { ahsItemId, form }) {
-    const data = await postAhsItem(`${ahsItemId}/update`, form);
-    return data;
+    return await masterAhsItemApi.post(`${ahsItemId}/update`, form);
   },
+
   async deleteAhsItem(ctx, ahsItemId) {
-    const data = await getAhsItem(`${ahsItemId}/delete`);
-    console.log(data);
-    return data;
+    return await masterAhsItemApi.get(`${ahsItemId}/delete`);
   },
 };
 

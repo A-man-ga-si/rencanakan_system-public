@@ -56,7 +56,7 @@ class ApiTwo {
     buildPath += this.previousPath ? `${this.previousPath}/` : '';
     buildPath += `${this.basePath}/`;
     buildPath += path;
-    buildPath += query || '';
+    buildPath += query ? `?${query}` : '';
     return buildPath;
   }
 

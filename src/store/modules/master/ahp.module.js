@@ -1,4 +1,9 @@
-import { postAhp, getAhp } from '../../../services/master/ahp.service';
+import ApiTwo from '../../../services/ApiTwo.service';
+
+const masterAhpApi = new ApiTwo({
+  previousPath: 'master',
+  basePath: 'ahp',
+});
 
 const state = {
   ahp: [],
@@ -16,20 +21,23 @@ const mutations = {
 
 const actions = {
   async fetchAhp({ commit }) {
-    const data = await getAhp();
+    const data = await masterAhpApi.get();
     commit('setAhp', data.data.data);
     return data;
   },
+
   async storeAhp(ctx, payload) {
-    const data = await postAhp('', payload);
+    const data = await masterAhpApi.post('', payload);
     return data;
   },
+
   async destroyAhp(ctx, id) {
-    const data = await getAhp(`${id}/delete`);
+    const data = await masterAhpApi.get(`${id}/delete`);
     return data;
   },
+
   async updateAhp(ctx, { ahpId, form }) {
-    const data = await postAhp(ahpId, form);
+    const data = await masterAhpApi.post(ahpId, form);
     return data;
   },
 };

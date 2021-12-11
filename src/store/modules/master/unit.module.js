@@ -1,8 +1,9 @@
-import {
-  getUnit,
-  postUnit,
-  queryUnit,
-} from '../../../services/master/unit.service';
+import ApiTwo from '../../../services/ApiTwo.service';
+
+const masterUnitApi = new ApiTwo({
+  previousPath: 'master',
+  basePath: 'unit',
+});
 
 const state = {
   units: [],
@@ -20,23 +21,20 @@ const mutations = {
 
 const actions = {
   async fetchUnit({ commit }) {
-    const data = await queryUnit('', 'datatable=false');
+    const data = await masterUnitApi.query('', 'datatable=false');
     commit('setUnits', data.data.data.units);
     return data;
   },
+
   async storeUnit(ctx, { name }) {
-    const data = await postUnit('', {
-      name,
-    });
-    return data;
+    // prettier-ignore
+    return await masterUnitApi.post('', { name });
   },
   async updateUnit(ctx, { id, data: payload }) {
-    const data = await postUnit(id, payload);
-    return data;
+    return await masterUnitApi.post(id, payload);
   },
   async destroyUnit(ctx, id) {
-    const data = await getUnit(`${id}/delete`);
-    return data;
+    return await masterUnitApi.get(`${id}/delete`);
   },
 };
 
