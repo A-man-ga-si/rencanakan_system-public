@@ -176,9 +176,9 @@
     computed: {
       ...mapGetters(['currentUser']),
       profileImage() {
-        return this.currentUser
+        return this.currentUser?.img
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`
-          : '#';
+          : `${apiDomain}/assets/images/default-profile-picture.svg`;
       },
     },
     components: {

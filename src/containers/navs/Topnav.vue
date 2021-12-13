@@ -191,9 +191,9 @@
         return formatter.format(this.currentUser.token_amount);
       },
       profileImage() {
-        return this.currentUser
+        return this.currentUser?.img
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`
-          : '#';
+          : `${apiDomain}/assets/images/default-profile-picture.svg`;
       },
     },
     beforeDestroy() {
