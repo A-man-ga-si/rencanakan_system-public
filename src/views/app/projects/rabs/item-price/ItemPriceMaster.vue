@@ -24,9 +24,14 @@
       @custom-item-price-group-deleted="reloadData"
       @custom-item-price-added="reloadData"
       @custom-item-price-deleted="reloadData"
+      @edit-bt-custom-item-price-group-clicked="fillEditData"
     />
     <FloatingActionButton @click="showAddItemPriceDialog" />
     <AddItemPriceGroup @custom-item-price-group-added="reloadData" />
+    <EditItemPriceGroup
+      :edited-data="editedItemPriceGroup"
+      @custom-item-price-group-updated="reloadData"
+    />
   </div>
 </template>
 
@@ -34,11 +39,14 @@
   import ItemPriceItem from '../../../../../components/Project/Rab/ItemPriceItem.vue';
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AddItemPriceGroup from '@/components/Project/Rab/AddItemPriceGroup.vue';
+  import EditItemPriceGroup from '@/components/Project/Rab/EditItemPriceGroup.vue';
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
     data() {
-      return {};
+      return {
+        editedItemPriceGroup: {},
+      };
     },
     created() {
       this.fetchCustomItemPrices(this.$route.params.id);
@@ -52,6 +60,9 @@
       reloadData() {
         this.fetchCustomItemPrices(this.$route.params.id);
       },
+      fillEditData(data) {
+        this.editedItemPriceGroup = data;
+      },
     },
     computed: {
       ...mapGetters(['getCustomItemPrice', 'getUnit']),
@@ -60,6 +71,7 @@
       ItemPriceItem,
       FloatingActionButton,
       AddItemPriceGroup,
+      EditItemPriceGroup,
     },
   };
 </script>

@@ -14,7 +14,14 @@
       <div class="left">
         <h5>{{ index + 1 }}. {{ title }}</h5>
       </div>
-      <div v-if="itemPriceGroup.project_id" class="right">
+      <div v-if="!itemPriceGroup.is_default" class="right">
+        <a
+          class="h4 text-primary ml-1"
+          href="#"
+          @click.prevent="updateCustomItemPrice"
+        >
+          <i class="iconsmind simple-icon-close"> </i>
+        </a>
         <a
           class="h4 text-danger ml-1"
           href="#"
@@ -75,10 +82,8 @@
           await this.storeCustomItemPrice({
             projectId: this.$route.params.id,
             form: {
-              custom_item_priceable_id: this.itemPriceGroup.hashid,
-              custom_item_priceable_type: this.itemPriceGroup.project_id
-                ? 'CustomItemPriceGroup'
-                : 'ItemPriceGroup',
+              custom_item_price_group_id: this.itemPriceGroup.hashid,
+              project_id: this.$route.params.id,
             },
           });
           this.$emit('custom-item-price-added');
@@ -102,6 +107,17 @@
           }
         } catch (err) {
           Notify.failure('Gagal menghapus kategori harga satuan');
+        }
+      },
+      updateCustomItemPrice() {
+        try {
+          this.$bvModal.show('edit-item-price-group');
+          this.$emit(
+            'edit-bt-custom-item-price-group-clicked',
+            this.itemPriceGroup
+          );
+        } catch (err) {
+          console.error(err);
         }
       },
     },

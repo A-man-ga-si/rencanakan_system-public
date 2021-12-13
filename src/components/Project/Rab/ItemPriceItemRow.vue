@@ -3,7 +3,7 @@
     <td>{{ index + 1 }}</td>
     <td>
       <input
-        v-if="isCustomItemPrice(item)"
+        v-if="!item.is_default"
         type="text"
         class="rab-inline-editor"
         style="width: 100%"
@@ -14,25 +14,25 @@
     </td>
     <td>
       <v-select
-        v-if="isCustomItemPrice(item)"
+        v-if="!item.is_default"
         label="name"
         class="rab-inline-editor"
         :reduce="unit => unit.hashid"
         v-model="form.unit.hashid"
         :options="units"
-        @change="partialUpdate('unit_id')"
+        @input="partialUpdate('unit_id')"
       />
       <span v-else>{{ item.unit.name }}</span>
     </td>
     <td>
       <input
-        v-if="isCustomItemPrice(item)"
+        v-if="!item.is_default"
         type="text"
         class="rab-inline-editor"
         v-model="form.code"
         @change="partialUpdate('code')"
       />
-      <span v-else>{{ item.id }}</span>
+      <span v-else>{{ item.code }}</span>
     </td>
     <td>
       <input
@@ -43,7 +43,7 @@
       />
     </td>
     <td>
-      <div class="action-bt" v-if="isCustomItemPrice(item)">
+      <div class="action-bt" v-if="!item.is_default">
         <DeleteButton @click.prevent="destroyCustomItemPrice" />
       </div>
     </td>
@@ -106,17 +106,12 @@
 
         const data = await this.customItemPricePartialUpdate({
           projectId: this.$route.params.id,
-          customItemPriceId: this.isCustomItemPrice(this.item)
-            ? this.item.hashid
-            : this.item.id,
+          customItemPriceId: this.item.hashid,
           form: {
             name,
             unit_id: unit.hashid,
             code,
             price,
-            model: this.isCustomItemPrice(this.item)
-              ? 'CustomItemPrice'
-              : 'ItemPrice',
           },
         });
       },

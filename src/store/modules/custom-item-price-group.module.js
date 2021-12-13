@@ -20,6 +20,13 @@ const actions = {
   async destroyCustomItemPriceGroup(ctx, { projectId, customItemPriceGroupId }) {
     await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).get(`${customItemPriceGroupId}/delete`);
   },
+
+  // prettier-ignore
+  async updateCustomItemPriceGroup(ctx, { projectId, customItemPriceGroupId, form }) {
+    await customItemPriceGroupApi
+      .setPreviousPath(`project/${projectId}`)
+      .post(customItemPriceGroupId, form);
+  },
 };
 
 export default {

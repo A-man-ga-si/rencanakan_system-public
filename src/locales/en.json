@@ -338,6 +338,7 @@
       },
       "item-price-group": {
         "add-item-price-group": "Add Item Price Group",
+        "edit-item-price-group": "Edit Item Price Group",
         "update-item-price-group": "Update Item Price Group",
         "item-price-group-name": "Name"
       },

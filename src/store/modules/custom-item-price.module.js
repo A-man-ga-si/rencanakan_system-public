@@ -1,10 +1,10 @@
 import ApiTwo from '../../services/ApiTwo.service';
 
-const customItemPrice = new ApiTwo({
+const customItemPriceApi = new ApiTwo({
   basePath: 'custom-item-price',
 });
 
-const customItemPriceGroup = new ApiTwo({
+const customItemPriceGroupApi = new ApiTwo({
   basePath: 'custom-item-price-group',
 });
 
@@ -25,24 +25,24 @@ const mutations = {
 const actions = {
   // prettier-ignore
   async fetchCustomItemPrices({ commit }, projectId) {
-    const data = await customItemPriceGroup.setPreviousPath(`project/${projectId}`).get();
+    const data = await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).get();
     commit('setCustomItemPrice', data.data.data.customItemPriceGroups);
     return data;
   },
 
   // prettier-ignore
   async storeCustomItemPrice({ commit }, { projectId, form }) {
-    return await customItemPrice.setPreviousPath(`project/${projectId}`).post('', form);
+    return await customItemPriceApi.setPreviousPath(`project/${projectId}`).post('', form);
   },
 
   // prettier-ignore
   async deleteCustomItemPrice({ commit }, { projectId, customItemPriceCode }) {
-    return await customItemPrice.setPreviousPath(`project/${projectId}`).get(`${customItemPriceCode}/delete`);
+    return await customItemPriceApi.setPreviousPath(`project/${projectId}`).get(`${customItemPriceCode}/delete`);
   },
 
   // prettier-ignore
   async customItemPricePartialUpdate(ctx, { projectId, customItemPriceId, form }) {
-    return await customItemPrice.setPreviousPath(`project/${projectId}`).post(customItemPriceId, form);
+    return await customItemPriceApi.setPreviousPath(`project/${projectId}`).post(customItemPriceId, form);
   },
 };
 
