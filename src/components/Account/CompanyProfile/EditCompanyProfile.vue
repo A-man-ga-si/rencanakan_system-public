@@ -61,7 +61,10 @@
   import ValidationInput from './../../Common/ValidationInput.vue';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
-  import { apiDomain } from '../../../constants/config';
+  import {
+    apiDomain,
+    defaultCompanyPictureName,
+  } from '../../../constants/config';
 
   export default {
     mixins: [validationMixin],
@@ -89,7 +92,7 @@
       companyImage() {
         return this.getCompany.picture
           ? `${apiDomain}/storage/uploads/company/profile-picture/${this.getCompany.picture}`
-          : '#';
+          : `${apiDomain}/assets/images/${defaultCompanyPictureName}`;
       },
     },
     created() {

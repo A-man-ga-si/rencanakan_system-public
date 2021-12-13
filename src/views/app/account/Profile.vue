@@ -75,7 +75,10 @@
   import ValidationInput from './../../../components/Common/ValidationInput.vue';
   import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
-  import { apiDomain } from '../../../constants/config';
+  import {
+    apiDomain,
+    defaultProfilePictureName,
+  } from '../../../constants/config';
 
   export default {
     mixins: [validationMixin],
@@ -178,7 +181,7 @@
       profileImage() {
         return this.currentUser?.img
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`
-          : `${apiDomain}/assets/images/default-profile-picture.svg`;
+          : `${apiDomain}/assets/images/${defaultProfilePictureName}`;
       },
     },
     components: {
