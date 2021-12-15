@@ -23,7 +23,7 @@
         >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a href="#" class="h4 text-primary ml-1">
+        <a href="#" @click.prevent="editAhp" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
         <a
@@ -211,7 +211,7 @@
       },
 
       editAhp() {
-        this.$emit('custom-ahp-item-edit-clicked', this.ahpItem);
+        this.$emit('custom-ahp-item-edit-clicked', this.customAhp);
       },
     },
     components: {

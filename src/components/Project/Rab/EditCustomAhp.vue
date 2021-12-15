@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="modalId" :ref="modalId" :title="'Tambah Costum AHP'">
+  <b-modal :id="modalId" :ref="modalId" :title="'Update Custom AHP'">
     <ValidationInput
       class="mb-4"
       label="Kode"
@@ -31,8 +31,10 @@
 
   export default {
     mixins: [validationMixin],
+    props: ['editedCustomAhp'],
     data: () => ({
-      modalId: 'add-custom-ahp-modal',
+      modalId: 'update-custom-ahp-modal',
+      customAhpId: '',
       form: {
         code: '',
         name: '',
@@ -44,23 +46,32 @@
         this.$refs[refname].hide();
       },
       resetForm() {
-        this.form.id = '';
+        this.form.code = '';
         this.form.name = '';
+        this.customAhpId = '';
       },
       async submitForm() {
         try {
           this.resetInvalid();
-          const data = await this.storeCustomAhp({
+          const data = await this.updateCustomAhp({
+            customAhpId: this.customAhpId,
             projectId: this.$route.params.id,
             form: this.form,
           });
           this.hideModal(this.modalId);
-          this.$emit('custom-ahp-added');
-          Notify.success('Sukses Membuat AHP Baru');
+          this.$emit('custom-ahp-updated');
+          Notify.success('Sukses Mengupdate AHP');
           this.resetForm();
         } catch (err) {
           this.checkForInvalidResponse(err);
         }
+      },
+    },
+    watch: {
+      editedCustomAhp() {
+        this.form.code = this.editedCustomAhp.code;
+        this.form.name = this.editedCustomAhp.name;
+        this.customAhpId = this.editedCustomAhp.hashid;
       },
     },
     components: {

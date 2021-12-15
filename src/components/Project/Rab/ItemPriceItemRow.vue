@@ -102,8 +102,6 @@
       },
       async partialUpdate(updatedKey) {
         const { name, unit, code, price } = this.form;
-        console.log(this.form);
-
         const data = await this.customItemPricePartialUpdate({
           projectId: this.$route.params.id,
           customItemPriceId: this.item.hashid,
