@@ -7,6 +7,7 @@
       :key="idx"
       @custom-ahp-item-edit-clicked="showEditCustomAhpModal"
       @custom-ahp-deleted="reloadData"
+      @custom-ahp-item-changed="reloadData"
     />
     <AddCustomAhp @custom-ahp-added="reloadData" />
     <EditCustomAhp
