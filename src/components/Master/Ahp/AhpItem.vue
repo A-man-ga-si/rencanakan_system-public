@@ -131,14 +131,16 @@
 <script>
   import AhpItemRow from '@/components/Master/Ahp/AhpItemRow.vue';
   import ahpItemRowsData from '@/data/items/ahp-item-rows';
+  import ahpMixins from '@/mixins/ahp-mixins';
   import { mapActions } from 'vuex';
-  import { formatCurrency, showConfirmAlert } from './../../../utils';
+  import { showConfirmAlert } from './../../../utils';
   import { Notify } from 'notiflix';
 
   export default {
     data: () => ({
       mainCardCollapsed: false,
     }),
+    mixins: [ahpMixins],
     props: ['ahpItem'],
     computed: {
       getAhpItemRowsData() {
@@ -146,51 +148,28 @@
       },
       /**
        * formattedAhpNumerics
+       *
        * Return same value as ahpItem props, but with fixed floating point
        */
       formattedAhpNumerics() {
-        // Make copy of ahpItem to remap as fixed floating point
         let ahpItemCp = { ...this.ahpItem };
 
-        for (const d in ahpItemCp) {
-          /**
-           * Because ahpItem is also content String value (e.g name, code created_at, updated_at)
-           * So it need to check if d is number
-           */
-          if (typeof ahpItemCp[d] == 'number') {
-            // Convert to float and make it fixed by 2 numbers after decimal
-            ahpItemCp[d] = Number.parseFloat(ahpItemCp[d]).toFixed(2);
-
-            if (
-              d == 'H' ||
-              d == 'I' ||
-              d == 'J' ||
-              d == 'K' ||
-              d == 'L' ||
-              d == 'M' ||
-              d == 'P' ||
-              d == 'S'
-            ) {
-              ahpItemCp[d] = formatCurrency(ahpItemCp[d]);
-            }
-          }
-        }
-        return ahpItemCp;
+        // formatAhpNumerics is in ahpMixins
+        return this.formatAhpNumerics(ahpItemCp);
       },
     },
     methods: {
       ...mapActions(['destroyAhp', 'updateAhp']),
+
       replaceTooltip(tooltip = '') {
-        tooltip = tooltip.replace(/<%p%>/g, this.ahpItem.p);
-        tooltip = tooltip.replace(/<%pbb%>/g, this.ahpItem.pbb);
-        tooltip = tooltip.replace(/<%ppl%>/g, this.ahpItem.ppl);
-        tooltip = tooltip.replace(/<%pbk%>/g, this.ahpItem.pbk);
-        tooltip = tooltip.replace(/<%ppp%>/g, this.ahpItem.ppp);
-        return tooltip;
+        // tooltipReplacer is in ahpMixins
+        return this.tooltipReplacer(tooltip);
       },
+
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
+
       async onAhpItemChanged(e, ahpVal) {
         await this.updateAhp({
           ahpId: this.ahpItem.id,
@@ -201,6 +180,7 @@
         this.$emit('ahp-item-changed');
         Notify.success('Berhasil mengubah AHP');
       },
+
       async deleteAhp() {
         const { isConfirmed } = await showConfirmAlert({
           title: 'Hapus AHP',
@@ -212,6 +192,7 @@
           Notify.success('Berhasil menghapus AHP');
         }
       },
+
       editAhp() {
         this.$emit('ahp-item-edit-clicked', this.ahpItem);
       },

@@ -55,8 +55,8 @@ class ApiTwo {
     let buildPath = `${apiUrl}/`;
     buildPath += this.previousPath ? `${this.previousPath}/` : '';
     buildPath += `${this.basePath}/`;
-    buildPath += path;
-    buildPath += query ? `?${query}` : '';
+    buildPath += encodeURI(path);
+    buildPath += query ? `?${encodeURI(query)}` : '';
     return buildPath;
   }
 

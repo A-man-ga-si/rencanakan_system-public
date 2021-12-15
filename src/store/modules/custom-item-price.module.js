@@ -20,9 +20,16 @@ const mutations = {
   setCustomItemPrice(state, customItemPrices) {
     state.customItemPrice = customItemPrices;
   },
+  clearCustomItemPrice(state) {
+    state.customItemPrice = [];
+  },
 };
 
 const actions = {
+  flushCustemItemPrices({ commit }) {
+    commit('clearCustomItemPrice');
+  },
+
   // prettier-ignore
   async fetchCustomItemPrices({ commit }, projectId) {
     const data = await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).get();

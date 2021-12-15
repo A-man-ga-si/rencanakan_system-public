@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>T.07 | 1 m3 Pekerjaan Galian Tanah Berbatu</h5>
+        <h5>{{ customAhp.code }} | {{ customAhp.name }}</h5>
       </div>
       <div class="right">
         <a
@@ -26,7 +26,11 @@
         <a href="#" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a class="h4 text-danger ml-1" href="#">
+        <a
+          class="h4 text-danger ml-1"
+          @click.prevent="deleteCustomAhp"
+          href="#"
+        >
           <i class="iconsmind simple-icon-close"> </i>
         </a>
       </div>
@@ -40,80 +44,81 @@
             <th scope="col">Kode</th>
             <th scope="col">Koefisien</th>
             <th scope="col">Satuan</th>
-            <th scope="col">Keterangan</th>
           </tr>
         </thead>
         <tbody>
           <tr class="bg-primary">
-            <th colspan="6">A. URAIAN PERALATAN</th>
+            <th colspan="5">A. URAIAN PERALATAN</th>
           </tr>
           <tr>
             <td>1.</td>
-            <td>Pekerja</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-            <td>Rp. 100,000</td>
-            <td>
-              <v-select :options="unitsList"></v-select>
-            </td>
+            <td>Jenis Peralatan</td>
+            <td>{{ customAhp.code }}</td>
+            <td>-</td>
+            <td>-</td>
           </tr>
-          <tr>
-            <td>2.</td>
-            <td>Mandor</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-            <td>Rp. 100,000</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-          </tr>
-          <tr class="bg-primary">
-            <th colspan="6">B. BIAYA PASTI PER JAM KERJA</th>
-          </tr>
-          <tr>
-            <td>1.</td>
-            <td>Papan Kayu</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-            <td>Rp. 100,000</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-          </tr>
-          <tr class="bg-primary">
-            <th colspan="6">C. BIAYA OPERASI PER JAM KERJA</th>
-          </tr>
-          <tr>
-            <td>1.</td>
-            <td>Jack Hammer</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-            <td>Rp. 100,000</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-          </tr>
-          <tr class="font-weight-bold">
-            <td colspan="5" class="text-right">Total Bahan</td>
-            <td colspan="2">Rp. 200,000</td>
-          </tr>
+          <AhpItemRow
+            v-for="(customAhpAItem, key, idx) in getAhpItemRowsData.A"
+            :key="Math.random() + idx"
+            :number="idx + 2"
+            :name="customAhpAItem.name"
+            :code="customAhpAItem.code"
+            :unit="customAhpAItem.unit"
+            :tooltip="customAhpAItem.tooltip"
+            :coefficient="formattedAhpNumerics[customAhpAItem.code]"
+            :editableCoefficient="customAhpAItem.editableCoefficient"
+            :description="customAhpAItem.description"
+            @value-changed="onAhpItemChanged($event, customAhpAItem)"
+          />
           <tr class="bg-primary font-weight-bold">
-            <th colspan="7">D. LAIN - LAIN</th>
+            <th colspan="5">B. LAIN - LAIN</th>
           </tr>
-          <tr>
-            <td>1.</td>
-            <td>Tingkat Suku Bunga</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
-            <td>Rp. 100,000</td>
-            <td>
-              <v-select :options="codesList"></v-select>
-            </td>
+          <AhpItemRow
+            v-for="(customAhpBItem, key, idx) in getAhpItemRowsData.B"
+            :key="Math.random() + idx"
+            :number="idx + 1"
+            :name="customAhpBItem.name"
+            :code="customAhpBItem.code"
+            :unit="customAhpBItem.unit"
+            :tooltip="customAhpBItem.tooltip"
+            :coefficient="formattedAhpNumerics[customAhpBItem.code]"
+            :editableCoefficient="customAhpBItem.editableCoefficient"
+            :description="customAhpBItem.description"
+            @value-changed="onAhpItemChanged($event, customAhpBItem)"
+          />
+          <tr class="bg-primary">
+            <th colspan="5">C. BIAYA PASTI PER JAM KERJA</th>
+          </tr>
+          <AhpItemRow
+            v-for="(customAhpCItem, key, idx) in getAhpItemRowsData.C"
+            :key="Math.random() + idx"
+            :number="idx + 1"
+            :name="customAhpCItem.name"
+            :code="customAhpCItem.code"
+            :unit="customAhpCItem.unit"
+            :tooltip="replaceTooltip(customAhpCItem.tooltip)"
+            :coefficient="formattedAhpNumerics[customAhpCItem.code]"
+            :editableCoefficient="customAhpCItem.editableCoefficient"
+            :description="customAhpCItem.description"
+          />
+          <tr class="bg-primary">
+            <th colspan="5">D. BIAYA OPERASI PER JAM KERJA</th>
+          </tr>
+          <AhpItemRow
+            v-for="(customAhpDItem, key, idx) in getAhpItemRowsData.D"
+            :key="Math.random() + idx"
+            :number="idx + 1"
+            :name="customAhpDItem.name"
+            :code="customAhpDItem.code"
+            :unit="customAhpDItem.unit"
+            :tooltip="replaceTooltip(customAhpDItem.tooltip)"
+            :coefficient="formattedAhpNumerics[customAhpDItem.code]"
+            :editableCoefficient="customAhpDItem.editableCoefficient"
+            :description="customAhpDItem.description"
+          />
+          <tr class="font-weight-bold">
+            <td colspan="4" class="text-right">TOTAL BIAYA SEWA ALAT / JAM</td>
+            <td colspan="1">Rp. {{ formattedAhpNumerics.S }}</td>
           </tr>
         </tbody>
       </table>
@@ -123,16 +128,94 @@
 </template>
 
 <script>
+  import AhpItemRow from '@/components/Master/Ahp/AhpItemRow.vue';
+  import ahpItemRowsData from '@/data/items/ahp-item-rows';
+  import ahpMixins from '@/mixins/ahp-mixins';
+  import { mapActions } from 'vuex';
+  import { showConfirmAlert } from './../../../utils';
+  import { Notify } from 'notiflix';
+
   export default {
     data: () => ({
       mainCardCollapsed: false,
-      codesList: ['Kode 1', 'Kode 2', 'Kode 3'],
-      unitsList: ['Buah', 'm1', 'm3', 'OH'],
     }),
+
+    mixins: [ahpMixins],
+
+    props: ['customAhp'],
+
+    computed: {
+      getAhpItemRowsData() {
+        return ahpItemRowsData;
+      },
+      /**
+       * formattedAhpNumerics
+       *
+       * Return same value as ahpItem props, but with fixed floating point
+       */
+      formattedAhpNumerics() {
+        let ahpItemCp = { ...this.customAhp };
+
+        // formatAhpNumerics is in ahpMixins
+        return this.formatAhpNumerics(ahpItemCp);
+      },
+    },
     methods: {
+      ...mapActions(['destroyCustomAhp', 'updateCustomAhp']),
+
+      replaceTooltip(tooltip = '') {
+        // tooltipReplacer is in ahpMixins
+        return this.tooltipReplacer(this.customAhp, tooltip);
+      },
+
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
+
+      async deleteCustomAhp() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus AHP ?',
+          text: 'Semua item yang berkaitan dengan AHP ini akan dihapus !',
+        });
+        if (isConfirmed) {
+          await this.destroyCustomAhp({
+            projectId: this.$route.params.id,
+            customAhpId: this.customAhp.hashid,
+          });
+          this.$emit('custom-ahp-deleted');
+        }
+      },
+
+      async onAhpItemChanged(e, ahpVal) {
+        await this.updateCustomAhp({
+          customAhpId: this.customAhp.hashid,
+          projectId: this.$route.params.id,
+          form: {
+            [ahpVal.code]: e.target.value,
+          },
+        });
+        this.$emit('custom-ahp-item-changed');
+        Notify.success('Berhasil mengubah AHP');
+      },
+
+      async deleteAhp() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus AHP',
+          text: 'AHP ini akan dihapus',
+        });
+        if (isConfirmed) {
+          await this.destroyCustomAhp(this.customAhp.code);
+          this.$emit('custom-ahp-deleted');
+          Notify.success('Berhasil menghapus AHP');
+        }
+      },
+
+      editAhp() {
+        this.$emit('custom-ahp-item-edit-clicked', this.ahpItem);
+      },
+    },
+    components: {
+      AhpItemRow,
     },
   };
 </script>
