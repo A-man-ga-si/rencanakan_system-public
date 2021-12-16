@@ -156,7 +156,7 @@
 
   export default {
     data: () => ({
-      mainCardCollapsed: false,
+      mainCardCollapsed: true,
     }),
 
     mixins: [ahpMixins],
