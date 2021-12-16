@@ -38,6 +38,9 @@
       <input
         type="text"
         class="rab-inline-editor"
+        :class="{
+          'text-primary font-weight-bold': !defaultPrice,
+        }"
         v-model="form.price"
         @change="partialUpdate('price')"
       />
@@ -76,7 +79,11 @@
       return {
         unitId: this.isCustomItemPrice(this.item) ? this.item.unit.hashid : '',
         form: { ...this.item },
+        defaultPrice: true,
       };
+    },
+    mounted() {
+      this.checkDefaultPrice();
     },
     methods: {
       ...mapActions(['deleteCustomItemPrice', 'customItemPricePartialUpdate']),
@@ -112,9 +119,16 @@
             price,
           },
         });
+        this.checkDefaultPrice();
       },
       isCustomItemPrice(itemPrice) {
         return !!itemPrice.project_id;
+      },
+      checkDefaultPrice() {
+        this.item.default_price != null &&
+        this.item.default_price != this.form.price
+          ? (this.defaultPrice = false)
+          : (this.defaultPrice = true);
       },
     },
     components: {
