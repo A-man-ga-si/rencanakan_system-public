@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>T.07 | 1 m3 Pekerjaan Galian Tanah Berbatu</h5>
+        <h5>{{ customAhsItem.code }} | {{ customAhsItem.name }}</h5>
       </div>
       <div class="right">
         <a
@@ -23,10 +23,18 @@
         >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a href="#" class="h4 text-primary ml-1">
+        <a
+          href="#"
+          class="h4 text-primary ml-1"
+          @click.prevent="toggleUpdateCustomAhs"
+        >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a class="h4 text-danger ml-1" href="#">
+        <a
+          class="h4 text-danger ml-1"
+          href="#"
+          @click.prevent="destroyCustomAhs"
+        >
           <i class="iconsmind simple-icon-close"> </i>
         </a>
       </div>
@@ -45,107 +53,115 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-primary">
-            <th colspan="8">A. TENAGA KERJA</th>
-          </tr>
+          <AhsHeaderRow title="A. TENAGA KERJA" />
+          <AhsItemRow
+            v-for="(laborAhs, idx) in customAhsItem.item_arranged.labor"
+            :key="`A-${idx}`"
+            :codes-list="customAhsItemableList"
+            :units-list="unitsList"
+            :custom-ahs-itemable-list="customAhsItemableList"
+            :idx="idx"
+            :custom-ahs-item="laborAhs"
+            @ahs-item-deleted="onCustomAhsItemDeleted"
+            @ahs-item-updated="onCustomAhsItemUpdated"
+          />
           <tr>
-            <td>1.</td>
-            <td>Pekerja</td>
-            <td>L.01</td>
-            <td>OH</td>
-            <td>1,00</td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
+            <td colspan="8" class="font-weight-bold">
+              <a
+                href="#"
+                @click.prevent="addCustomAhsItem('labor')"
+                class="d-block w-100"
+              >
+                + Tambah Baris
+              </a>
+            </td>
           </tr>
+          <AhsFooterRow title="Total Tenaga Kerja" :value="totalTenagaKerja" />
+          <AhsHeaderRow title="B. BAHAN" />
+          <AhsItemRow
+            v-for="(ingredientsAhs, idx) in customAhsItem.item_arranged
+              .ingredients"
+            :key="`B-${idx}`"
+            :idx="idx"
+            :codes-list="customAhsItemableList"
+            :units-list="unitsList"
+            :custom-ahs-itemable-list="customAhsItemableList"
+            :custom-ahs-item="ingredientsAhs"
+            @ahs-item-deleted="onCustomAhsItemDeleted"
+            @ahs-item-updated="onCustomAhsItemUpdated"
+          />
           <tr>
-            <td>2.</td>
-            <td>Mandor</td>
-            <td>L.02</td>
-            <td>OH</td>
-            <td>1,00</td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
+            <td colspan="8" class="font-weight-bold">
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addCustomAhsItem('ingredients')"
+              >
+                + Tambah Baris
+              </a>
+            </td>
           </tr>
-          <tr class="font-weight-bold">
-            <td colspan="6" class="text-right">Total Tenaga Kerja</td>
-            <td colspan="2">Rp. 400,000</td>
-          </tr>
-          <tr class="bg-primary">
-            <th colspan="7">B. BAHAN</th>
-          </tr>
+          <AhsFooterRow title="Total Bahan" :value="totalBahan" />
+          <AhsHeaderRow title="C. PERALATAN" />
+          <AhsItemRow
+            v-for="(toolsAhs, idx) in customAhsItem.item_arranged.tools"
+            :key="`C-${idx}`"
+            :idx="idx"
+            :codes-list="customAhsItemableList"
+            :units-list="unitsList"
+            :custom-ahs-itemable-list="customAhsItemableList"
+            :custom-ahs-item="toolsAhs"
+            @ahs-item-deleted="onCustomAhsItemDeleted"
+            @ahs-item-updated="onCustomAhsItemUpdated"
+          />
           <tr>
-            <td>1.</td>
-            <td>Papan Kayu</td>
-            <td>M.33.a</td>
-            <td>m3</td>
-            <td>0,007</td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
+            <td colspan="8" class="font-weight-bold">
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addCustomAhsItem('tools')"
+              >
+                + Tambah Baris
+              </a>
+            </td>
           </tr>
-          <tr class="font-weight-bold">
-            <td colspan="6" class="text-right">Total Bahan</td>
-            <td colspan="2">Rp. 200,000</td>
-          </tr>
-          <tr class="bg-primary">
-            <th colspan="7">C. PERALATAN</th>
-          </tr>
+          <AhsFooterRow title="Total Peralatan" :value="totalPeralatan" />
+          <AhsHeaderRow title="D. LAIN LAIN" />
+          <AhsItemRow
+            v-for="(othersAhs, idx) in customAhsItem.item_arranged.others"
+            :key="`D-${idx}`"
+            :idx="idx"
+            :codes-list="customAhsItemableList"
+            :units-list="unitsList"
+            :custom-ahs-itemable-list="customAhsItemableList"
+            :custom-ahs-item="othersAhs"
+            @ahs-item-deleted="onCustomAhsItemDeleted"
+            @ahs-item-updated="onCustomAhsItemUpdated"
+          />
           <tr>
-            <td>1.</td>
-            <td>Jack Hammer</td>
-            <td>E.14</td>
-            <td>Sewa-Hari</td>
-            <td>0,125</td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
+            <td colspan="8" class="font-weight-bold">
+              <a
+                href="#"
+                class="d-block w-100"
+                @click.prevent="addCustomAhsItem('others')"
+              >
+                + Tambah Baris
+              </a>
+            </td>
           </tr>
-          <tr class="font-weight-bold">
-            <td colspan="6" class="text-right">Total Perlatan</td>
-            <td colspan="2">Rp. 200,000</td>
-          </tr>
-          <tr class="bg-primary font-weight-bold">
-            <th colspan="6">
-              D. JUMLAH HARGA TENAGA, BAHAN, DAN PERALATAN
-              <i
-                @click.prevent
-                class="text-white ml-1 iconsminds simple-icon-question"
-                v-b-popover.hover="'Testing'"
-              />
-            </th>
-            <td colspan="2">Rp. 32,722</td>
-          </tr>
-          <tr class="bg-primary font-weight-bold">
-            <th colspan="6">
-              E. BIAYA OVERHEAD
-              <i
-                @click.prevent
-                class="text-white ml-1 iconsminds simple-icon-question"
-                v-b-popover.hover="'Testing'"
-              />
-            </th>
-            <td colspan="2">Rp. 32,722</td>
-          </tr>
-          <tr class="bg-primary font-weight-bold">
-            <th colspan="6">
-              F. PROFIT
-              <i
-                @click.prevent
-                class="text-white ml-1 iconsminds simple-icon-question"
-                v-b-popover.hover="'Testing'"
-              />
-            </th>
-            <td colspan="2">Rp. 32,722</td>
-          </tr>
-          <tr class="bg-primary font-weight-bold">
-            <th colspan="6">
-              G. HARGA SATUAN PEKERJAAN
-              <i
-                @click.prevent
-                class="text-white ml-1 iconsminds simple-icon-question"
-                v-b-popover.hover="'Testing'"
-              />
-            </th>
-            <td colspan="2">Rp. 32,722</td>
-          </tr>
+          <AhsFooterRow title="Total Lain Lain" :value="totalLainLain" />
+          <AhsHeaderRow
+            title="E. JUMLAH HARGA TENAGA, BAHAN, PERALATAN, DAN LAIN LAIN"
+            tooltip="(A + B + C + D)"
+            :value="ahsItemSubtotal"
+          />
+          <AhsHeaderRow title="F. BIAYA OVERHEAD" tooltip="0%" value="Rp.0 " />
+          <AhsHeaderRow title="G. PROFIT" tooltip="0%" value="Rp.0 " />
+          <AhsHeaderRow
+            title="H. HARGA SATUAN PEKERJAAN"
+            tooltip="(E + (F + G))"
+            :value="ahsItemFinalSubtotal"
+          />
         </tbody>
       </table>
       <hr />
@@ -154,14 +170,134 @@
 </template>
 
 <script>
+  import { formatCurrency, showConfirmAlert } from '@/utils';
+  import AhsHeaderRow from '@/components/Master/Ahs/AhsHeaderRow.vue';
+  import AhsFooterRow from '@/components/Master/Ahs/AhsFooterRow.vue';
+  import AhsItemRow from '@/components/Project/Rab/AhsItemRow.vue';
+  import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
+
   export default {
+    props: ['customAhsItem', 'customAhsItemableList', 'unitsList'],
+
     data: () => ({
       mainCardCollapsed: false,
     }),
+
     methods: {
+      ...mapActions(['storeCustomAhsItem', 'deleteCustomAhs']),
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
+
+      async addCustomAhsItem(section) {
+        await this.storeCustomAhsItem({
+          projectId: this.$route.params.id,
+          form: {
+            section,
+            custom_ahs_id: this.customAhsItem.hashid,
+          },
+        });
+        this.$emit('custom-ahs-item-added');
+      },
+
+      async destroyCustomAhs() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus AHS ?',
+          text: 'Semua data yang terhubung dengan AHS ini akan dihapus !',
+        });
+        if (isConfirmed) {
+          await this.deleteCustomAhs({
+            projectId: this.$route.params.id,
+            customAhsId: this.customAhsItem.hashid,
+          });
+          Notify.success('Berhasil menghapus AHS');
+          this.$emit('delete-custom-ahs');
+        }
+      },
+
+      toggleUpdateCustomAhs() {
+        this.$emit('custom-ahs-edit-bt-clicked', this.customAhsItem);
+      },
+
+      onCustomAhsItemDeleted() {
+        this.$emit('ahs-item-deleted');
+      },
+
+      onCustomAhsItemUpdated() {
+        this.$emit('ahs-item-updated');
+      },
+    },
+
+    computed: {
+      totalTenagaKerja() {
+        let val = 0;
+        if (
+          this.customAhsItem.item_arranged.labor &&
+          this.customAhsItem.item_arranged.labor.length > 0
+        ) {
+          val = this.customAhsItem.item_arranged.labor
+            .map(data => data.subtotal)
+            .reduce((acc, curr) => acc + curr);
+        }
+
+        return `Rp. ${formatCurrency(val)}`;
+      },
+      totalBahan() {
+        let val = 0;
+        if (
+          this.customAhsItem.item_arranged.ingredients &&
+          this.customAhsItem.item_arranged.ingredients.length > 0
+        ) {
+          val = this.customAhsItem.item_arranged.ingredients
+            .map(data => data.subtotal)
+            .reduce((acc, curr) => acc + curr);
+        }
+
+        return `Rp. ${formatCurrency(val)}`;
+      },
+      totalPeralatan() {
+        let val = 0;
+        if (
+          this.customAhsItem.item_arranged.tools &&
+          this.customAhsItem.item_arranged.tools.length > 0
+        ) {
+          val = this.customAhsItem.item_arranged.tools
+            .map(data => data.subtotal)
+            .reduce((acc, curr) => acc + curr);
+        }
+
+        return `Rp. ${formatCurrency(val)}`;
+      },
+      totalLainLain() {
+        let val = 0;
+        if (
+          this.customAhsItem.item_arranged.others &&
+          this.customAhsItem.item_arranged.others.length > 0
+        ) {
+          val = this.customAhsItem.item_arranged.others
+            .map(data => data.subtotal)
+            .reduce((acc, curr) => acc + curr);
+        }
+
+        return `Rp. ${formatCurrency(val)}`;
+      },
+      ahsItemSubtotal() {
+        return `Rp. ${formatCurrency(this.customAhsItem.subtotal)}`;
+      },
+      ahsItemFinalSubtotal() {
+        return `Rp. ${formatCurrency(
+          (0 / 100) * this.customAhsItem.subtotal +
+            (0 / 100) * this.customAhsItem.subtotal +
+            this.customAhsItem.subtotal
+        )}`;
+      },
+    },
+
+    components: {
+      AhsHeaderRow,
+      AhsFooterRow,
+      AhsItemRow,
     },
   };
 </script>

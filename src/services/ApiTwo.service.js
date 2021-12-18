@@ -56,7 +56,12 @@ class ApiTwo {
     buildPath += this.previousPath ? `${this.previousPath}/` : '';
     buildPath += `${this.basePath}/`;
     buildPath += encodeURI(path);
-    buildPath += query ? `?${encodeURI(query)}` : '';
+
+    if (query) {
+      // prettier-ignore
+      buildPath = `${buildPath.substring(0, buildPath.length - 1)}?${encodeURI(query)}`;
+    }
+
     return buildPath;
   }
 
