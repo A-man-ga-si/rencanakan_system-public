@@ -25,9 +25,9 @@
         >
           <span class="px-1"> Referensi AHS</span>
           <v-select
-            label="id"
-            :reduce="ahp => `${ahp.id}~${ahp.name}`"
-            :options="getAhp"
+            label="name"
+            :reduce="ahs => ahs.id"
+            :options="getAhsIds"
             v-model="form.selectedReference"
           />
         </div>
@@ -59,7 +59,7 @@
 <script>
   import ValidationInput from '../../Common/ValidationInput.vue';
   import validationMixins from '../../../mixins/validation-mixins';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
 
   export default {
@@ -77,8 +77,11 @@
         },
       };
     },
+    created() {
+      this.requestAhsIds();
+    },
     methods: {
-      ...mapActions(['storeCustomAhs']),
+      ...mapActions(['storeCustomAhs', 'fetchAhsIds']),
       async submit() {
         try {
           const { name, code, selectedReference } = this.form;
@@ -99,6 +102,9 @@
           Notify.failure('Gagal menambahkan kategori harga satuan');
         }
       },
+      async requestAhsIds() {
+        const data = await this.fetchAhsIds();
+      },
       hideModal(refname) {
         this.$refs[refname].hide();
       },
@@ -116,8 +122,17 @@
         }
       },
     },
+    computed: {
+      ...mapGetters(['getAhsIds']),
+    },
     components: {
       ValidationInput,
+    },
+    watch: {
+      'form.selectedReference'(e) {
+        console.log(e);
+        this.form.code = `${e}-copy`;
+      },
     },
   };
 </script>

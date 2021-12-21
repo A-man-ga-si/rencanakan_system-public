@@ -7,15 +7,21 @@ const masterAhsApi = new ApiTwo({
 
 const state = {
   ahs: [],
+  ahsIds: [],
 };
 
 const getters = {
   getAhs: state => state.ahs,
+  getAhsIds: state => state.ahsIds,
 };
 
 const mutations = {
   setAhs(state, ahs) {
     state.ahs = ahs;
+  },
+
+  setAhsIds(state, ahsIds) {
+    state.ahsIds = ahsIds;
   },
 
   emptyAhs(state) {
@@ -41,6 +47,13 @@ const actions = {
 
   async updateAhs(ctx, { ahsId, form }) {
     return await masterAhsApi.post(`${ahsId}/update`, form);
+  },
+
+  async fetchAhsIds({ commit }) {
+    const data = await masterAhsApi.get(`ids`);
+    console.log(data);
+    commit('setAhsIds', data.data.data.ahses);
+    return data;
   },
 };
 

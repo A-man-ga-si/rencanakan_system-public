@@ -12,7 +12,7 @@
     </td>
     <td>
       <v-select
-        label="name"
+        label="code"
         @input="update"
         :clearable="true"
         :reduce="customAhsIds => customAhsIds.hashid"
@@ -133,6 +133,7 @@
           {
             hashid: '',
             name: '-',
+            code: '-',
           },
         ].concat(this.customAhsIds || []);
         return combinedCustomAhs;
