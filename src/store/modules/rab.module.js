@@ -24,6 +24,24 @@ const actions = {
     commit('setRabs', data.data.data.rabs);
     return data;
   },
+
+  async destroyRab({ commit }, { projectId, rabId }) {
+    await rabApi.setPreviousPath(`project/${projectId}`).get(`${rabId}/delete`);
+  },
+
+  async updateRab({ commit }, { projectId, rabId, form }) {
+    const data = await rabApi
+      .setPreviousPath(`project/${projectId}`)
+      .post(rabId, form);
+    return data;
+  },
+
+  async storeRab({ commit }, { projectId, form }) {
+    const data = await rabApi
+      .setPreviousPath(`project/${projectId}`)
+      .post('', form);
+    return data;
+  },
 };
 
 export default {

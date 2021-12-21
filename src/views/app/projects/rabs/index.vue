@@ -43,7 +43,7 @@
   .rab-card-single .heading,
   .ahs-card-single .heading,
   .item-price-card-single .heading {
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     padding-bottom: 7px;
   }
 </style>

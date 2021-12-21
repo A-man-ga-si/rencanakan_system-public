@@ -248,10 +248,6 @@
     font-size: 17px;
   }
 
-  .custom-nice-border {
-    border: 2px solid #ddd;
-  }
-
   td {
     vertical-align: middle;
   }

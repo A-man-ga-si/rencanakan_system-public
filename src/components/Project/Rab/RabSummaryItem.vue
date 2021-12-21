@@ -26,7 +26,7 @@
         <a href="#" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a class="h4 text-danger ml-1" href="#">
+        <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteRab">
           <i class="iconsmind simple-icon-close"> </i>
         </a>
       </div>
@@ -47,14 +47,21 @@
         </thead>
         <tbody>
           <RabSummaryItemRow
-            v-for="(rabItem, idx) in rabItem.rab_item"
+            v-for="(rabItemI, idx) in rabItem.rab_item"
             :index="idx"
             :key="idx"
-            :rab-item-data="rabItem"
+            :rab-item-data="rabItemI"
+            :rab="rabItem"
+            :custom-ahs-ids="ahsCodeList"
+            :unit-ids="unitCodeList"
+            @rab-item-deleted="onRabItemDeleted"
+            @update-rab-item="onRabItemRowUpdated"
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah baris </a>
+              <a href="#" class="d-block w-100" @click.prevent="addRabItem">
+                + Tambah baris
+              </a>
             </td>
           </tr>
         </tbody>
@@ -87,7 +94,7 @@
             <td>
               <v-select
                 name=""
-                :options="codesList"
+                :options="[]"
                 id=""
                 v-model="defaultSelectedCode"
               />
@@ -100,7 +107,7 @@
               />
             </td>
             <td>
-              <v-select v-model="defaultSelectedUnit" :options="unitsList" />
+              <v-select v-model="defaultSelectedUnit" :options="[]" />
             </td>
             <td>Rp. 100,000</td>
             <td>Rp. 200,000</td>
@@ -122,7 +129,7 @@
     <div class="summary-footer">
       <div class="d-flex justify-content-between mt-3">
         <h5>Total</h5>
-        <h5>Rp.150,000</h5>
+        <h5>Rp. {{ formattedSubtotal }}</h5>
       </div>
     </div>
   </div>
@@ -132,6 +139,9 @@
   import { NumberToAlphabet } from 'number-to-alphabet';
   import { toRoman } from 'roman-numerals';
   import RabSummaryItemRow from '@/components/Project/RabSummaryItemRow.vue';
+  import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
+  import { showConfirmAlert, formatCurrency } from '@/utils';
 
   export default {
     props: {
@@ -143,29 +153,66 @@
         type: Number,
         required: true,
       },
+      unitCodeList: {
+        type: Array,
+        required: true,
+      },
+      ahsCodeList: {
+        type: Array,
+      },
     },
     data: () => ({
       mainCardCollapsed: false,
-      defaultSelectedCode: 'Kode 1',
-      defaultSelectedUnit: 'Buah',
-      codesList: ['Kode 1', 'Kode 2', 'Kode 3'],
-      unitsList: ['Buah', 'm1', 'm3', 'OH'],
       numToAlphabetInstance: null,
     }),
     created() {
       this.numToAlphabetInstance = new NumberToAlphabet();
     },
     methods: {
+      ...mapActions(['destroyRab', 'storeRabItem']),
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
       numToAlphabet(num) {
         return this.numToAlphabetInstance.numberToString(num).toUpperCase();
       },
+      async deleteRab() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus Item RAB ?',
+          text: 'Item RAB ini akan dihapus, aksi ini tidak dapat dibatalkan !',
+        });
+        if (isConfirmed) {
+          await this.destroyRab({
+            projectId: this.$route.params.id,
+            rabId: this.rabItem.hashid,
+          });
+          Notify.success('Berhasil menghapus RAB');
+          this.onRabItemDeleted();
+        }
+      },
+      async addRabItem() {
+        await this.storeRabItem({
+          projectId: this.$route.params.id,
+          rabId: this.rabItem.hashid,
+          form: {
+            rab_item_header_id: null,
+          },
+        });
+        this.$emit('rab-item-added');
+      },
+      onRabItemDeleted() {
+        this.$emit('rab-item-deleted');
+      },
+      onRabItemRowUpdated() {
+        this.$emit('rab-item-updated');
+      },
     },
     computed: {
       romanizedRabsNumber() {
         return toRoman(this.index + 1) || 0;
+      },
+      formattedSubtotal() {
+        return formatCurrency(this.rabItem.subtotal);
       },
     },
     components: {
@@ -181,10 +228,6 @@
 
   .action-close {
     font-size: 17px;
-  }
-
-  .custom-nice-border {
-    border: 2px solid #ddd;
   }
 
   .rab-table-selector {
