@@ -48,7 +48,11 @@
     </td>
     <td>{{ jumlahSubtotal }}</td>
     <td>
-      <a href="#" class="text-danger action-close" @click="deleteAhsItem">
+      <a
+        href="#"
+        class="text-danger action-close"
+        @click.prevent="deleteAhsItem"
+      >
         <i class="iconminds simple-icon-close"></i>
       </a>
     </td>

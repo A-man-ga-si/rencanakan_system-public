@@ -196,6 +196,7 @@
           rabId: this.rabItem.hashid,
           form: {
             rab_item_header_id: null,
+            volume: 0,
           },
         });
         this.$emit('rab-item-added');
