@@ -10,9 +10,14 @@
       @rab-item-deleted="reloadData"
       @rab-item-added="reloadData"
       @rab-item-updated="reloadData"
+      @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
     />
     <FloatingActionButton @click="fabClick" />
     <AddRab @rab-added="reloadData" />
+    <AddRabItemHeader
+      :rab="rabItemHeaderAdd"
+      @rab-item-header-added="reloadData"
+    />
   </div>
 </template>
 
@@ -21,6 +26,7 @@
   import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
   import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
   import AddRab from './../../../../components/Project/Rab/AddRab.vue';
+  import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
 
   export default {
     data() {
@@ -30,6 +36,7 @@
         ahsCodesList: [],
         unitCodesList: [],
         customAhsIds: [],
+        rabItemHeaderAdd: {},
       };
     },
     created() {
@@ -55,6 +62,11 @@
         });
         this.customAhsIds = data.data.data.ahsItemIds;
       },
+      showAddRabItemHeaderModal(rabItem) {
+        console.log(rabItem);
+        this.rabItemHeaderAdd = rabItem;
+        this.$bvModal.show('add-rab-item-header');
+      },
       fabClick(ref) {
         this.$bvModal.show('add-rab');
       },
@@ -69,6 +81,7 @@
       RabSummaryItem,
       FloatingActionButton,
       AddRab,
+      AddRabItemHeader,
     },
   };
 </script>

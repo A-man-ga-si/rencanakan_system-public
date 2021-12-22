@@ -23,6 +23,13 @@
         >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
+        <a
+          href="#"
+          class="h4 text-warning ml-1"
+          @click.prevent="addRabItemHeader"
+        >
+          <i class="iconsmind simple-icon-plus"></i>
+        </a>
         <a href="#" class="h4 text-primary ml-1">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
@@ -79,47 +86,26 @@
               </a>
             </td>
           </tr>
-          <tr
-            v-for="(rabItemHeaderItem, idx2) in rabItemHeader.rab_item"
+          <RabSummaryItemRow
+            v-for="(rabItemI, idx2) in rabItemHeader.rab_item"
+            :index="idx2"
             :key="idx2"
-          >
-            <td>{{ idx2 + 1 }}.</td>
-            <td>
-              <input
-                type="text"
-                class="inline-edit w-100"
-                :value="rabItemHeaderItem.name"
-              />
-            </td>
-            <td>
-              <v-select
-                name=""
-                :options="[]"
-                id=""
-                v-model="defaultSelectedCode"
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                class="inline-edit w-100"
-                :value="rabItemHeaderItem.volume"
-              />
-            </td>
-            <td>
-              <v-select v-model="defaultSelectedUnit" :options="[]" />
-            </td>
-            <td>Rp. 100,000</td>
-            <td>Rp. 200,000</td>
-            <td>
-              <a href="#" class="text-danger action-close">
-                <i class="iconminds simple-icon-close"></i>
-              </a>
-            </td>
-          </tr>
+            :rab-item-data="rabItemI"
+            :rab="rabItem"
+            :custom-ahs-ids="ahsCodeList"
+            :unit-ids="unitCodeList"
+            @rab-item-deleted="onRabItemDeleted"
+            @update-rab-item="onRabItemRowUpdated"
+          />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a href="#" class="d-block w-100"> + Tambah baris </a>
+              <a
+                href="#"
+                @click.prevent="addRabItem(rabItemHeader)"
+                class="d-block w-100"
+              >
+                + Tambah baris
+              </a>
             </td>
           </tr>
         </tbody>
@@ -190,12 +176,12 @@
           this.onRabItemDeleted();
         }
       },
-      async addRabItem() {
+      async addRabItem(header) {
         await this.storeRabItem({
           projectId: this.$route.params.id,
           rabId: this.rabItem.hashid,
           form: {
-            rab_item_header_id: null,
+            rab_item_header_id: header ? header.hashid : null,
             volume: 0,
           },
         });
@@ -206,6 +192,9 @@
       },
       onRabItemRowUpdated() {
         this.$emit('rab-item-updated');
+      },
+      addRabItemHeader() {
+        this.$emit('add-rab-item-header-bt-clicked', this.rabItem);
       },
     },
     computed: {
