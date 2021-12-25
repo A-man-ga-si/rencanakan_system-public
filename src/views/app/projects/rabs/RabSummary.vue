@@ -45,7 +45,7 @@
                 <h3>Terbilang</h3>
               </td>
               <td class="text-right">
-                <h3>{{ convertAlphabeuticalNum }}</h3>
+                <h3>{{ convertAlphabeuticalNum }} RUPIAH</h3>
               </td>
             </tr>
           </table>

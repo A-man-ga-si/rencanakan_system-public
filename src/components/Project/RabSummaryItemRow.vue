@@ -7,7 +7,6 @@
         class="inline-edit w-100"
         v-model="form.name"
         @change="update"
-        :disabled="isAhsReferenced(rabItemData)"
       />
     </td>
     <td>
