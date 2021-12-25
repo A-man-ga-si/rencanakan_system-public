@@ -45,6 +45,9 @@
       >
         <b-form-input type="text" v-model="form.marginProfit" />
       </b-form-group>
+      <b-form-group label="PPN (%)" class="has-float-label">
+        <b-form-input type="text" v-model="form.ppn" />
+      </b-form-group>
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
           {{ $t('modal.save-bt') }}
@@ -76,28 +79,6 @@
       };
     },
     props: ['selectedProject', 'provinces'],
-    watch: {
-      selectedProject() {
-        const {
-          name,
-          activity,
-          job,
-          address,
-          fiscal_year: fiscalYear,
-          profit_margin: marginProfit,
-        } = this.selectedProject;
-        const provinceId = this.selectedProject.province.hashid;
-        this.form = {
-          name,
-          activity,
-          job,
-          address,
-          provinceId,
-          fiscalYear,
-          marginProfit,
-        };
-      },
-    },
     methods: {
       ...mapActions(['updateProject']),
       hideModal(refname) {
@@ -111,6 +92,7 @@
           address,
           fiscalYear: fiscal_year,
           marginProfit: profit_margin,
+          ppn,
         } = this.form;
         const province_id = this.form.provinceId;
         await this.updateProject({
@@ -123,11 +105,36 @@
             province_id,
             fiscal_year,
             profit_margin,
+            ppn,
           },
         });
         this.$emit('project-edited');
         this.hideModal(this.modalId);
         Notify.success('Berhasil mengupdate satuan');
+      },
+    },
+    watch: {
+      selectedProject() {
+        const {
+          name,
+          activity,
+          job,
+          address,
+          fiscal_year: fiscalYear,
+          profit_margin: marginProfit,
+          ppn,
+        } = this.selectedProject;
+        const provinceId = this.selectedProject.province.hashid;
+        this.form = {
+          name,
+          activity,
+          job,
+          address,
+          provinceId,
+          fiscalYear,
+          marginProfit,
+          ppn,
+        };
       },
     },
   };

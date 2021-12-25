@@ -28,7 +28,7 @@ const actions = {
   },
 
   // prettier-ignore
-  async createProject({ commit }, { activity, address, name, job, fiscalYear: fiscal_year, marginProfit: profit_margin, provinceId: province_id, }) {
+  async createProject({ commit }, { activity, address, name, job, fiscalYear: fiscal_year, marginProfit: profit_margin, provinceId: province_id, ppn}) {
     const res = await projectApi.post('', {
       activity,
       address,
@@ -37,6 +37,7 @@ const actions = {
       job,
       profit_margin,
       province_id,
+      ppn
     });
     commit('pushProject', res.data.data.project);
     return res;

@@ -45,6 +45,9 @@
     >
       <b-form-input type="text" v-model="form.marginProfit" />
     </b-form-group>
+    <b-form-group label="PPN (%)" class="has-float-label">
+      <b-form-input type="text" v-model="form.ppn" />
+    </b-form-group>
     <template slot="modal-footer">
       <b-button @click.prevent="submit" variant="primary" class="mr-1">
         {{ $t('modal.save-bt') }}
@@ -69,6 +72,7 @@
         provinceId: 0,
         fiscalYear: new Date().getFullYear(),
         marginProfit: 0,
+        ppn: 10,
       },
       processedProvinces: [],
     }),

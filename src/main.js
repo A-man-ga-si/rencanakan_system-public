@@ -27,7 +27,6 @@ import Colxx from './components/Common/Colxx';
 
 // Perfect Scrollbar Add
 import vuePerfectScrollbar from 'vue-perfect-scrollbar';
-import VueScrollTo from 'vue-scrollto';
 
 import { getCurrentLanguage } from './utils';
 
@@ -60,7 +59,6 @@ Notiflix.Notify.init({
 });
 
 Vue.use(Notifications);
-Vue.use(VueScrollTo);
 
 Vue.component('piaf-breadcrumb', Breadcrumb);
 Vue.component('b-refresh-button', RefreshButton);
