@@ -4,7 +4,7 @@
       <b-col :lg="6" :xl="3">
         <div class="text-right mb-2 position-relative">
           <label class="form-group has-float-label mb-0">
-            <input type="text" class="form-control" />
+            <input v-model="form.searchQuery" type="text" class="form-control" />
             <span> Search Item </span>
           </label>
           <i
@@ -12,6 +12,15 @@
             style="top: 11px; right: 10px"
           />
         </div>
+      </b-col>
+      <b-col>
+        <b-form-group horizontal>
+            <b-form-radio-group
+              class="pt-2"
+              :options="searchQueryOptions"
+              v-model="form.searchQueryCategory"
+            />
+        </b-form-group>
       </b-col>
     </b-row>
     <ItemPriceItem
@@ -46,6 +55,15 @@
     data() {
       return {
         editedItemPriceGroup: {},
+        form: {
+          searchQueryCategory: 'header',
+          searchQuery: '',
+        },
+        searchQueryOptions: [
+          {text: 'Header', value: 'header'},
+          {text: 'Item', value: 'item'}
+        ],
+        searchCountdownObject: null,
       };
     },
     created() {
@@ -53,7 +71,7 @@
       this.fetchUnit();
     },
     methods: {
-      ...mapActions(['fetchCustomItemPrices', 'fetchUnit']),
+      ...mapActions(['fetchCustomItemPrices', 'queryCustomItemPrices', 'fetchUnit']),
       showAddItemPriceDialog() {
         this.$bvModal.show('add-item-price-group');
       },
@@ -66,6 +84,28 @@
     },
     computed: {
       ...mapGetters(['getCustomItemPrice', 'getUnit']),
+    },
+    watch: {
+      form: {
+        handler() {
+
+          if (this.searchCountdownObject != 'null') {
+            clearTimeout(this.searchCountdownObject);
+          }
+
+          const that = this;
+
+          this.searchCountdownObject = setTimeout(function() {
+              that.queryCustomItemPrices({
+                projectId: that.$route.params.id,
+                queries: that.form,
+              });
+          }, 500);
+
+        },
+
+        deep: true,
+      }
     },
     components: {
       ItemPriceItem,

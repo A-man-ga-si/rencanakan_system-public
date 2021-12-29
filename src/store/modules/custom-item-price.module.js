@@ -37,6 +37,12 @@ const actions = {
     return data;
   },
 
+  async queryCustomItemPrices({ commit }, { projectId, queries = {}}) {
+    const data = await customItemPriceGroupApi.setPreviousPath(`project/${projectId}`).get('query/', encodeURI(`q=${queries.searchQuery}&category=${queries.searchQueryCategory}`));
+    commit('setCustomItemPrice', data.data.data.result);
+    return data;
+  },
+
   // prettier-ignore
   async storeCustomItemPrice({ commit }, { projectId, form }) {
     return await customItemPriceApi.setPreviousPath(`project/${projectId}`).post('', form);
