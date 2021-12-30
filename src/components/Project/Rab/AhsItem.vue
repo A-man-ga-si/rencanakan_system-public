@@ -57,6 +57,7 @@
           <AhsItemRow
             v-for="(laborAhs, idx) in customAhsItem.item_arranged.labor"
             :key="`A-${idx}`"
+            :custom-ahs="customAhsItem"
             :codes-list="customAhsItemableList"
             :units-list="unitsList"
             :custom-ahs-itemable-list="customAhsItemableList"
@@ -84,6 +85,7 @@
             :key="`B-${idx}`"
             :idx="idx"
             :codes-list="customAhsItemableList"
+            :custom-ahs="customAhsItem"
             :units-list="unitsList"
             :custom-ahs-itemable-list="customAhsItemableList"
             :custom-ahs-item="ingredientsAhs"
@@ -109,6 +111,7 @@
             :idx="idx"
             :codes-list="customAhsItemableList"
             :units-list="unitsList"
+            :custom-ahs="customAhsItem"
             :custom-ahs-itemable-list="customAhsItemableList"
             :custom-ahs-item="toolsAhs"
             @ahs-item-deleted="onCustomAhsItemDeleted"
@@ -133,6 +136,7 @@
             :idx="idx"
             :codes-list="customAhsItemableList"
             :units-list="unitsList"
+            :custom-ahs="customAhsItem"
             :custom-ahs-itemable-list="customAhsItemableList"
             :custom-ahs-item="othersAhs"
             @ahs-item-deleted="onCustomAhsItemDeleted"
@@ -202,17 +206,23 @@
       },
 
       async destroyCustomAhs() {
-        const { isConfirmed } = await showConfirmAlert({
-          title: 'Hapus AHS ?',
-          text: 'Semua data yang terhubung dengan AHS ini akan dihapus !',
-        });
-        if (isConfirmed) {
-          await this.deleteCustomAhs({
-            projectId: this.$route.params.id,
-            customAhsId: this.customAhsItem.hashid,
+        try {
+          const { isConfirmed } = await showConfirmAlert({
+            title: 'Hapus AHS ?',
+            text: 'Semua data yang terhubung dengan AHS ini akan dihapus !',
           });
-          Notify.success('Berhasil menghapus AHS');
-          this.$emit('delete-custom-ahs');
+
+          if (isConfirmed) {
+            await this.deleteCustomAhs({
+              projectId: this.$route.params.id,
+              customAhsId: this.customAhsItem.hashid,
+            });
+            Notify.success('Berhasil menghapus AHS');
+            this.$emit('delete-custom-ahs');
+          }
+
+        } catch (err) {
+          Notify.failure(`Gagal menghapus AHS ! ${err.response.data.message}`);
         }
       },
 

@@ -63,6 +63,7 @@
       'codesList',
       'unitsList',
       'customAhsItemableList',
+      'customAhs'
     ],
     data() {
       return {
@@ -83,49 +84,63 @@
       };
     },
     methods: {
+
       ...mapActions(['updateCustomAhsItem', 'deleteCustomAhsItem']),
 
       async submitUpdateAhsItem() {
-        const ahsType = ahsItemable(
-          this.customAhsItem.custom_ahs_itemable_type
-        );
-
-        console.log(ahsType);
-
-        const ahsItemableIdType = this.ahsItemableId.split('~');
-        const dataToUpdate = {};
-
-        if (ahsType === 'CustomAhs' || ahsType == 'CustomAhp') {
-          dataToUpdate.name = this.name;
-          dataToUpdate.unit_id = this.unitId;
-        }
-
-        dataToUpdate.custom_ahs_itemable_id = ahsItemableIdType[1];
-        dataToUpdate.custom_ahs_itemable_type = ahsItemableIdType[0];
-        dataToUpdate.coefficient = this.coefficient;
-
-        const data = await this.updateCustomAhsItem({
-          customAhsItemId: this.customAhsItem.hashid,
-          projectId: this.$route.params.id,
-          form: dataToUpdate,
-        });
-
-        Notify.success('Berhasil mengupdate item AHS');
-        this.$emit('ahs-item-updated');
-      },
-      async submitDeleteAhsItem() {
-        const { isConfirmed } = await showConfirmAlert({
-          title: 'Hapus Item AHS',
-          text: 'Aksi ini tidak dapat dibatalkan',
-        });
-        if (isConfirmed) {
-          await this.deleteCustomAhsItem({
-            projectId: this.$route.params.id,
+        try {
+          const ahsType = ahsItemable(
+            this.customAhsItem.custom_ahs_itemable_type
+          );
+  
+          const ahsItemableIdType = this.ahsItemableId.split('~');
+          const dataToUpdate = {};
+  
+          if (ahsType === 'CustomAhs' || ahsType == 'CustomAhp') {
+            dataToUpdate.name = this.name;
+            dataToUpdate.unit_id = this.unitId;
+          }
+  
+          dataToUpdate.custom_ahs_itemable_id = ahsItemableIdType[1];
+          dataToUpdate.custom_ahs_itemable_type = ahsItemableIdType[0];
+          dataToUpdate.coefficient = this.coefficient;
+  
+          const data = await this.updateCustomAhsItem({
             customAhsItemId: this.customAhsItem.hashid,
+            projectId: this.$route.params.id,
+            form: dataToUpdate,
           });
-          Notify.success('Berhasil menghapus item ahs');
-          this.$emit('ahs-item-deleted');
+  
+          this.$emit('ahs-item-updated');
+
+        } catch (err) {
+          Notify.failure('Gagal mengupdate item AHS');
+          console.error(err);
         }
+      },
+
+      async submitDeleteAhsItem() {
+        try {
+          const { isConfirmed } = await showConfirmAlert({
+            title: 'Hapus Item AHS',
+            text: 'Aksi ini tidak dapat dibatalkan',
+          });
+  
+          if (isConfirmed) {
+  
+            await this.deleteCustomAhsItem({
+              projectId: this.$route.params.id,
+              customAhsItemId: this.customAhsItem.hashid,
+            });
+  
+            Notify.success('Berhasil menghapus item ahs');
+            this.$emit('ahs-item-deleted');
+          }
+        } catch (err) {
+          console.log(err.response);
+          Notify.failure('Gagal menghapus AHS !');
+        }
+
       },
     },
     computed: {
@@ -134,9 +149,7 @@
         return ahsItemable(ahsItemableData);
       },
       ahsItemName() {
-        return this.ahsItemableType == 'ItemPrice'
-          ? this.customAhsItem.custom_ahs_itemable.name
-          : this.customAhsItem.name;
+        return this.ahsItemableType == 'ItemPrice' ? this.customAhsItem.custom_ahs_itemable.name : this.customAhsItem.name;
       },
       getAhsItemableList() {
         const ctx = this;
@@ -145,8 +158,8 @@
             return !(
               ahsItemable(customAhsItemableItem.custom_ahs_itemable_type) ==
                 'CustomAhs' &&
-              customAhsItemableItem.hashed_ahs_itemable_id ==
-                ctx.customAhsItem.hashid
+              customAhsItemableItem.display_id ==
+                ctx.customAhs.code
             );
           })
           .map(customAhsItemableItem => {

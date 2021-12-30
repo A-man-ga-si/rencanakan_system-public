@@ -94,7 +94,6 @@
           form: dataToUpdate,
         });
 
-        Notify.success('Berhasil mengupdate item AHS');
         this.$emit('ahs-item-updated');
       },
       async submitDeleteAhsItem() {

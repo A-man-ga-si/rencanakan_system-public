@@ -94,7 +94,7 @@
       async deleteCustomItemPriceGroup() {
         try {
           const { isConfirmed } = await showConfirmAlert({
-            title: 'Hapus Kagegori Harga Satuan ?',
+            title: 'Hapus Kategori Harga Satuan ?',
             text: 'Jika anda menghapus kategori ini, maka semua harga satuan di dalam list akan terhapus permanent !',
           });
           if (isConfirmed) {
@@ -106,7 +106,7 @@
             this.$emit('custom-item-price-group-deleted');
           }
         } catch (err) {
-          Notify.failure('Gagal menghapus kategori harga satuan');
+          Notify.failure(`Gagal menghapus kategori harga satuan : ${err.response.data.message}`);
         }
       },
       updateCustomItemPrice() {

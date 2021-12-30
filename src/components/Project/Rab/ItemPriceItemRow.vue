@@ -88,23 +88,30 @@
     methods: {
       ...mapActions(['deleteCustomItemPrice', 'customItemPricePartialUpdate']),
       async destroyCustomItemPrice() {
-        if (this.isCustomItemPrice(this.item)) {
-          const { isConfirmed } = await showConfirmAlert({
-            title: 'Konfirmasi',
-            text: 'Hapus harga satuan ? semua item yang terhubung dengan harga satuan ini akan dihapus !',
-          });
-          if (isConfirmed) {
-            await this.deleteCustomItemPrice({
-              projectId: this.$route.params.id,
-              customItemPriceCode: this.item.hashid,
+        try {
+          if (this.isCustomItemPrice(this.item)) {
+            const { isConfirmed } = await showConfirmAlert({
+              title: 'Konfirmasi',
+              text: 'Hapus harga satuan ? pastikan tidak ada data yang terhubung dengan data harga satuan ini !',
             });
-            this.$parent.$emit('custom-item-price-deleted');
-            Notify.success('Harga Satuan Berhasil Dihapus !');
+            if (isConfirmed) {
+  
+              await this.deleteCustomItemPrice({
+                projectId: this.$route.params.id,
+                customItemPriceCode: this.item.hashid,
+              });
+  
+              this.$parent.$emit('custom-item-price-deleted');
+  
+              Notify.success('Harga Satuan Berhasil Dihapus !');
+            }
+          } else {
+            console.log(
+              "Nothing to do, this is not custom item price so you can't delete it"
+            );
           }
-        } else {
-          console.log(
-            "Nothing to do, this is not custom item price so you can't delete it"
-          );
+        } catch (err) {
+          Notify.failure(`Gagal menghapus harga satuan ! ${err.response.data.message}`);
         }
       },
       async partialUpdate(updatedKey) {

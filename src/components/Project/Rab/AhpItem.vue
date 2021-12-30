@@ -192,16 +192,20 @@
       },
 
       async deleteCustomAhp() {
-        const { isConfirmed } = await showConfirmAlert({
-          title: 'Hapus AHP ?',
-          text: 'Semua item yang berkaitan dengan AHP ini akan dihapus !',
-        });
-        if (isConfirmed) {
-          await this.destroyCustomAhp({
-            projectId: this.$route.params.id,
-            customAhpId: this.customAhp.hashid,
+        try {
+          const { isConfirmed } = await showConfirmAlert({
+            title: 'Hapus AHP ?',
+            text: 'Pastikan tidak ada item yang terhubung dengan data ini !',
           });
-          this.$emit('custom-ahp-deleted');
+          if (isConfirmed) {
+            await this.destroyCustomAhp({
+              projectId: this.$route.params.id,
+              customAhpId: this.customAhp.hashid,
+            });
+            this.$emit('custom-ahp-deleted');
+          }
+        } catch (err) {
+          Notify.failure(`Gagal menghapus AHP ! ${err.response.data.message}`);
         }
       },
 
@@ -214,19 +218,6 @@
           },
         });
         this.$emit('custom-ahp-item-changed');
-        Notify.success('Berhasil mengubah AHP');
-      },
-
-      async deleteAhp() {
-        const { isConfirmed } = await showConfirmAlert({
-          title: 'Hapus AHP',
-          text: 'AHP ini akan dihapus',
-        });
-        if (isConfirmed) {
-          await this.destroyCustomAhp(this.customAhp.code);
-          this.$emit('custom-ahp-deleted');
-          Notify.success('Berhasil menghapus AHP');
-        }
       },
 
       editAhp() {

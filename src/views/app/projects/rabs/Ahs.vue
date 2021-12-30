@@ -64,6 +64,10 @@
         this.$bvModal.show('edit-custom-ahs');
       },
       reloadData() {
+        // FIXME: Not well optimized but yeah it's work
+        this.fetchCustomAhsItemableIds({
+          projectId: this.$route.params.id
+        });
         this.getCustomAhs();
       },
     },
