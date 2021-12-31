@@ -4,8 +4,8 @@ export const defaultMenuType = 'menu-default'; // 'menu-default', 'menu-sub-hidd
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;
 export const buyUrl = '#';
-// export const apiDomain = 'http://localhost:8000';
-export const apiDomain = 'http://app2.rencanakan.id';
+export const apiDomain = 'http://localhost:8000';
+// export const apiDomain = 'http://app2.rencanakan.id';
 export const apiUrl = `${apiDomain}/api`;
 export const apiProvinces =
   'http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json';
@@ -15,7 +15,7 @@ export const subHiddenBreakpoint = 1440;
 export const menuHiddenBreakpoint = 768;
 
 // Locale related configurations
-export const defaultLocale = 'en';
+export const defaultLocale = 'id';
 export const defaultDirection = 'ltr';
 export const localeOptions = [
   { id: 'en', name: 'English', direction: 'ltr' },
