@@ -95,13 +95,16 @@
 
           const that = this;
 
-          this.searchCountdownObject = setTimeout(function() {
-              that.queryCustomItemPrices({
-                projectId: that.$route.params.id,
-                queries: that.form,
-              });
-          }, 500);
-
+          if (this.form.searchQuery != '') {
+            this.searchCountdownObject = setTimeout(function() {
+                that.queryCustomItemPrices({
+                  projectId: that.$route.params.id,
+                  queries: that.form,
+                });
+            }, 500);
+          } else {
+            this.fetchCustomItemPrices(this.$route.params.id) ;
+          }
         },
 
         deep: true,

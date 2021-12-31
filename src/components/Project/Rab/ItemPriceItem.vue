@@ -146,7 +146,6 @@
       },
     },
     watch: {
-      getUnit() {},
       itemPriceGroup() {
         this.mergedItemPrices = this.itemPriceGroup.custom_item_price.concat(
           this.itemPriceGroup.item_price

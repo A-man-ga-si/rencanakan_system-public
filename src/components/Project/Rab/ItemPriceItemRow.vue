@@ -142,6 +142,11 @@
       EditButton,
       DeleteButton,
     },
+    watch : {
+      item() {
+        this.form = { ...this.item };
+      }
+    }
   };
 </script>
 
