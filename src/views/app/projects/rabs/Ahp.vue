@@ -1,5 +1,23 @@
 <template>
   <div class="ahsp-page mt-5">
+    <b-row>
+      <b-col :lg="6" :xl="3">
+        <div class="text-right mb-2 position-relative">
+          <label class="form-group has-float-label mb-0">
+            <input
+              v-model="form.searchQuery"
+              type="text"
+              class="form-control"
+            />
+            <span> Search Item </span>
+          </label>
+          <i
+            class="simple-icon-magnifier position-absolute bg-white"
+            style="top: 11px; right: 10px"
+          />
+        </div>
+      </b-col>
+    </b-row>
     <AhpItem
       v-for="(customAhp, idx) in customAhps"
       :custom-ahp="customAhp"
@@ -31,12 +49,16 @@
     },
     data() {
       return {
+        form: {
+          searchQuery: '',
+        },
         customAhps: [],
         editedCustomAhp: {},
+        searchCountdownObject: null,
       };
     },
     methods: {
-      ...mapActions(['fetchCustomAhp']),
+      ...mapActions(['fetchCustomAhp', 'queryCustomAhp']),
       async getCustomAhp() {
         const data = await this.fetchCustomAhp(this.$route.params.id);
         this.customAhps = data.data.data.customAhps;
@@ -60,6 +82,30 @@
       FloatingActionButton,
       AddCustomAhp,
       EditCustomAhp,
+    },
+    watch: {
+      form: {
+        handler() {
+          if (this.searchCountdownObject != 'null') {
+            clearTimeout(this.searchCountdownObject);
+          }
+
+          const that = this;
+
+          if (this.form.searchQuery != '') {
+            this.searchCountdownObject = setTimeout(async function () {
+              const data = await that.queryCustomAhp({
+                projectId: that.$route.params.id,
+                keyword: that.form.searchQuery,
+              });
+              that.customAhps = data.data.data.customAhps;
+            }, 500);
+          } else {
+            this.getCustomAhp();
+          }
+        },
+        deep: true,
+      },
     },
   };
 </script>

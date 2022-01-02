@@ -34,6 +34,12 @@ const actions = {
       .post(customAhpId, form);
     return data;
   },
+  async queryCustomAhp(ctx, { projectId, keyword }) {
+    const data = await customAhpApi
+      .setPreviousPath(`project/${projectId}`)
+      .get('query', encodeURI(`q=${keyword}`));
+    return data;
+  },
 };
 
 export default {

@@ -1,5 +1,32 @@
 <template>
   <div class="rab-summary-page mt-5">
+    <b-row>
+      <b-col :lg="6" :xl="3">
+        <div class="text-right mb-2 position-relative">
+          <label class="form-group has-float-label mb-0">
+            <input
+              v-model="form.searchQuery"
+              type="text"
+              class="form-control"
+            />
+            <span> Search Item </span>
+          </label>
+          <i
+            class="simple-icon-magnifier position-absolute bg-white"
+            style="top: 11px; right: 10px"
+          />
+        </div>
+      </b-col>
+      <b-col>
+        <b-form-group horizontal>
+          <b-form-radio-group
+            class="pt-2"
+            :options="searchQueryOptions"
+            v-model="form.searchQueryCategory"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
     <RabSummaryItem
       v-for="(rab, idx) in getRabs"
       :key="idx"
@@ -73,6 +100,14 @@
   export default {
     data() {
       return {
+        form: {
+          searchQuery: '',
+          searchQueryCategory: 'header',
+        },
+        searchQueryOptions: [
+          { text: 'Header', value: 'header' },
+          { text: 'Item', value: 'item' },
+        ],
         projectProperties: {},
         projects: {},
         ahsCodesList: [],
