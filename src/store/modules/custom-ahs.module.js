@@ -51,6 +51,14 @@ const actions = {
     ).post(customAhsId, form);
     return data;
   },
+
+  async queryCustomAhs(ctx, { projectId, query, category }) {
+    const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get(
+      'query',
+      `q=${query}&category=${category}&arrange=true`
+    );
+    return data;
+  },
 };
 
 export default {

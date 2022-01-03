@@ -68,6 +68,7 @@
         ],
         customAhs: [],
         editedCustomAhs: {},
+        searchCountdownObject: null,
       };
     },
     created() {
@@ -84,6 +85,7 @@
         'fetchCustomAhs',
         'fetchCustomAhsItemableIds',
         'fetchUnit',
+        'queryCustomAhs',
       ]),
       async getCustomAhs() {
         const { data } = await this.fetchCustomAhs({
@@ -108,6 +110,31 @@
     },
     computed: {
       ...mapGetters(['getCustomAhsItemableIds', 'getUnit']),
+    },
+    watch: {
+      form: {
+        deep: true,
+        async handler() {
+          if (this.searchCountdownObject != 'null') {
+            clearTimeout(this.searchCountdownObject);
+          }
+
+          const that = this;
+
+          if (this.form.searchQuery != '') {
+            this.searchCountdownObject = setTimeout(async function () {
+              const { data } = await that.queryCustomAhs({
+                projectId: that.$route.params.id,
+                query: that.form.searchQuery,
+                category: that.form.searchQueryCategory,
+              });
+              that.customAhs = data.data;
+            }, 500);
+          } else {
+            this.getCustomAhs();
+          }
+        },
+      },
     },
     components: {
       AhsItem,
