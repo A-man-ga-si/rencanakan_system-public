@@ -40,6 +40,18 @@
       @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
     />
     <b-row>
+      <b-col>
+        <b-button
+          @click="fabClick"
+          variant="primary"
+          class="w-100 mb-4 mt-2 py-3"
+          style="font-size: 17px; border-radius: 20px"
+        >
+          + Tambah Kategori
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col :xl="7" :lg="9" :md="10" class="ml-auto">
         <b-card class="ahs-card-single custom-nice-border">
           <table class="w-100">
@@ -79,7 +91,7 @@
         </b-card>
       </b-col>
     </b-row>
-    <FloatingActionButton @click="fabClick" />
+    <!-- <FloatingActionButton  /> -->
     <AddRab @rab-added="reloadData" />
     <AddRabItemHeader
       :rab="rabItemHeaderAdd"
@@ -92,7 +104,7 @@
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
   import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
-  import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
+  // import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
   import AddRab from './../../../../components/Project/Rab/AddRab.vue';
   import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
@@ -114,10 +126,13 @@
         unitCodesList: [],
         customAhsIds: [],
         rabItemHeaderAdd: {},
+        searchCountdownObject: null,
       };
     },
     created() {
-      this.fetchRab(this.$route.params.id);
+      this.fetchRab({
+        projectId: this.$route.params.id,
+      });
       this.fetchShowProject();
       this.fetchUnit();
       this.getCustomAhsIds();
@@ -148,7 +163,9 @@
         this.$bvModal.show('add-rab');
       },
       reloadData() {
-        this.fetchRab(this.$route.params.id);
+        this.fetchRab({
+          projectId: this.$route.params.id,
+        });
       },
       numberFormat(number) {
         return formatCurrency(number);
@@ -178,9 +195,33 @@
         return angkaTerbilang(this.rabsSubTotal).toUpperCase();
       },
     },
+    watch: {
+      form: {
+        async handler() {
+          if (this.searchCountdownObject != 'null') {
+            clearTimeout(this.searchCountdownObject);
+          }
+
+          const that = this;
+
+          if (this.form.searchQuery != '') {
+            this.searchCountdownObject = setTimeout(async function () {
+              await that.fetchRab({
+                projectId: that.$route.params.id,
+                query: that.form.searchQuery,
+                queryCategory: that.form.searchQueryCategory,
+              });
+            }, 500);
+          } else {
+            this.fetchCustomItemPrices(this.$route.params.id);
+          }
+        },
+        deep: true,
+      },
+    },
     components: {
       RabSummaryItem,
-      FloatingActionButton,
+      // FloatingActionButton,
       AddRab,
       AddRabItemHeader,
     },

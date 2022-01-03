@@ -19,8 +19,13 @@ const mutations = {
 };
 
 const actions = {
-  async fetchRab({ commit, state }, projectId) {
-    const data = await rabApi.setPreviousPath(`project/${projectId}`).get();
+  async fetchRab({ commit, state }, { projectId, query, queryCategory }) {
+    const data = await rabApi
+      .setPreviousPath(`project/${projectId}`)
+      .get(
+        '',
+        query && queryCategory ? `q=${query}&category=${queryCategory}` : null
+      );
     commit('setRabs', data.data.data.rabs);
     return data;
   },
