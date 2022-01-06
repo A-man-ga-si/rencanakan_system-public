@@ -1,6 +1,6 @@
 <template>
   <div class="add-unit">
-    <b-modal :id="modalId" :ref="modalId" title="Tambah RAB">
+    <b-modal :id="modalId" :ref="modalId" title="Edit RAB">
       <ValidationInput
         :label="'Name'"
         field-name="name"
@@ -27,29 +27,31 @@
 
   export default {
     mixins: [validationMixins],
+    props: ['editedRab'],
     data() {
       return {
-        modalId: 'add-rab',
+        modalId: 'edit-rab',
         form: {
           name: '',
         },
       };
     },
     methods: {
-      ...mapActions(['storeRab']),
+      ...mapActions(['updateRab']),
       async submit() {
         try {
-          await this.storeRab({
+          await this.updateRab({
             projectId: this.$route.params.id,
+            rabId: this.editedRab.hashid,
             form: this.form,
           });
-          Notify.success('Berhasil Menambah RAB baru');
+          Notify.success('Berhasil mengubah RAB');
           this.hideModal(this.modalId);
           this.resetForm();
-          this.$emit('rab-added');
+          this.$emit('rab-updated');
         } catch (err) {
           console.error(err);
-          Notify.failure('Gagal menambahkan RAB');
+          Notify.failure('Gagal mengubah RAB');
         }
       },
 
@@ -59,6 +61,11 @@
 
       resetForm() {
         this.form.name = '';
+      },
+    },
+    watch: {
+      editedRab() {
+        this.form.name = this.editedRab.name;
       },
     },
     components: {

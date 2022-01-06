@@ -37,7 +37,9 @@
       @rab-item-deleted="reloadData"
       @rab-item-added="reloadData"
       @rab-item-updated="reloadData"
+      @rab-item-header-deleted="reloadData"
       @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
+      @edit-rab-item-bt-clicked="editRab"
     />
     <b-row>
       <b-col>
@@ -97,6 +99,7 @@
       :rab="rabItemHeaderAdd"
       @rab-item-header-added="reloadData"
     />
+    <EditRab @rab-updated="reloadData" :edited-rab="editedRabItem" />
   </div>
 </template>
 
@@ -106,6 +109,7 @@
   import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
   // import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
   import AddRab from './../../../../components/Project/Rab/AddRab.vue';
+  import EditRab from '@/components/Project/Rab/EditRab.vue';
   import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
 
@@ -127,6 +131,7 @@
         customAhsIds: [],
         rabItemHeaderAdd: {},
         searchCountdownObject: null,
+        editedRabItem: null,
       };
     },
     created() {
@@ -169,6 +174,10 @@
       },
       numberFormat(number) {
         return formatCurrency(number);
+      },
+      editRab(rabItem) {
+        this.editedRabItem = rabItem;
+        this.$bvModal.show('edit-rab');
       },
     },
     computed: {
@@ -222,6 +231,7 @@
     components: {
       RabSummaryItem,
       // FloatingActionButton,
+      EditRab,
       AddRab,
       AddRabItemHeader,
     },

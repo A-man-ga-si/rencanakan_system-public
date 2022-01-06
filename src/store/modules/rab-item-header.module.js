@@ -17,6 +17,12 @@ const actions = {
       .post('', form);
     return data;
   },
+  async destroyRabItemHeader(ctx, { projectId, rabId, rabItemHeaderId }) {
+    const data = await rabItemHeaderApi
+      .setPreviousPath(`project/${projectId}/rab/${rabId}`)
+      .get(`${rabItemHeaderId}/delete`);
+    return data;
+  },
 };
 
 export default {

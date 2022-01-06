@@ -28,14 +28,14 @@
         >
           <i class="iconsmind simple-icon-plus"></i>
         </a>
-        <a
+        <!-- <a
           href="#"
           class="h4 text-warning ml-1"
           @click.prevent="addRabItemHeader"
         >
           <i class="iconsmind simple-icon-plus"></i>
-        </a>
-        <a href="#" class="h4 text-info ml-1">
+        </a> -->
+        <a href="#" class="h4 text-info ml-1" @click.prevent="editRab">
           <i class="iconsmind simple-icon-plus"></i>
         </a>
         <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteRab">
@@ -95,7 +95,11 @@
                   <h5 class="d-inline-block mb-0">
                     {{ numToAlphabet(idx + 1) }}. {{ rabItemHeader.name }}
                   </h5>
-                  <a href="#" class="text-white action-close float-right">
+                  <a
+                    href="#"
+                    @click.prevent="deleteRabItemHeader(rabItemHeader.hashid)"
+                    class="text-white action-close float-right"
+                  >
                     <i class="iconminds simple-icon-close"></i>
                   </a>
                 </div>
@@ -186,14 +190,18 @@
     data: () => ({
       mainCardCollapsed: false,
       numToAlphabetInstance: null,
+      editedRab: null,
     }),
     created() {
       this.numToAlphabetInstance = new NumberToAlphabet();
     },
     methods: {
-      ...mapActions(['destroyRab', 'storeRabItem']),
+      ...mapActions(['destroyRab', 'storeRabItem', 'destroyRabItemHeader']),
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
+      },
+      editRab() {
+        this.$emit('edit-rab-item-bt-clicked', this.rabItem);
       },
       numToAlphabet(num) {
         return this.numToAlphabetInstance.numberToString(num).toUpperCase();
@@ -210,6 +218,21 @@
           });
           Notify.success('Berhasil menghapus RAB');
           this.onRabItemDeleted();
+        }
+      },
+      async deleteRabItemHeader(rabItemHeaderId) {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus section RAB ini ?',
+          text: 'Semua item RAB dibawah akan ikut dihapus !',
+        });
+        if (isConfirmed) {
+          await this.destroyRabItemHeader({
+            projectId: this.$route.params.id,
+            rabId: this.rabItem.hashid,
+            rabItemHeaderId,
+          });
+          this.$emit('rab-item-header-deleted');
+          Notify.success('Berhasil menghapus section RAB');
         }
       },
       async addRabItem(header) {
