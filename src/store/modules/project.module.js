@@ -1,4 +1,7 @@
+import axios from 'axios';
+import { apiUrl } from '../../constants/config';
 import ApiTwo from '../../services/ApiTwo.service';
+import { getToken } from '../../utils';
 
 const projectApi = new ApiTwo({
   basePath: 'project',
@@ -25,6 +28,16 @@ const actions = {
   async showProject(ctx, projectId) {
     const data = await projectApi.get(projectId);
     return data;
+  },
+
+  async exportProject(ctx, { projectId }) {
+    const res = await fetch(`${apiUrl}/project/${projectId}/export`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    const resBlob = await res.blob();
+    return resBlob;
   },
 
   // prettier-ignore

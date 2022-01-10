@@ -15,13 +15,13 @@ const data = [
     permissions: ['read-dashboard'],
     to: `${adminRoot}/projects`,
   },
-  {
-    id: 'token',
-    icon: 'iconsminds-coins-2',
-    label: 'menu.token',
-    permissions: ['read-dashboard'],
-    to: `${adminRoot}/token`,
-  },
+  // {
+  //   id: 'transaction-history',
+  //   icon: 'iconsminds-clock-back',
+  //   label: 'menu.transaction-history',
+  //   permissions: ['read-dashboard'],
+  //   to: `${adminRoot}/transaction-history`,
+  // },
   {
     id: 'account',
     icon: 'iconsminds-administrator',
@@ -75,13 +75,6 @@ const data = [
         to: `${adminRoot}/master/ahp`,
       },
     ],
-  },
-  {
-    id: 'settings',
-    icon: 'iconsminds-gear',
-    label: 'menu.settings',
-    permissions: ['read-dahboard'],
-    to: `${adminRoot}/settings`,
   },
 ];
 

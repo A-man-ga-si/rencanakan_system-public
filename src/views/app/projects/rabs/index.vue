@@ -7,9 +7,9 @@
             <piaf-breadcrumb :heading="$t('menu.rab')" />
           </b-col>
           <b-col :sm="2" class="text-right">
-            <b-btn variant="primary">{{
-              $t('pages.projects.rab.summary.export-btn')
-            }}</b-btn>
+            <b-btn variant="primary" @click.prevent="exportRab">
+              {{ $t('pages.projects.rab.summary.export-btn') }}
+            </b-btn>
           </b-col>
         </b-row>
         <div class="separator mb-5"></div>
@@ -36,8 +36,24 @@
         </b-card>
       </b-col>
     </b-row>
+    <ExportRab />
   </div>
 </template>
+
+<script>
+  import ExportRab from '@/components/Project/ExportRab.vue';
+
+  export default {
+    methods: {
+      exportRab() {
+        this.$bvModal.show('export-rab');
+      },
+    },
+    components: {
+      ExportRab,
+    },
+  };
+</script>
 
 <style>
   .rab-card-single .heading,

@@ -54,7 +54,7 @@
     "invoice": "Invoice",
     "mailing": "Mailing",
     "projects": "My Projects",
-    "token": "My Token",
+    "transaction-history": "Transaction History",
     "account": "Account",
     "login": "Login",
     "register": "Register",
@@ -289,6 +289,7 @@
       "rab": {
         "summary": {
           "export-btn": "Export RAB",
+          "export-btn-locked": "Export Terkunci",
           "item-price-tab": "Harga Satuan",
           "ahp-master-tab": "AHP Master"
         },

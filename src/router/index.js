@@ -168,6 +168,19 @@ const routes = [
           import(/* webpackChunkName: "token" */ './../views/app/token'),
       },
       {
+        path: `transaction-history`,
+        name: 'TransactionHistory',
+        meta: {
+          title: 'Transaction History',
+          loginRequired: true,
+          permissions: ['read dashboard', 'read home'],
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "transactionHistory" */ './../views/app/transaction-history'
+          ),
+      },
+      {
         path: `account`,
         name: 'Account',
         meta: {

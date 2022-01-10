@@ -10,7 +10,7 @@ const paymentApi = new ApiTwo({
 const actions = {
   async fetchSnapToken(ctx, data) {
     return await paymentApi.post('fetch-snap-token', {
-      carts: data,
+      project_id: data,
     });
   },
 

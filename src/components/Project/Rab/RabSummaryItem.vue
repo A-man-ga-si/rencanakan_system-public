@@ -261,7 +261,7 @@
         return toRoman(this.index + 1) || 0;
       },
       formattedSubtotal() {
-        return formatCurrency(this.rabItem.subtotal);
+        return formatCurrency(parseInt(this.rabItem.subtotal));
       },
     },
     components: {
