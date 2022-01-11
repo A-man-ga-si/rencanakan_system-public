@@ -3,7 +3,12 @@
     <b-modal :id="modalId" :ref="modalId" title="Export RAB">
       <div class="export-form">
         <h5>Status Export</h5>
-        <b-badge variant="success">Terbuka</b-badge>
+        <b-badge variant="secondary" v-if="!fetchQuotaStatus"
+          >Loading...</b-badge
+        >
+        <b-badge :variant="quotasLeft > 0 ? 'success' : 'danger'" v-else>{{
+          quotasLeft > 0 ? 'Terbuka' : 'Terkunci'
+        }}</b-badge>
       </div>
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
@@ -30,19 +35,26 @@
     data() {
       return {
         modalId: 'export-rab',
-        isExportLocked: false,
+        fetchQuotaStatus: false,
+        quotasLeft: 0,
         form: {
           name: '',
         },
       };
     },
+    created() {
+      this.checkQuotas();
+    },
     methods: {
-      ...mapActions(['storeRab', 'fetchSnapToken', 'exportProject']),
+      ...mapActions([
+        'storeRab',
+        'fetchSnapToken',
+        'exportProject',
+        'checkOrder',
+      ]),
       async submit() {
         try {
-          if (this.isExportLocked) {
-            this.pay();
-          } else {
+          if (this.fetchQuotaStatus && this.quotasLeft > 0) {
             const xlsxBlob = await this.exportProject({
               projectId: this.$route.params.id,
             });
@@ -50,17 +62,30 @@
             fileLink.href = window.URL.createObjectURL(xlsxBlob);
             fileLink.download = 'export_rab.xlsx';
             fileLink.click();
+            this.checkQuotas();
+          } else {
+            this.pay();
           }
         } catch (err) {
           Notify.failure('Terjadi kesalahan saat melakukan export RAB !');
           console.error(err);
         }
       },
-
+      async checkQuotas() {
+        const data = await this.checkOrder({
+          projectId: this.$route.params.id,
+        });
+        this.fetchQuotaStatus = true;
+        this.quotasLeft = data.data.data.quotasLeft;
+      },
       async pay() {
         const { data } = await this.fetchSnapToken(this.$route.params.id);
+        const that = this;
         window.snap.pay(data.data.token, {
-          onSuccess: () => {},
+          onSuccess: () => {
+            that.checkQuotas();
+          },
+          skipOrderSummary: false,
         });
       },
 
