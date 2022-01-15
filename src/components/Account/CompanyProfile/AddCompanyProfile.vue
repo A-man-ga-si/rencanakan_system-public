@@ -23,6 +23,12 @@
       :label="$t('pages.account.company-profile.director')"
     />
     <ValidationInput
+      v-model="form.address"
+      class="mb-3"
+      field-name="address"
+      :label="$t('pages.account.company-profile.address')"
+    />
+    <ValidationInput
       v-model="form.phoneNumber"
       class="mb-3"
       field-name="phone_number"
@@ -52,6 +58,7 @@
         email: '',
         directorName: '',
         phoneNumber: '',
+        address: '',
       },
       modalId: 'add-company',
     }),
@@ -66,16 +73,18 @@
           email: '',
           directorName: '',
           phoneNumber: '',
+          address: '',
         };
       },
       async submit() {
         try {
           this.resetInvalid();
-          const { name, email, directorName, phoneNumber } = this.form;
+          const { name, email, directorName, phoneNumber, address } = this.form;
           console.log(this.form);
           await this.addCompanyProfile({
             name,
             email,
+            address,
             director_name: directorName,
             phone_number: phoneNumber,
           });

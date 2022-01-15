@@ -45,6 +45,12 @@
           :label="$t('pages.account.company-profile.director')"
         />
         <ValidationInput
+          v-model="form.address"
+          class="mb-3"
+          field-name="address"
+          :label="$t('pages.account.company-profile.address')"
+        />
+        <ValidationInput
           v-model="form.phoneNumber"
           class="mb-3"
           field-name="phone_number"
@@ -73,6 +79,7 @@
         name: '',
         email: '',
         directorName: '',
+        address: '',
         phoneNumber: '',
       },
       companyProfileInput: null,
@@ -96,10 +103,12 @@
       },
     },
     created() {
-      const { name, email, director_name, phone_number } = this.getCompany;
+      const { name, email, director_name, phone_number, address } =
+        this.getCompany;
       this.form = {
         name,
         email,
+        address,
         directorName: director_name,
         phoneNumber: phone_number,
       };
@@ -115,6 +124,7 @@
               name: this.form.name,
               email: this.form.email,
               phone_number: this.form.phoneNumber,
+              address: this.form.address,
               director_name: this.form.directorName,
             },
           });

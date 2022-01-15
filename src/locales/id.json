@@ -320,6 +320,7 @@
         "name": "Nama Perusahaan",
         "email": "E-Mail",
         "director": "Nama Direktur",
+        "address": "Alamat",
         "phone-number": "Nomor Telepon"
       },
       "change-email": {

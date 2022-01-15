@@ -1,6 +1,12 @@
 <template>
   <div class="add-unit">
     <b-modal :id="modalId" :ref="modalId" title="Export RAB">
+      <div class="export-form mb-3">
+        <h5>Status Company</h5>
+        <b-badge :variant="getCompany ? 'success' : 'danger'">{{
+          getCompany ? 'Sudah Diisi' : 'Belum Diisi'
+        }}</b-badge>
+      </div>
       <div class="export-form">
         <h5>Status Export</h5>
         <b-badge variant="secondary" v-if="!fetchQuotaStatus"
@@ -11,7 +17,12 @@
         }}</b-badge>
       </div>
       <template slot="modal-footer">
-        <b-button @click.prevent="submit" variant="primary" class="mr-1">
+        <b-button
+          @click.prevent="submit"
+          variant="primary"
+          class="mr-1"
+          :disabled="!getCompany"
+        >
           Export
         </b-button>
         <b-button variant="secondary" @click="hideModal(modalId)">
@@ -25,7 +36,7 @@
 <script>
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixins from '@/mixins/validation-mixins';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
   import { apiDomain } from '../../constants/config';
   import { getToken } from '../../utils';
@@ -96,6 +107,9 @@
       resetForm() {
         this.form.name = '';
       },
+    },
+    computed: {
+      ...mapGetters(['getCompany']),
     },
     components: {
       ValidationInput,
