@@ -65,18 +65,18 @@
       ]),
       async submit() {
         try {
-          if (this.fetchQuotaStatus && this.quotasLeft > 0) {
-            const xlsxBlob = await this.exportProject({
-              projectId: this.$route.params.id,
-            });
-            const fileLink = document.createElement('a');
-            fileLink.href = window.URL.createObjectURL(xlsxBlob);
-            fileLink.download = 'export_rab.xlsx';
-            fileLink.click();
-            this.checkQuotas();
-          } else {
-            this.pay();
-          }
+          // if (this.fetchQuotaStatus && this.quotasLeft > 0) {
+          const xlsxBlob = await this.exportProject({
+            projectId: this.$route.params.id,
+          });
+          const fileLink = document.createElement('a');
+          fileLink.href = window.URL.createObjectURL(xlsxBlob);
+          fileLink.download = 'export_rab.xlsx';
+          fileLink.click();
+          this.checkQuotas();
+          // } else {
+          // this.pay();
+          // }
         } catch (err) {
           Notify.failure('Terjadi kesalahan saat melakukan export RAB !');
           console.error(err);
