@@ -18,6 +18,7 @@ const verifyPermissions = (to, user) => {
     for (const pagePermission of x) {
       if (user.permissions.includes(pagePermission)) return true;
     }
+    return false;
   });
   return isPermissionTreeValid;
 };
@@ -31,6 +32,7 @@ export default async (to, from, next) => {
           if (!store.getters['isTokenVerified']) {
             await store.dispatch('verifyToken');
           }
+          // console.log(verifyPermissions(to, user));
           if (verifyPermissions(to, user)) next();
           else next('/unauthorized/403');
         } catch (err) {

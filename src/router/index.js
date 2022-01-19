@@ -251,7 +251,7 @@ const routes = [
         name: 'Master',
         meta: {
           loginRequired: true,
-          permissions: ['read-master-page'],
+          permissions: ['access-master-page'],
         },
         redirect: {
           name: 'ProfileAccount',
@@ -264,7 +264,7 @@ const routes = [
             name: 'MasterUnit',
             meta: {
               title: 'Master Unit',
-              permissions: ['read-master-page'],
+              permissions: ['access-master-page'],
             },
             component: () =>
               import(
@@ -276,7 +276,7 @@ const routes = [
             name: 'MasterItemPriceGroup',
             meta: {
               title: 'Master Item Price Group',
-              permissions: ['read-master-page'],
+              permissions: ['access-master-page'],
             },
             component: () =>
               import(
@@ -288,7 +288,7 @@ const routes = [
             name: 'MasterItemPrice',
             meta: {
               title: 'Master Item Price',
-              permissions: ['read-master-page'],
+              permissions: ['access-master-page'],
             },
             component: () =>
               import(
@@ -300,7 +300,7 @@ const routes = [
             name: 'MasterAhs',
             meta: {
               title: 'Master AHS',
-              permissions: ['read-master-page'],
+              permissions: ['access-master-page'],
             },
             component: () =>
               import(
@@ -312,7 +312,7 @@ const routes = [
             name: 'MasterAhp',
             meta: {
               title: 'Master AHP',
-              permissions: ['read-master-page'],
+              permissions: ['access-master-page'],
             },
             component: () =>
               import(
