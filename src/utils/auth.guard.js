@@ -32,7 +32,7 @@ export default async (to, from, next) => {
             await store.dispatch('verifyToken');
           }
           if (verifyPermissions(to, user)) next();
-          else next('/unauthorized');
+          else next('/unauthorized/403');
         } catch (err) {
           next({
             name: 'Login',

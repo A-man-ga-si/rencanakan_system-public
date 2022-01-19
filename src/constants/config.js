@@ -4,6 +4,7 @@ export const defaultMenuType = 'menu-default'; // 'menu-default', 'menu-sub-hidd
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;
 export const buyUrl = '#';
+export const landingPageUrl = 'https://rencanakan.id';
 export const apiDomain = 'http://localhost:8000';
 // export const apiDomain = 'http://app2.rencanakan.id';
 export const apiUrl = `${apiDomain}/api`;
@@ -21,6 +22,8 @@ export const localeOptions = [
   { id: 'en', name: 'English', direction: 'ltr' },
   { id: 'id', name: 'Indonesian', direction: 'ltr' },
 ];
+
+export const availableErrorCodes = ['404', '403', '500'];
 
 export const defaultProfilePictureName = 'default-profile-picture.svg';
 export const defaultCompanyPictureName = 'default-company-picture.png';

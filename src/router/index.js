@@ -38,24 +38,24 @@ const routes = [
             /* webpackChunkName: "dashboard" */ './../views/app/dashboard'
           ),
       },
-      {
-        path: `settings`,
-        name: 'Setting',
-        meta: {
-          title: 'Setting',
-          loginRequired: true,
-          permissions: ['read-dashboard'],
-        },
-        component: () =>
-          import(/* webpackChunkName: "settings" */ './../views/app/settings'),
-      },
+      // {
+      //   path: `settings`,
+      //   name: 'Setting',
+      //   meta: {
+      //     title: 'Setting',
+      //     loginRequired: true,
+      //     permissions: ['read-dashboard'],
+      //   },
+      //   component: () =>
+      //     import(/* webpackChunkName: "settings" */ './../views/app/settings'),
+      // },
       {
         path: `projects`,
         name: 'Project',
         meta: {
           title: 'My Projects',
           loginRequired: true,
-          permissions: ['read-dashboard'],
+          permissions: ['access-project-page'],
         },
         component: () =>
           import(/* webpackChunkName: "project" */ './../views/app/projects'),
@@ -69,7 +69,7 @@ const routes = [
         meta: {
           title: 'RAB',
           loginRequired: true,
-          permissions: ['read-dashboard'],
+          permissions: ['access-project-page'],
         },
         component: () =>
           import(/* webpackChunkName: "rab" */ './../views/app/projects/rabs'),
@@ -79,8 +79,8 @@ const routes = [
             name: 'RabSummary',
             meta: {
               title: 'RAB Summary',
+              permissions: ['access-project-page'],
               loginRequired: true,
-              permissions: ['read-dashboard'],
             },
             component: () =>
               import(
@@ -93,7 +93,7 @@ const routes = [
             meta: {
               title: 'AHS',
               loginRequired: true,
-              permissions: ['read-dashboard'],
+              permissions: ['access-project-page'],
             },
             component: () =>
               import(
@@ -106,7 +106,7 @@ const routes = [
             meta: {
               title: 'Item Price',
               loginRequired: true,
-              permissions: ['read-dashboard'],
+              permissions: ['access-project-page'],
             },
             redirect: {
               name: 'RabItemPriceMaster',
@@ -122,7 +122,7 @@ const routes = [
                 meta: {
                   title: 'Harga Satuan',
                   loginRequired: true,
-                  permissions: ['read-dashboard'],
+                  permissions: ['access-project-page'],
                 },
                 component: () =>
                   import(
@@ -135,7 +135,7 @@ const routes = [
                 meta: {
                   title: 'Harga Satuan Peralatan',
                   loginRequired: true,
-                  permissions: ['read-dashboard'],
+                  permissions: ['access-project-page'],
                 },
                 component: () =>
                   import(
@@ -150,7 +150,7 @@ const routes = [
             meta: {
               title: 'Equipments Price Analysis',
               loginRequired: true,
-              permissions: ['read-dashboard'],
+              permissions: ['access-project-page'],
             },
             component: () =>
               import(
@@ -159,36 +159,36 @@ const routes = [
           },
         ],
       },
-      {
-        path: `token`,
-        name: 'Token',
-        meta: {
-          title: 'My Token',
-          loginRequired: true,
-          permissions: ['read-dashboard'],
-        },
-        component: () =>
-          import(/* webpackChunkName: "token" */ './../views/app/token'),
-      },
-      {
-        path: `transaction-history`,
-        name: 'TransactionHistory',
-        meta: {
-          title: 'Transaction History',
-          loginRequired: true,
-          permissions: ['read-dashboard'],
-        },
-        component: () =>
-          import(
-            /* webpackChunkName: "transactionHistory" */ './../views/app/transaction-history'
-          ),
-      },
+      // {
+      //   path: `token`,
+      //   name: 'Token',
+      //   meta: {
+      //     title: 'My Token',
+      //     loginRequired: true,
+      //     permissions: ['read-dashboard'],
+      //   },
+      //   component: () =>
+      //     import(/* webpackChunkName: "token" */ './../views/app/token'),
+      // },
+      // {
+      //   path: `transaction-history`,
+      //   name: 'TransactionHistory',
+      //   meta: {
+      //     title: 'Transaction History',
+      //     loginRequired: true,
+      //     permissions: ['read-dashboard'],
+      //   },
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "transactionHistory" */ './../views/app/transaction-history'
+      //     ),
+      // },
       {
         path: `account`,
         name: 'Account',
         meta: {
           loginRequired: true,
-          permissions: ['read-dashboard'],
+          permissions: ['access-account-page'],
         },
         redirect: {
           name: 'ProfileAccount',
@@ -201,6 +201,7 @@ const routes = [
             name: 'ProfileAccount',
             meta: {
               title: 'Account Profile',
+              permissions: ['access-account-page'],
             },
             component: () =>
               import(
@@ -212,6 +213,7 @@ const routes = [
             name: 'CompanyProfile',
             meta: {
               title: 'Company Profile',
+              permissions: ['access-account-page'],
             },
             component: () =>
               import(
@@ -223,6 +225,7 @@ const routes = [
             name: 'ChangeEmail',
             meta: {
               title: 'Change Email',
+              permissions: ['access-account-page'],
             },
             component: () =>
               import(
@@ -234,6 +237,7 @@ const routes = [
             name: 'ChangePassword',
             meta: {
               title: 'Change Password',
+              permissions: ['access-account-page'],
             },
             component: () =>
               import(
@@ -247,7 +251,7 @@ const routes = [
         name: 'Master',
         meta: {
           loginRequired: true,
-          permissions: ['read-dashboard'],
+          permissions: ['read-master-page'],
         },
         redirect: {
           name: 'ProfileAccount',
@@ -260,6 +264,7 @@ const routes = [
             name: 'MasterUnit',
             meta: {
               title: 'Master Unit',
+              permissions: ['read-master-page'],
             },
             component: () =>
               import(
@@ -271,6 +276,7 @@ const routes = [
             name: 'MasterItemPriceGroup',
             meta: {
               title: 'Master Item Price Group',
+              permissions: ['read-master-page'],
             },
             component: () =>
               import(
@@ -282,6 +288,7 @@ const routes = [
             name: 'MasterItemPrice',
             meta: {
               title: 'Master Item Price',
+              permissions: ['read-master-page'],
             },
             component: () =>
               import(
@@ -293,6 +300,7 @@ const routes = [
             name: 'MasterAhs',
             meta: {
               title: 'Master AHS',
+              permissions: ['read-master-page'],
             },
             component: () =>
               import(
@@ -304,6 +312,7 @@ const routes = [
             name: 'MasterAhp',
             meta: {
               title: 'Master AHP',
+              permissions: ['read-master-page'],
             },
             component: () =>
               import(
@@ -374,11 +383,11 @@ const routes = [
     ],
   },
   {
-    path: '/error',
+    path: '/error/:errorCode',
     component: () => import(/* webpackChunkName: "error" */ './../views/Error'),
   },
   {
-    path: '*',
+    path: '*/:errorCode',
     component: () => import(/* webpackChunkName: "error" */ './../views/Error'),
   },
 ];

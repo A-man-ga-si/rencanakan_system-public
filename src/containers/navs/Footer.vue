@@ -12,7 +12,9 @@
           <div class="col-sm-6 d-none d-sm-block">
             <ul class="breadcrumb pt-0 pr-0 float-right">
               <li class="breadcrumb-item mb-0">
-                <a href="#" class="btn-link">Landing Page</a>
+                <a :href="landingPageUrl" target="_blank" class="btn-link"
+                  >Rencanakan.id</a
+                >
               </li>
             </ul>
           </div>
@@ -22,10 +24,13 @@
   </footer>
 </template>
 <script>
+  import { landingPageUrl } from '@/constants/config';
+
   export default {
     data: () => ({
       copyrightBy: 'rencanakan.id',
       copyrightSymbol: '&copy',
+      landingPageUrl: landingPageUrl || '#',
     }),
     computed: {
       year() {
