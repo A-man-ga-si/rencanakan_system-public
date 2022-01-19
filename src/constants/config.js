@@ -6,7 +6,7 @@ export const searchPath = `${adminRoot}/#`;
 export const buyUrl = '#';
 export const landingPageUrl = 'https://rencanakan.id';
 export const apiDomain = 'http://localhost:8000';
-// export const apiDomain = 'http://app2.rencanakan.id';
+// export const apiDomain = 'https://preview-api.rencanakan.id';
 export const apiUrl = `${apiDomain}/api`;
 export const apiProvinces =
   'http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json';
