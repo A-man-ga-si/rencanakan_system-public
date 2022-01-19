@@ -5,6 +5,7 @@
       :api-url="api"
       :fields="fields"
       :per-page="perPage"
+      @vuetable:load-error="handleError"
       pagination-path
       :http-options="httpOptions"
       @vuetable:pagination-data="onPaginationData"
@@ -22,6 +23,7 @@
 
 <script>
   import Vuetable from 'vuetable-2';
+  import { Notify } from 'notiflix';
   import VuetablePaginationBootstrap from './../Common/VuetablePaginationBootstrap.vue';
   import { getToken } from '../../utils';
 
@@ -41,6 +43,13 @@
       },
     }),
     methods: {
+      handleError(payload) {
+        if (payload?.response?.status) {
+          Notify.failure(
+            "Failed to load data, user don't have right permission to access this data !"
+          );
+        }
+      },
       onPaginationData(paginationData) {
         this.$refs.pagination.setPaginationData(paginationData);
       },

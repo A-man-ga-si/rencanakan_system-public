@@ -2,29 +2,38 @@ import store from './../store';
 import { isAuthGuardActive } from '../constants/config';
 import { setCurrentUser, getCurrentUser } from '.';
 
+/**
+ * Verify is user valid or not by matching user.permissions array
+ * with routers's permission tree
+ *
+ * @param {object} to
+ * @param {object} user
+ * @returns bool isValid
+ */
+const verifyPermissions = (to, user) => {
+  const permissions = to.matched
+    .filter(x => x.meta.permissions)
+    .map(x => x.meta.permissions);
+  const isPermissionTreeValid = permissions.every(x => {
+    for (const pagePermission of x) {
+      if (user.permissions.includes(pagePermission)) return true;
+    }
+  });
+  return isPermissionTreeValid;
+};
+
 export default async (to, from, next) => {
   if (to.matched.some(record => record.meta.loginRequired)) {
     if (isAuthGuardActive) {
       const user = getCurrentUser();
       if (user) {
         try {
-          if (!store.getters['isTokenVerified'])
+          if (!store.getters['isTokenVerified']) {
             await store.dispatch('verifyToken');
-          const roleArrayHierarchic = to.matched
-            .filter(x => x.meta.permissions)
-            .map(x => x.meta.permissions);
-          if (
-            roleArrayHierarchic.every(x =>
-              user.permissions.every(y => x.includes(y))
-            )
-          ) {
-            next();
-          } else {
-            next('/unauthorized');
           }
+          if (verifyPermissions(to, user)) next();
+          else next('/unauthorized');
         } catch (err) {
-          console.log('Snap !');
-          console.error(err);
           next({
             name: 'Login',
           });

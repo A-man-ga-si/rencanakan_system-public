@@ -17,6 +17,9 @@ const routes = [
   {
     path: adminRoot,
     name: 'Root',
+    meta: {
+      permissions: ['read-dashboard'],
+    },
     redirect: {
       name: 'Dashboard',
     },
@@ -28,7 +31,7 @@ const routes = [
         meta: {
           title: 'Dashboard',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(
@@ -41,7 +44,7 @@ const routes = [
         meta: {
           title: 'Setting',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(/* webpackChunkName: "settings" */ './../views/app/settings'),
@@ -52,7 +55,7 @@ const routes = [
         meta: {
           title: 'My Projects',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(/* webpackChunkName: "project" */ './../views/app/projects'),
@@ -66,7 +69,7 @@ const routes = [
         meta: {
           title: 'RAB',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(/* webpackChunkName: "rab" */ './../views/app/projects/rabs'),
@@ -77,7 +80,7 @@ const routes = [
             meta: {
               title: 'RAB Summary',
               loginRequired: true,
-              permissions: ['read dashboard', 'read home'],
+              permissions: ['read-dashboard'],
             },
             component: () =>
               import(
@@ -90,7 +93,7 @@ const routes = [
             meta: {
               title: 'AHS',
               loginRequired: true,
-              permissions: ['read dashboard', 'read home'],
+              permissions: ['read-dashboard'],
             },
             component: () =>
               import(
@@ -103,7 +106,7 @@ const routes = [
             meta: {
               title: 'Item Price',
               loginRequired: true,
-              permissions: ['read dashboard', 'read home'],
+              permissions: ['read-dashboard'],
             },
             redirect: {
               name: 'RabItemPriceMaster',
@@ -119,7 +122,7 @@ const routes = [
                 meta: {
                   title: 'Harga Satuan',
                   loginRequired: true,
-                  permissions: ['read dashboard', 'read home'],
+                  permissions: ['read-dashboard'],
                 },
                 component: () =>
                   import(
@@ -132,7 +135,7 @@ const routes = [
                 meta: {
                   title: 'Harga Satuan Peralatan',
                   loginRequired: true,
-                  permissions: ['read dashboard', 'read home'],
+                  permissions: ['read-dashboard'],
                 },
                 component: () =>
                   import(
@@ -147,7 +150,7 @@ const routes = [
             meta: {
               title: 'Equipments Price Analysis',
               loginRequired: true,
-              permissions: ['read dashboard', 'read home'],
+              permissions: ['read-dashboard'],
             },
             component: () =>
               import(
@@ -162,7 +165,7 @@ const routes = [
         meta: {
           title: 'My Token',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(/* webpackChunkName: "token" */ './../views/app/token'),
@@ -173,7 +176,7 @@ const routes = [
         meta: {
           title: 'Transaction History',
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         component: () =>
           import(
@@ -185,7 +188,7 @@ const routes = [
         name: 'Account',
         meta: {
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         redirect: {
           name: 'ProfileAccount',
@@ -244,7 +247,7 @@ const routes = [
         name: 'Master',
         meta: {
           loginRequired: true,
-          permissions: ['read dashboard', 'read home'],
+          permissions: ['read-dashboard'],
         },
         redirect: {
           name: 'ProfileAccount',

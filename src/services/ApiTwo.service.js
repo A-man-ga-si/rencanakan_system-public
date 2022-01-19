@@ -57,8 +57,7 @@ class ApiTwo {
     buildPath += `${this.basePath}/`;
     buildPath += encodeURI(path);
 
-    buildPath = buildPath.replace(/\/$/, "");
-    console.log(buildPath);
+    buildPath = buildPath.replace(/\/$/, '');
 
     if (query) {
       // prettier-ignore

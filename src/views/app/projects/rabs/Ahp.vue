@@ -1,32 +1,51 @@
 <template>
   <div class="ahsp-page mt-5">
-    <b-row>
-      <b-col :lg="6" :xl="3">
-        <div class="text-right mb-2 position-relative">
-          <label class="form-group has-float-label mb-0">
-            <input
-              v-model="form.searchQuery"
-              type="text"
-              class="form-control"
+    <div class="no-ahs text-center" v-if="!customAhps.length">
+      <img
+        src="@/assets/img/panel/Empty-amico.svg"
+        alt=""
+        style="max-width: 350px; width: 100%"
+      />
+      <div class="empty-word mt-3">
+        <h3 class="font-weight-bold">AHP Kosong</h3>
+        <p>
+          Klik tombol
+          <a href="#" @click.prevent="showCustomAhpModal">
+            <u> tambah </u>
+          </a>
+          di pojok kanan bawah untuk membuat AHP pertamamu !
+        </p>
+      </div>
+    </div>
+    <div class="ahp-content" v-else>
+      <b-row>
+        <b-col :lg="6" :xl="3">
+          <div class="text-right mb-2 position-relative">
+            <label class="form-group has-float-label mb-0">
+              <input
+                v-model="form.searchQuery"
+                type="text"
+                class="form-control"
+              />
+              <span> Search Item </span>
+            </label>
+            <i
+              class="simple-icon-magnifier position-absolute bg-white"
+              style="top: 11px; right: 10px"
             />
-            <span> Search Item </span>
-          </label>
-          <i
-            class="simple-icon-magnifier position-absolute bg-white"
-            style="top: 11px; right: 10px"
-          />
-        </div>
-      </b-col>
-    </b-row>
-    <AhpItem
-      v-for="(customAhp, idx) in customAhps"
-      :custom-ahp="customAhp"
-      :units="getUnit"
-      :key="idx"
-      @custom-ahp-item-edit-clicked="showEditCustomAhpModal"
-      @custom-ahp-deleted="reloadData"
-      @custom-ahp-item-changed="reloadData"
-    />
+          </div>
+        </b-col>
+      </b-row>
+      <AhpItem
+        v-for="(customAhp, idx) in customAhps"
+        :custom-ahp="customAhp"
+        :units="getUnit"
+        :key="idx"
+        @custom-ahp-item-edit-clicked="showEditCustomAhpModal"
+        @custom-ahp-deleted="reloadData"
+        @custom-ahp-item-changed="reloadData"
+      />
+    </div>
     <AddCustomAhp @custom-ahp-added="reloadData" />
     <EditCustomAhp
       :edited-custom-ahp="editedCustomAhp"

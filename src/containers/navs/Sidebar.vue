@@ -332,10 +332,21 @@
       //For UserRole
       filteredMenuItems(menuItems) {
         return menuItems
-          ? menuItems.filter(
-              x =>
-                !x.roles || (x.roles && x.roles.includes(this.currentUser.role))
-            )
+          ? menuItems.filter(x => {
+              if (x.permissions.length <= 0) {
+                return true;
+              } else {
+                for (const permission of x.permissions) {
+                  if (this.currentUser.permissions.includes(permission)) {
+                    return true;
+                  }
+                }
+                return false;
+                // x.permissions.length <= 0 ||
+                //   (x.permissions.length > 0 &&
+                //     x.permissions.includes(this.currentUser.role));
+              }
+            })
           : [];
       },
     },

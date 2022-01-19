@@ -1,45 +1,64 @@
 <template>
   <div class="ahs-page mt-5">
-    <b-row>
-      <b-col :lg="6" :xl="3">
-        <div class="text-right mb-2 position-relative">
-          <label class="form-group has-float-label mb-0">
-            <input
-              v-model="form.searchQuery"
-              type="text"
-              class="form-control"
+    <div class="no-ahs text-center" v-if="!customAhs.length">
+      <img
+        src="@/assets/img/panel/Empty-amico.svg"
+        alt=""
+        style="max-width: 350px; width: 100%"
+      />
+      <div class="empty-word mt-3">
+        <h3 class="font-weight-bold">AHS Kosong</h3>
+        <p>
+          Klik tombol
+          <a href="#" @click.prevent="toggleAddCustomAhsModal">
+            <u> tambah </u>
+          </a>
+          di pojok kanan bawah untuk membuat AHS pertamamu !
+        </p>
+      </div>
+    </div>
+    <div class="ahs-content" v-else>
+      <b-row>
+        <b-col :lg="6" :xl="3">
+          <div class="text-right mb-2 position-relative">
+            <label class="form-group has-float-label mb-0">
+              <input
+                v-model="form.searchQuery"
+                type="text"
+                class="form-control"
+              />
+              <span> Search Item </span>
+            </label>
+            <i
+              class="simple-icon-magnifier position-absolute bg-white"
+              style="top: 11px; right: 10px"
             />
-            <span> Search Item </span>
-          </label>
-          <i
-            class="simple-icon-magnifier position-absolute bg-white"
-            style="top: 11px; right: 10px"
-          />
-        </div>
-      </b-col>
-      <b-col>
-        <b-form-group horizontal>
-          <b-form-radio-group
-            class="pt-2"
-            :options="searchQueryOptions"
-            v-model="form.searchQueryCategory"
-          />
-        </b-form-group>
-      </b-col>
-    </b-row>
+          </div>
+        </b-col>
+        <b-col>
+          <b-form-group horizontal>
+            <b-form-radio-group
+              class="pt-2"
+              :options="searchQueryOptions"
+              v-model="form.searchQueryCategory"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <AhsItem
+        v-for="(cAhs, idx) in customAhs"
+        :key="idx"
+        :custom-ahs-itemable-list="getCustomAhsItemableIds"
+        :custom-ahs-item="cAhs"
+        :units-list="getUnit"
+        @custom-ahs-item-added="reloadData"
+        @ahs-item-deleted="reloadData"
+        @ahs-item-updated="reloadData"
+        @delete-custom-ahs="reloadData"
+        @custom-ahs-edit-bt-clicked="toggleEditCustomAhs"
+      />
+    </div>
     <FloatingActionButton @click="toggleAddCustomAhsModal" />
-    <AhsItem
-      v-for="(cAhs, idx) in customAhs"
-      :key="idx"
-      :custom-ahs-itemable-list="getCustomAhsItemableIds"
-      :custom-ahs-item="cAhs"
-      :units-list="getUnit"
-      @custom-ahs-item-added="reloadData"
-      @ahs-item-deleted="reloadData"
-      @ahs-item-updated="reloadData"
-      @delete-custom-ahs="reloadData"
-      @custom-ahs-edit-bt-clicked="toggleEditCustomAhs"
-    />
     <AddCustomAhs @custom-ahs-added="reloadData" />
     <EditCustomAhs
       @custom-ahs-updated="reloadData"
