@@ -16,7 +16,7 @@
       style="border-radius: 8px 8px 0 0"
     >
       <div class="left">
-        <h5>{{ romanizedRabsNumber }}. {{ rabItem.name }}</h5>
+        <h5>{{ alphabeuticalRabNumber }}. {{ rabItem.name }}</h5>
       </div>
       <div class="right">
         <a
@@ -93,7 +93,7 @@
                   "
                 >
                   <h5 class="d-inline-block mb-0">
-                    {{ numToAlphabet(idx + 1) }}. {{ rabItemHeader.name }}
+                    {{ romanized(idx + 1) }}. {{ rabItemHeader.name }}
                   </h5>
                   <a
                     href="#"
@@ -255,10 +255,15 @@
       addRabItemHeader() {
         this.$emit('add-rab-item-header-bt-clicked', this.rabItem);
       },
+      romanized(number) {
+        return toRoman(number);
+      },
     },
     computed: {
-      romanizedRabsNumber() {
-        return toRoman(this.index + 1) || 0;
+      alphabeuticalRabNumber() {
+        return this.numToAlphabetInstance
+          .numberToString(this.index + 1)
+          .toUpperCase();
       },
       formattedSubtotal() {
         return formatCurrency(parseInt(this.rabItem.subtotal));
