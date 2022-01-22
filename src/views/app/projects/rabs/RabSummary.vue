@@ -38,6 +38,7 @@
       @rab-item-added="reloadData"
       @rab-item-updated="reloadData"
       @rab-item-header-deleted="reloadData"
+      @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
       @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
       @edit-rab-item-bt-clicked="editRab"
     />
@@ -100,18 +101,23 @@
       @rab-item-header-added="reloadData"
     />
     <EditRab @rab-updated="reloadData" :edited-rab="editedRabItem" />
+    <EditRabItemHeader
+      @rab-item-header-updated="reloadData"
+      :rab="rabItemHeaderEdit"
+      :edited-rab-item-header="editedRabItemHeader"
+    />
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
-  import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
-  // import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
-  import AddRab from './../../../../components/Project/Rab/AddRab.vue';
   import EditRab from '@/components/Project/Rab/EditRab.vue';
   import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
+  import EditRabItemHeader from '@/components/Project/Rab/EditRabItemHeader.vue';
+  import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
+  import AddRab from './../../../../components/Project/Rab/AddRab.vue';
 
   export default {
     data() {
@@ -130,8 +136,10 @@
         unitCodesList: [],
         customAhsIds: [],
         rabItemHeaderAdd: {},
+        rabItemHeaderEdit: {},
         searchCountdownObject: null,
         editedRabItem: null,
+        editedRabItemHeader: null,
       };
     },
     created() {
@@ -159,8 +167,12 @@
         });
         this.customAhsIds = data.data.data.ahsItemIds;
       },
+      showEditRabItemHeaderModal(rabItem, rabItemHeader) {
+        this.rabItemHeaderEdit = rabItem;
+        this.editedRabItemHeader = rabItemHeader;
+        this.$bvModal.show('edit-rab-item-header');
+      },
       showAddRabItemHeaderModal(rabItem) {
-        console.log(rabItem);
         this.rabItemHeaderAdd = rabItem;
         this.$bvModal.show('add-rab-item-header');
       },
@@ -234,6 +246,7 @@
       EditRab,
       AddRab,
       AddRabItemHeader,
+      EditRabItemHeader,
     },
   };
 </script>

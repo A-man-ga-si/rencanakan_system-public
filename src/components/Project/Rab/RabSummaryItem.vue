@@ -98,9 +98,16 @@
                   <a
                     href="#"
                     @click.prevent="deleteRabItemHeader(rabItemHeader.hashid)"
-                    class="text-white action-close float-right"
+                    class="text-white action-close float-right ml-2"
                   >
                     <i class="iconminds simple-icon-close"></i>
+                  </a>
+                  <a
+                    href="#"
+                    @click.prevent="editRabItemHeader(rabItemHeader)"
+                    class="text-white action-close float-right"
+                  >
+                    <i class="iconminds simple-icon-plus"></i>
                   </a>
                 </div>
               </td>
@@ -205,6 +212,13 @@
       },
       numToAlphabet(num) {
         return this.numToAlphabetInstance.numberToString(num).toUpperCase();
+      },
+      editRabItemHeader(rabItemHeader) {
+        this.$emit(
+          'edit-rab-item-header-bt-clicked',
+          this.rabItem,
+          rabItemHeader
+        );
       },
       async deleteRab() {
         const { isConfirmed } = await showConfirmAlert({

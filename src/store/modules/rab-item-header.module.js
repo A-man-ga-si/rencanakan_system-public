@@ -23,6 +23,12 @@ const actions = {
       .get(`${rabItemHeaderId}/delete`);
     return data;
   },
+  async updateRabItemHeader(ctx, { projectId, rabId, rabItemHeaderId, form }) {
+    const data = await rabItemHeaderApi
+      .setPreviousPath(`project/${projectId}/rab/${rabId}`)
+      .post(`${rabItemHeaderId}`, form);
+    return data;
+  },
 };
 
 export default {
