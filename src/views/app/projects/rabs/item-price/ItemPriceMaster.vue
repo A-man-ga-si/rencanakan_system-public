@@ -4,7 +4,11 @@
       <b-col :lg="6" :xl="3">
         <div class="text-right mb-2 position-relative">
           <label class="form-group has-float-label mb-0">
-            <input v-model="form.searchQuery" type="text" class="form-control" />
+            <input
+              v-model="form.searchQuery"
+              type="text"
+              class="form-control"
+            />
             <span> Search Item </span>
           </label>
           <i
@@ -15,11 +19,11 @@
       </b-col>
       <b-col>
         <b-form-group horizontal>
-            <b-form-radio-group
-              class="pt-2"
-              :options="searchQueryOptions"
-              v-model="form.searchQueryCategory"
-            />
+          <b-form-radio-group
+            class="pt-2"
+            :options="searchQueryOptions"
+            v-model="form.searchQueryCategory"
+          />
         </b-form-group>
       </b-col>
     </b-row>
@@ -56,12 +60,12 @@
       return {
         editedItemPriceGroup: {},
         form: {
-          searchQueryCategory: 'header',
+          searchQueryCategory: 'item',
           searchQuery: '',
         },
         searchQueryOptions: [
-          {text: 'Header', value: 'header'},
-          {text: 'Item', value: 'item'}
+          { text: 'Item', value: 'item' },
+          { text: 'Header', value: 'header' },
         ],
         searchCountdownObject: null,
       };
@@ -71,7 +75,11 @@
       this.fetchUnit();
     },
     methods: {
-      ...mapActions(['fetchCustomItemPrices', 'queryCustomItemPrices', 'fetchUnit']),
+      ...mapActions([
+        'fetchCustomItemPrices',
+        'queryCustomItemPrices',
+        'fetchUnit',
+      ]),
       showAddItemPriceDialog() {
         this.$bvModal.show('add-item-price-group');
       },
@@ -88,7 +96,6 @@
     watch: {
       form: {
         handler() {
-
           if (this.searchCountdownObject != 'null') {
             clearTimeout(this.searchCountdownObject);
           }
@@ -96,19 +103,19 @@
           const that = this;
 
           if (this.form.searchQuery != '') {
-            this.searchCountdownObject = setTimeout(function() {
-                that.queryCustomItemPrices({
-                  projectId: that.$route.params.id,
-                  queries: that.form,
-                });
+            this.searchCountdownObject = setTimeout(function () {
+              that.queryCustomItemPrices({
+                projectId: that.$route.params.id,
+                queries: that.form,
+              });
             }, 500);
           } else {
-            this.fetchCustomItemPrices(this.$route.params.id) ;
+            this.fetchCustomItemPrices(this.$route.params.id);
           }
         },
 
         deep: true,
-      }
+      },
     },
     components: {
       ItemPriceItem,

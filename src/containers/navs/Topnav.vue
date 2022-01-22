@@ -47,10 +47,6 @@
     </router-link>
 
     <div class="navbar-right">
-      <h5 class="d-inline-block mr-2">
-        <i class="iconsminds-coins-2"></i>
-        {{ userToken }}
-      </h5>
       <div class="user d-inline-block">
         <b-dropdown
           class="dropdown-menu-right"
@@ -186,10 +182,6 @@
         menuClickCount: 'getMenuClickCount',
         selectedMenuHasSubItems: 'getSelectedMenuHasSubItems',
       }),
-      userToken() {
-        const formatter = new Intl.NumberFormat('id');
-        return formatter.format(this.currentUser.token_amount);
-      },
       profileImage() {
         return this.currentUser?.img
           ? `${apiDomain}/storage/uploads/users/profile-photo/${this.currentUser.img}`

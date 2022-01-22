@@ -124,11 +124,11 @@
       return {
         form: {
           searchQuery: '',
-          searchQueryCategory: 'header',
+          searchQueryCategory: 'item',
         },
         searchQueryOptions: [
-          { text: 'Header', value: 'header' },
           { text: 'Item', value: 'item' },
+          { text: 'Header', value: 'header' },
         ],
         projectProperties: {},
         projects: {},
