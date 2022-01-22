@@ -118,7 +118,11 @@
       };
     },
     methods: {
-      ...mapMutations(['changeSideMenuStatus', 'changeSideMenuForMobile']),
+      ...mapMutations([
+        'changeSideMenuStatus',
+        'changeSideMenuForMobile',
+        'clearRabs',
+      ]),
       ...mapActions(['setLang', 'logout']),
       changeLocale(locale, direction) {
         const currentDirection = getDirection().direction;
@@ -129,6 +133,7 @@
         this.setLang(locale);
       },
       userLogout() {
+        this.clearRabs();
         this.logout().then(() => {
           this.$router.push({
             name: 'Login',

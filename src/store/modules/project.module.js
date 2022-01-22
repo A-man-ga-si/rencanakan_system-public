@@ -63,6 +63,10 @@ const actions = {
   async updateProject(ctx, { projectId, form }) {
     return await projectApi.post(projectId, form);
   },
+
+  async markLastOpenedAt(ctx, { projectId }) {
+    return await projectApi.get(`${projectId}/update-last-opened-at`);
+  },
 };
 
 export default {

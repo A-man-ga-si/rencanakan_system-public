@@ -1,6 +1,7 @@
 <template>
   <b-card class="mb-4" :title="title || ''">
     <Vuetable
+      id="project-table"
       ref="vuetable"
       :api-url="api"
       :fields="fields"
@@ -66,3 +67,23 @@
     },
   };
 </script>
+
+<style>
+  #project-table thead {
+    background-color: #00365a;
+    border-radius: 20px !important;
+    color: white;
+  }
+
+  #project-table thead th:hover {
+    color: white !important;
+  }
+
+  #project-table thead th:first-child {
+    border-radius: 20px 0 0 0 !important;
+  }
+
+  #project-table thead th:last-child {
+    border-radius: 0 20px 0 0 !important;
+  }
+</style>

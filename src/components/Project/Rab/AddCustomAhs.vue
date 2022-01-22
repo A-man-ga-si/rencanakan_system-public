@@ -4,15 +4,15 @@
       <b-nav class="mb-5 justify-content-center" pills>
         <b-nav-item
           @click.prevent="switchSource"
-          :active="formOptions.currentState === 'custom'"
+          :active="formOptions.currentState === 'reference'"
         >
-          Kostum
+          AHS Permen PUPR 2016
         </b-nav-item>
         <b-nav-item
           @click.prevent="switchSource"
-          :active="formOptions.currentState === 'reference'"
+          :active="formOptions.currentState === 'custom'"
         >
-          Referensi
+          Custom AHS
         </b-nav-item>
       </b-nav>
       <div
@@ -68,7 +68,7 @@
       return {
         modalId: 'add-custom-ahs',
         formOptions: {
-          currentState: 'custom',
+          currentState: 'reference',
         },
         form: {
           name: '',

@@ -342,9 +342,9 @@
         "unit-name": "Nama Satuan"
       },
       "item-price-group": {
-        "add-item-price-group": "Tambah Kelompok Harga Satuan",
-        "edit-item-price-group": "Edit Kelompok Harga Satuan",
-        "update-item-price-group": "Update kelompok Harga Satuan",
+        "add-item-price-group": "Tambah Kategori Harga Satuan",
+        "edit-item-price-group": "Edit Kategori Harga Satuan",
+        "update-item-price-group": "Update Kategori Harga Satuan",
         "item-price-group-name": "Nama"
       },
       "item-price": {

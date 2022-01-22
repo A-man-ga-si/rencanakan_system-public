@@ -9,7 +9,7 @@
               type="text"
               class="form-control"
             />
-            <span> Search Item </span>
+            <span> Search </span>
           </label>
           <i
             class="simple-icon-magnifier position-absolute bg-white"
@@ -127,8 +127,8 @@
           searchQueryCategory: 'item',
         },
         searchQueryOptions: [
-          { text: 'Item', value: 'item' },
-          { text: 'Header', value: 'header' },
+          { text: 'Nama Barang', value: 'item' },
+          { text: 'Kategori', value: 'header' },
         ],
         projectProperties: {},
         projects: {},

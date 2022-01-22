@@ -5,17 +5,17 @@ export default [
   },
   {
     name: 'name',
-    title: 'Name',
+    title: 'Nama',
     sortField: 'name',
   },
   {
     name: 'created_at_formatted',
-    title: 'Created At',
+    title: 'Tanggal dibuat',
     sortField: 'created_at',
   },
   {
     name: 'last_opened_at_formatted',
-    title: 'Last Opened At',
+    title: 'Terakhir dibuka',
     sortField: 'last_opened_at',
   },
   {

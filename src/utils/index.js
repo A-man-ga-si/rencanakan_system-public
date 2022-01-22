@@ -246,3 +246,9 @@ export const checkQueryPath = (basePath, path) => {
     path && !String(path).startsWith('?') ? `/${path}` : path
   }`;
 };
+
+export const numberToAlphabet = number => {
+  // prettier-ignore
+  const alphabetSequence = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  return alphabetSequence[number >= 26 ? number % 26 : number];
+};

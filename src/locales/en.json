@@ -339,9 +339,9 @@
         "unit-name": "Unit Name"
       },
       "item-price-group": {
-        "add-item-price-group": "Add Item Price Group",
-        "edit-item-price-group": "Edit Item Price Group",
-        "update-item-price-group": "Update Item Price Group",
+        "add-item-price-group": "Add Item Price Category",
+        "edit-item-price-group": "Edit Item Price Category",
+        "update-item-price-group": "Update Item Price Category",
         "item-price-group-name": "Name"
       },
       "item-price": {

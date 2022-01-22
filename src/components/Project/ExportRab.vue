@@ -6,6 +6,9 @@
         <b-badge :variant="getCompany ? 'success' : 'danger'">{{
           getCompany ? 'Sudah Diisi' : 'Belum Diisi'
         }}</b-badge>
+        <router-link v-if="!getCompany" :to="{ name: 'CompanyProfile' }">
+          <u class="ml-1">Klik disini untuk mengisi company</u>
+        </router-link>
       </div>
       <div class="export-form">
         <h5>Status Export</h5>
@@ -71,7 +74,7 @@
             });
             const fileLink = document.createElement('a');
             fileLink.href = window.URL.createObjectURL(xlsxBlob);
-            fileLink.download = 'export_rab.xlsx';
+            fileLink.download = this.getCompany.name + '.xlsx';
             fileLink.click();
             this.checkQuotas();
           } else {

@@ -8,6 +8,7 @@
         class="rab-inline-editor"
         style="width: 100%"
         v-model="form.name"
+        placeholder="Isi nama barang"
         @change="partialUpdate('name')"
       />
       <span v-else>{{ item.name }}</span>
@@ -30,6 +31,7 @@
         type="text"
         class="rab-inline-editor"
         v-model="form.code"
+        placeholder="Isi kode barang"
         @change="partialUpdate('code')"
       />
       <span v-else>{{ item.code }}</span>
@@ -95,14 +97,13 @@
               text: 'Hapus harga satuan ? pastikan tidak ada data yang terhubung dengan data harga satuan ini !',
             });
             if (isConfirmed) {
-  
               await this.deleteCustomItemPrice({
                 projectId: this.$route.params.id,
                 customItemPriceCode: this.item.hashid,
               });
-  
+
               this.$parent.$emit('custom-item-price-deleted');
-  
+
               Notify.success('Harga Satuan Berhasil Dihapus !');
             }
           } else {
@@ -111,7 +112,9 @@
             );
           }
         } catch (err) {
-          Notify.failure(`Gagal menghapus harga satuan ! ${err.response.data.message}`);
+          Notify.failure(
+            `Gagal menghapus harga satuan ! ${err.response.data.message}`
+          );
         }
       },
       async partialUpdate(updatedKey) {
@@ -142,11 +145,11 @@
       EditButton,
       DeleteButton,
     },
-    watch : {
+    watch: {
       item() {
         this.form = { ...this.item };
-      }
-    }
+      },
+    },
   };
 </script>
 

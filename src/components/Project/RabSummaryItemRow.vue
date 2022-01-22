@@ -5,6 +5,7 @@
       <input
         type="text"
         class="inline-edit w-100"
+        placeholder="Isi nama pekerjaan"
         v-model="form.name"
         @change="update"
       />
@@ -41,6 +42,7 @@
         @change="update"
         type="text"
         class="inline-edit"
+        placeholder="Isi harga satuan"
         v-model="form.price"
         :disabled="isAhsReferenced(rabItemData)"
       />

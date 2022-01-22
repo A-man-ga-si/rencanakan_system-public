@@ -16,6 +16,9 @@ const mutations = {
   setRabs(state, rabs) {
     state.rabs = rabs;
   },
+  clearRabs(state) {
+    state.rabs = [];
+  },
 };
 
 const actions = {

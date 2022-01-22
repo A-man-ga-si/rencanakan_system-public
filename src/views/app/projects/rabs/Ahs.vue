@@ -1,5 +1,32 @@
 <template>
   <div class="ahs-page mt-5">
+    <b-row>
+      <b-col :lg="6" :xl="3">
+        <div class="text-right mb-2 position-relative">
+          <label class="form-group has-float-label mb-0">
+            <input
+              v-model="form.searchQuery"
+              type="text"
+              class="form-control"
+            />
+            <span> Search </span>
+          </label>
+          <i
+            class="simple-icon-magnifier position-absolute bg-white"
+            style="top: 11px; right: 10px"
+          />
+        </div>
+      </b-col>
+      <b-col>
+        <b-form-group horizontal>
+          <b-form-radio-group
+            class="pt-2"
+            :options="searchQueryOptions"
+            v-model="form.searchQueryCategory"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
     <div class="no-ahs text-center" v-if="!customAhs.length">
       <img
         src="@/assets/img/panel/Empty-amico.svg"
@@ -18,33 +45,6 @@
       </div>
     </div>
     <div class="ahs-content" v-else>
-      <b-row>
-        <b-col :lg="6" :xl="3">
-          <div class="text-right mb-2 position-relative">
-            <label class="form-group has-float-label mb-0">
-              <input
-                v-model="form.searchQuery"
-                type="text"
-                class="form-control"
-              />
-              <span> Search Item </span>
-            </label>
-            <i
-              class="simple-icon-magnifier position-absolute bg-white"
-              style="top: 11px; right: 10px"
-            />
-          </div>
-        </b-col>
-        <b-col>
-          <b-form-group horizontal>
-            <b-form-radio-group
-              class="pt-2"
-              :options="searchQueryOptions"
-              v-model="form.searchQueryCategory"
-            />
-          </b-form-group>
-        </b-col>
-      </b-row>
       <AhsItem
         v-for="(cAhs, idx) in customAhs"
         :key="idx"
@@ -82,8 +82,8 @@
           searchQueryCategory: 'item',
         },
         searchQueryOptions: [
-          { text: 'Item', value: 'item' },
-          { text: 'Header', value: 'header' },
+          { text: 'Nama Barang', value: 'item' },
+          { text: 'Kategori', value: 'header' },
         ],
         customAhs: [],
         editedCustomAhs: {},

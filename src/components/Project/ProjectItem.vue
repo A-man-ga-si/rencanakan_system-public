@@ -12,18 +12,17 @@
       :fields="fields"
     >
       <template slot="actions" slot-scope="row">
-        <router-link
-          :to="`/app/projects/${row.row.rowData.hashid}/rab`"
+        <a
+          href="#"
+          @click.prevent="detailProject(row.row.rowData.hashid)"
           class="rab-icon-bt mx-1"
         >
           <i class="iconsminds-book"></i>
-        </router-link>
+        </a>
         <EditButton @click.prevent="editProject(row.row.rowData)" />
         <DeleteButton @click.prevent="deleteProject(row.row.rowData.hashid)" />
       </template>
     </CustomDataTable>
-    <!-- <AddProject @project-added="reload" :provinces="getProvinces" /> -->
-    <!-- <EditUnit :selected-unit="selectedUnit" @unit-updated="reload" /> -->
   </div>
 </template>
 
@@ -47,9 +46,16 @@
       ...mapGetters(['getProvinces']),
     },
     methods: {
-      ...mapActions(['destroyProject']),
+      ...mapActions(['destroyProject', 'markLastOpenedAt']),
       reload() {
         this.$refs['project-data-table'].reloadTable();
+      },
+      detailProject(projectHashid) {
+        // Keep this asynchronously !
+        this.markLastOpenedAt({
+          projectId: projectHashid,
+        });
+        this.$router.push({ path: `/app/projects/${projectHashid}/rab` });
       },
       editProject(project) {
         this.$bvModal.show('edit-project');

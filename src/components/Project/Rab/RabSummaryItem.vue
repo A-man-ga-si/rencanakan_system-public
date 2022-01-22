@@ -169,12 +169,11 @@
 </template>
 
 <script>
-  import { NumberToAlphabet } from 'number-to-alphabet';
   import { toRoman } from 'roman-numerals';
   import RabSummaryItemRow from '@/components/Project/RabSummaryItemRow.vue';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
-  import { showConfirmAlert, formatCurrency } from '@/utils';
+  import { showConfirmAlert, formatCurrency, numberToAlphabet } from '@/utils';
 
   export default {
     props: {
@@ -196,12 +195,8 @@
     },
     data: () => ({
       mainCardCollapsed: false,
-      numToAlphabetInstance: null,
       editedRab: null,
     }),
-    created() {
-      this.numToAlphabetInstance = new NumberToAlphabet();
-    },
     methods: {
       ...mapActions(['destroyRab', 'storeRabItem', 'destroyRabItemHeader']),
       toggleMaincardCollapse() {
@@ -209,9 +204,6 @@
       },
       editRab() {
         this.$emit('edit-rab-item-bt-clicked', this.rabItem);
-      },
-      numToAlphabet(num) {
-        return this.numToAlphabetInstance.numberToString(num).toUpperCase();
       },
       editRabItemHeader(rabItemHeader) {
         this.$emit(
@@ -275,9 +267,7 @@
     },
     computed: {
       alphabeuticalRabNumber() {
-        return this.numToAlphabetInstance
-          .numberToString(this.index + 1)
-          .toUpperCase();
+        return numberToAlphabet(this.index).toUpperCase();
       },
       formattedSubtotal() {
         return formatCurrency(parseInt(this.rabItem.subtotal));

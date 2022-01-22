@@ -1,5 +1,23 @@
 <template>
   <div class="ahsp-page mt-5">
+    <b-row>
+      <b-col :lg="6" :xl="3">
+        <div class="text-right mb-2 position-relative">
+          <label class="form-group has-float-label mb-0">
+            <input
+              v-model="form.searchQuery"
+              type="text"
+              class="form-control"
+            />
+            <span> Search </span>
+          </label>
+          <i
+            class="simple-icon-magnifier position-absolute bg-white"
+            style="top: 11px; right: 10px"
+          />
+        </div>
+      </b-col>
+    </b-row>
     <div class="no-ahs text-center" v-if="!customAhps.length">
       <img
         src="@/assets/img/panel/Empty-amico.svg"
@@ -18,24 +36,6 @@
       </div>
     </div>
     <div class="ahp-content" v-else>
-      <b-row>
-        <b-col :lg="6" :xl="3">
-          <div class="text-right mb-2 position-relative">
-            <label class="form-group has-float-label mb-0">
-              <input
-                v-model="form.searchQuery"
-                type="text"
-                class="form-control"
-              />
-              <span> Search Item </span>
-            </label>
-            <i
-              class="simple-icon-magnifier position-absolute bg-white"
-              style="top: 11px; right: 10px"
-            />
-          </div>
-        </b-col>
-      </b-row>
       <AhpItem
         v-for="(customAhp, idx) in customAhps"
         :custom-ahp="customAhp"

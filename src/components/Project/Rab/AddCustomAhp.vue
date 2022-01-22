@@ -1,17 +1,17 @@
 <template>
-  <b-modal :id="modalId" :ref="modalId" :title="'Tambah Costum AHP'">
+  <b-modal :id="modalId" :ref="modalId" :title="'Tambah AHP'">
     <b-nav class="mb-5 justify-content-center" pills>
-      <b-nav-item
-        @click.prevent="switchSource"
-        :active="formOptions.currentState === 'custom'"
-      >
-        Kostum
-      </b-nav-item>
       <b-nav-item
         @click.prevent="switchSource"
         :active="formOptions.currentState === 'reference'"
       >
-        Referensi
+        AHP Permen PUPR 2016
+      </b-nav-item>
+      <b-nav-item
+        @click.prevent="switchSource"
+        :active="formOptions.currentState === 'custom'"
+      >
+        Custom AHP
       </b-nav-item>
     </b-nav>
     <div
@@ -70,7 +70,7 @@
         name: '',
       },
       formOptions: {
-        currentState: 'custom',
+        currentState: 'reference',
       },
     }),
     created() {
