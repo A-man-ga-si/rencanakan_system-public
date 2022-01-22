@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@develoka/angka-terbilang-js": "^1.4.2",
-    "@handsontable/vue": "^9.0.2",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.14.0",

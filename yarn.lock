@@ -908,11 +908,6 @@
   resolved "https://registry.yarnpkg.com/@develoka/angka-terbilang-js/-/angka-terbilang-js-1.4.2.tgz#2756421b24d4dcf04643697c87b204130757bfcd"
   integrity sha512-eunTDwPs1JmtY1bpP7SBrjjn3eTcy9NcGWUrECbH3CWjfznOsTiNbxLDMGeNxRCUYUR5rL9lI0hr6bTOXeVmzQ==
 
-"@handsontable/vue@^9.0.2":
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/@handsontable/vue/-/vue-9.0.2.tgz#32969b34f9330e912ade1d4421a86ed9ecea555c"
-  integrity sha512-mhLaF6I0E90x8QW52ulfcB81G/8E2qs96sCf1wk4xwIU+RJS340nIMAa56R3eASGUBUupnpFZiUPpjbhdQRDeg==
-
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.npmjs.org/@hapi/address/-/address-2.1.4.tgz"
