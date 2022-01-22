@@ -8359,11 +8359,6 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-autosuggest@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/vue-autosuggest/-/vue-autosuggest-2.2.0.tgz"
-  integrity sha512-cHgEakpoRUOaqXXEo8RcRrbSTM3eAaCu9b55ZXiKbaS6IUD8ewqffQrMy/A1DXqHSQbyEEGui4oAsCbRge29Jg==
-
 vue-functional-data-merge@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz"
@@ -8398,11 +8393,6 @@ vue-loader@^15.9.2, vue-loader@^15.9.7:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
-
-vue-perfect-scrollbar@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmjs.org/vue-perfect-scrollbar/-/vue-perfect-scrollbar-0.2.1.tgz"
-  integrity sha512-45rOonNrZaKX0mu0N9v422+c3Ngm8iTnVAP0N2iUwPfWZJds4S6eRGdmiNbrVFqmUc8IfRNI0Dpa3Zk8ntjaZQ==
 
 vue-router@^3.5.1:
   version "3.5.1"
