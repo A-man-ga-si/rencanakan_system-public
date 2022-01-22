@@ -7814,5 +7814,6 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px $foreground-color inset !important;
   -webkit-box-shadow: 0 0 0px 1000px $foreground-color inset !important;
 }
