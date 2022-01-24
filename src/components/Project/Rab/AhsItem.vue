@@ -159,11 +159,14 @@
             tooltip="(A + B + C + D)"
             :value="ahsItemSubtotal"
           />
-          <AhsHeaderRow title="F. BIAYA OVERHEAD" tooltip="0%" value="Rp.0 " />
-          <AhsHeaderRow title="G. PROFIT" tooltip="0%" value="Rp.0 " />
           <AhsHeaderRow
-            title="H. HARGA SATUAN PEKERJAAN"
-            tooltip="(E + (F + G))"
+            title="F. BIAYA OVERHEAD & PROFIT"
+            tooltip="0%"
+            :value="overheadAndProfitTotal"
+          />
+          <AhsHeaderRow
+            title="G. HARGA SATUAN PEKERJAAN"
+            tooltip="(E + F)"
             :value="ahsItemFinalSubtotal"
           />
         </tbody>
@@ -178,7 +181,7 @@
   import AhsHeaderRow from '@/components/Master/Ahs/AhsHeaderRow.vue';
   import AhsFooterRow from '@/components/Master/Ahs/AhsFooterRow.vue';
   import AhsItemRow from '@/components/Project/Rab/AhsItemRow.vue';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
 
   export default {
@@ -186,12 +189,25 @@
 
     data: () => ({
       mainCardCollapsed: false,
+      overheadAndProfit: 0,
+      ahsItemSubtotalVal: 0,
     }),
 
+    created() {
+      this.getOverheadAndProfit();
+    },
+
     methods: {
-      ...mapActions(['storeCustomAhsItem', 'deleteCustomAhs']),
+      ...mapActions(['storeCustomAhsItem', 'deleteCustomAhs', 'showProject']),
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
+      },
+
+      async getOverheadAndProfit() {
+        const { data } = await this.showProject(this.$route.params.id);
+        this.overheadAndProfit =
+          (parseInt(data.data.project.profit_margin) / 100) *
+          this.ahsItemSubtotalVal;
       },
 
       async addCustomAhsItem(section) {
@@ -220,7 +236,6 @@
             Notify.success('Berhasil menghapus AHS');
             this.$emit('delete-custom-ahs');
           }
-
         } catch (err) {
           Notify.failure(`Gagal menghapus AHS ! ${err.response.data.message}`);
         }
@@ -240,6 +255,7 @@
     },
 
     computed: {
+      ...mapGetters(['getProjects']),
       totalTenagaKerja() {
         let val = 0;
         if (
@@ -293,13 +309,15 @@
         return `Rp. ${formatCurrency(val)}`;
       },
       ahsItemSubtotal() {
+        this.ahsItemSubtotalVal = this.customAhsItem.subtotal;
         return `Rp. ${formatCurrency(this.customAhsItem.subtotal)}`;
+      },
+      overheadAndProfitTotal() {
+        return `Rp. ${formatCurrency(this.overheadAndProfit)}`;
       },
       ahsItemFinalSubtotal() {
         return `Rp. ${formatCurrency(
-          (0 / 100) * this.customAhsItem.subtotal +
-            (0 / 100) * this.customAhsItem.subtotal +
-            this.customAhsItem.subtotal
+          this.overheadAndProfit + this.customAhsItem.subtotal
         )}`;
       },
     },

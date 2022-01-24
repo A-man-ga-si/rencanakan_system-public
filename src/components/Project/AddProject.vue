@@ -71,7 +71,7 @@
         address: '',
         provinceId: 0,
         fiscalYear: new Date().getFullYear(),
-        marginProfit: 0,
+        marginProfit: 10,
         ppn: 10,
       },
       processedProvinces: [],
