@@ -6,12 +6,14 @@
     @click="onClick"
   >
     <slot>
-      <i class="simple-icon-trash"></i>
+      <ph-trash :size="20" weight="light" />
     </slot>
   </a>
 </template>
 
 <script>
+  import { PhTrash } from 'phosphor-vue';
+
   export default {
     props: {
       href: {
@@ -26,6 +28,9 @@
       onClick(data) {
         this.$emit('click', data);
       },
+    },
+    components: {
+      PhTrash,
     },
   };
 </script>

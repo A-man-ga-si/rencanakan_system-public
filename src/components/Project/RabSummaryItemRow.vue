@@ -54,7 +54,7 @@
         class="text-danger action-close"
         @click.prevent="deleteAhsItem"
       >
-        <i class="iconminds simple-icon-close"></i>
+        <ph-x weight="light" :size="16" />
       </a>
     </td>
   </tr>
@@ -64,6 +64,7 @@
   import { showConfirmAlert } from '@/utils';
   import { mapActions } from 'vuex';
   import { formatCurrency } from '../../utils';
+  import { PhX } from 'phosphor-vue';
   export default {
     data() {
       return {
@@ -166,6 +167,9 @@
         },
         deep: true,
       },
+    },
+    components: {
+      PhX,
     },
   };
 </script>

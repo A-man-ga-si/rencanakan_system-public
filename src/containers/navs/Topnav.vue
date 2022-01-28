@@ -21,7 +21,7 @@
       >
         <mobile-menu-icon />
       </a>
-      <div class="d-inline-block">
+      <!-- <div class="d-inline-block">
         <b-dropdown
           id="langddm"
           class="ml-2"
@@ -40,7 +40,7 @@
             {{ l.name }}
           </b-dropdown-item>
         </b-dropdown>
-      </div>
+      </div> -->
     </div>
     <router-link class="navbar-logo" :to="adminRoot">
       <b-img src="/assets/logos/rencanakan-logo-min.png" fluid></b-img>

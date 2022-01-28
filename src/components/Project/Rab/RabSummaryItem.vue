@@ -23,23 +23,16 @@
           href="#"
           style="font-weight: bold"
           @click.prevent="toggleMaincardCollapse"
-          class="h4 text-success ml-1"
-          :class="{ 'text-primary': mainCardCollapsed }"
+          class="h4 text-white ml-1"
         >
-          <i class="iconsmind simple-icon-plus"></i>
+          <ph-arrows-in weight="light" :size="25" v-if="!mainCardCollapsed" />
+          <ph-arrows-out weight="light" :size="25" v-else />
         </a>
-        <!-- <a
-          href="#"
-          class="h4 text-warning ml-1"
-          @click.prevent="addRabItemHeader"
-        >
-          <i class="iconsmind simple-icon-plus"></i>
-        </a> -->
-        <a href="#" class="h4 text-info ml-1" @click.prevent="editRab">
-          <i class="iconsmind simple-icon-plus"></i>
+        <a href="#" class="h4 ml-1 text-white" @click.prevent="editRab">
+          <ph-pencil weight="light" :size="25" />
         </a>
-        <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteRab">
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1 text-white" href="#" @click.prevent="deleteRab">
+          <ph-x weight="light" :size="25" />
         </a>
       </div>
     </div>
@@ -100,14 +93,14 @@
                     @click.prevent="deleteRabItemHeader(rabItemHeader.hashid)"
                     class="text-white action-close float-right ml-2"
                   >
-                    <i class="iconminds simple-icon-close"></i>
+                    <ph-x weight="light" />
                   </a>
                   <a
                     href="#"
                     @click.prevent="editRabItemHeader(rabItemHeader)"
                     class="text-white action-close float-right"
                   >
-                    <i class="iconminds simple-icon-plus"></i>
+                    <ph-pencil weight="light" />
                   </a>
                 </div>
               </td>
@@ -174,6 +167,7 @@
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
   import { showConfirmAlert, formatCurrency, numberToAlphabet } from '@/utils';
+  import { PhX, PhPencil, PhArrowsIn, PhArrowsOut } from 'phosphor-vue';
 
   export default {
     props: {
@@ -275,6 +269,10 @@
     },
     components: {
       RabSummaryItemRow,
+      PhX,
+      PhPencil,
+      PhArrowsIn,
+      PhArrowsOut,
     },
   };
 </script>

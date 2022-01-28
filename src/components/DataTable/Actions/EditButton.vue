@@ -6,12 +6,14 @@
     @click="onClick"
   >
     <slot>
-      <i class="simple-icon-pencil"></i>
+      <ph-pencil :size="20" weight="light" />
     </slot>
   </a>
 </template>
 
 <script>
+  import { PhPencil } from 'phosphor-vue';
+
   export default {
     props: {
       href: {
@@ -26,6 +28,9 @@
       onClick(data) {
         this.$emit('click', data);
       },
+    },
+    components: {
+      PhPencil,
     },
   };
 </script>

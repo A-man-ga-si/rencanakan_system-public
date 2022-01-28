@@ -3,16 +3,21 @@
     @click.prevent="fabClick"
     class="floating-action-button bg-primary border-0 rounded-circle"
   >
-    <i class="iconsmind iconsminds-add m-0"></i>
+    <ph-plus style="margin-top: -4px" />
   </button>
 </template>
 
 <script>
+  import { PhPlus } from 'phosphor-vue';
+
   export default {
     methods: {
       fabClick(ref) {
         this.$emit('click', ref);
       },
+    },
+    components: {
+      PhPlus,
     },
   };
 </script>

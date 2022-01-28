@@ -15,7 +15,7 @@
         <div class="separator mb-5"></div>
         <b-alert variant="primary" show class="rounded">
           <i class="iconminds simple-icon-info mr-2"></i>
-          <b>Perhatian : </b>Gunakan titik (.) sebagai koma
+          <b>Perhatian : </b>Gunakan titik (.) sebagai pengganti koma
         </b-alert>
       </b-colxx>
     </b-row>

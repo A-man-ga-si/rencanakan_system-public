@@ -15,19 +15,11 @@
         <h5>{{ index + 1 }}. {{ title }}</h5>
       </div>
       <div v-if="!itemPriceGroup.is_default" class="right">
-        <a
-          class="h4 text-primary ml-1"
-          href="#"
-          @click.prevent="updateCustomItemPrice"
-        >
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1" href="#" @click.prevent="updateCustomItemPrice">
+          <ph-pencil weight="light" :size="25" />
         </a>
-        <a
-          class="h4 text-danger ml-1"
-          href="#"
-          @click.prevent="deleteCustomItemPriceGroup"
-        >
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1" href="#" @click.prevent="deleteCustomItemPriceGroup">
+          <ph-x weight="light" :size="25" />
         </a>
       </div>
     </div>
@@ -67,6 +59,7 @@
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
   import { showConfirmAlert } from '@/utils';
+  import { PhX, PhPencil, PhArrowsIn } from 'phosphor-vue';
 
   export default {
     props: ['title', 'index', 'itemPriceGroup', 'units'],
@@ -106,7 +99,9 @@
             this.$emit('custom-item-price-group-deleted');
           }
         } catch (err) {
-          Notify.failure(`Gagal menghapus kategori harga satuan : ${err.response.data.message}`);
+          Notify.failure(
+            `Gagal menghapus kategori harga satuan : ${err.response.data.message}`
+          );
         }
       },
       updateCustomItemPrice() {
@@ -154,6 +149,9 @@
     },
     components: {
       ItemPriceItemRow,
+      PhX,
+      PhPencil,
+      PhArrowsIn,
     },
   };
 </script>

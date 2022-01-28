@@ -15,27 +15,15 @@
         <h5>{{ customAhsItem.code }} | {{ customAhsItem.name }}</h5>
       </div>
       <div class="right">
-        <a
-          href="#"
-          @click.prevent="toggleMaincardCollapse"
-          class="h4 text-success ml-1"
-          :class="{ 'text-primary': mainCardCollapsed }"
-        >
-          <i class="iconsmind simple-icon-plus"></i>
+        <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 ml-1">
+          <ph-arrows-in weight="light" :size="25" v-if="!mainCardCollapsed" />
+          <ph-arrows-out weight="light" :size="25" v-else />
         </a>
-        <a
-          href="#"
-          class="h4 text-primary ml-1"
-          @click.prevent="toggleUpdateCustomAhs"
-        >
-          <i class="iconsmind simple-icon-plus"></i>
+        <a href="#" class="h4 ml-1" @click.prevent="toggleUpdateCustomAhs">
+          <ph-pencil weight="light" :size="25" />
         </a>
-        <a
-          class="h4 text-danger ml-1"
-          href="#"
-          @click.prevent="destroyCustomAhs"
-        >
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1" href="#" @click.prevent="destroyCustomAhs">
+          <ph-x weight="light" :size="25" />
         </a>
       </div>
     </div>
@@ -50,6 +38,7 @@
             <th scope="col">Koefisien</th>
             <th scope="col">Harga Sat (Rp.)</th>
             <th scope="col">Jumlah (Rp.)</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -161,7 +150,7 @@
           />
           <AhsHeaderRow
             title="F. BIAYA OVERHEAD & PROFIT"
-            tooltip="0%"
+            :tooltip="`${overheadAndProfitPercentage}%`"
             :value="overheadAndProfitTotal"
           />
           <AhsHeaderRow
@@ -183,6 +172,7 @@
   import AhsItemRow from '@/components/Project/Rab/AhsItemRow.vue';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
+  import { PhX, PhPencil, PhArrowsIn, PhArrowsOut } from 'phosphor-vue';
 
   export default {
     props: ['customAhsItem', 'customAhsItemableList', 'unitsList'],
@@ -190,6 +180,7 @@
     data: () => ({
       mainCardCollapsed: false,
       overheadAndProfit: 0,
+      overheadAndProfitPercentage: 0,
       ahsItemSubtotalVal: 0,
     }),
 
@@ -205,6 +196,7 @@
 
       async getOverheadAndProfit() {
         const { data } = await this.showProject(this.$route.params.id);
+        this.overheadAndProfitPercentage = data.data.project.profit_margin;
         this.overheadAndProfit =
           (parseInt(data.data.project.profit_margin) / 100) *
           this.ahsItemSubtotalVal;
@@ -326,6 +318,10 @@
       AhsHeaderRow,
       AhsFooterRow,
       AhsItemRow,
+      PhX,
+      PhPencil,
+      PhArrowsIn,
+      PhArrowsOut,
     },
   };
 </script>

@@ -21,21 +21,21 @@
         <a
           href="#"
           @click.prevent="toggleMaincardCollapse"
-          class="h4 text-success ml-1"
+          class="h4 ml-1"
           :class="{ 'text-primary': mainCardCollapsed }"
         >
-          <i class="iconsmind simple-icon-plus"></i>
+          <ph-arrows-in weight="light" :size="25" />
         </a>
         <a
           v-b-modal.edit-ahs-modal
           @click.prevent="editAhs"
           href="#"
-          class="h4 text-primary ml-1"
+          class="h4 ml-1"
         >
-          <i class="iconsmind simple-icon-plus"></i>
+          <ph-pencil weight="light" :size="25" />
         </a>
-        <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteAhs">
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1" href="#" @click.prevent="deleteAhs">
+          <ph-x weight="light" :size="25" />
         </a>
       </div>
     </div>
@@ -173,6 +173,7 @@
   import AhsItemRow from '@/components/Master/Ahs/AhsItemRow.vue';
   import AhsHeaderRow from '@/components/Master/Ahs/AhsHeaderRow.vue';
   import AhsFooterRow from '@/components/Master/Ahs/AhsFooterRow.vue';
+  import { PhX, PhPencil, PhArrowsIn } from 'phosphor-vue';
   import {
     formatCurrency,
     showConfirmAlert,
@@ -307,6 +308,9 @@
       AhsItemRow,
       AhsHeaderRow,
       AhsFooterRow,
+      PhX,
+      PhPencil,
+      PhArrowsIn,
     },
   };
 </script>

@@ -15,24 +15,20 @@
         <h5>{{ ahpItem.id }} | {{ ahpItem.name }}</h5>
       </div>
       <div class="right">
-        <a
-          href="#"
-          @click.prevent="toggleMaincardCollapse"
-          class="h4 text-success ml-1"
-          :class="{ 'text-primary': mainCardCollapsed }"
-        >
-          <i class="iconsmind simple-icon-plus"></i>
+        <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 ml-1">
+          <ph-arrows-in weight="light" :size="25" v-if="!mainCardCollapsed" />
+          <ph-arrows-out weight="light" :size="25" v-else />
         </a>
         <a
           href="#"
-          class="h4 text-primary ml-1"
+          class="h4 ml-1"
           v-b-modal.edit-ahp-modal
           @click.prevent="editAhp"
         >
-          <i class="iconsmind simple-icon-plus"></i>
+          <ph-pencil weight="light" :size="25" />
         </a>
-        <a class="h4 text-danger ml-1" href="#" @click.prevent="deleteAhp">
-          <i class="iconsmind simple-icon-close"> </i>
+        <a class="h4 ml-1" href="#" @click.prevent="deleteAhp">
+          <ph-x weight="light" :size="25" />
         </a>
       </div>
     </div>
@@ -135,6 +131,7 @@
   import { mapActions } from 'vuex';
   import { showConfirmAlert } from './../../../utils';
   import { Notify } from 'notiflix';
+  import { PhX, PhPencil, PhArrowsIn, PhArrowsOut } from 'phosphor-vue';
 
   export default {
     data: () => ({
@@ -199,6 +196,10 @@
     },
     components: {
       AhpItemRow,
+      PhX,
+      PhPencil,
+      PhArrowsOut,
+      PhArrowsIn,
     },
   };
 </script>

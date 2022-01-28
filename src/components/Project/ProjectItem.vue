@@ -17,7 +17,7 @@
           @click.prevent="detailProject(row.row.rowData.hashid)"
           class="rab-icon-bt mx-1"
         >
-          <i class="iconsminds-book"></i>
+          <ph-arrow-square-out :size="20" weight="light" />
         </a>
         <EditButton @click.prevent="editProject(row.row.rowData)" />
         <DeleteButton @click.prevent="deleteProject(row.row.rowData.hashid)" />
@@ -36,6 +36,7 @@
   import { showConfirmAlert } from './../../utils';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
+  import { PhArrowSquareOut } from 'phosphor-vue';
 
   export default {
     data: () => ({
@@ -78,6 +79,7 @@
       AddProject,
       EditButton,
       DeleteButton,
+      PhArrowSquareOut,
     },
   };
 </script>
