@@ -70,44 +70,6 @@
     ],
     data() {
       return {
-        categories: [
-          {
-            label: 'Cakes',
-            value: 'Cakes',
-          },
-          {
-            label: 'Cupcakes',
-            value: 'Cupcakes',
-          },
-          {
-            label: 'Desserts',
-            value: 'Desserts',
-          },
-        ],
-        statuses: [
-          {
-            text: 'ON HOLD',
-            value: 'ON HOLD',
-          },
-          {
-            text: 'PROCESSED',
-            value: 'PROCESSED',
-          },
-        ],
-        sortOptions: [
-          {
-            column: 'title',
-            label: 'Product Name',
-          },
-          {
-            column: 'category',
-            label: 'Category',
-          },
-          {
-            column: 'status',
-            label: 'Status',
-          },
-        ],
         pageSizes: [4, 8, 12],
       };
     },
