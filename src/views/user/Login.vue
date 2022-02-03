@@ -177,31 +177,16 @@
             });
           }
         } catch (err) {
-          console.error(err);
-          switch (err.response?.status) {
-            case 401:
-              this.$notify(
-                'error',
-                this.$t('alert.error'),
-                this.$t('user.login-wrong-credentials'),
-                {
-                  duration: 3000,
-                  permanent: false,
-                }
-              );
-              break;
-            default:
-              this.$notify(
-                'error',
-                this.$t('alert.error'),
-                this.$t('user.register-error-message'),
-                {
-                  duration: 3000,
-                  permanent: false,
-                }
-              );
-              console.error(err);
-          }
+          console.error(err.response);
+          this.$notify(
+            'error',
+            'Login Failed',
+            err.response.data.message,
+            {
+              duration: 3000,
+              permanent: false,
+            }
+          );
         }
       },
     },
