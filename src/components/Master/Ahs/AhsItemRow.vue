@@ -76,25 +76,34 @@
     methods: {
       ...mapActions(['updateAhsItem', 'deleteAhsItem']),
       async submitUpdateAhsItem() {
-        const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
-        const ahsItemableIdType = this.ahsItemableId.split('~');
-        const dataToUpdate = {};
+        try {
+          const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
+          const ahsItemableIdType = this.ahsItemableId.split('~');
+          const dataToUpdate = {};
 
-        if (ahsType === 'Ahs' || ahsType == 'Ahp') {
-          dataToUpdate.name = this.name;
-          dataToUpdate.unit_id = this.unitId;
+          if (ahsType === 'Ahs' || ahsType == 'Ahp') {
+            dataToUpdate.name = this.name;
+            dataToUpdate.unit_id = this.unitId;
+          }
+
+          dataToUpdate.ahs_itemable_id = ahsItemableIdType[1];
+          dataToUpdate.ahs_itemable_type = ahsItemableIdType[0];
+          dataToUpdate.coefficient = this.coefficient;
+
+          const data = await this.updateAhsItem({
+            ahsItemId: this.ahsItem.id,
+            form: dataToUpdate,
+          });
+
+          this.$emit('ahs-item-updated');
+        } catch (err) {
+          this.ahsItemableId = `${ahsItemable(
+            this.ahsItem.ahs_itemable_type
+          )}~${this.ahsItem.ahs_itemable_id}`;
+          Notify.failure(
+            err?.response?.data?.message || 'Gagal mengupdate item AHS'
+          );
         }
-
-        dataToUpdate.ahs_itemable_id = ahsItemableIdType[1];
-        dataToUpdate.ahs_itemable_type = ahsItemableIdType[0];
-        dataToUpdate.coefficient = this.coefficient;
-
-        const data = await this.updateAhsItem({
-          ahsItemId: this.ahsItem.id,
-          form: dataToUpdate,
-        });
-
-        this.$emit('ahs-item-updated');
       },
       async submitDeleteAhsItem() {
         const { isConfirmed } = await showConfirmAlert({

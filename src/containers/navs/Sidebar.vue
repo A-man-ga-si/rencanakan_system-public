@@ -120,19 +120,18 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex';
+  import menuItems from '../../constants/menu';
   import {
     menuHiddenBreakpoint,
     subHiddenBreakpoint,
   } from '../../constants/config';
-  import menuItems from '../../constants/menu';
-  import { UserRole } from '../../utils/auth.roles';
 
   export default {
     data() {
       return {
         selectedParentMenu: '',
-        menuItems,
         viewingParentMenu: '',
+        menuItems,
       };
     },
     mounted() {

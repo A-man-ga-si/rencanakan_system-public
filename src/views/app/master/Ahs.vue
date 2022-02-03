@@ -23,19 +23,23 @@
           :units-list="getUnit"
           :ahs-itemable-list="getAhsItemableIds"
           :ahs-item="ahs"
-          @ahs-deleted="fetchAhs(selectedProvince)"
-          @ahs-item-added="fetchAhs(selectedProvince)"
-          @ahs-item-updated="fetchAhs(selectedProvince)"
-          @ahs-item-deleted="fetchAhs(selectedProvince)"
+          @ahs-deleted="getAhsMaster"
+          @ahs-item-added="getAhsMaster"
+          @ahs-item-updated="getAhsMaster"
+          @ahs-item-deleted="getAhsMaster"
           @ahs-item-edit-clicked="editAhs"
         />
       </li>
     </ul>
+    <b-pagination
+      class="mx-auto w-100 mt-5"
+      style="justify-content: center"
+      v-model="currentPage"
+      :total-rows="getAhsCount"
+      :per-page="perPage"
+    ></b-pagination>
     <AddAhs @ahs-added="ahsAdded" />
-    <EditAhs
-      @ahs-updated="fetchAhs(selectedProvince)"
-      :selected-ahs="selectedAhs"
-    />
+    <EditAhs @ahs-updated="getAhsMaster" :selected-ahs="selectedAhs" />
     <FloatingActionButton v-b-modal.add-ahs-modal />
   </div>
 </template>
@@ -49,6 +53,9 @@
 
   export default {
     data: () => ({
+      perPage: 5,
+      totalRows: 0,
+      currentPage: 1,
       codesList: ['L.01'],
       unitsList: ['OH'],
       provinces: [],
@@ -70,7 +77,14 @@
       ahsAdded() {
         this.fetchUnit();
         this.fetchAhsItemableIds();
-        this.fetchAhs(this.selectedProvince);
+        this.getAhsMaster();
+      },
+      getAhsMaster() {
+        this.fetchAhs({
+          province: this.selectedProvince,
+          page: this.currentPage,
+          perPage: this.perPage,
+        });
       },
       async loadProvinces() {
         const data = await this.fetchProvinces();
@@ -82,7 +96,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds']),
+      ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds', 'getAhsCount']),
     },
     components: {
       AhsItem,
@@ -92,7 +106,10 @@
     },
     watch: {
       selectedProvince() {
-        this.fetchAhs(this.selectedProvince);
+        this.getAhsMaster();
+      },
+      currentPage() {
+        this.getAhsMaster();
       },
     },
   };

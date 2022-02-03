@@ -7,12 +7,14 @@ const masterAhsApi = new ApiTwo({
 
 const state = {
   ahs: [],
+  ahsCount: 0,
   ahsIds: [],
 };
 
 const getters = {
   getAhs: state => state.ahs,
   getAhsIds: state => state.ahsIds,
+  getAhsCount: state => state.ahsCount,
 };
 
 const mutations = {
@@ -24,16 +26,21 @@ const mutations = {
     state.ahsIds = ahsIds;
   },
 
+  setAhsCount(state, ahsCount) {
+    state.ahsCount = ahsCount;
+  },
+
   emptyAhs(state) {
     state.ahs = [];
   },
 };
 
 const actions = {
-  async fetchAhs({ commit }, province) {
+  async fetchAhs({ commit }, { province, page, perPage }) {
     // prettier-ignore
-    const data = await masterAhsApi.query('', `arrange=true&province=${province}`);
+    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}`);
     commit('setAhs', data.data.data.ahs);
+    commit('setAhsCount', data.data.data.pagination_attribute.total_rows);
     return data;
   },
 

@@ -58,6 +58,11 @@
         @custom-ahs-edit-bt-clicked="toggleEditCustomAhs"
       />
     </div>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+    ></b-pagination>
     <FloatingActionButton @click="toggleAddCustomAhsModal" />
     <AddCustomAhs @custom-ahs-added="reloadData" />
     <EditCustomAhs
@@ -77,6 +82,9 @@
   export default {
     data() {
       return {
+        perPage: 10,
+        totalRows: 5,
+        currentPage: null,
         form: {
           searchQuery: '',
           searchQueryCategory: 'item',

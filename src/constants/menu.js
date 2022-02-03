@@ -1,10 +1,8 @@
 import { adminRoot } from './config';
-import { PhHouse } from 'phosphor-vue';
 
 const data = [
   {
     id: 'dashboard',
-    iconPh: PhHouse,
     icon: 'iconsminds-shop',
     label: 'menu.dashboard',
     permissions: ['read-dashboard'],
@@ -12,22 +10,13 @@ const data = [
   },
   {
     id: 'projects',
-    iconPh: PhHouse,
     icon: 'iconsminds-folders',
     label: 'menu.projects',
     permissions: ['access-project-page'],
     to: `${adminRoot}/projects`,
   },
-  // {
-  //   id: 'transaction-history',
-  //   icon: 'iconsminds-clock-back',
-  //   label: 'menu.transaction-history',
-  //   permissions: ['read-dashboard'],
-  //   to: `${adminRoot}/transaction-history`,
-  // },
   {
     id: 'account',
-    iconPh: PhHouse,
     icon: 'iconsminds-administrator',
     label: 'menu.account',
     permissions: ['access-account-page'],
@@ -57,7 +46,6 @@ const data = [
   },
   {
     id: 'master',
-    iconPh: PhHouse,
     icon: 'iconsminds-big-data',
     label: 'menu.master-data',
     permissions: ['access-master-page'],
