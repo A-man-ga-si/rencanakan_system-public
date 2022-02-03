@@ -278,7 +278,7 @@
       "project-name": "Project Name",
       "activity": "Activity",
       "job": "Job",
-      "address": "Address (Optional)",
+      "address": "Address",
       "province": "Province",
       "fiscal-year": "Fiscal Year",
       "margin-profit": "Margin Profit & Overhead (%)",
