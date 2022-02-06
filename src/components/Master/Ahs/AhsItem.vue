@@ -14,7 +14,7 @@
       <div class="left">
         <h5>{{ ahsItem.id }} | {{ ahsItem.name }}</h5>
       </div>
-      <div class="right">
+      <div class="right text-right" style="min-width: 120px">
         <h3 class="d-inline-block mb-0" style="vertical-align: top">
           {{ ahsItemFinalSubtotal }} |
         </h3>

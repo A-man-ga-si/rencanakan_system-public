@@ -56,7 +56,7 @@
         this.markLastOpenedAt({
           projectId: projectHashid,
         });
-        this.$router.push({ path: `/app/projects/${projectHashid}/rab` });
+        this.$router.push({ path: `/app/projects/${projectHashid}/rab/ahs` });
       },
       editProject(project) {
         this.$bvModal.show('edit-project');

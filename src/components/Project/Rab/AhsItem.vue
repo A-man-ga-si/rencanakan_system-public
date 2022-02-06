@@ -14,7 +14,7 @@
       <div class="left">
         <h5>{{ customAhsItem.code }} | {{ customAhsItem.name }}</h5>
       </div>
-      <div class="right">
+      <div class="right text-right" style="min-width: 120px">
         <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 ml-1">
           <ph-arrows-in weight="light" :size="25" v-if="!mainCardCollapsed" />
           <ph-arrows-out weight="light" :size="25" v-else />
