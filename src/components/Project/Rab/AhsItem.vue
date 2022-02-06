@@ -197,9 +197,8 @@
       async getOverheadAndProfit() {
         const { data } = await this.showProject(this.$route.params.id);
         this.overheadAndProfitPercentage = data.data.project.profit_margin;
-        this.overheadAndProfit =
-          (parseInt(data.data.project.profit_margin) / 100) *
-          this.ahsItemSubtotalVal;
+        // prettier-ignore
+        this.overheadAndProfit = (parseInt(data.data.project.profit_margin) / 100) * this.ahsItemSubtotalVal;
       },
 
       async addCustomAhsItem(section) {

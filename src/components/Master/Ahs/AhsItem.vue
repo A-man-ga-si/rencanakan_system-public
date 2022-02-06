@@ -174,13 +174,10 @@
   import AhsHeaderRow from '@/components/Master/Ahs/AhsHeaderRow.vue';
   import AhsFooterRow from '@/components/Master/Ahs/AhsFooterRow.vue';
   import { PhX, PhPencil, PhArrowsIn } from 'phosphor-vue';
-  import {
-    formatCurrency,
-    showConfirmAlert,
-    ahsItemable,
-  } from './../../../utils';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
+  // prettier-ignore
+  import { formatCurrency, showConfirmAlert, ahsItemable } from '@/utils';
 
   export default {
     data: () => ({
@@ -193,7 +190,7 @@
         try {
           const { isConfirmed } = await showConfirmAlert({
             title: 'Hapus AHS',
-            text: 'AHS akan dihapus secara permanent !',
+            text: 'AHS akan dihapus secara permanen !',
           });
           if (isConfirmed) {
             await this.destroyAhs(this.ahsItem.id);

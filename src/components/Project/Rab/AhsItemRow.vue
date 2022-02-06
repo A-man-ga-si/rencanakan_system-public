@@ -65,6 +65,11 @@
       'customAhsItemableList',
       'customAhs',
     ],
+    mounted() {
+      console.log('===========');
+      console.log(this.ahsItemableId);
+      console.log('+++++++++++++++++++');
+    },
     data() {
       return {
         name:
@@ -184,7 +189,11 @@
       DeleteButton,
     },
     watch: {
+      // ahsItemableId(val) {
+      //   console.log('AHS Itemable : ', val);
+      // },
       customAhsItem(e) {
+        console.log(e);
         this.name =
           ahsItemable(e.custom_ahs_itemable_type) === 'CustomItemPrice'
             ? e.custom_ahs_itemable.name
