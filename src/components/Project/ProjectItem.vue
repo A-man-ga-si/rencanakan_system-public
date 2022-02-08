@@ -20,7 +20,11 @@
           <ph-arrow-square-out :size="20" weight="light" />
         </a>
         <EditButton @click.prevent="editProject(row.row.rowData)" />
-        <DeleteButton @click.prevent="deleteProject(row.row.rowData.hashid)" />
+        <DeleteButton
+          @click.prevent="
+            deleteProject(row.row.rowData.name, row.row.rowData.hashid)
+          "
+        />
       </template>
     </CustomDataTable>
   </div>
@@ -32,7 +36,8 @@
   import AddProject from '@/components/Project/AddProject.vue';
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
-  import { apiUrl } from '../../constants/config';
+  import Swal from 'sweetalert2';
+  import { apiDomain, apiUrl } from '../../constants/config';
   import { showConfirmAlert } from './../../utils';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
@@ -62,16 +67,44 @@
         this.$bvModal.show('edit-project');
         this.$emit('edit-project-clicked', project);
       },
-      async deleteProject(id) {
-        const { isConfirmed } = await showConfirmAlert({
+      deleteProject(name, id) {
+        console.log(name);
+        Swal.fire({
           title: 'Hapus Project ?',
-          text: 'Project ini akan dihapus secara PERMANEN !',
+          html: `<div class="alert alert-danger bg-white border-danger text-left" style="border-radius: 10px;">
+                  <div class="d-flex">
+                    <div class="left">
+                      <img src="${apiDomain}/assets/images/warning.png" width="30"></img>
+                    </div>
+                    <div class="right">
+                      <h5 class="ml-2 mb-0">Project yang sudah dihapus tidak dapat dikembalikan</h5>
+                    </div>
+                  </div>
+                </div><h5 class="text-left">Tulis kembali nama project dibawah untuk mengkonfirmasi aksi ini :</h5>`,
+          input: 'text',
+          showCancelButton: true,
+          cancelButtonText: 'Kembali',
+          confirmButtonText: 'Hapus',
+          confirmButtonColor: '#dc3545',
+        }).then(async result => {
+          if (result.value == name) {
+            await this.destroyProject(id);
+            Notify.success('Berhasil menghapus project');
+            this.reload();
+          } else {
+            Swal.fire(
+              'Gagal',
+              'Nama project yang anda masukkan salah !',
+              'error'
+            );
+          }
         });
-        if (isConfirmed) {
-          await this.destroyProject(id);
-          Notify.success('Berhasil menghapus project');
-          this.reload();
-        }
+        // const { isConfirmed } = await showConfirmAlert({
+        //   title: 'Hapus Project ?',
+        //   text: 'Project ini akan dihapus secara PERMANEN !',
+        // });
+        // if (isConfirmed) {
+        // }
       },
     },
     components: {
