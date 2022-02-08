@@ -16,7 +16,7 @@
       style="border-radius: 8px 8px 0 0"
     >
       <div class="left">
-        <h5>{{ alphabeuticalRabNumber }}. {{ rabItem.name }}</h5>
+        <h4>{{ alphabeuticalRabNumber }}. {{ rabItem.name }}</h4>
       </div>
       <div class="right">
         <a
@@ -85,9 +85,9 @@
                     color: white;
                   "
                 >
-                  <h5 class="d-inline-block mb-0">
+                  <p class="d-inline-block mb-0" style="font-size: 16px">
                     {{ romanized(idx + 1) }}. {{ rabItemHeader.name }}
-                  </h5>
+                  </p>
                   <a
                     href="#"
                     @click.prevent="deleteRabItemHeader(rabItemHeader.hashid)"
@@ -134,7 +134,7 @@
                 <b-btn
                   class="w-100 py-2"
                   style="
-                    font-size: 20px;
+                    font-size: 16px;
                     border-style: dashed;
                     border-width: 2px;
                   "

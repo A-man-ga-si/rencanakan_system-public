@@ -2,29 +2,83 @@
   <div class="add-unit">
     <b-modal :id="modalId" :ref="modalId" title="Export RAB">
       <div class="export-form mb-3">
-        <h5>Status Company</h5>
-        <b-badge :variant="getCompany ? 'success' : 'danger'">{{
-          getCompany ? 'Sudah Diisi' : 'Belum Diisi'
-        }}</b-badge>
-        <router-link v-if="!getCompany" :to="{ name: 'CompanyProfile' }">
-          <u class="ml-1">Klik disini untuk mengisi company</u>
-        </router-link>
-      </div>
-      <div class="export-form">
-        <h5>Status Export</h5>
-        <b-badge variant="secondary" v-if="!fetchQuotaStatus"
-          >Loading...</b-badge
-        >
-        <b-badge :variant="quotasLeft > 0 ? 'success' : 'danger'" v-else>{{
-          quotasLeft > 0 ? 'Terbuka' : 'Terkunci'
-        }}</b-badge>
+        <p>
+          Mohon melengkapi syarat - syarat dibawah untuk dapat mengekspor RAB
+          menjadi bentuk .xlsx
+        </p>
+        <div class="company-ok mb-3" v-if="getCompany">
+          <ph-check-circle :size="32" weight="light" class="text-success" />
+          <span>
+            <b class="text-success">Company Status</b>
+          </span>
+        </div>
+        <div class="company-not-exist d-flex mb-3" v-else>
+          <div class="left">
+            <ph-x-circle :size="32" weight="light" class="text-danger" />
+          </div>
+          <div class="right">
+            <span class="ml-2">
+              <b class="text-danger">Company Status</b>
+              <router-link
+                v-if="!getCompany"
+                :to="{ name: 'CompanyProfile' }"
+                class="d-block ml-2 text-danger"
+              >
+                <u>Klik disini untuk mengisi company</u>
+              </router-link>
+            </span>
+          </div>
+        </div>
+        <div class="payment-loading" v-if="!fetchQuotaStatus">
+          <div class="d-flex">
+            <div class="left">
+              <b-spinner
+                class="ml-2"
+                label="Loading..."
+                variant="primary"
+                small
+              ></b-spinner>
+            </div>
+            <div class="right">
+              <span class="d-inline-block ml-3">
+                Loading payment status ...
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="payment" v-else>
+          <div class="payment-ok" v-if="quotasLeft > 0">
+            <ph-check-circle :size="32" weight="light" class="text-success" />
+            <span>
+              <b class="text-success">Payment Status</b>
+            </span>
+          </div>
+          <div class="company-not-exist d-flex" v-else>
+            <div class="left">
+              <ph-x-circle :size="32" weight="light" class="text-danger" />
+            </div>
+            <div class="right">
+              <span class="ml-2">
+                <b class="text-danger">Payment Status</b>
+                <a
+                  href="#"
+                  @click.prevent="submit"
+                  v-if="quotasLeft <= 0"
+                  class="d-block ml-2 text-danger"
+                >
+                  <u>Klik disini untuk melengkapi payment status</u>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
       <template slot="modal-footer">
         <b-button
           @click.prevent="submit"
           variant="primary"
           class="mr-1"
-          :disabled="!getCompany"
+          :disabled="!getCompany || quotasLeft <= 0"
         >
           Export
         </b-button>
@@ -40,6 +94,7 @@
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixins from '@/mixins/validation-mixins';
   import { mapActions, mapGetters } from 'vuex';
+  import { PhCheckCircle, PhXCircle } from 'phosphor-vue';
   import { Notify } from 'notiflix';
   import { apiDomain } from '../../constants/config';
   import { getToken } from '../../utils';
@@ -116,6 +171,8 @@
     },
     components: {
       ValidationInput,
+      PhCheckCircle,
+      PhXCircle,
     },
   };
 </script>
