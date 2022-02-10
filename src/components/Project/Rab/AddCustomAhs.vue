@@ -25,11 +25,15 @@
         >
           <span class="px-1"> Referensi AHS</span>
           <v-select
-            label="name"
+            label="id"
             :reduce="ahs => ahs.id"
             :options="getAhsIds"
             v-model="form.selectedReference"
-          />
+          >
+            <template slot="option" slot-scope="option">
+              {{ `${option.id} - ${option.name}` }}
+            </template>
+          </v-select>
         </div>
       </div>
       <ValidationInput
