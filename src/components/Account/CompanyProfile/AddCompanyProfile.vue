@@ -80,7 +80,6 @@
         try {
           this.resetInvalid();
           const { name, email, directorName, phoneNumber, address } = this.form;
-          console.log(this.form);
           await this.addCompanyProfile({
             name,
             email,
