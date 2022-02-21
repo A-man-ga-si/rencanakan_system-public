@@ -1,5 +1,10 @@
 <template>
-  <b-modal :id="modalId" :ref="modalId" :title="'Tambah AHS'">
+  <b-modal
+    :id="modalId"
+    :ref="modalId"
+    :title="'Tambah AHS'"
+    no-close-on-backdrop
+  >
     <ValidationInput
       class="mb-4"
       label="Kode"

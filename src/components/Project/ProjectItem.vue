@@ -12,19 +12,21 @@
       :fields="fields"
     >
       <template slot="actions" slot-scope="row">
-        <a
-          href="#"
-          @click.prevent="detailProject(row.row.rowData.hashid)"
-          class="rab-icon-bt mx-1"
-        >
-          <ph-arrow-square-out :size="20" weight="light" />
-        </a>
-        <EditButton @click.prevent="editProject(row.row.rowData)" />
-        <DeleteButton
-          @click.prevent="
-            deleteProject(row.row.rowData.name, row.row.rowData.hashid)
-          "
-        />
+        <div class="text-center">
+          <a
+            href="#"
+            @click.prevent="detailProject(row.row.rowData.hashid)"
+            class="rab-icon-bt mx-1"
+          >
+            <ph-arrow-square-out :size="20" weight="light" />
+          </a>
+          <EditButton @click.prevent="editProject(row.row.rowData)" />
+          <DeleteButton
+            @click.prevent="
+              deleteProject(row.row.rowData.name, row.row.rowData.hashid)
+            "
+          />
+        </div>
       </template>
     </CustomDataTable>
   </div>
@@ -92,11 +94,13 @@
             Notify.success('Berhasil menghapus project');
             this.reload();
           } else {
-            Swal.fire(
-              'Gagal',
-              'Nama project yang anda masukkan salah !',
-              'error'
-            );
+            if (result.value) {
+              Swal.fire(
+                'Gagal',
+                'Nama project yang anda masukkan salah !',
+                'error'
+              );
+            }
           }
         });
         // const { isConfirmed } = await showConfirmAlert({

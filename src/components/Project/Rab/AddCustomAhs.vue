@@ -1,6 +1,11 @@
 <template>
   <div class="add-unit">
-    <b-modal :id="modalId" :ref="modalId" title="Buat AHS Baru">
+    <b-modal
+      :id="modalId"
+      :ref="modalId"
+      title="Buat AHS Baru"
+      no-close-on-backdrop
+    >
       <b-nav class="mb-5 justify-content-center" pills>
         <b-nav-item
           @click.prevent="switchSource"
@@ -25,14 +30,11 @@
         >
           <span class="px-1"> Referensi AHS</span>
           <v-select
-            label="id"
-            :reduce="ahs => ahs.id"
+            label="id_name"
+            :reduce="ahs => `${ahs.id}<<#>>${ahs.name}`"
             :options="getAhsIds"
             v-model="form.selectedReference"
           >
-            <template slot="option" slot-scope="option">
-              {{ `${option.id} - ${option.name}` }}
-            </template>
           </v-select>
         </div>
       </div>
@@ -93,8 +95,11 @@
             projectId: this.$route.params.id,
             form: {
               name,
-              code,
-              selected_reference: selectedReference,
+              code:
+                selectedReference == 'reference'
+                  ? code.split('<<#>>')[0]
+                  : code,
+              selected_reference: selectedReference.split('<<#>>')[0],
             },
           });
           Notify.success('Berhasil menambahkan AHS');
@@ -102,8 +107,13 @@
           this.resetForm();
           this.$emit('custom-ahs-added');
         } catch (err) {
-          console.error(err);
-          Notify.failure('Gagal menambahkan kategori harga satuan');
+          if (err.response.status == 422) {
+            if (err.response.data.errors.code) {
+              Notify.failure(err.response.data.errors.code[0]);
+            }
+          } else {
+            Notify.failure('Gagal menambahkan AHS');
+          }
         }
       },
       async requestAhsIds() {
@@ -134,8 +144,9 @@
     },
     watch: {
       'form.selectedReference'(e) {
-        console.log(e);
-        this.form.code = `${e}-copy`;
+        const [code, name] = e.split('<<#>>');
+        this.form.code = `${code || ''}`;
+        this.form.name = `${name || ''}`;
       },
     },
   };

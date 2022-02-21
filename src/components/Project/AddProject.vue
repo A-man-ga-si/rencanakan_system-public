@@ -106,6 +106,18 @@
           this.checkForInvalidResponse(err);
         }
       },
+      resetForm() {
+        this.form = {
+          name: '',
+          activity: '',
+          job: '',
+          address: '',
+          provinceId: 'qMxAPZX0',
+          fiscalYear: new Date().getFullYear(),
+          marginProfit: 10,
+          ppn: 10,
+        };
+      },
       ...mapActions(['createProject']),
     },
     components: {

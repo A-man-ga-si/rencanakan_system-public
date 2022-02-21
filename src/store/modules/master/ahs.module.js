@@ -13,7 +13,13 @@ const state = {
 
 const getters = {
   getAhs: state => state.ahs,
-  getAhsIds: state => state.ahsIds,
+  getAhsIds: state => {
+    state.ahsIds.map(d => {
+      d.id_name = `${d.id} | ${d.name}`;
+      return d;
+    });
+    return state.ahsIds;
+  },
   getAhsCount: state => state.ahsCount,
 };
 
