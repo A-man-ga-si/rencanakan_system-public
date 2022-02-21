@@ -78,7 +78,7 @@
             <tr>
               <td colspan="8" class="p-3">
                 <div
-                  class="py-3 px-4"
+                  class="py-2 px-4"
                   style="
                     border-radius: 30px;
                     background-color: #586878;
@@ -92,6 +92,7 @@
                     href="#"
                     @click.prevent="deleteRabItemHeader(rabItemHeader.hashid)"
                     class="text-white action-close float-right ml-2"
+                    style="margin-top: -3px"
                   >
                     <ph-x weight="light" />
                   </a>
@@ -99,6 +100,7 @@
                     href="#"
                     @click.prevent="editRabItemHeader(rabItemHeader)"
                     class="text-white action-close float-right"
+                    style="margin-top: -3px"
                   >
                     <ph-pencil weight="light" />
                   </a>
@@ -132,7 +134,7 @@
             <tr>
               <td colspan="8" class="text-center py-3">
                 <b-btn
-                  class="w-100 py-2"
+                  class="w-100 py-1"
                   style="
                     font-size: 16px;
                     border-style: dashed;

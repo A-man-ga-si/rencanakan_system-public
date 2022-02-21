@@ -47,8 +47,8 @@
         <b-button
           @click="fabClick"
           variant="primary"
-          class="w-100 mb-4 mt-2 py-3"
-          style="font-size: 17px; border-radius: 20px"
+          class="w-100 mb-4 mt-2"
+          style="font-size: 17px; border-radius: 12px; padding: 12px 0"
         >
           <h4 class="mb-0">+ Tambah Kategori</h4>
         </b-button>
