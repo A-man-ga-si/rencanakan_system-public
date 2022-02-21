@@ -134,7 +134,6 @@
             return ahsItemableItem.id != ctx.ahsItem.ahs_id;
           })
           .map(ahsItemableItem => {
-            // console.log(ahsItemableItem);
             ahsItemableItem.ahs_itemable_type = ahsItemable(
               ahsItemableItem.ahs_itemable_type
             );

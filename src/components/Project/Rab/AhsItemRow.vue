@@ -65,11 +65,6 @@
       'customAhsItemableList',
       'customAhs',
     ],
-    mounted() {
-      console.log('===========');
-      console.log(this.ahsItemableId);
-      console.log('+++++++++++++++++++');
-    },
     data() {
       return {
         name:
