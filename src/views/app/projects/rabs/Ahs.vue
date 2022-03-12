@@ -44,25 +44,29 @@
         </p>
       </div>
     </div>
-    <div class="ahs-content" v-else>
-      <AhsItem
-        v-for="(cAhs, idx) in customAhs"
-        :key="idx"
-        :custom-ahs-itemable-list="getCustomAhsItemableIds"
-        :custom-ahs-item="cAhs"
-        :units-list="getUnit"
-        @custom-ahs-item-added="reloadData"
-        @ahs-item-deleted="reloadData"
-        @ahs-item-updated="reloadData"
-        @delete-custom-ahs="reloadData"
-        @custom-ahs-edit-bt-clicked="toggleEditCustomAhs"
-      />
+    <div class="show-ahs-content" v-else>
+      <div class="ahs-content">
+        <AhsItem
+          v-for="(cAhs, idx) in customAhs"
+          :key="idx"
+          :custom-ahs-itemable-list="getCustomAhsItemableIds"
+          :custom-ahs-item="cAhs"
+          :units-list="getUnit"
+          @custom-ahs-item-added="reloadData"
+          @ahs-item-deleted="reloadData"
+          @ahs-item-updated="reloadData"
+          @delete-custom-ahs="reloadData"
+          @custom-ahs-edit-bt-clicked="toggleEditCustomAhs"
+        />
+      </div>
+      <b-pagination
+        class="mx-auto w-100 mt-5"
+        style="justify-content: center"
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+      ></b-pagination>
     </div>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-    ></b-pagination>
     <FloatingActionButton @click="toggleAddCustomAhsModal" />
     <AddCustomAhs @custom-ahs-added="reloadData" />
     <EditCustomAhs
@@ -82,9 +86,9 @@
   export default {
     data() {
       return {
-        perPage: 10,
-        totalRows: 5,
-        currentPage: null,
+        perPage: 4,
+        totalRows: 0,
+        currentPage: 1,
         form: {
           searchQuery: '',
           searchQueryCategory: 'item',
@@ -117,8 +121,11 @@
       async getCustomAhs() {
         const { data } = await this.fetchCustomAhs({
           projectId: this.$route.params.id,
+          perPage: this.perPage,
+          page: this.currentPage,
         });
-        this.customAhs = data.data;
+        this.totalRows = data.data.pagination_attribute.total_rows;
+        this.customAhs = data.data.customAhs;
       },
       toggleAddCustomAhsModal() {
         this.$bvModal.show('add-custom-ahs');
@@ -139,6 +146,9 @@
       ...mapGetters(['getCustomAhsItemableIds', 'getUnit']),
     },
     watch: {
+      currentPage() {
+        this.getCustomAhs();
+      },
       form: {
         deep: true,
         async handler() {

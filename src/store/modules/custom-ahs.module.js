@@ -19,9 +19,9 @@ const mutations = {
 };
 
 const actions = {
-  async fetchCustomAhs(ctx, { projectId }) {
+  async fetchCustomAhs(ctx, { projectId, page, perPage }) {
     // prettier-ignore
-    const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get('', 'arrange=true');
+    const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get('', `arrange=true&page=${page}&per_page=${perPage}`);
     return data;
   },
 
