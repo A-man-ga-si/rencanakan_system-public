@@ -3,8 +3,8 @@ export const defaultTitle = 'Untitled';
 export const titleSuffix = ' | Rencanakan.id';
 
 // URLs Related Configs
-export const apiDomain = 'http://localhost:8000';
-// export const apiDomain = 'https://api.beta.rencanakan.id';
+// export const apiDomain = 'http://localhost:8000';
+export const apiDomain = 'https://api.beta.rencanakan.id';
 export const apiUrl = `${apiDomain}/api`;
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;

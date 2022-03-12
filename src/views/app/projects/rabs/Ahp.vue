@@ -18,7 +18,15 @@
         </div>
       </b-col>
     </b-row>
-    <div class="no-ahs text-center" v-if="!customAhps.length">
+    <div v-if="isLoading">
+      <div class="text-center">
+        <Loader class="mt-5" />
+        <h2>
+          <strong>Loading AHP</strong>
+        </h2>
+      </div>
+    </div>
+    <div class="no-ahs text-center" v-else-if="!customAhps.length">
       <img
         src="@/assets/img/panel/Empty-amico.svg"
         alt=""
@@ -61,6 +69,7 @@
   import AddCustomAhp from './../../../../components/Project/Rab/AddCustomAhp.vue';
   import EditCustomAhp from './../../../../components/Project/Rab/EditCustomAhp.vue';
   import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
+  import Loader from '@/components/Common/Loader.vue';
 
   export default {
     created() {
@@ -68,6 +77,7 @@
     },
     data() {
       return {
+        isLoading: true,
         form: {
           searchQuery: '',
         },
@@ -81,6 +91,7 @@
       async getCustomAhp() {
         const data = await this.fetchCustomAhp(this.$route.params.id);
         this.customAhps = data.data.data.customAhps;
+        this.isLoading = false;
       },
       showCustomAhpModal() {
         this.$bvModal.show('add-custom-ahp-modal');
@@ -96,21 +107,13 @@
     computed: {
       ...mapGetters(['getUnit']),
     },
-    components: {
-      AhpItem,
-      FloatingActionButton,
-      AddCustomAhp,
-      EditCustomAhp,
-    },
     watch: {
       form: {
         handler() {
           if (this.searchCountdownObject != 'null') {
             clearTimeout(this.searchCountdownObject);
           }
-
           const that = this;
-
           if (this.form.searchQuery != '') {
             this.searchCountdownObject = setTimeout(async function () {
               const data = await that.queryCustomAhp({
@@ -125,6 +128,13 @@
         },
         deep: true,
       },
+    },
+    components: {
+      AhpItem,
+      FloatingActionButton,
+      AddCustomAhp,
+      EditCustomAhp,
+      Loader,
     },
   };
 </script>

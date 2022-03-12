@@ -27,7 +27,15 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <div class="no-ahs text-center" v-if="!customAhs.length">
+    <div v-if="isLoading">
+      <div class="text-center">
+        <Loader class="mt-5" />
+        <h2>
+          <strong>Loading AHS</strong>
+        </h2>
+      </div>
+    </div>
+    <div class="no-ahs text-center" v-else-if="!customAhs.length">
       <img
         src="@/assets/img/panel/Empty-amico.svg"
         alt=""
@@ -81,6 +89,7 @@
   import AddCustomAhs from '@/components/Project/Rab/AddCustomAhs.vue';
   import EditCustomAhs from '@/components/Project/Rab/EditCustomAhs.vue';
   import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
+  import Loader from '@/components/Common/Loader.vue';
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
@@ -89,6 +98,7 @@
         perPage: 4,
         totalRows: 0,
         currentPage: 1,
+        isLoading: true,
         form: {
           searchQuery: '',
           searchQueryCategory: 'item',
@@ -126,6 +136,7 @@
         });
         this.totalRows = data.data.pagination_attribute.total_rows;
         this.customAhs = data.data.customAhs;
+        this.isLoading = false;
       },
       toggleAddCustomAhsModal() {
         this.$bvModal.show('add-custom-ahs');
@@ -178,6 +189,7 @@
       FloatingActionButton,
       AddCustomAhs,
       EditCustomAhs,
+      Loader,
     },
   };
 </script>
