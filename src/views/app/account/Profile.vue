@@ -71,14 +71,11 @@
 </template>
 
 <script>
-  import validationMixin from './../../../mixins/validation-mixins';
-  import ValidationInput from './../../../components/Common/ValidationInput.vue';
-  import { Notify } from 'notiflix';
   import { mapActions, mapGetters } from 'vuex';
-  import {
-    apiDomain,
-    defaultProfilePictureName,
-  } from '../../../constants/config';
+  import { Notify } from 'notiflix';
+  import validationMixin from '@/mixins/validation-mixins';
+  import ValidationInput from '@/components/Common/ValidationInput.vue';
+  import { apiDomain, defaultProfilePictureName } from '@/constants/config';
 
   export default {
     mixins: [validationMixin],

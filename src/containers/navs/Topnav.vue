@@ -80,21 +80,21 @@
   import Switches from 'vue-switches';
 
   import { mapGetters, mapMutations, mapActions } from 'vuex';
-  import { MenuIcon, MobileMenuIcon } from '../../components/Svg';
+  import { MenuIcon, MobileMenuIcon } from '@/components/Svg';
   import {
     searchPath,
     menuHiddenBreakpoint,
     localeOptions,
     buyUrl,
     adminRoot,
-  } from '../../constants/config';
+  } from '@/constants/config';
   import {
     getDirection,
     setDirection,
     getThemeColor,
     setThemeColor,
-  } from '../../utils';
-  import { apiDomain } from './../../constants/config';
+  } from '@/utils';
+  import { apiDomain } from '@/constants/config';
 
   export default {
     components: {

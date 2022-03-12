@@ -85,12 +85,12 @@
 </template>
 
 <script>
-  import AhsItem from '../../../../components/Project/Rab/AhsItem.vue';
+  import { mapActions, mapGetters } from 'vuex';
+  import AhsItem from '@/components/Project/Rab/AhsItem.vue';
   import AddCustomAhs from '@/components/Project/Rab/AddCustomAhs.vue';
   import EditCustomAhs from '@/components/Project/Rab/EditCustomAhs.vue';
-  import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
+  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import Loader from '@/components/Common/Loader.vue';
-  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     data() {

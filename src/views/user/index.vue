@@ -8,7 +8,7 @@
 
 <script>
   import { SlideXLeftTransition } from 'vue2-transitions';
-  import UserLayout from '../../layouts/UserLayout';
+  import UserLayout from '@/layouts/UserLayout';
 
   export default {
     components: {

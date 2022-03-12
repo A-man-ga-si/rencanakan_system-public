@@ -25,8 +25,8 @@
 <script>
   import Vuetable from 'vuetable-2';
   import { Notify } from 'notiflix';
-  import VuetablePaginationBootstrap from './../Common/VuetablePaginationBootstrap.vue';
-  import { getToken } from '../../utils';
+  import VuetablePaginationBootstrap from '@/components/Common/VuetablePaginationBootstrap.vue';
+  import { getToken } from '@/utils';
 
   export default {
     props: ['title', 'fields', 'api'],

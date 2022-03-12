@@ -22,16 +22,16 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
   import AddUnit from '@/components/Master/Unit/AddUnit';
   import EditUnit from '@/components/Master/Unit/EditUnit';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
-  import unitTableFields from './../../../data/fields/unit-table-field';
+  import unitTableFields from '@/data/fields/unit-table-field';
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
-  import { apiUrl } from '../../../constants/config';
-  import { showConfirmAlert } from '../../../utils';
-  import { mapActions } from 'vuex';
-  import { Notify } from 'notiflix';
+  import { apiUrl } from '@/constants/config';
+  import { showConfirmAlert } from '@/utils';
 
   export default {
     data: () => ({

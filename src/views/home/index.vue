@@ -482,9 +482,9 @@
 <script>
   import { headroom } from 'vue-headroom';
   import VueScrollTo from 'vue-scrollto';
-  import HomeLayout from '../../layouts/HomeLayout';
-  import GlideComponent from '../../components/Carousel/GlideComponent';
-  import { adminRoot, buyUrl } from '../../constants/config';
+  import HomeLayout from '@/layouts/HomeLayout';
+  import GlideComponent from '@/components/Carousel/GlideComponent';
+  import { adminRoot, buyUrl } from '@/constants/config';
   const slideSettings = {
     type: 'carousel',
     gap: 30,

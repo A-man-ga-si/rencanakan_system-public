@@ -63,8 +63,8 @@
 <script>
   import { showConfirmAlert } from '@/utils';
   import { mapActions } from 'vuex';
-  import { formatCurrency } from '../../utils';
   import { PhX } from 'phosphor-vue';
+  import { formatCurrency } from '@/utils';
   export default {
     data() {
       return {

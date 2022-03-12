@@ -33,17 +33,16 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix';
+  import { PhArrowSquareOut } from 'phosphor-vue';
+  import Swal from 'sweetalert2';
   import projectField from '@/data/fields/project-field';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
   import AddProject from '@/components/Project/AddProject.vue';
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
-  import Swal from 'sweetalert2';
-  import { apiDomain, apiUrl } from '../../constants/config';
-  import { showConfirmAlert } from './../../utils';
-  import { mapActions, mapGetters } from 'vuex';
-  import { Notify } from 'notiflix';
-  import { PhArrowSquareOut } from 'phosphor-vue';
+  import { apiDomain, apiUrl } from '@/constants/config';
 
   export default {
     data: () => ({

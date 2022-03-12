@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import ItemPriceItem from '../../../../../components/Project/Rab/ItemPriceItem.vue';
+  import ItemPriceItem from '@/components/Project/Rab/ItemPriceItem.vue';
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AddItemPriceGroup from '@/components/Project/Rab/AddItemPriceGroup.vue';
   import EditItemPriceGroup from '@/components/Project/Rab/EditItemPriceGroup.vue';

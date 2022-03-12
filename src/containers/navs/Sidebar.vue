@@ -120,11 +120,11 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex';
-  import menuItems from '../../constants/menu';
+  import menuItems from '@/constants/menu';
   import {
     menuHiddenBreakpoint,
     subHiddenBreakpoint,
-  } from '../../constants/config';
+  } from '@/constants/config';
 
   export default {
     data() {

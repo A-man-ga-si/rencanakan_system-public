@@ -206,8 +206,6 @@
 </template>
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import { adminRoot } from '../../constants/config';
-  import Swal from 'sweetalert2';
 
   export default {
     data() {

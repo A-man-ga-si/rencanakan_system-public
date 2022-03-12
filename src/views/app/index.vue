@@ -8,7 +8,7 @@
 
 <script>
   import { SlideYDownTransition } from 'vue2-transitions';
-  import AppLayout from '../../layouts/AppLayout';
+  import AppLayout from '@/layouts/AppLayout';
 
   export default {
     components: {

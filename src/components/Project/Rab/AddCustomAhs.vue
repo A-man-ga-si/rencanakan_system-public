@@ -63,8 +63,8 @@
 </template>
 
 <script>
-  import ValidationInput from '../../Common/ValidationInput.vue';
-  import validationMixins from '../../../mixins/validation-mixins';
+  import ValidationInput from '@/components/Common/ValidationInput.vue';
+  import validationMixins from '@/mixins/validation-mixins';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
 

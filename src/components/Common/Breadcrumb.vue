@@ -10,7 +10,8 @@
 </template>
 
 <script>
-  import { adminRoot } from '../../constants/config';
+  import { adminRoot } from '@/constants/config';
+
   export default {
     props: ['heading'],
     data() {

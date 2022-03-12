@@ -96,8 +96,6 @@
   import { mapActions, mapGetters } from 'vuex';
   import { PhCheckCircle, PhXCircle } from 'phosphor-vue';
   import { Notify } from 'notiflix';
-  import { apiDomain } from '../../constants/config';
-  import { getToken } from '../../utils';
 
   export default {
     mixins: [validationMixins],

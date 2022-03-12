@@ -27,8 +27,8 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import AddCompanyProfile from '../../../components/Account/CompanyProfile/AddCompanyProfile.vue';
-  import EditCompanyProfile from '../../../components/Account/CompanyProfile/EditCompanyProfile.vue';
+  import AddCompanyProfile from '@/components/Account/CompanyProfile/AddCompanyProfile.vue';
+  import EditCompanyProfile from '@/components/Account/CompanyProfile/EditCompanyProfile.vue';
 
   export default {
     computed: {

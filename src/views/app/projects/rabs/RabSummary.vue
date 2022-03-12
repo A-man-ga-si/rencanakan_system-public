@@ -116,8 +116,8 @@
   import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
   import EditRabItemHeader from '@/components/Project/Rab/EditRabItemHeader.vue';
-  import RabSummaryItem from '../../../../components/Project/Rab/RabSummaryItem.vue';
-  import AddRab from './../../../../components/Project/Rab/AddRab.vue';
+  import RabSummaryItem from '@/components/Project/Rab/RabSummaryItem.vue';
+  import AddRab from '@/components/Project/Rab/AddRab.vue';
 
   export default {
     data() {

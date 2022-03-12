@@ -132,7 +132,6 @@
     minLength,
     email,
   } = require('vuelidate/lib/validators');
-  import { adminRoot } from '../../constants/config';
 
   export default {
     data() {

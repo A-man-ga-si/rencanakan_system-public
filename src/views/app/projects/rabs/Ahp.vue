@@ -65,10 +65,10 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import AhpItem from '../../../../components/Project/Rab/AhpItem.vue';
-  import AddCustomAhp from './../../../../components/Project/Rab/AddCustomAhp.vue';
-  import EditCustomAhp from './../../../../components/Project/Rab/EditCustomAhp.vue';
-  import FloatingActionButton from '../../../../components/Project/FloatingActionButton.vue';
+  import AhpItem from '@/components/Project/Rab/AhpItem.vue';
+  import AddCustomAhp from '@/components/Project/Rab/AddCustomAhp.vue';
+  import EditCustomAhp from '@/components/Project/Rab/EditCustomAhp.vue';
+  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import Loader from '@/components/Common/Loader.vue';
 
   export default {
