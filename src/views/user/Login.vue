@@ -1,6 +1,6 @@
 <template>
   <b-row class="h-100">
-    <b-colxx xxs="12" md="10" class="mx-auto my-auto">
+    <b-colxx xxs="12" md="12" xl="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <div class="dark-overlay"></div>
@@ -12,7 +12,7 @@
               Rencanakan.Id adalah aplikasi yang memudahkan kontraktor kecil dalam
               membuat RAB dengan harga yang sangat terjangkau.
               <br>
-                Fitur :
+              Fitur :
               <ul>
                 <li>RAB Generated Excel</li>
                 <li>Management project (coming soon)</li>
@@ -23,84 +23,49 @@
         </div>
         <div class="form-side">
           <router-link to="/">
-            <b-img
-              src="./../../assets/logos/rencanakan-logo-min.png"
-              style="max-width: 250px"
-              class="mb-5"
-              fluid
-            ></b-img>
+            <b-img src="./../../assets/logos/rencanakan-logo-min.png" style="max-width: 250px" class="mb-5" fluid>
+            </b-img>
             <!-- <span class="logo-single" /> -->
           </router-link>
           <h6 class="mb-4">{{ $t('user.login-title') }}</h6>
 
-          <b-form
-            @submit.prevent="formSubmit"
-            class="av-tooltip tooltip-label-bottom"
-          >
-            <b-form-group
-              :label="$t('user.email')"
-              class="has-float-label mb-4"
-            >
-              <b-form-input
-                type="text"
-                v-model="$v.form.email.$model"
-                :state="!$v.form.email.$error"
-              />
+          <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
+            <b-form-group :label="$t('user.email')" class="has-float-label mb-4">
+              <b-form-input type="text" v-model="$v.form.email.$model" :state="!$v.form.email.$error" />
               <b-form-invalid-feedback v-if="!$v.form.email.required">
                 Please enter your email address
               </b-form-invalid-feedback>
               <b-form-invalid-feedback v-else-if="!$v.form.email.email">
                 Please enter a valid email address
               </b-form-invalid-feedback>
-              <b-form-invalid-feedback v-else-if="!$v.form.email.minLength"
-                >Your email must be minimum 4 characters
+              <b-form-invalid-feedback v-else-if="!$v.form.email.minLength">Your email must be minimum 4 characters
               </b-form-invalid-feedback>
             </b-form-group>
-            <b-form-group
-              :label="$t('user.password')"
-              class="has-float-label mb-4"
-            >
-              <b-form-input
-                type="password"
-                v-model="$v.form.password.$model"
-                :state="!$v.form.password.$error"
-              />
-              <b-form-invalid-feedback v-if="!$v.form.password.required"
-                >Please enter your password</b-form-invalid-feedback
-              >
-              <b-form-invalid-feedback
-                v-else-if="
+            <b-form-group :label="$t('user.password')" class="has-float-label mb-4">
+              <b-form-input type="password" v-model="$v.form.password.$model" :state="!$v.form.password.$error" />
+              <b-form-invalid-feedback v-if="!$v.form.password.required">Please enter your password
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback v-else-if="
                   !$v.form.password.minLength || !$v.form.password.maxLength
-                "
-                >Your password must be between 4 and 16
-                characters</b-form-invalid-feedback
-              >
+                ">Your password must be between 4 and 16
+                characters</b-form-invalid-feedback>
             </b-form-group>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="left">
+            <div class="row">
+              <div class="col-md-4">
                 <router-link :to="{name: 'ForgotPassword'}">{{
                   $t('user.forgot-password-question')
                 }}</router-link>
               </div>
-              <div class="right">
-                <router-link
-                  :to="{ name: 'Register' }"
-                  class="mr-3 register-bt text-primary"
-                >
+              <div class="col-md-8 text-center text-sm-right mt-4 mt-sm-0">
+                <router-link :to="{ name: 'Register' }" class="mr-3 register-bt text-primary">
                   {{ $t('user.register-button') }}
                 </router-link>
-                <b-button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  :disabled="processing"
-                  :class="{
+                <b-button type="submit" variant="primary" size="lg" :disabled="processing" :class="{
                     'btn-multiple-state btn-shadow': true,
                     'show-spinner': processing,
                     'show-success': !processing && loginError === false,
                     'show-fail': !processing && loginError,
-                  }"
-                >
+                  }">
                   <span class="spinner d-inline-block">
                     <span class="bounce1"></span>
                     <span class="bounce2"></span>
@@ -116,6 +81,13 @@
                 </b-button>
               </div>
             </div>
+            <!-- <div class="d-flex justify-content-between align-items-center">
+              <div class="left">
+              </div>
+              <div class="right">
+
+              </div>
+            </div> -->
           </b-form>
         </div>
       </b-card>
@@ -124,8 +96,13 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import { validationMixin } from 'vuelidate';
+  import {
+    mapGetters,
+    mapActions
+  } from 'vuex';
+  import {
+    validationMixin
+  } from 'vuelidate';
   const {
     required,
     maxLength,
@@ -180,8 +157,7 @@
           this.$notify(
             'error',
             'Login Failed',
-            err.response.data.message,
-            {
+            err.response.data.message, {
               duration: 3000,
               permanent: false,
             }

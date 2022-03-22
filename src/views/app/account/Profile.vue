@@ -34,6 +34,7 @@
             />
             <ValidationInput
               class="mb-3"
+              type="number"
               v-model="form.phone"
               field-name="phone"
               :label="$t('pages.account.profile.phone')"

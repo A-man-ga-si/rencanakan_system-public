@@ -38,7 +38,7 @@
     </td>
     <td>
       <input
-        type="text"
+        type="number"
         class="rab-inline-editor"
         :class="{
           'text-primary font-weight-bold': !defaultPrice,

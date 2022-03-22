@@ -9,8 +9,8 @@
               {{ $t('dashboards.magic-is-in-the-details') }}
             </p>
             <p class="white mb-0">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Delectus, similique!
+              Masukkan kata sandi baru anda. Pastikan kata sandi baru anda kuat
+              dan mudah diingat !
             </p>
           </div>
         </div>

@@ -25,7 +25,7 @@
     "reset-password-button": "RESET",
     "buy": "BUY",
     "username": "Username",
-    "already-have-account": "Already have an account?",
+    "already-have-account": "Back to Login",
     "reset-password-title": "Reset Password",
     "reset-password-instruction": "Please enter your new password",
     "reset-password-error-msg": "Internal server error, failed to reset your password"

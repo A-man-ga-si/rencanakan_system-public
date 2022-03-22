@@ -9,10 +9,10 @@
               {{ $t('dashboards.magic-is-in-the-details') }}
             </p>
             <p class="white mb-0">
-              Please use your e-mail to reset your password.
-              <br />If you are not a member, please
-              <router-link to="/user/register" class="white"
-                >register</router-link
+              Masukkan E-Mail anda untuk melakukan reset kata sandi
+              <br />Jika anda belum mempunyai akun, silahkan
+              <router-link to="/auth/register" class="white"
+                ><u>daftar</u></router-link
               >.
             </p>
           </div>

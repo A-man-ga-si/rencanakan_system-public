@@ -9,9 +9,11 @@
               {{ $t('dashboards.magic-is-in-the-details') }}
             </p>
             <p class="white mb-0">
-              Please use this form to register. <br />If you are a member,
-              please
-              <router-link to="/user/login" class="white">login</router-link>.
+              Isi form untuk melakukan pendaftaran <br />Jika anda sudah
+              mempunya akun, silahkan
+              <router-link to="/auth/login" class="white"
+                ><u>masuk</u></router-link
+              >.
             </p>
           </div>
         </div>
@@ -48,7 +50,7 @@
                   {{ errors.first_name }}
                 </span>
               </b-col>
-              <b-col :sm="6">
+              <b-col :sm="6" class="mt-4 mt-sm-0">
                 <label class="form-group has-float-label mb-0">
                   <input
                     type="text"
@@ -92,7 +94,7 @@
             <div class="mb-4">
               <label class="form-group has-float-label mb-0">
                 <input
-                  type="tel"
+                  type="number"
                   class="form-control"
                   :class="{ 'border-danger': errors.phone }"
                   v-model="phone"

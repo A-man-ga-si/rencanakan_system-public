@@ -57,18 +57,23 @@
           no-caret
         >
           <template slot="button-content">
-            <h5 class="name mr-1 d-inline-block">
-              {{ currentUser ? currentUser.title : '' }}
-            </h5>
-            <span>
-              <img
-                :alt="currentUser ? currentUser.title : ''"
-                :src="profileImage"
-              />
-            </span>
+            <div class="row">
+              <div class="col">
+                <h5
+                  class="name mr-1 d-none d-md-inline-block"
+                  style="margin-top: 12px"
+                >
+                  {{ currentUser ? currentUser.title : '' }}
+                </h5>
+              </div>
+              <div class="col">
+                <div
+                  class="profile-picture"
+                  :style="`background-image: url(${profileImage});`"
+                ></div>
+              </div>
+            </div>
           </template>
-          <b-dropdown-item :to="{ name: 'Account' }"> Account </b-dropdown-item>
-          <b-dropdown-divider />
           <b-dropdown-item @click="userLogout">Log out</b-dropdown-item>
         </b-dropdown>
       </div>
@@ -226,3 +231,14 @@
     },
   };
 </script>
+
+<style scoped>
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    border-radius: 50px;
+    display: inline-block;
+    background-position: center;
+  }
+</style>

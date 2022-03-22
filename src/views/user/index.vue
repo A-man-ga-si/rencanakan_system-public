@@ -25,6 +25,12 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  @media (min-width: 992px) {
+    .dark-overlay {
+      border-radius: 10px 0 0 10px;
+    }
   }
 </style>
