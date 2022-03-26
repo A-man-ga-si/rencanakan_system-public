@@ -60,14 +60,24 @@
             <div class="right">
               <span class="ml-2">
                 <b class="text-danger">Payment Status</b>
-                <a
-                  href="#"
-                  @click.prevent="submit"
-                  v-if="quotasLeft <= 0"
-                  class="d-block ml-2 text-danger"
-                >
-                  <u>Klik disini untuk melengkapi payment status</u>
-                </a>
+                <span v-if="quotasLeft <= 0">
+                  <a
+                    href="#"
+                    @click.prevent="submit"
+                    v-if="!paymentLoading"
+                    class="d-block ml-2 text-danger"
+                  >
+                    <u>Klik disini untuk melengkapi payment status</u>
+                  </a>
+                  <a
+                    href="#"
+                    v-else
+                    @click.prevent
+                    class="d-block ml-2 text-danger"
+                  >
+                    Loading ...
+                  </a>
+                </span>
               </span>
             </div>
           </div>
@@ -101,6 +111,7 @@
     mixins: [validationMixins],
     data() {
       return {
+        paymentLoading: false,
         modalId: 'export-rab',
         fetchQuotaStatus: false,
         quotasLeft: 0,
@@ -146,6 +157,7 @@
         this.quotasLeft = data.data.data.quotasLeft;
       },
       async pay() {
+        this.paymentLoading = true;
         const { data } = await this.fetchSnapToken(this.$route.params.id);
         const that = this;
         window.snap.pay(data.data.token, {
@@ -154,6 +166,7 @@
           },
           skipOrderSummary: false,
         });
+        this.paymentLoading = false;
       },
 
       hideModal(refname) {
