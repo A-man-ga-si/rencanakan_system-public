@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>{{ ahsItem.id }} | {{ ahsItem.name }}</h5>
+        <h5>{{ idx + 1 }}. {{ ahsItem.id }} | {{ ahsItem.name }}</h5>
       </div>
       <div class="right text-right" style="min-width: 120px">
         <h3 class="d-inline-block mb-0" style="vertical-align: top">
@@ -183,7 +183,7 @@
     data: () => ({
       mainCardCollapsed: false,
     }),
-    props: ['ahsItem', 'codesList', 'unitsList', 'ahsItemableList'],
+    props: ['ahsItem', 'codesList', 'unitsList', 'ahsItemableList', 'idx'],
     methods: {
       ...mapActions(['destroyAhs', 'storeAhsItem']),
       async deleteAhs() {

@@ -81,13 +81,6 @@
                 </b-button>
               </div>
             </div>
-            <!-- <div class="d-flex justify-content-between align-items-center">
-              <div class="left">
-              </div>
-              <div class="right">
-
-              </div>
-            </div> -->
           </b-form>
         </div>
       </b-card>
@@ -149,7 +142,7 @@
               password: this.form.password,
             });
             this.$router.replace({
-              name: 'Dashboard',
+              name: 'Project',
             });
           }
         } catch (err) {
@@ -169,7 +162,7 @@
       currentUser(val) {
         if (val && val.uid && val.uid.length > 0) {
           this.$router.push({
-            name: 'Dashboard',
+            name: 'Project',
           });
         }
       },

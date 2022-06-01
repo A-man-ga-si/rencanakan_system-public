@@ -1,13 +1,13 @@
 import { adminRoot } from './config';
 
 const data = [
-  {
-    id: 'dashboard',
-    icon: 'iconsminds-shop',
-    label: 'menu.dashboard',
-    permissions: ['read-dashboard'],
-    to: `${adminRoot}/dashboard`,
-  },
+  // {
+  //   id: 'dashboard',
+  //   icon: 'iconsminds-shop',
+  //   label: 'menu.dashboard',
+  //   permissions: ['read-dashboard'],
+  //   to: `${adminRoot}/dashboard`,
+  // },
   {
     id: 'projects',
     icon: 'iconsminds-folders',

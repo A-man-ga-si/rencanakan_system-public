@@ -33,6 +33,10 @@ const routes = [
           loginRequired: true,
           permissions: ['read-dashboard'],
         },
+        // NOTE: Redirecting dashboard route due to incoming dashboard feature
+        redirect: {
+          name: 'Project',
+        },
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ './../views/app/dashboard'

@@ -114,7 +114,7 @@
             <div class="mb-4">
               <label class="form-group has-float-label mb-0">
                 <input
-                  type="tel"
+                  type="text"
                   class="form-control"
                   :class="{ 'border-danger': errors.job }"
                   v-model="job"

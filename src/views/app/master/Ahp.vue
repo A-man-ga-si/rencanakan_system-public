@@ -3,6 +3,7 @@
     <h3 class="mb-4">Master AHP</h3>
     <AhpItem
       v-for="(ahp, idx) in getAhp"
+      :idx="idx"
       :key="idx"
       :ahp-item="ahp"
       @ahp-deleted="reloadAhp"

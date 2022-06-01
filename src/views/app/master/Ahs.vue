@@ -19,6 +19,7 @@
     <ul class="ahs-item-list">
       <li v-for="(ahs, idx) in getAhs" :key="idx">
         <AhsItem
+          :idx="idx"
           :codes-list="codesList"
           :units-list="getUnit"
           :ahs-itemable-list="getAhsItemableIds"

@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>{{ ahpItem.id }} | {{ ahpItem.name }}</h5>
+        <h5>{{ idx + 1 }}. {{ ahpItem.id }} | {{ ahpItem.name }}</h5>
       </div>
       <div class="right">
         <a href="#" @click.prevent="toggleMaincardCollapse" class="h4 ml-1">
@@ -138,7 +138,7 @@
       mainCardCollapsed: false,
     }),
     mixins: [ahpMixins],
-    props: ['ahpItem'],
+    props: ['ahpItem', 'idx'],
     computed: {
       getAhpItemRowsData() {
         return ahpItemRowsData;
