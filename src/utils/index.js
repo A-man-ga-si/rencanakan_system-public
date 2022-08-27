@@ -252,3 +252,20 @@ export const numberToAlphabet = number => {
   const alphabetSequence = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   return alphabetSequence[number >= 26 ? number % 26 : number];
 };
+
+export const formatDateString = stringDate => {
+  const date = new Date(stringDate);
+  
+  const secs = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
+  const mins = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+  const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  const month = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth();
+  const year = date.getFullYear();
+
+  return {
+    date: `${day}-${month}-${year}`,
+    time: `${hours}:${mins}:${secs}`
+  };
+}

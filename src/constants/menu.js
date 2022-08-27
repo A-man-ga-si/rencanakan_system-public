@@ -16,6 +16,13 @@ const data = [
     to: `${adminRoot}/projects`,
   },
   {
+    id: 'orders',
+    icon: 'iconsminds-safe-box',
+    label: 'menu.orders',
+    permissions: ['access-project-page'],
+    to: `${adminRoot}/orders`,
+  },
+  {
     id: 'account',
     icon: 'iconsminds-administrator',
     label: 'menu.account',

@@ -6297,10 +6297,9 @@ performance-now@^2.1.0:
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-phosphor-vue@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/phosphor-vue/-/phosphor-vue-1.4.0.tgz#6107e0cea40db00ae3da3c4355db49e5370104b5"
-  integrity sha512-5Oti/zfezP3LRfciZmzovd2+ih5VWEnLFI+3K0ZG4NVkAqwdkx4B3vJzCYGpHMNZG5+c+xW3eB4gf3H7hBiR1Q==
+phosphor-vue@davidmahbubi/phosphor-vue:
+  version "1.4.2"
+  resolved "https://codeload.github.com/davidmahbubi/phosphor-vue/tar.gz/2a511e2337ee04ba901cca62d9369959bd2cd175"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.3.0"

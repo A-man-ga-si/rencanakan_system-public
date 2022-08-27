@@ -4,6 +4,9 @@ import App from './App';
 // BootstrapVue add
 import BootstrapVue from 'bootstrap-vue';
 
+// Phosphor css
+import '@/assets/css/vendor/phosphor.css';
+
 // Router & Store add
 import router from './router';
 import store from './store';

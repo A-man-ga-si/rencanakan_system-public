@@ -54,6 +54,7 @@
     "invoice": "Invoice",
     "mailing": "Mailing",
     "projects": "My Projects",
+    "orders": "Orders",
     "transaction-history": "Transaction History",
     "account": "Account",
     "login": "Login",

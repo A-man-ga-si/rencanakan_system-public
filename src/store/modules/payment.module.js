@@ -11,9 +11,7 @@ const paymentApi = new ApiTwo({
 
 const actions = {
   async fetchSnapToken(ctx, data) {
-    return await paymentApi.post('fetch-snap-token', {
-      project_id: data,
-    });
+    return await paymentApi.post('fetch-snap-token', data);
   },
 
   // NOTE: For demo purpose only !
@@ -37,6 +35,11 @@ const actions = {
       }
     );
     return res;
+  },
+
+  async setPending(ctx, { snapToken }) {
+    const res = await paymentApi.post('set-pending', { snapToken });
+    console.log(res);
   },
 };
 

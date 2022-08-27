@@ -65,6 +65,17 @@ const routes = [
           import(/* webpackChunkName: "project" */ './../views/app/projects'),
       },
       {
+        path: `orders`,
+        name: 'Orders',
+        meta: {
+          title: 'Orders',
+          loginRequired: true,
+          // permissions: ['access-project-page'],
+        },
+        component: () =>
+          import(/* webpackChunkName: "project" */ './../views/app/order/Index.vue'),
+      },
+      {
         path: 'projects/:id/rab',
         name: 'Rab',
         redirect: {

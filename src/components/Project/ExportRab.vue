@@ -69,14 +69,21 @@
                   >
                     <u>Klik disini untuk melengkapi payment status</u>
                   </a>
-                  <a
-                    href="#"
-                    v-else
-                    @click.prevent
-                    class="d-block ml-2 text-danger"
-                  >
-                    Loading ...
-                  </a>
+                  <div class="pl-2 text-danger" v-else>
+                    <span class="d-block">Pembayaran sedang di proses... </span>
+                    <a
+                      href="#"
+                      @click.prevent="refreshPayment"
+                    >
+                      <u>klik untuk re-fresh</u>
+                    </a>
+                    /
+                    <router-link
+                      :to="{name: 'Orders'}"
+                    >
+                      <u>Status Order</u>
+                    </router-link>
+                  </div>
                 </span>
               </span>
             </div>
@@ -103,17 +110,18 @@
 <script>
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixins from '@/mixins/validation-mixins';
+  import paymentMixins from '@/mixins/payment-mixins';
   import { mapActions, mapGetters } from 'vuex';
   import { PhCheckCircle, PhXCircle } from 'phosphor-vue';
   import { Notify } from 'notiflix';
 
   export default {
-    mixins: [validationMixins],
+    mixins: [validationMixins, paymentMixins],
     data() {
       return {
-        paymentLoading: false,
         modalId: 'export-rab',
         fetchQuotaStatus: false,
+        refreshing: false,
         quotasLeft: 0,
         form: {
           name: '',
@@ -142,12 +150,20 @@
             fileLink.click();
             this.checkQuotas();
           } else {
-            this.pay();
+            const that = this;
+            this.pay({
+              project_id: this.$route.params.id,
+            }, function() {
+              that.checkQuotas();
+            });
           }
         } catch (err) {
           Notify.failure('Terjadi kesalahan saat melakukan export RAB !');
           console.error(err);
         }
+      },
+      refreshPayment() {
+        this.checkQuotas();
       },
       async checkQuotas() {
         const data = await this.checkOrder({
@@ -156,23 +172,9 @@
         this.fetchQuotaStatus = true;
         this.quotasLeft = data.data.data.quotasLeft;
       },
-      async pay() {
-        this.paymentLoading = true;
-        const { data } = await this.fetchSnapToken(this.$route.params.id);
-        const that = this;
-        window.snap.pay(data.data.token, {
-          onSuccess: () => {
-            that.checkQuotas();
-          },
-          skipOrderSummary: false,
-        });
-        this.paymentLoading = false;
-      },
-
       hideModal(refname) {
         this.$refs[refname].hide();
       },
-
       resetForm() {
         this.form.name = '';
       },

@@ -22,6 +22,7 @@ import customAhs from './modules/custom-ahs.module';
 import customAhsItem from './modules/custom-ahs-item.module';
 import rabItem from './modules/rab-item.module';
 import rabItemHeader from './modules/rab-item-header.module';
+import order from './modules/order.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -61,5 +62,6 @@ export default new Vuex.Store({
     customAhsItem,
     rabItem,
     rabItemHeader,
+    order,
   },
 });
