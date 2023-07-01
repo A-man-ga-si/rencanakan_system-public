@@ -1,7 +1,15 @@
 <template>
   <div class="project-item">
     <div class="text-right mb-3">
-      <b-btn v-b-modal.add-project-modal variant="primary">
+      <b-btn v-b-modal.add-project-modal variant="primary" id="add-button-tutorial">
+        <b-popover target="add-button-tutorial" :show.sync="isCreateButtonTutorialShowing" v-if="isInTutorial">
+          <template #title>Tombol Buat Project</template>
+          Klik tombol ini untuk mulai membuat project anda  
+          <div class="mt-2">
+            <b-btn variant="primary" size="sm" class="mt-2" @click="onCreateProjectTutorialButtonClicked">Mengerti</b-btn>
+            <!-- <button class="btn btn-primary btn-sm">Next</button> -->
+          </div>
+        </b-popover>
         {{ $t('pages.projects.add-project-modal-title') }}
       </b-btn>
     </div>
@@ -46,12 +54,19 @@
     data: () => ({
       fetchProjectAPI: `${apiUrl}/project`,
       fields: projectField,
+      isCreateButtonTutorialShowing: true,
     }),
     computed: {
-      ...mapGetters(['getProvinces']),
+      ...mapGetters(['getProvinces', 'isInTutorial']),
+    },
+    mounted() {
     },
     methods: {
-      ...mapActions(['destroyProject', 'markLastOpenedAt']),
+      ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial']),
+      onCreateProjectTutorialButtonClicked() {
+        this.changeInTutorial(false)
+        this.isCreateButtonTutorialShowing = false
+      },
       reload() {
         this.$refs['project-data-table'].reloadTable();
       },

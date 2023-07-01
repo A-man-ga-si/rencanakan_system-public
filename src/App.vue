@@ -1,16 +1,25 @@
 <template>
   <div class="h-100">
+    <tutorial-overlay v-if="isInTutorial" />
     <router-view />
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import { rounded } from './constants/config';
+  import TutorialOverlay from '@/components/Common/TutorialOverlay.vue';
 
   export default {
     beforeMount() {
       if (rounded) document.body.classList.add('rounded');
     },
+    computed: {
+      ...mapGetters(['isInTutorial']),
+    },
+    components: {
+      TutorialOverlay,
+    }
   };
 </script>
 

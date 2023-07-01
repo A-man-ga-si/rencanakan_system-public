@@ -56,11 +56,12 @@
             @ahs-item-updated="onCustomAhsItemUpdated"
           />
           <tr>
+            <!-- Original class : class="d-block w-100" -->
             <td colspan="8" class="font-weight-bold">
               <a
                 href="#"
                 @click.prevent="addCustomAhsItem('labor')"
-                class="d-block w-100"
+                class="btn btn-primary"
               >
                 + Tambah Baris
               </a>
@@ -85,7 +86,7 @@
             <td colspan="8" class="font-weight-bold">
               <a
                 href="#"
-                class="d-block w-100"
+                class="btn btn-primary"
                 @click.prevent="addCustomAhsItem('ingredients')"
               >
                 + Tambah Baris
@@ -110,7 +111,7 @@
             <td colspan="8" class="font-weight-bold">
               <a
                 href="#"
-                class="d-block w-100"
+                class="btn btn-primary"
                 @click.prevent="addCustomAhsItem('tools')"
               >
                 + Tambah Baris
@@ -135,7 +136,7 @@
             <td colspan="8" class="font-weight-bold">
               <a
                 href="#"
-                class="d-block w-100"
+                class="btn btn-primary"
                 @click.prevent="addCustomAhsItem('others')"
               >
                 + Tambah Baris

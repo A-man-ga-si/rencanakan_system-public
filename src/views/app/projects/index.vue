@@ -41,7 +41,7 @@
         </b-card> -->
       </b-colxx>
     </b-row>
-    <AddProject @project-added="reload" :provinces="getProvinces" />
+    <AddProject data-title="Farewell!" data-intro="And this is the last step!" @project-added="reload" :provinces="getProvinces" />
     <EditProject
       @project-edited="reload"
       :provinces="getProvinces"
