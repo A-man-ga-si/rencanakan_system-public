@@ -12,7 +12,7 @@
     </td>
     <td>
       <v-select
-        label="display_id"
+        label="display_name"
         @input="submitUpdateAhsItem"
         :reset-on-option-change="true"
         :reduce="
@@ -157,6 +157,7 @@
         const ctx = this;
         const d = this.customAhsItemableList
           .filter(customAhsItemableItem => {
+            // Filter to not showing current AHS ID
             return !(
               ahsItemable(customAhsItemableItem.custom_ahs_itemable_type) ==
                 'CustomAhs' &&
@@ -167,8 +168,10 @@
             customAhsItemableItem.custom_ahs_itemable_type = ahsItemable(
               customAhsItemableItem.custom_ahs_itemable_type
             );
+            console.log(customAhsItemableItem)
             return customAhsItemableItem;
           });
+          console.log(d)
         return d;
       },
       getItemPrice() {
@@ -184,11 +187,7 @@
       DeleteButton,
     },
     watch: {
-      // ahsItemableId(val) {
-      //   console.log('AHS Itemable : ', val);
-      // },
       customAhsItem(e) {
-        console.log(e);
         this.name =
           ahsItemable(e.custom_ahs_itemable_type) === 'CustomItemPrice'
             ? e.custom_ahs_itemable.name

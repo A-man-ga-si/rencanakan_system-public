@@ -58,8 +58,13 @@
       label="PPN (%)"
     />
     <template slot="modal-footer">
-      <b-button @click.prevent="submit" variant="primary" class="mr-1">
-        {{ $t('modal.save-bt') }}
+      <b-button @click.prevent="submit" variant="primary" class="mr-1" :disabled="isSubmitting">
+        <span v-if="isSubmitting">
+          Loading...
+        </span>
+        <span v-else>
+          {{ $t('modal.save-bt') }}
+        </span>
       </b-button>
       <b-button variant="secondary" @click="hideModal(modalId)">
         {{ $t('modal.cancel-bt') }}
@@ -69,12 +74,16 @@
 </template>
 
 <script>
+
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixin from '@/mixins/validation-mixins';
   import { mapActions } from 'vuex';
+  import { Notify } from 'notiflix';
+
   export default {
     mixins: [validationMixin],
     data: () => ({
+      isSubmitting: false,
       modalId: 'add-project-modal',
       form: {
         name: '',
@@ -97,13 +106,17 @@
       },
       async submit() {
         try {
+          this.isSubmitting = true
           this.resetInvalid();
           await this.createProject(this.form);
           this.$emit('project-added');
           this.hideModal(this.modalId);
           this.resetForm();
+          Notify.success('Berhasil membuat project baru');
         } catch (err) {
           this.checkForInvalidResponse(err);
+        } finally {
+          this.isSubmitting = false
         }
       },
       resetForm() {
