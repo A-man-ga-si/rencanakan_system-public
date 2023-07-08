@@ -21,7 +21,13 @@
         "
         :options="getAhsItemableList"
         v-model="ahsItemableId"
-      />
+      >
+      <template slot="list-footer">
+        <div class="text-center">
+          <b-badge v-b-modal.create-item-price-modal variant="primary" class="add-item-btn">Tambah Baru</b-badge>
+        </div>
+      </template>
+      </v-select>
     </td>
     <td>
       <v-select
@@ -209,6 +215,11 @@
 
   .inline-edit {
     border: none;
+  }
+
+  .add-item-btn {
+    margin: 10px 0 10px 0;
+    cursor: pointer;
   }
 
   td {

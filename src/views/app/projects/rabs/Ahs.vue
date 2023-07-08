@@ -81,6 +81,7 @@
       @custom-ahs-updated="reloadData"
       :edited-custom-ahs="editedCustomAhs"
     />
+    <CreateItemPricePopup @submit="onNewItemPriceAdded" />
   </div>
 </template>
 
@@ -91,6 +92,7 @@
   import EditCustomAhs from '@/components/Project/Rab/EditCustomAhs.vue';
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import Loader from '@/components/Common/Loader.vue';
+  import CreateItemPricePopup from '@/components/Project/Rab/CreateItemPricePopup.vue';
 
   export default {
     data() {
@@ -128,6 +130,11 @@
         'fetchUnit',
         'queryCustomAhs',
       ]),
+      onNewItemPriceAdded() {
+        this.fetchCustomAhsItemableIds({
+          projectId: this.$route.params.id,
+        });
+      },
       async getCustomAhs() {
         const { data } = await this.fetchCustomAhs({
           projectId: this.$route.params.id,
@@ -190,6 +197,7 @@
       AddCustomAhs,
       EditCustomAhs,
       Loader,
+      CreateItemPricePopup,
     },
   };
 </script>

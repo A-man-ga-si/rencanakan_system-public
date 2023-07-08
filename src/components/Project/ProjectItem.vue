@@ -1,7 +1,7 @@
 <template>
   <div class="project-item">
     <div class="text-right mb-3">
-      <b-btn v-b-modal.add-project-modal variant="primary" id="add-button-tutorial">
+      <b-btn v-b-modal.add-project-modal variant="primary" id="add-button-tutorial" title="Tombol untuk membuat project">
         <tutorial-popover target="add-button-tutorial" title="Tombol Buat Project" :is-show="createProjectButtonTutorial" tutorial-key="create_project" :end-of-tutorial="true" @understand="createProjectButtonTutorial = false">
           Tekan tombol ini untuk membuat project baru
         </tutorial-popover>
@@ -21,19 +21,21 @@
             id="show-project-modal"
             @click.prevent="detailProject(row.row.rowData.hashid)"
             class="rab-icon-bt mx-1"
+            title="Tombol untuk melihat detail project"
           >
             <ph-arrow-square-out :size="20" weight="light" />
             <tutorial-popover target="show-project-modal" title="Ubah AHS" :is-show="editAhsButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showEditProjectButtonTutorial" prevent-imediate-close>
               Klik tombol ini untuk mengubah AHS
             </tutorial-popover>
           </a>
-        <EditButton v-b-modal.edit-project-modal id="edit-project-modal" @click.prevent="editProject(row.row.rowData)">
+        <EditButton v-b-modal.edit-project-modal id="edit-project-modal" @click.prevent="editProject(row.row.rowData)" title="Tombol untuk mengedit project">
           <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
             Klik tombol ini untuk mengubah project
           </tutorial-popover>
           <ph-pencil :size="20" weight="light" />
         </EditButton>
         <DeleteButton
+        title="Tombol untuk menghapus project"
         id="delete-project-btn"
           @click.prevent="
             deleteProject(row.row.rowData.name, row.row.rowData.hashid)
