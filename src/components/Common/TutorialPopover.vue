@@ -33,6 +33,9 @@ export default {
     target: {
       type: String,
       required: true
+    },
+    preventImediateClose: {
+      type: Boolean,
     }
   },
   computed: {
@@ -45,7 +48,9 @@ export default {
       if (this.endOfTutorial) {
         await this.endTutorial(this.tutorialKey)
       } else {
-        this.changeInTutorial(false)
+        if (!this.preventImediateClose) {
+          this.changeInTutorial(false)
+        }
       }
     },
   }

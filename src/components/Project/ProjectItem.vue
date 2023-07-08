@@ -23,16 +23,27 @@
             class="rab-icon-bt mx-1"
           >
             <ph-arrow-square-out :size="20" weight="light" />
-            <tutorial-popover target="show-project-modal" title="Ubah AHS" :is-show="editAhsButtonTutorial" tutorial-key="show_project" :end-of-tutorial="true" @understand="editAhsButtonTutorial = false">
+            <tutorial-popover target="show-project-modal" title="Ubah AHS" :is-show="editAhsButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showEditProjectButtonTutorial" prevent-imediate-close>
               Klik tombol ini untuk mengubah AHS
             </tutorial-popover>
           </a>
-        <EditButton @click.prevent="editProject(row.row.rowData)" />
+        <EditButton v-b-modal.edit-project-modal id="edit-project-modal" @click.prevent="editProject(row.row.rowData)">
+          <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
+            Klik tombol ini untuk mengubah project
+          </tutorial-popover>
+          <ph-pencil :size="20" weight="light" />
+        </EditButton>
         <DeleteButton
+        id="delete-project-btn"
           @click.prevent="
             deleteProject(row.row.rowData.name, row.row.rowData.hashid)
           "
-        />
+        >
+        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="deleteProjectButtonTutorial = false">
+            Klik tombol ini untuk menghapus project
+        </tutorial-popover>
+        <ph-trash :size="20" weight="light" />
+      </DeleteButton>
       </template>
     </CustomDataTable>
   </div>
@@ -51,6 +62,7 @@
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
   import TutorialPopover from '@/components/Common/TutorialPopover.vue';
   import { apiDomain, apiUrl } from '@/constants/config';
+  import { PhPencil, PhTrash } from 'phosphor-vue';
 
   export default {
     mixins: [tutorialMixin],
@@ -58,7 +70,9 @@
       fetchProjectAPI: `${apiUrl}/project`,
       fields: projectField,
       createProjectButtonTutorial: false,
-      editAhsButtonTutorial: false
+      editAhsButtonTutorial: false,
+      editProjectButtonTutorial: false,
+      deleteProjectButtonTutorial: false,
     }),
     computed: {
       ...mapGetters(['getProvinces', 'isInTutorial']),
@@ -71,8 +85,20 @@
     methods: {
       ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial']),
       showDetailProjectTutorial() {
-        if (this.shouldShowTutorial('show_project')) {
+        if (this.shouldShowTutorial('manage_project')) {
           this.editAhsButtonTutorial = this.activateTutorial()
+        }
+      },
+      showEditProjectButtonTutorial() {
+        this.editAhsButtonTutorial = false
+        if (this.shouldShowTutorial('manage_project')) {
+          this.editProjectButtonTutorial = this.activateTutorial()
+        }
+      },
+      showDeleteProjectButtonTutorial() {
+        this.editProjectButtonTutorial = false
+        if (this.shouldShowTutorial('manage_project')) {
+          this.deleteProjectButtonTutorial = this.activateTutorial()
         }
       },
       reload() {
@@ -137,7 +163,9 @@
       EditButton,
       DeleteButton,
       PhArrowSquareOut,
-      TutorialPopover
+      TutorialPopover,
+      PhPencil,
+      PhTrash,
     },
   };
 </script>
