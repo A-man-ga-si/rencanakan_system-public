@@ -6,16 +6,22 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { rounded } from './constants/config';
   import TutorialOverlay from '@/components/Common/TutorialOverlay.vue';
 
   export default {
+    created() {
+      this.getTutorialLists();
+    },
     beforeMount() {
       if (rounded) document.body.classList.add('rounded');
     },
     computed: {
       ...mapGetters(['isInTutorial']),
+    },
+    methods: {
+      ...mapActions(['getTutorialLists']),
     },
     components: {
       TutorialOverlay,

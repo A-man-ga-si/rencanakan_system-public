@@ -41,7 +41,7 @@
         </b-card> -->
       </b-colxx>
     </b-row>
-    <AddProject data-title="Farewell!" data-intro="And this is the last step!" @project-added="reload" :provinces="getProvinces" />
+    <AddProject data-title="Farewell!" data-intro="And this is the last step!" @project-added="onProjectAdded" :provinces="getProvinces" />
     <EditProject
       @project-edited="reload"
       :provinces="getProvinces"
@@ -69,6 +69,10 @@
       ...mapActions(['fetchProvinces']),
       reload() {
         this.$refs['project-item'].reload();
+      },
+      onProjectAdded() {
+        this.$refs['project-item'].showDetailProjectTutorial();
+        this.reload();
       },
       setEditedProject(project) {
         this.selectedProject = project;

@@ -131,7 +131,7 @@
       ...mapGetters(['currentUser', 'processing', 'loginError']),
     },
     methods: {
-      ...mapActions(['login']),
+      ...mapActions(['login', 'getTutorialLists']),
       async formSubmit() {
         try {
           this.$v.$touch();
@@ -141,6 +141,7 @@
               email: this.form.email,
               password: this.form.password,
             });
+            await this.getTutorialLists()
             this.$router.replace({
               name: 'Project',
             });

@@ -2,14 +2,9 @@
   <div class="project-item">
     <div class="text-right mb-3">
       <b-btn v-b-modal.add-project-modal variant="primary" id="add-button-tutorial">
-        <b-popover target="add-button-tutorial" :show.sync="isCreateButtonTutorialShowing" v-if="isInTutorial">
-          <template #title>Tombol Buat Project</template>
-          Klik tombol ini untuk mulai membuat project anda  
-          <div class="mt-2">
-            <b-btn variant="primary" size="sm" class="mt-2" @click="onCreateProjectTutorialButtonClicked">Mengerti</b-btn>
-            <!-- <button class="btn btn-primary btn-sm">Next</button> -->
-          </div>
-        </b-popover>
+        <tutorial-popover target="add-button-tutorial" title="Tombol Buat Project" :is-show="createProjectButtonTutorial" tutorial-key="create_project" :end-of-tutorial="true" @understand="createProjectButtonTutorial = false">
+          Tekan tombol ini untuk membuat project baru
+        </tutorial-popover>
         {{ $t('pages.projects.add-project-modal-title') }}
       </b-btn>
     </div>
@@ -20,13 +15,18 @@
       :fields="fields"
     >
       <template slot="actions" slot-scope="row">
-        <a
-          href="#"
-          @click.prevent="detailProject(row.row.rowData.hashid)"
-          class="rab-icon-bt mx-1"
-        >
-          <ph-arrow-square-out :size="20" weight="light" />
-        </a>
+          <a
+            v-b-modal.show-project-modal
+            href="#"
+            id="show-project-modal"
+            @click.prevent="detailProject(row.row.rowData.hashid)"
+            class="rab-icon-bt mx-1"
+          >
+            <ph-arrow-square-out :size="20" weight="light" />
+            <tutorial-popover target="show-project-modal" title="Ubah AHS" :is-show="editAhsButtonTutorial" tutorial-key="show_project" :end-of-tutorial="true" @understand="editAhsButtonTutorial = false">
+              Klik tombol ini untuk mengubah AHS
+            </tutorial-popover>
+          </a>
         <EditButton @click.prevent="editProject(row.row.rowData)" />
         <DeleteButton
           @click.prevent="
@@ -43,29 +43,37 @@
   import { Notify } from 'notiflix';
   import { PhArrowSquareOut } from 'phosphor-vue';
   import Swal from 'sweetalert2';
+  import tutorialMixin from '@/mixins/tutorial-mixin';
   import projectField from '@/data/fields/project-field';
   import CustomDataTable from '@/components/DataTable/CustomDataTable';
   import AddProject from '@/components/Project/AddProject.vue';
   import EditButton from '@/components/DataTable/Actions/EditButton.vue';
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton.vue';
+  import TutorialPopover from '@/components/Common/TutorialPopover.vue';
   import { apiDomain, apiUrl } from '@/constants/config';
 
   export default {
+    mixins: [tutorialMixin],
     data: () => ({
       fetchProjectAPI: `${apiUrl}/project`,
       fields: projectField,
-      isCreateButtonTutorialShowing: true,
+      createProjectButtonTutorial: false,
+      editAhsButtonTutorial: false
     }),
     computed: {
       ...mapGetters(['getProvinces', 'isInTutorial']),
     },
     mounted() {
+      if (this.shouldShowTutorial('create_project')) {
+        this.createProjectButtonTutorial = this.activateTutorial()
+      }
     },
     methods: {
       ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial']),
-      onCreateProjectTutorialButtonClicked() {
-        this.changeInTutorial(false)
-        this.isCreateButtonTutorialShowing = false
+      showDetailProjectTutorial() {
+        if (this.shouldShowTutorial('show_project')) {
+          this.editAhsButtonTutorial = this.activateTutorial()
+        }
       },
       reload() {
         this.$refs['project-data-table'].reloadTable();
@@ -129,6 +137,7 @@
       EditButton,
       DeleteButton,
       PhArrowSquareOut,
+      TutorialPopover
     },
   };
 </script>
