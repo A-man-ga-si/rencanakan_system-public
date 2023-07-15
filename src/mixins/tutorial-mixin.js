@@ -8,7 +8,7 @@ export default {
     ...mapActions(['changeInTutorial']),
     shouldShowTutorial(key) {
       for (const tutorialKey in this.tutorialList) {
-        if (key == tutorialKey) return this.tutorialList[tutorialKey]
+        if (key == tutorialKey) return this.tutorialList[tutorialKey] == 1
       }
     },
     activateTutorial() {
