@@ -1,5 +1,6 @@
 import ApiTwo from '../../services/ApiTwo.service';
 import unitModule from './master/unit.module'
+import globalModule from './global.module'
 
 const customItemPriceApi = new ApiTwo({
   basePath: 'custom-item-price',
@@ -68,19 +69,29 @@ const actions = {
 
   // prettier-ignore
   async deleteCustomItemPrice({ commit }, { projectId, customItemPriceCode }) {
-    commit('deleteCustomItemPrice', customItemPriceCode)
-    return await customItemPriceApi.setPreviousPath(`project/${projectId}`).get(`${customItemPriceCode}/delete`);
+    try {
+      commit('deleteCustomItemPrice', customItemPriceCode)
+      globalModule.state.isSyncroning = true
+      return await customItemPriceApi.setPreviousPath(`project/${projectId}`).get(`${customItemPriceCode}/delete`);
+    } catch (err) {
+      throw err
+    } finally {
+      globalModule.state.isSyncroning = false
+    }
   },
 
   // prettier-ignore
   async customItemPricePartialUpdate({ commit, state }, { projectId, customItemPriceId, form }) {
-
-    // ctx.
-
-    // console.log(form)
-    // console.log(ctx.state.customItemPrice)
-    commit('updateCustomItemPrice', { customItemPriceId, form })
-    return await customItemPriceApi.setPreviousPath(`project/${projectId}`).post(customItemPriceId, form);
+    try {
+      commit('updateCustomItemPrice', { customItemPriceId, form })
+      globalModule.state.isSyncroning = true
+      const data = await customItemPriceApi.setPreviousPath(`project/${projectId}`).post(customItemPriceId, form);
+      return data
+    } catch (err) {
+      throw err
+    } finally {
+      globalModule.state.isSyncroning = false
+    }
   },
 };
 

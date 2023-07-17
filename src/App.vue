@@ -2,6 +2,7 @@
   <div class="h-100">
     <tutorial-overlay v-if="isInTutorial" />
     <router-view />
+    <synchronizing-progress />
   </div>
 </template>
 
@@ -9,6 +10,7 @@
   import { mapActions, mapGetters } from 'vuex';
   import { rounded } from './constants/config';
   import TutorialOverlay from '@/components/Common/TutorialOverlay.vue';
+  import SynchronizingProgress from '@/components/Common/SynchronizingProgress.vue';
 
   export default {
     created() {
@@ -25,6 +27,7 @@
     },
     components: {
       TutorialOverlay,
+      SynchronizingProgress
     }
   };
 </script>
