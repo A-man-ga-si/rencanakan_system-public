@@ -70,9 +70,17 @@
         searchCountdownObject: null,
       };
     },
-    created() {
-      this.fetchCustomItemPrices(this.$route.params.id);
-      this.fetchUnit();
+    async created() {
+      const customItemPrices = this.$store.state.customItemPrice.customItemPrice
+      const units = this.$store.state.unit
+      const promises = []
+      if (units.units.length <= 0) {
+        promises.push(this.fetchUnit())
+      }
+      if (customItemPrices.length <= 0) {
+        promises.push(this.fetchCustomItemPrices(this.$route.params.id))
+      }
+      await Promise.all(promises)
     },
     methods: {
       ...mapActions([
