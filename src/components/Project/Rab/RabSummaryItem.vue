@@ -38,7 +38,7 @@
     </div>
     <div class="body" v-show="!mainCardCollapsed">
       <div class="table-responsive-xxl">
-        <table class="table text-left mx-3" style="width: 97%">
+        <table class="table text-left mx-3 table-responsive" style="width: 97%">
           <thead>
             <tr>
               <th scope="col" style="width: 3%">No.</th>

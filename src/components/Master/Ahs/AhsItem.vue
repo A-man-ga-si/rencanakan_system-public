@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="body mt-2" v-show="!mainCardCollapsed">
-      <table class="table text-left">
+      <table class="table text-left table-responsive">
         <thead>
           <tr>
             <th scope="col">No.</th>

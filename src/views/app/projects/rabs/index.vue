@@ -3,10 +3,10 @@
     <b-row>
       <b-colxx xxs="12">
         <b-row>
-          <b-col :sm="10">
+          <b-col :sm="9">
             <piaf-breadcrumb :heading="$t('menu.rab')" />
           </b-col>
-          <b-col :sm="2" class="text-right">
+          <b-col :sm="3" class="text-right">
             <b-btn variant="primary" @click.prevent="exportRab">
               {{ $t('pages.projects.rab.summary.export-btn') }}
             </b-btn>

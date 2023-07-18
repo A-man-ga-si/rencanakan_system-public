@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="body">
-      <table class="table text-left">
+      <table class="table text-left table-responsive">
         <thead>
           <tr>
             <th scope="col">No.</th>
