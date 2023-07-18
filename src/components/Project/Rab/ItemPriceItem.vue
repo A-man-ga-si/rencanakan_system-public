@@ -14,7 +14,7 @@
       <div class="left">
         <h5>{{ index + 1 }}. {{ title }}</h5>
       </div>
-      <div v-if="!itemPriceGroup.is_default" class="right">
+      <div v-if="itemPriceGroup.is_default == '0'" class="right">
         <a class="h4 ml-1" href="#" @click.prevent="updateCustomItemPrice">
           <ph-pencil weight="light" :size="25" />
         </a>

@@ -3,7 +3,7 @@
     <td>{{ index + 1 }}</td>
     <td>
       <input
-        v-if="!item.is_default"
+        v-if="item.is_default == '0'"
         type="text"
         class="rab-inline-editor"
         style="width: 100%"
@@ -15,7 +15,7 @@
     </td>
     <td>
       <v-select
-        v-if="!item.is_default"
+        v-if="item.is_default == '0'"
         label="name"
         class="rab-inline-editor"
         :reduce="unit => unit.hashid"
@@ -27,7 +27,7 @@
     </td>
     <td>
       <input
-        v-if="!item.is_default"
+        v-if="item.is_default == '0'"
         type="text"
         class="rab-inline-editor"
         v-model="form.code"
@@ -48,7 +48,7 @@
       />
     </td>
     <td>
-      <div class="action-bt" v-if="!item.is_default">
+      <div class="action-bt" v-if="item.is_default == '0'">
         <DeleteButton @click.prevent="destroyCustomItemPrice" />
       </div>
     </td>

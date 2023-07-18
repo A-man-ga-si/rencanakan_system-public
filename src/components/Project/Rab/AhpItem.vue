@@ -13,7 +13,7 @@
     <div class="heading d-flex justify-content-between">
       <div class="left">
         <h5>
-          <div v-if="customAhp.is_default" class="badge badge-primary mr-2">
+          <div v-if="customAhp.is_default == '1'" class="badge badge-primary mr-2">
             Default
           </div>
           {{ customAhp.code }} | {{ customAhp.name }}
@@ -25,7 +25,7 @@
           <ph-arrows-out weight="light" :size="25" v-else />
         </a>
         <a
-          v-if="!customAhp.is_default"
+          v-if="customAhp.is_default == '0'"
           href="#"
           @click.prevent="editAhp"
           class="h4 ml-1"
@@ -33,7 +33,7 @@
           <ph-pencil weight="light" :size="25" />
         </a>
         <a
-          v-if="!customAhp.is_default"
+          v-if="customAhp.is_default == '0'"
           class="h4 ml-1"
           @click.prevent="deleteCustomAhp"
           href="#"
@@ -74,7 +74,7 @@
             :tooltip="customAhpAItem.tooltip"
             :coefficient="formattedAhpNumerics[customAhpAItem.code]"
             :editableCoefficient="
-              customAhp.is_default ? false : customAhpAItem.editableCoefficient
+              customAhp.is_default == '0' ? false : customAhpAItem.editableCoefficient
             "
             :description="customAhpAItem.description"
             @value-changed="onAhpItemChanged($event, customAhpAItem)"
@@ -92,7 +92,7 @@
             :tooltip="customAhpBItem.tooltip"
             :coefficient="formattedAhpNumerics[customAhpBItem.code]"
             :editableCoefficient="
-              customAhp.is_default ? false : customAhpBItem.editableCoefficient
+              customAhp.is_default == '0' ? false : customAhpBItem.editableCoefficient
             "
             :description="customAhpBItem.description"
             @value-changed="onAhpItemChanged($event, customAhpBItem)"
@@ -110,7 +110,7 @@
             :tooltip="replaceTooltip(customAhpCItem.tooltip)"
             :coefficient="formattedAhpNumerics[customAhpCItem.code]"
             :editableCoefficient="
-              customAhp.is_default ? false : customAhpCItem.editableCoefficient
+              customAhp.is_default == '0' ? false : customAhpCItem.editableCoefficient
             "
             :description="customAhpCItem.description"
           />
@@ -127,7 +127,7 @@
             :tooltip="replaceTooltip(customAhpDItem.tooltip)"
             :coefficient="formattedAhpNumerics[customAhpDItem.code]"
             :editableCoefficient="
-              customAhp.is_default ? false : customAhpDItem.editableCoefficient
+              customAhp.is_default == '0' ? false : customAhpDItem.editableCoefficient
             "
             :description="customAhpDItem.description"
           />
