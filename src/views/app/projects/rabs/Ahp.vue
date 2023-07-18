@@ -22,7 +22,7 @@
       <div class="text-center">
         <Loader class="mt-5" />
         <h2>
-          <strong>Loading AHP</strong>
+          <strong>Memuat AHP</strong>
         </h2>
       </div>
     </div>

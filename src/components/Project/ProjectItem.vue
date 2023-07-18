@@ -11,7 +11,7 @@
     <CustomDataTable
       ref="project-data-table"
       :api="fetchProjectAPI"
-      title="Daftar Projects"
+      title="Daftar Proyek"
       :fields="fields"
     >
       <template slot="actions" slot-scope="row">

@@ -34,14 +34,14 @@
             <div class="left">
               <b-spinner
                 class="ml-2"
-                label="Loading..."
+                label="Memuat..."
                 variant="primary"
                 small
               ></b-spinner>
             </div>
             <div class="right">
               <span class="d-inline-block ml-3">
-                Loading payment status ...
+                Memuat Status Pembayaran ...
               </span>
             </div>
           </div>

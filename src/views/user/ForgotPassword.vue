@@ -42,14 +42,13 @@
                 :state="!$v.form.email.$error"
               />
               <b-form-invalid-feedback v-if="!$v.form.email.required"
-                >Please enter your email address</b-form-invalid-feedback
+                >Masukkan email anda</b-form-invalid-feedback
               >
               <b-form-invalid-feedback v-else-if="!$v.form.email.email"
-                >Please enter a valid email address</b-form-invalid-feedback
+                >Masukkan alamat email anda yang valid</b-form-invalid-feedback
               >
               <b-form-invalid-feedback v-else-if="!$v.form.email.minLength"
-                >Your email must be minimum 4
-                characters</b-form-invalid-feedback
+                >Email anda minimum 4 karakter</b-form-invalid-feedback
               >
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">

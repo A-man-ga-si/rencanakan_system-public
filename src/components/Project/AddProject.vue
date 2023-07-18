@@ -18,7 +18,7 @@
           Tekan tombol ini untuk menyimpan project anda
         </tutorial-popover>
         <span v-if="isSubmitting">
-          Loading...
+          Memuat...
         </span>
         <span v-else>
           {{ $t('modal.save-bt') }}

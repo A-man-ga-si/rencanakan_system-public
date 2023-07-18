@@ -2,7 +2,7 @@
   <div>
     <b-row class="mb-3">
       <b-colxx xxs="12">
-        <piaf-breadcrumb heading="Projects" />
+        <piaf-breadcrumb heading="Proyek" />
         <div class="separator"></div>
       </b-colxx>
     </b-row>

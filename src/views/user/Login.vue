@@ -33,22 +33,21 @@
             <b-form-group :label="$t('user.email')" class="has-float-label mb-4">
               <b-form-input type="text" v-model="$v.form.email.$model" :state="!$v.form.email.$error" />
               <b-form-invalid-feedback v-if="!$v.form.email.required">
-                Please enter your email address
+                Masukkan email anda
               </b-form-invalid-feedback>
               <b-form-invalid-feedback v-else-if="!$v.form.email.email">
-                Please enter a valid email address
+                Masukkan email anda yang valid
               </b-form-invalid-feedback>
-              <b-form-invalid-feedback v-else-if="!$v.form.email.minLength">Your email must be minimum 4 characters
+              <b-form-invalid-feedback v-else-if="!$v.form.email.minLength">Email anda minimum harus 4 karakter
               </b-form-invalid-feedback>
             </b-form-group>
             <b-form-group :label="$t('user.password')" class="has-float-label mb-4">
               <b-form-input type="password" v-model="$v.form.password.$model" :state="!$v.form.password.$error" />
-              <b-form-invalid-feedback v-if="!$v.form.password.required">Please enter your password
+              <b-form-invalid-feedback v-if="!$v.form.password.required">Masukkan password anda
               </b-form-invalid-feedback>
               <b-form-invalid-feedback v-else-if="
                   !$v.form.password.minLength || !$v.form.password.maxLength
-                ">Your password must be between 4 and 16
-                characters</b-form-invalid-feedback>
+                ">Password minimal 4 karakter</b-form-invalid-feedback>
             </b-form-group>
             <div class="row">
               <div class="col-md-4">

@@ -57,7 +57,7 @@ const routes = [
         path: `projects`,
         name: 'Project',
         meta: {
-          title: 'My Projects',
+          title: 'Projek Saya',
           loginRequired: true,
           permissions: ['access-project-page'],
         },

@@ -40,14 +40,13 @@
                 :state="!$v.form.password.$error"
               />
               <b-form-invalid-feedback v-if="!$v.form.password.required"
-                >Please enter your password</b-form-invalid-feedback
+                >Tolong masukkan email anda</b-form-invalid-feedback
               >
               <b-form-invalid-feedback
                 v-else-if="
                   !$v.form.password.minLength || !$v.form.password.maxLength
                 "
-                >Your password must be between 4 and 16
-                characters</b-form-invalid-feedback
+                >Email anda minimum harus 4 karakter</b-form-invalid-feedback
               >
             </b-form-group>
             <b-form-group
@@ -60,11 +59,11 @@
                 :state="!$v.form.passwordAgain.$error"
               />
               <b-form-invalid-feedback v-if="!$v.form.passwordAgain.required"
-                >Please enter your password again</b-form-invalid-feedback
+                >Masukkan password anda lagi</b-form-invalid-feedback
               >
               <b-form-invalid-feedback
                 v-else-if="!$v.form.passwordAgain.sameAsPassword"
-                >Your inputs does not match</b-form-invalid-feedback
+                >Password tidak cocok</b-form-invalid-feedback
               >
             </b-form-group>
 

@@ -31,7 +31,7 @@
       <div class="text-center">
         <Loader class="mt-5" />
         <h2>
-          <strong>Loading AHS</strong>
+          <strong>Memuat AHS</strong>
         </h2>
       </div>
     </div>

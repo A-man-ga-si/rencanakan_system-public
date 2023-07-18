@@ -74,7 +74,7 @@
               </div>
             </div>
           </template>
-          <b-dropdown-item @click="userLogout">Log out</b-dropdown-item>
+          <b-dropdown-item @click="userLogout">Keluar</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
