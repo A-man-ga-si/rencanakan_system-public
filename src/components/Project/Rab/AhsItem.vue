@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="body mt-2" v-show="!mainCardCollapsed">
-      <table class="table text-left table-responsive">
+      <table class="table text-left table-responsive w-100 d-block d-lg-table">
         <thead>
           <tr>
             <th scope="col">No.</th>
