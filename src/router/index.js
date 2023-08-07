@@ -93,7 +93,7 @@ const routes = [
             path: 'summary',
             name: 'RabSummary',
             meta: {
-              title: 'RAB Summary',
+              title: 'RAB',
               permissions: ['access-project-page'],
               loginRequired: true,
             },
@@ -163,7 +163,7 @@ const routes = [
             path: 'ahp',
             name: 'RabAhp',
             meta: {
-              title: 'Equipments Price Analysis',
+              title: 'Analisa Harga Peralatan',
               loginRequired: true,
               permissions: ['access-project-page'],
             },

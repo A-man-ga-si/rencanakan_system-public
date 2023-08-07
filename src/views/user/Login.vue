@@ -31,7 +31,7 @@
 
           <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
             <b-form-group :label="$t('user.email')" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="$v.form.email.$model" :state="!$v.form.email.$error" />
+              <b-form-input type="text" v-model="$v.form.email.$model" :state="!$v.form.email.$error" autocomplete="off" />
               <b-form-invalid-feedback v-if="!$v.form.email.required">
                 Masukkan email anda
               </b-form-invalid-feedback>

@@ -55,7 +55,7 @@ export default {
       provinceId: 'qMxAPZX0',
       fiscalYear: new Date().getFullYear(),
       marginProfit: 10,
-      ppn: 10,
+      ppn: 11,
     },
     processedProvinces: [],
   }),

@@ -2,6 +2,7 @@ import ApiTwo from './../../services/ApiTwo.service';
 
 const CustomAhsApi = new ApiTwo({
   basePath: 'custom-ahs',
+  customAhs: []
 });
 
 const state = {
@@ -19,9 +20,10 @@ const mutations = {
 };
 
 const actions = {
-  async fetchCustomAhs(ctx, { projectId, page, perPage }) {
+  async fetchCustomAhs({ commit, state }, { projectId, page, perPage }) {
     // prettier-ignore
     const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get('', `arrange=true&page=${page}&per_page=${perPage}`);
+    commit('setCustomAhs', data.data.data)
     return data;
   },
 
