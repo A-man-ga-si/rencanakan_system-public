@@ -1,10 +1,12 @@
 // Application theme related configs
 export const defaultTitle = 'Untitled';
-export const titleSuffix = ' | Rencanakan.id';
+export const titleSuffix = ' | Yuk Mulai Hitung RAB';
 
 // URLs Related Configs
-// export const apiDomain = 'http://localhost:8000';
-export const apiDomain = 'https://api.rencanakan.id';
+// export const apiDomain = 'http://rencanakan-id-system-backend.test';
+// export const apiDomain = 'https://demo-api.rencanakan.id';
+export const apiDomain = 'https://rencanakan.my.id';
+// export const apiDomain = 'http://rencanakan-id-system-backend.test';
 export const apiUrl = `${apiDomain}/api`;
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;

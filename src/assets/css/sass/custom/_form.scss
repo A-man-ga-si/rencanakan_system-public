@@ -15,3 +15,8 @@
 .vs--disabled .vs__selected {
   background-color: transparent !important;
 }
+
+.inline-edit:not([disabled]) {
+  padding-bottom: 10px !important;
+  border-bottom: .5px solid gray !important;
+}

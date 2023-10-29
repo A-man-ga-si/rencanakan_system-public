@@ -50,7 +50,7 @@
           <div class="payment-ok" v-if="quotasLeft > 0">
             <ph-check-circle :size="32" weight="light" class="text-success" />
             <span>
-              <b class="text-success">Payment Status</b>
+              <b class="text-success">Payment Status : <!-- Trial mode, just delete when trial mode end : --> Gratis selama periode percobaan</b>
             </span>
           </div>
           <div class="company-not-exist d-flex" v-else>
@@ -122,7 +122,8 @@
         modalId: 'export-rab',
         fetchQuotaStatus: false,
         refreshing: false,
-        quotasLeft: 0,
+        // FIXME: Change to 0 to enable payment system
+        quotasLeft: 1,
         form: {
           name: '',
         },
@@ -170,7 +171,8 @@
           projectId: this.$route.params.id,
         });
         this.fetchQuotaStatus = true;
-        this.quotasLeft = data.data.data.quotasLeft;
+        // FIXME: Uncomment to enable the payment system
+        // this.quotasLeft = data.data.data.quotasLeft;
       },
       hideModal(refname) {
         this.$refs[refname].hide();

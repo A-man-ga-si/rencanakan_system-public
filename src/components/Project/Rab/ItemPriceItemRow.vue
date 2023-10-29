@@ -155,7 +155,11 @@
 
 <style scoped>
   .rab-inline-editor {
-    border: none !important;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding-bottom: 5px !important;
+    border-bottom: .5px solid gray !important;
   }
 
   td {
