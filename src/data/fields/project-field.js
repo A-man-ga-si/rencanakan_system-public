@@ -9,6 +9,11 @@ export default [
     sortField: 'name',
   },
   {
+    name: 'subscription.name',
+    title: 'Paket',
+    sortField: 'subscription_id',
+  },
+  {
     name: 'created_at_formatted',
     title: 'Tanggal dibuat',
     sortField: 'created_at',

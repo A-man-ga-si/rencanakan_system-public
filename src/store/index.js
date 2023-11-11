@@ -25,6 +25,7 @@ import rabItemHeader from './modules/rab-item-header.module';
 import order from './modules/order.module';
 import tutorial from './modules/tutorials.module';
 import global from './modules/global.module'
+import subscription from './modules/subscription.module'
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -66,6 +67,7 @@ export default new Vuex.Store({
     rabItemHeader,
     order,
     tutorial,
-    global
+    global,
+    subscription
   },
 });

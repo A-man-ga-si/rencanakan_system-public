@@ -7,46 +7,28 @@
       </b-colxx>
     </b-row>
     <a href="#" v-if="!getCompany">
-      <b-alert show variant="danger" class="rounded mb-4">
+      <b-alert show variant="danger" class="rounded">
         {{ $t('alert.email-no-active-company') }}
       </b-alert>
     </a>
-    <b-row>
+    <b-alert v-if="currentUser.demo_quota > 0" show variant="success" class="rounded">
+      Anda memiliki {{ currentUser.demo_quota }} kuota demo untuk membuat proyek.
+    </b-alert>
+    <b-row class="mt-4">
       <b-colxx xxs="12">
         <ProjectItem
           ref="project-item"
           @edit-project-clicked="setEditedProject"
         />
-        <!-- <b-card class="mb-4">
-          <b-row v-if="getProjects.length <= 0">
-            <b-col :xl="4" :md="5" :sm="6" class="mx-auto text-center">
-              <b-img
-                src="./../../../assets/img/panel/construction.png"
-                alt="Empty Project Image"
-                fluid
-              />
-              <p class="mt-3 no-project-msg">
-                {{ $t('pages.projects.no-project-alert') }}
-              </p>
-              <b-btn v-b-modal.add-project-modal variant="primary">
-                {{ $t('pages.projects.add-project-modal-title') }}
-              </b-btn>
-            </b-col>
-          </b-row>
-          <b-row v-else>
-            <b-col>
-              // TODO: FIll it with ProjectItem component
-            </b-col>
-          </b-row>
-        </b-card> -->
       </b-colxx>
     </b-row>
-    <AddProject data-title="Farewell!" data-intro="And this is the last step!" @project-added="onProjectAdded" :provinces="getProvinces" />
+    <AddProject ref="add-project-modal-ref" data-title="Farewell!" data-intro="And this is the last step!" @project-added="onProjectAdded" :provinces="getProvinces" />
     <EditProject
       @project-edited="reload"
       :provinces="getProvinces"
       :selected-project="selectedProject"
     />
+    <SubscriptionComparison @choose-subscription="chooseSubscription" />
   </div>
 </template>
 
@@ -56,6 +38,7 @@
   import { mapActions, mapGetters } from 'vuex';
   import ProjectItem from '@/components/Project/ProjectItem.vue';
   import EditProject from '@/components/Project/EditProject.vue';
+  import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue'
 
   export default {
     data: () => ({
@@ -77,15 +60,19 @@
       setEditedProject(project) {
         this.selectedProject = project;
       },
+      chooseSubscription(subscriptionId) {
+        this.$refs['add-project-modal-ref'].chooseSubscription(subscriptionId)
+      }
     },
     computed: {
-      ...mapGetters(['getProvinces', 'getProjects', 'getCompany']),
+      ...mapGetters(['getProvinces', 'getProjects', 'getCompany', 'currentUser']),
     },
     components: {
       AppLayout,
       AddProject,
       ProjectItem,
       EditProject,
+      SubscriptionComparison,
     },
   };
 </script>

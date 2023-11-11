@@ -41,11 +41,16 @@
             deleteProject(row.row.rowData.name, row.row.rowData.hashid)
           "
         >
-        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="deleteProjectButtonTutorial = false">
+        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showUpgradeProjectButtonTutorial" prevent-imediate-close>
             Klik tombol ini untuk menghapus project
         </tutorial-popover>
         <ph-trash :size="20" weight="light" />
       </DeleteButton>
+        <PhCreditCard :size="20" weight="light" id="upgrade-project-btn">
+          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="upgradeProjectButtonTutorial = false" prevent-imediate-close>
+            Klik tombol ini untuk upgrade paket project
+          </tutorial-popover>
+        </PhCreditCard>
       </template>
     </CustomDataTable>
   </div>
@@ -54,7 +59,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
-  import { PhArrowSquareOut } from 'phosphor-vue';
+  import { PhArrowSquareOut, PhCreditCard } from 'phosphor-vue';
   import Swal from 'sweetalert2';
   import tutorialMixin from '@/mixins/tutorial-mixin';
   import projectField from '@/data/fields/project-field';
@@ -75,6 +80,7 @@
       editAhsButtonTutorial: false,
       editProjectButtonTutorial: false,
       deleteProjectButtonTutorial: false,
+      upgradeProjectButtonTutorial: false,
     }),
     computed: {
       ...mapGetters(['getProvinces', 'isInTutorial']),
@@ -101,6 +107,12 @@
         this.editProjectButtonTutorial = false
         if (this.shouldShowTutorial('manage_project')) {
           this.deleteProjectButtonTutorial = this.activateTutorial()
+        }
+      },
+      showUpgradeProjectButtonTutorial() {
+        this.deleteProjectButtonTutorial = false
+        if (this.shouldShowTutorial('manage_project')) {
+          this.upgradeProjectButtonTutorial = this.activateTutorial()
         }
       },
       reload() {
@@ -168,6 +180,7 @@
       TutorialPopover,
       PhPencil,
       PhTrash,
+      PhCreditCard
     },
   };
 </script>

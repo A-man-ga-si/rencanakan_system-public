@@ -14,6 +14,10 @@ const actions = {
     return await paymentApi.post('fetch-snap-token', data);
   },
 
+  async fetchSubscriptionSnapToken(ctx, data) {
+    return await paymentApi.post('fetch-subscription-snap-token', data)
+  },
+
   // NOTE: For demo purpose only !
   async demoAddToken(ctx, tokenAmount) {
     const res = await paymentApi.post('demo-add-token', {

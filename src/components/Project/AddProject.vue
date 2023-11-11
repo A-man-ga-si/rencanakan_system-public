@@ -28,18 +28,21 @@
         {{ $t('modal.cancel-bt') }}
       </b-button>
     </template>
+    <b-form-group label="Paket Project" class="has-float-label">
+      <v-select v-model="form.subscription_id" label="name" :reduce="subscription => subscription.id" :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly" />
+      <a href="#" @click.prevent class="mt-1 d-block" v-b-modal.subscription-comparison-modal><u>Bandingkan Paket</u></a>
+    </b-form-group>
   </b-modal>
 </template>
 
 <script>
 
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { Notify } from 'notiflix';
 import tutorialMixin from '@/mixins/tutorial-mixin'
 import ValidationInput from '@/components/Common/ValidationInput.vue';
 import validationMixin from '@/mixins/validation-mixins';
 import TutorialPopover from '@/components/Common/TutorialPopover.vue';
-
 
 export default {
   mixins: [validationMixin, tutorialMixin],
@@ -53,6 +56,7 @@ export default {
       job: '',
       address: '',
       provinceId: 'qMxAPZX0',
+      subscription_id: '',
       fiscalYear: new Date().getFullYear(),
       marginProfit: 10,
       ppn: 11,
@@ -62,29 +66,77 @@ export default {
   props: {
     provinces: Array,
   },
+  created() {
+    this.fetchSubscriptions()
+  },
   mounted() {
     if (this.shouldShowTutorial('create_project')) {
-      console.log('asgasfa')
       this.submitProjectButtonTutorial = this.activateTutorial()
     }
+  },
+  computed: {
+    ...mapGetters(['getSubscriptions', 'currentUser']),
+    demoSubscriptionOnly() {
+      this.form.subscription_id = 'demo'
+      return this.getSubscriptions.filter(subscription => subscription.is_show == 0)
+    },
+    withoutDemoOnly() {
+      return this.getSubscriptions.filter(subscription => subscription.is_show == 1)
+    },
   },
   methods: {
     hideModal(refname) {
       this.$refs[refname].hide();
     },
+    chooseSubscription(subscriptionId) {
+      this.form.subscription_id = subscriptionId
+    },
     async submit() {
       try {
+        //TODO:Check demo eligibility
+        // 
         this.isSubmitting = true
         this.resetInvalid();
-        await this.createProject(this.form);
-        this.$emit('project-added');
-        this.hideModal(this.modalId);
-        this.resetForm();
-        Notify.success('Berhasil membuat project baru');
+        
+        this.runPaymentGateway()
       } catch (err) {
         this.checkForInvalidResponse(err);
       } finally {
         this.isSubmitting = false
+      }
+    },
+    async runPaymentGateway() {
+      // TODO: Check for demo eligibilty again
+      try {
+        const data = await this.fetchSubscriptionSnapToken({
+          subscription_id: this.form.subscription_id
+        })
+        const snapToken = data.data.data.snap_token
+        const that = this
+        window.snap.pay(snapToken, {
+            onSuccess: async () => {
+              await that.createProject(this.form);
+              that.$emit('project-added');
+              that.hideModal(that.modalId);
+              that.resetForm();
+              Notify.success('Berhasil membuat project baru');
+            },
+            onPending() {
+
+            },
+            onError() {
+
+            },
+            onClose() {
+
+            },
+            skipOrderSummary: false,
+        });
+        // return false
+        // console.log(data)
+      } catch (err) {
+        console.log(err)
+        alert('Error !')
       }
     },
     resetForm() {
@@ -99,7 +151,7 @@ export default {
         ppn: 10,
       };
     },
-    ...mapActions(['createProject']),
+    ...mapActions(['createProject', 'fetchSubscriptions', 'fetchSubscriptionSnapToken']),
   },
   components: {
     ValidationInput,
