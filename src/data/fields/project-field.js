@@ -9,14 +9,19 @@ export default [
     sortField: 'name',
   },
   {
+    name: 'created_at_formatted',
+    title: 'Tanggal dibuat',
+    sortField: 'created_at',
+  },
+  {
     name: 'subscription.name',
     title: 'Paket',
     sortField: 'subscription_id',
   },
   {
-    name: 'created_at_formatted',
-    title: 'Tanggal dibuat',
-    sortField: 'created_at',
+    name: 'expired_at_formatted',
+    title: 'Tanggal Kadaluwarsa',
+    sortable: false,
   },
   {
     name: 'last_opened_at_formatted',

@@ -30,7 +30,7 @@
     </template>
     <b-form-group label="Paket Project" class="has-float-label">
       <v-select v-model="form.subscription_id" label="name" :reduce="subscription => subscription.id" :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly" />
-      <a href="#" @click.prevent class="mt-1 d-block" v-b-modal.subscription-comparison-modal><u>Bandingkan Paket</u></a>
+      <a href="#" @click.prevent class="mt-1 d-block" v-b-modal.subscription-comparison-modal-new><u>Bandingkan Paket</u></a>
     </b-form-group>
   </b-modal>
 </template>
@@ -108,35 +108,82 @@ export default {
     async runPaymentGateway() {
       // TODO: Check for demo eligibilty again
       try {
-        const data = await this.fetchSubscriptionSnapToken({
-          subscription_id: this.form.subscription_id
-        })
-        const snapToken = data.data.data.snap_token
+
         const that = this
-        window.snap.pay(snapToken, {
-            onSuccess: async () => {
-              await that.createProject(this.form);
-              that.$emit('project-added');
-              that.hideModal(that.modalId);
-              that.resetForm();
-              Notify.success('Berhasil membuat project baru');
-            },
-            onPending() {
 
-            },
-            onError() {
+        if (this.form.subscription_id == 'demo') {
 
-            },
-            onClose() {
+            // FIXME: Project creation supposed to be triggered from backend
+            await that.createProject(this.form);
 
-            },
-            skipOrderSummary: false,
-        });
-        // return false
-        // console.log(data)
+            that.$emit('project-added');
+            that.hideModal(that.modalId);
+            that.resetForm();
+            Notify.success('Berhasil membuat project baru');
+
+        } else {
+
+            // NOTE: Fetch subscriptionSnapToken will make temporary project too
+            const data = await this.fetchSubscriptionSnapToken({
+                subscription_id: this.form.subscription_id,
+                name: this.form.name,
+                activity: this.form.activity,
+                job: this.form.job,
+                address: this.form.address,
+                province_id: this.form.provinceId,
+                fiscal_year: this.form.fiscalYear,
+                margin_profit: this.form.marginProfit,
+                ppn: this.form.ppn,
+                type: 'create',
+            })
+
+            if (data.status != 200) {
+                throw new Error(data.message)
+            }
+
+            const snapToken = data.data.data.snap_token
+
+            window.snap.pay(snapToken, {
+                onSuccess: async () => {
+                  
+                    // FIXME: Don't call createProject here. Project creation should be done in backend.
+                    // await that.createProject(this.form);
+
+                    //  Update for pending
+                    // FIXME: We need to make a prioritize while updating the order status to prevent race condition between our API call and
+                    // Payment gateway's webhook call.
+                    await that.setPending({
+                      snapToken
+                    })
+
+                    that.$emit('project-added');
+                    that.hideModal(that.modalId);
+                    that.resetForm();
+
+                    Notify.success('Berhasil membuat project baru');
+                },
+                async onPending() {
+                    await that.setPending({
+                      snapToken
+                    })
+                },
+                onError() {
+                    Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+                },
+                onClose() {
+                    Notify.failure('Pembuatan proyek tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+                    that.setCanceled({
+                    snapToken
+                    })
+                    // Delete order
+                },
+                skipOrderSummary: false,
+            });
+        }
+
       } catch (err) {
         console.log(err)
-        alert('Error !')
+        Notify.failure(err?.response?.data?.message || 'Error tidak diketahui saat membuat project')
       }
     },
     resetForm() {
@@ -151,7 +198,7 @@ export default {
         ppn: 10,
       };
     },
-    ...mapActions(['createProject', 'fetchSubscriptions', 'fetchSubscriptionSnapToken']),
+    ...mapActions(['createProject', 'fetchSubscriptions', 'fetchSubscriptionSnapToken', 'setCanceled', 'setPending']),
   },
   components: {
     ValidationInput,

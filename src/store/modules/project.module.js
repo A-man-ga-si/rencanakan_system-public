@@ -61,6 +61,10 @@ const actions = {
     return await projectApi.get(`${projectId}/delete`);
   },
 
+  async renewProjectSubscription(ctx, projectId) {
+    return await projectApi.post(`${projectId}/renew`)
+  },
+
   async updateProject(ctx, { projectId, form }) {
     return await projectApi.post(projectId, form);
   },

@@ -1,29 +1,33 @@
 <template>
     <b-col lg="6">
-        <b-card class="mb-4 pt-4">
+        <b-card class="mb-4">
             <div class="d-flex justify-content-between">
                 <div class="left">
-                    <!-- <h3 class="font-weight-bold"># {{ processedOrder?.order_id }} </h3> -->
-                    <!-- <h4>Export RAB - {{ `${(processedOrder?.project?.name) || '-'} (${processedOrder?.project?.address ||
-                        '-'})` }}</h4>
-                    <h5>Rp. {{ processedOrder?.gross_amount_formatted }}</h5> -->
+                    <h1 class="mb-0" v-if="processedOrder.project">{{ processedOrder.project.name  }}</h1>
+                    <h1 class="mb-0" v-else>-</h1>
+                    <p class="mt-0">{{ processedOrder.subscription_id }} subscription</p>
+                    <h3>Rp. {{ processedOrder.formatted_gross_amount }}</h3>
+                    <p class="m-0" v-if="processedOrder.payment_method">{{ processedOrder.payment_method }}</p>
+                    <p class="m-0" v-else>-</p>
+                </div>
+                <div class="right text-right">
+                    <h5 class="mb-1">{{ processedOrder.formatted_date  }}</h5>
+                    <p class="font-weight-bold m-0"># {{ processedOrder.order_id }} </p>
+                    <p class="mt-2">
+                        <b-badge :variant="statusVariant.color">{{ statusVariant.status }}</b-badge>
+                        <b-badge variant="primary" v-if="processedOrder.is_active">Langganan Aktif</b-badge>
+                    </p>
+                    <span v-if="processedOrder.expired_at">
+                        <p class="mb-0">Kadaluwarsa : {{ processedOrder.formatted_expired_at }}</p>
+                        <small class="text-danger" v-if="processedOrder.is_expired">Expired</small>
+                    </span>
                 </div>
                 <!-- <div class="right text-right">
                     <h5>{{ processedOrder?.date_formatted?.date }} | {{ processedOrder?.date_formatted?.time }}</h5>
-                    <h5 class="mt-3">
-                        <b-badge :variant="statusVariant.color">{{ statusVariant.status }}</b-badge>
-                    </h5>
                 </div> -->
             </div>
-            <div class="bottom-btn mt-4 text-right">
-                <div class="success-action" v-if="processedOrder.status == 'completed' && !processedOrder.used_at">
-                    <hr>
-                    <b-btn v-if="getCompany" variant="primary" @click="submitExport">Download Excel</b-btn>
-                    <span v-else><router-link :to="{ name: 'CompanyProfile' }"><u>Isi company</u></router-link> terlebih
-                        dahulu untuk export</span>
-                    <!-- <b-btn>Cetak Invoice</b-btn> -->
-                </div>
-                <div class="success-action" v-else-if="processedOrder.status == 'waiting_for_payment'">
+            <div class="bottom-btn mt-4 text-right" v-if="processedOrder.status == 'waiting_for_payment'">
+                <div class="success-action">
                     <hr>
                     <b-btn @click="submitPayment">Lanjutkan Pembayaran</b-btn>
                 </div>
@@ -57,16 +61,6 @@ export default {
                 that.$emit('request-reload');
             });
         },
-        async submitExport() {
-            const xlsxBlob = await this.exportProject({
-                projectId: this.order.hashed_project_id,
-            });
-            const fileLink = document.createElement('a');
-            fileLink.href = window.URL.createObjectURL(xlsxBlob);
-            fileLink.download = this.getCompany.name + '.xlsx';
-            fileLink.click();
-            this.$emit('request-reload');
-        }
     },
     computed: {
         ...mapGetters(['getCompany']),
@@ -79,44 +73,37 @@ export default {
         statusVariant() {
             const order = this.order;
             let variant = {};
-            if (order.used_at) {
-                variant = {
-                    color: 'primary',
-                    status: 'Sudah di Export',
-                }
-            } else {
-                switch (order.status) {
-                    case 'waiting_for_payment':
-                        variant = {
-                            color: 'primary',
-                            status: 'Menunggu Pembayaran',
-                        };
-                        break;
-                    case 'pending':
-                        variant = {
-                            color: 'warning',
-                            status: 'Pending',
-                        };
-                        break;
-                    case 'completed':
-                        variant = {
-                            color: 'success',
-                            status: 'Lunas',
-                        };
-                        break;
-                    case 'canceled':
-                        variant = {
-                            color: 'danger',
-                            status: 'Dibatalkan',
-                        };
-                        break;
-                    case 'expired':
-                        variant = {
-                            color: 'danger',
-                            status: 'Dibatalkan',
-                        };
-                        break;
-                }
+            switch (order.status) {
+                case 'waiting_for_payment':
+                    variant = {
+                        color: 'primary',
+                        status: 'Menunggu Pembayaran',
+                    };
+                    break;
+                case 'pending':
+                    variant = {
+                        color: 'warning',
+                        status: 'Pending',
+                    };
+                    break;
+                case 'completed':
+                    variant = {
+                        color: 'success',
+                        status: 'Dibayar',
+                    };
+                    break;
+                case 'canceled':
+                    variant = {
+                        color: 'danger',
+                        status: 'Dibatalkan',
+                    };
+                    break;
+                case 'expired':
+                    variant = {
+                        color: 'danger',
+                        status: 'Dibatalkan',
+                    };
+                    break;
             }
             return variant;
         },

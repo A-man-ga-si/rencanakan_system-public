@@ -18,6 +18,15 @@ const actions = {
     return await paymentApi.post('fetch-subscription-snap-token', data)
   },
 
+  async setCanceled(ctx, data) {
+    return await paymentApi.post('set-canceled', data)
+  },
+
+  async setPending(ctx, { snapToken }) {
+    const res = await paymentApi.post('set-pending', { snapToken });
+    console.log(res);
+  },
+
   // NOTE: For demo purpose only !
   async demoAddToken(ctx, tokenAmount) {
     const res = await paymentApi.post('demo-add-token', {
@@ -39,11 +48,6 @@ const actions = {
       }
     );
     return res;
-  },
-
-  async setPending(ctx, { snapToken }) {
-    const res = await paymentApi.post('set-pending', { snapToken });
-    console.log(res);
   },
 };
 

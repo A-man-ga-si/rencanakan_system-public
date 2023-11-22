@@ -23,7 +23,6 @@ const actions = {
     if (!state.subscriptions.length) {
       const data = await SubscriptionApi.get()
       commit('setSubscriptions', data.data.data.subscriptions)
-      console.log(data)
     } else {
       return state.subscriptions
     }

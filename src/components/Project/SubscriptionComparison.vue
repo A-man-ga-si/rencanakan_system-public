@@ -1,7 +1,7 @@
 <template>
   <b-modal :id="modalId" :ref="modalId" title="Bandingkan Paket" size="lg">
     <b-row>
-      <b-col v-for="(subscription, i) in withoutDemoOnly" :key="i">
+      <b-col v-for="(subscription, i) in withoutDemoOnly" :key="i" lg="4" class="mb-3">
         <b-card>
           <b-card-title class="text-center">
             <PhStar class="text-primary subscription-icon" />
@@ -9,7 +9,7 @@
           </b-card-title>
           <b-card-body class="pt-2" v-html="subscription.description"></b-card-body>
           <div class="text-center">
-            <h5 class="mb-3">Rp. {{ subscription.price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'mo' : (subscription.subscription_type == 'DAILY' ? 'day' : 'year') }}</h5>
+            <h5 class="mb-3">Rp. {{ subscription.formatted_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : 'tahun') }}</h5>
             <b-button @click="onChooseSubscription(subscription.id)" variant="primary" type="button">Pilih Paket</b-button>
           </div>
         </b-card>
@@ -30,14 +30,15 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      modalId: 'subscription-comparison-modal'
+      // modalId: '',
     }
   },
+  props: ['modalId'],
   computed: {
     ...mapGetters(['getSubscriptions', 'currentUser']),
     withoutDemoOnly() {
-      return this.getSubscriptions.filter(subscription => subscription.is_show).map(subscription => {
-        subscription.price = formatCurrency(subscription.price)
+      return this.getSubscriptions.filter(subscription => subscription.is_show == '1').map(subscription => {
+        subscription.formatted_price = formatCurrency(Number(subscription.price))
         return subscription
       })
     },
@@ -48,7 +49,6 @@ export default {
           Notify.failure(`Tidak dapat memilih paket, anda masih memliki kuota demo project ${this.currentUser.demo_quota} kali. Gunakan kuota demo untuk membuat project terlebih dahulu`);
         } else {
           this.$emit('choose-subscription', subscriptionId)
-          this.$bvModal.hide(this.modalId)
         }
     }
   },

@@ -19,6 +19,7 @@
         <ProjectItem
           ref="project-item"
           @edit-project-clicked="setEditedProject"
+          @manage-project-subscription-button-clicked="manageProjectSubscription"
         />
       </b-colxx>
     </b-row>
@@ -28,7 +29,9 @@
       :provinces="getProvinces"
       :selected-project="selectedProject"
     />
-    <SubscriptionComparison @choose-subscription="chooseSubscription" />
+    <SubscriptionComparison modal-id="subscription-comparison-modal-new" @choose-subscription="chooseSubscription" />
+    <SubscriptionComparison modal-id="subscription-comparison-modal-upgrade" @choose-subscription="upgradeSubscription" />
+    <SubscriptionManagement :project-data="selectedManageSubscriptionProject" @project-renewed="reload" />
   </div>
 </template>
 
@@ -36,20 +39,24 @@
   import AppLayout from './../../../layouts/AppLayout.vue';
   import AddProject from './../../../components/Project/AddProject.vue';
   import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix';
   import ProjectItem from '@/components/Project/ProjectItem.vue';
   import EditProject from '@/components/Project/EditProject.vue';
   import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue'
+  import SubscriptionManagement from '@/components/Project/SubscriptionManagement.vue'
+  import { showConfirmAlert } from './../../../utils';
 
   export default {
     data: () => ({
       provinces: [],
       selectedProject: {},
+      selectedManageSubscriptionProject: {}
     }),
     beforeMount() {
       this.fetchProvinces();
     },
     methods: {
-      ...mapActions(['fetchProvinces']),
+      ...mapActions(['fetchProvinces', 'fetchSubscriptionSnapToken', 'renewProjectSubscription', 'setPending', 'setCanceled']),
       reload() {
         this.$refs['project-item'].reload();
       },
@@ -57,11 +64,69 @@
         this.$refs['project-item'].showDetailProjectTutorial();
         this.reload();
       },
+      manageProjectSubscription(project) {
+        this.selectedManageSubscriptionProject = project
+      },
+      async upgradeSubscription(subscriptionId) {
+
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Ganti paket?',
+          text: 'Paket yang Anda miliki saat ini akan digantikan oleh paket yang telah Anda pilih.'
+        })
+
+        if (isConfirmed) {
+          const data = await this.fetchSubscriptionSnapToken({
+            project_hashid: this.selectedManageSubscriptionProject.hashid,
+            subscription_id: subscriptionId,
+            type: 'renew',
+          })
+
+          if (data.status != 200) {
+              throw new Error(data.message)
+          }
+
+          const snapToken = data.data.data.snap_token
+
+          const that = this
+
+          window.snap.pay(snapToken, {
+              onSuccess: async () => {
+                  // await this.renewProjectSubscription(this.selectedManageSubscriptionProject.hashid)
+                  // await that.createProject(this.form);
+                  // that.$emit('project-added');
+                  Notify.success('Berhasil upgrade project');
+                  that.$bvModal.hide('subscription-comparison-modal-upgrade')
+                  that.$bvModal.hide('manage-project-subscription')
+
+                  that.reload()
+              },
+              async onPending() {
+                  await that.setPending({
+                    snapToken
+                  })
+              },
+              onError() {
+                  Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+              },
+              onClose() {
+                  Notify.failure('Upgrading paket tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+                  that.setCanceled({
+                    snapToken
+                  })
+                  // Delete order
+              },
+              skipOrderSummary: false,
+          });
+        } else {
+
+        }
+      },
       setEditedProject(project) {
         this.selectedProject = project;
       },
       chooseSubscription(subscriptionId) {
         this.$refs['add-project-modal-ref'].chooseSubscription(subscriptionId)
+        this.$bvModal.hide('subscription-comparison-modal-new')
       }
     },
     computed: {
@@ -73,6 +138,7 @@
       ProjectItem,
       EditProject,
       SubscriptionComparison,
+      SubscriptionManagement
     },
   };
 </script>

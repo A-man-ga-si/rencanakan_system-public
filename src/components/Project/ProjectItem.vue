@@ -14,6 +14,9 @@
       title="Daftar Proyek"
       :fields="fields"
     >
+      <template slot="status" slot-scope="row">
+        <span>{{ row.row.rowData.order.is_expired ? 'Aktif' : 'Kadaluwarsa' }}</span>
+      </template>
       <template slot="actions" slot-scope="row">
           <a
             v-b-modal.show-project-modal
@@ -46,11 +49,12 @@
         </tutorial-popover>
         <ph-trash :size="20" weight="light" />
       </DeleteButton>
-        <PhCreditCard :size="20" weight="light" id="upgrade-project-btn">
-          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="upgradeProjectButtonTutorial = false" prevent-imediate-close>
+      <div @click="manageSubscriptionProject(row.row.rowData)" v-b-modal.manage-project-subscription id="upgrade-project-btn" style="cursor: pointer;">
+          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="upgradeProjectButtonTutorial = false" prevent-imediate-close>
             Klik tombol ini untuk upgrade paket project
           </tutorial-popover>
-        </PhCreditCard>
+        <PhCreditCard :size="20" weight="light" />
+      </div>
       </template>
     </CustomDataTable>
   </div>
@@ -128,6 +132,9 @@
       editProject(project) {
         this.$bvModal.show('edit-project');
         this.$emit('edit-project-clicked', project);
+      },
+      manageSubscriptionProject(projectData) {
+        this.$emit('manage-project-subscription-button-clicked', projectData)
       },
       deleteProject(name, id) {
         console.log(name);
