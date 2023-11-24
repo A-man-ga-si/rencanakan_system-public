@@ -35,7 +35,7 @@ import { formatCurrency } from '@/utils';
 import { Notify } from 'notiflix';
 import { PhStar, PhInfo } from 'phosphor-vue'
 import { mapActions, mapGetters } from 'vuex'
-import { showConfirmAlert } from '@/utils';
+import { showConfirmAlert, showConfirmAlertWithPreloader } from '@/utils';
 
 export default {
   data() {
@@ -75,57 +75,104 @@ export default {
       if (this.project.subscription_id == 'demo') {
         Notify.failure('Paket demo tidak dapat diperpanjang! Harap upgrade paket untuk tetap mengaktifkan project')
       } else {
-        const { isConfirmed } = await showConfirmAlert({
+        const that = this
+        const { isConfirmed } = await showConfirmAlertWithPreloader({
           title: 'Perpanjang Paket Project ?',
           text: 'Tanggal expired project anda akan diperpanjang hingga 2023-02-01 !',
-          icon: 'question'
+          icon: 'question',
+          preConfirm: async () => {
+            const data = await this.fetchSubscriptionSnapToken({
+                subscription_id: this.project.subscription_id,
+                project_hashid: this.projectData.hashid,
+                type: 'renew',
+            })
+
+            if (data.status != 200) {
+              throw new Error(data.message)
+            }
+
+            const snapToken = data.data.data.snap_token
+
+            const dataRequest = new Promise((resolve, reject) => {
+              window.snap.pay(snapToken, {
+                  onSuccess: async () => {
+                    that.$emit('project-renewed');
+                    resolve()
+                    that.hideModal(that.modalId);
+
+                    Notify.success('Berhasil memperpanjang paket project');
+                  },
+                  async onPending() {
+                    await that.setPending({ snapToken })
+                    resolve()
+                  },
+                  onError() {
+                    Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+                    resolve()
+                  },
+                  onClose() {
+                      Notify.failure('Perpanjangan paket proyek tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+                      that.setCanceled({
+                        snapToken
+                      })
+                      resolve()
+                  },
+                  skipOrderSummary: false,
+              });
+            })
+            
+            await dataRequest
+
+            return true
+          },
         });
-        if (isConfirmed) {
-          const data = await this.fetchSubscriptionSnapToken({
-            subscription_id: this.project.subscription_id,
-            project_hashid: this.projectData.hashid,
-            type: 'renew',
-          })
+        // if (isConfirmed) {
+        //   Swal.showLoading();
+        //   const data = await this.fetchSubscriptionSnapToken({
+        //     subscription_id: this.project.subscription_id,
+        //     project_hashid: this.projectData.hashid,
+        //     type: 'renew',
+        //   })
   
-          if (data.status != 200) {
-            throw new Error(data.message)
-          }
+        //   if (data.status != 200) {
+        //     throw new Error(data.message)
+        //   }
 
-          const snapToken = data.data.data.snap_token
+        //   const snapToken = data.data.data.snap_token
   
-          const that = this
+        //   const that = this
 
-          window.snap.pay(snapToken, {
-              onSuccess: async () => {
+        //   window.snap.pay(snapToken, {
+        //       onSuccess: async () => {
 
-                // Call renew subscription API
-                // this.renewSubscription()
+        //         // Call renew subscription API
+        //         // this.renewSubscription()
   
-                  // await that.createProject(this.form);
+        //           // await that.createProject(this.form);
 
-                  that.$emit('project-renewed');
-                  that.hideModal(that.modalId);
+        //           that.$emit('project-renewed');
+        //           that.hideModal(that.modalId);
 
-                  Notify.success('Berhasil memperpanjang paket project');
-              },
-              async onPending() {
-                  await that.setPending({
-                  snapToken
-                  })
-              },
-              onError() {
-                  Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
-              },
-              onClose() {
-                  Notify.failure('Perpanjangan paket proyek tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
-                  that.setCanceled({
-                    snapToken
-                  })
-                  // Delete order
-              },
-              skipOrderSummary: false,
-          });
-        }
+        //           Notify.success('Berhasil memperpanjang paket project');
+        //       },
+        //       async onPending() {
+        //           await that.setPending({
+        //           snapToken
+        //           })
+        //       },
+        //       onError() {
+        //           Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+        //       },
+        //       onClose() {
+        //           Notify.failure('Perpanjangan paket proyek tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+        //           that.setCanceled({
+        //             snapToken
+        //           })
+        //           // Delete order
+        //       },
+        //       skipOrderSummary: false,
+        //   });
+        // }
       }
     }
   },

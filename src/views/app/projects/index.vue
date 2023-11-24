@@ -44,7 +44,7 @@
   import EditProject from '@/components/Project/EditProject.vue';
   import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue'
   import SubscriptionManagement from '@/components/Project/SubscriptionManagement.vue'
-  import { showConfirmAlert } from './../../../utils';
+  import { showConfirmAlert, showConfirmAlertWithPreloader } from './../../../utils';
 
   export default {
     data: () => ({
@@ -68,58 +68,59 @@
         this.selectedManageSubscriptionProject = project
       },
       async upgradeSubscription(subscriptionId) {
-
-        const { isConfirmed } = await showConfirmAlert({
+        const that = this
+        await showConfirmAlertWithPreloader ({
           title: 'Ganti paket?',
-          text: 'Paket yang Anda miliki saat ini akan digantikan oleh paket yang telah Anda pilih.'
-        })
+          text: 'Paket yang Anda miliki saat ini akan digantikan oleh paket yang telah Anda pilih.',
+          icon: 'question',
+          
+          preConfirm: async () => {
 
-        if (isConfirmed) {
-          const data = await this.fetchSubscriptionSnapToken({
+            const data = await this.fetchSubscriptionSnapToken({
+
             project_hashid: this.selectedManageSubscriptionProject.hashid,
-            subscription_id: subscriptionId,
-            type: 'renew',
-          })
+              subscription_id: subscriptionId,
+              type: 'renew',
+            })
 
-          if (data.status != 200) {
+            if (data.status != 200) {
               throw new Error(data.message)
+            }
+
+            const snapToken = data.data.data.snap_token
+
+            await new Promise((resolve, reject) => {
+              window.snap.pay(snapToken, {
+                  onSuccess: async () => {
+                      Notify.success('Berhasil upgrade project');
+                      that.$bvModal.hide('subscription-comparison-modal-upgrade')
+                      resolve()
+                      that.$bvModal.hide('manage-project-subscription')
+
+                      that.reload()
+                  },
+                  async onPending() {
+                      await that.setPending({
+                        snapToken
+                      })
+                      resolve()
+                  },
+                  onError() {
+                      Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+                      resolve()
+                  },
+                  onClose() {
+                      Notify.failure('Upgrading paket tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+                      that.setCanceled({
+                        snapToken
+                      })
+                      resolve()
+                  },
+                  skipOrderSummary: false,
+              });
+            })
           }
-
-          const snapToken = data.data.data.snap_token
-
-          const that = this
-
-          window.snap.pay(snapToken, {
-              onSuccess: async () => {
-                  // await this.renewProjectSubscription(this.selectedManageSubscriptionProject.hashid)
-                  // await that.createProject(this.form);
-                  // that.$emit('project-added');
-                  Notify.success('Berhasil upgrade project');
-                  that.$bvModal.hide('subscription-comparison-modal-upgrade')
-                  that.$bvModal.hide('manage-project-subscription')
-
-                  that.reload()
-              },
-              async onPending() {
-                  await that.setPending({
-                    snapToken
-                  })
-              },
-              onError() {
-                  Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
-              },
-              onClose() {
-                  Notify.failure('Upgrading paket tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
-                  that.setCanceled({
-                    snapToken
-                  })
-                  // Delete order
-              },
-              skipOrderSummary: false,
-          });
-        } else {
-
-        }
+        })
       },
       setEditedProject(project) {
         this.selectedProject = project;

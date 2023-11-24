@@ -101,13 +101,14 @@ export default {
         this.runPaymentGateway()
       } catch (err) {
         this.checkForInvalidResponse(err);
-      } finally {
         this.isSubmitting = false
       }
     },
     async runPaymentGateway() {
       // TODO: Check for demo eligibilty again
       try {
+
+        this.isSubmitting = true
 
         const that = this
 
@@ -160,21 +161,27 @@ export default {
                     that.hideModal(that.modalId);
                     that.resetForm();
 
+                    that.isSubmitting = false
+
                     Notify.success('Berhasil membuat project baru');
                 },
+
                 async onPending() {
                     await that.setPending({
                       snapToken
                     })
+                    that.isSubmitting = false
                 },
                 onError() {
                     Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+                    that.isSubmitting = false
                 },
                 onClose() {
                     Notify.failure('Pembuatan proyek tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
                     that.setCanceled({
-                    snapToken
+                      snapToken
                     })
+                    that.isSubmitting = false
                     // Delete order
                 },
                 skipOrderSummary: false,
