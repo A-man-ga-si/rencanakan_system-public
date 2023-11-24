@@ -15,7 +15,7 @@
                     <p class="font-weight-bold m-0"># {{ processedOrder.order_id }} </p>
                     <p class="mt-2">
                         <b-badge :variant="statusVariant.color">{{ statusVariant.status }}</b-badge>
-                        <b-badge variant="primary" v-if="processedOrder.is_active">Langganan Aktif</b-badge>
+                        <b-badge variant="primary" v-if="processedOrder.is_active == '1'">Langganan Aktif</b-badge>
                     </p>
                     <span v-if="processedOrder.expired_at">
                         <p class="mb-0">Kadaluwarsa : {{ processedOrder.formatted_expired_at }}</p>
