@@ -29,7 +29,7 @@
       </b-button>
     </template>
     <b-form-group label="Paket Project" class="has-float-label">
-      <v-select v-model="form.subscription_id" label="name" :reduce="subscription => subscription.id" :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly" />
+      <v-select ref="selectedEl" v-model="form.subscription_id" label="name" :reduce="subscription => subscription.id" :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly" />
       <a href="#" @click.prevent class="mt-1 d-block" v-b-modal.subscription-comparison-modal-new><u>Bandingkan Paket</u></a>
     </b-form-group>
   </b-modal>
@@ -40,6 +40,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import { Notify } from 'notiflix';
 import tutorialMixin from '@/mixins/tutorial-mixin'
+import { setCurrentUser, getCurrentUser } from '@/utils';
 import ValidationInput from '@/components/Common/ValidationInput.vue';
 import validationMixin from '@/mixins/validation-mixins';
 import TutorialPopover from '@/components/Common/TutorialPopover.vue';
@@ -81,7 +82,9 @@ export default {
       return this.getSubscriptions.filter(subscription => subscription.is_show == 0)
     },
     withoutDemoOnly() {
-      return this.getSubscriptions.filter(subscription => subscription.is_show == 1)
+      const filteredSubscription = this.getSubscriptions.filter(subscription => subscription.is_show == 1)
+      this.form.subscription_id = filteredSubscription?.length > 0 ? filteredSubscription[0].id : ''
+      return filteredSubscription
     },
   },
   methods: {
@@ -97,10 +100,29 @@ export default {
         // 
         this.isSubmitting = true
         this.resetInvalid();
+
+        // FIXME: Patch this client side validation to separate file
+
+        const errorMessage = {}
         
+        for (const formKey in this.form) {
+          if (this.form[formKey] == '' || this.form[formKey] == null) {
+            errorMessage[formKey] = [`Kolom ${formKey} wajib diisi`]
+          }
+        }
+
+        if (Object.keys(errorMessage).length) {
+          this.processInvalid({
+            errors: errorMessage
+          })
+          return
+        }
+
         this.runPaymentGateway()
       } catch (err) {
         this.checkForInvalidResponse(err);
+        this.isSubmitting = false
+      } finally {
         this.isSubmitting = false
       }
     },
@@ -120,6 +142,10 @@ export default {
             that.$emit('project-added');
             that.hideModal(that.modalId);
             that.resetForm();
+
+            this.verifyToken()
+            this.isSubmitting = false
+
             Notify.success('Berhasil membuat project baru');
 
         } else {
@@ -200,12 +226,13 @@ export default {
         job: '',
         address: '',
         provinceId: 'qMxAPZX0',
+        subscription_id: '',
         fiscalYear: new Date().getFullYear(),
         marginProfit: 10,
         ppn: 10,
       };
     },
-    ...mapActions(['createProject', 'fetchSubscriptions', 'fetchSubscriptionSnapToken', 'setCanceled', 'setPending']),
+    ...mapActions(['createProject', 'fetchSubscriptions', 'fetchSubscriptionSnapToken', 'setCanceled', 'setPending', 'verifyToken']),
   },
   components: {
     ValidationInput,

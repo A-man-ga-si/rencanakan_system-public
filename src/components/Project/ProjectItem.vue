@@ -32,11 +32,17 @@
             </tutorial-popover>
           </a>
         <EditButton v-b-modal.edit-project-modal id="edit-project-modal" @click.prevent="editProject(row.row.rowData)" title="Tombol untuk mengedit project">
-          <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
+          <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showUpgradeProjectButtonTutorial" prevent-imediate-close>
             Klik tombol ini untuk mengubah project
           </tutorial-popover>
           <ph-pencil :size="20" weight="light" />
         </EditButton>
+        <div class="d-inline-block mr-2" @click="manageSubscriptionProject(row.row.rowData)" v-b-modal.manage-project-subscription id="upgrade-project-btn" style="cursor: pointer;">
+          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
+            Klik tombol ini untuk upgrade paket project
+          </tutorial-popover>
+        <PhCreditCard :size="20" weight="light" />
+        </div>
         <DeleteButton
         title="Tombol untuk menghapus project"
         id="delete-project-btn"
@@ -44,17 +50,11 @@
             deleteProject(row.row.rowData.name, row.row.rowData.hashid)
           "
         >
-        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showUpgradeProjectButtonTutorial" prevent-imediate-close>
+        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="deleteProjectButtonTutorial = false" prevent-imediate-close>
             Klik tombol ini untuk menghapus project
         </tutorial-popover>
         <ph-trash :size="20" weight="light" />
       </DeleteButton>
-      <div @click="manageSubscriptionProject(row.row.rowData)" v-b-modal.manage-project-subscription id="upgrade-project-btn" style="cursor: pointer;">
-          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="upgradeProjectButtonTutorial = false" prevent-imediate-close>
-            Klik tombol ini untuk upgrade paket project
-          </tutorial-popover>
-        <PhCreditCard :size="20" weight="light" />
-      </div>
       </template>
     </CustomDataTable>
   </div>
@@ -108,13 +108,13 @@
         }
       },
       showDeleteProjectButtonTutorial() {
-        this.editProjectButtonTutorial = false
+        this.upgradeProjectButtonTutorial = false
         if (this.shouldShowTutorial('manage_project')) {
           this.deleteProjectButtonTutorial = this.activateTutorial()
         }
       },
       showUpgradeProjectButtonTutorial() {
-        this.deleteProjectButtonTutorial = false
+        this.editProjectButtonTutorial = false
         if (this.shouldShowTutorial('manage_project')) {
           this.upgradeProjectButtonTutorial = this.activateTutorial()
         }

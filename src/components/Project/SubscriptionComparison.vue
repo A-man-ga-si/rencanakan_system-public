@@ -4,14 +4,15 @@
       <b-col v-for="(subscription, i) in withoutDemoOnly" :key="i" lg="6" class="mb-3">
         <b-card>
           <b-card-title class="text-center">
-            <PhStar class="text-primary subscription-icon" />
-            <h5><strong>{{ subscription.name }}</strong></h5>
+            <PhPackage class="text-primary subscription-icon" />
+            <h3><strong>{{ subscription.name }}</strong></h3>
           </b-card-title>
           <b-card-body class="pt-2" v-html="subscription.description"></b-card-body>
           <div class="text-center">
-            <h5 class="mb-3" v-if="subscription.promotion_price" style="text-decoration: line-through;">Rp. {{ subscription.formatted_promotion_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
-            <h5 class="mb-3">Rp. {{ subscription.formatted_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
-            <b-button @click="onChooseSubscription(subscription.id)" variant="primary" type="button">Pilih Paket</b-button>
+            <h5 class="promo-text" v-if="subscription.promotion_price" style="text-decoration: line-through;">Rp. {{ subscription.formatted_promotion_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
+            <h5 class="font-weight-bold">Rp. {{ subscription.formatted_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
+            <span class="d-block blinking-text"><span class="text-danger">*</span> Penawaran Terbatas</span>
+            <b-button @click="onChooseSubscription(subscription.id)" variant="primary" type="button" class="mt-3">Pilih Paket</b-button>
           </div>
         </b-card>
       </b-col>
@@ -26,7 +27,7 @@
 
 import { formatCurrency } from '@/utils';
 import { Notify } from 'notiflix';
-import { PhStar } from 'phosphor-vue'
+import { PhStar, PhPackage } from 'phosphor-vue'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -55,14 +56,33 @@ export default {
     }
   },
   components: {
-    PhStar
+    PhStar,
+    PhPackage
   }
 }
 </script>
 
 <style scoped>
 .subscription-icon {
-  font-size: 35px;
-  margin-bottom: 10px;
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+
+.blinking-text {
+  animation: blinker .7s linear infinite;
+}
+
+.promo-text {
+  font-size: 15px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: .1;
+  }
 }
 </style>
