@@ -14,6 +14,18 @@
             v-model="selectedProvince"
           />
         </div>
+        <div
+          class="labeled-select position-relative d-inline-block ml-2"
+          style="width: 300px"
+        >
+          <span class="px-1"> Group AHS</span>
+          <v-select
+            label="name"
+            :reduce="ahs => ahs.id"
+            :options="ahsGroup"
+            v-model="selectedAhsGroup"
+          />
+        </div>
       </div>
     </div>
     <ul class="ahs-item-list">
@@ -61,7 +73,22 @@
       unitsList: ['OH'],
       provinces: [],
       selectedProvince: '',
+      selectedAhsGroup: 'all',
       selectedAhs: {},
+      ahsGroup: [
+        {
+          id: 'all',
+          name: 'All'
+        },
+        {
+          id: 'reference',
+          name: 'AHS Permen PUPR 2016'
+        },
+        {
+          id: 'reference-2023',
+          name: 'AHS Permen PUPR 2023'
+        },
+      ]
     }),
     created() {
       this.loadProvinces();
@@ -83,6 +110,7 @@
       getAhsMaster() {
         this.fetchAhs({
           province: this.selectedProvince,
+          selectedAhsGroup: this.selectedAhsGroup,
           page: this.currentPage,
           perPage: this.perPage,
         });
@@ -107,6 +135,9 @@
     },
     watch: {
       selectedProvince() {
+        this.getAhsMaster();
+      },
+      selectedAhsGroup() {
         this.getAhsMaster();
       },
       currentPage() {
