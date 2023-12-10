@@ -14,15 +14,12 @@
       title="Daftar Proyek"
       :fields="fields"
     >
-      <template slot="status" slot-scope="row">
-        <span>{{ row.row.rowData.order.is_expired ? 'Aktif' : 'Kadaluwarsa' }}</span>
-      </template>
       <template slot="actions" slot-scope="row">
           <a
             v-b-modal.show-project-modal
             href="#"
             id="show-project-modal"
-            @click.prevent="detailProject(row.row.rowData.hashid)"
+            @click.prevent="detailProject(row.row.rowData.hashid, row.row.rowData.order)"
             class="rab-icon-bt mx-1"
             title="Tombol untuk melihat detail project"
           >
@@ -122,7 +119,13 @@
       reload() {
         this.$refs['project-data-table'].reloadTable();
       },
-      detailProject(projectHashid) {
+      detailProject(projectHashid, order) {
+
+        if (order.is_expired) {
+          Notify.failure('Project telah expired. Perpanjang / upgrade subscription untuk membuka & melanjutkan project ini.')
+          return
+        }
+
         // Keep this asynchronously !
         this.markLastOpenedAt({
           projectId: projectHashid,

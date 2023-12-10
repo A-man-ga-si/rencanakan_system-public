@@ -30,8 +30,10 @@
   import OrderItem from '@/components/Order/OrderItem.vue';
   import { PhInfo } from 'phosphor-vue'; 
   import { mapActions, mapGetters } from 'vuex';
+  import midtransMixin from './../../../mixins/midtrans-mixin'
 
   export default {
+    mixins: [midtransMixin],
     created() {
         this.fetchOrders();
     },

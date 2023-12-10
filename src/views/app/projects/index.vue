@@ -45,6 +45,7 @@
   import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue'
   import SubscriptionManagement from '@/components/Project/SubscriptionManagement.vue'
   import { showConfirmAlert, showConfirmAlertWithPreloader } from './../../../utils';
+  import midtransMixin from './../../../mixins/midtrans-mixin'
 
   export default {
     data: () => ({
@@ -55,6 +56,7 @@
     beforeMount() {
       this.fetchProvinces();
     },
+    mixins: [midtransMixin],
     methods: {
       ...mapActions(['fetchProvinces', 'fetchSubscriptionSnapToken', 'renewProjectSubscription', 'setPending', 'setCanceled']),
       reload() {
