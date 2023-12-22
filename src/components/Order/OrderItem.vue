@@ -26,7 +26,7 @@
                     <h5>{{ processedOrder?.date_formatted?.date }} | {{ processedOrder?.date_formatted?.time }}</h5>
                 </div> -->
             </div>
-            <div class="bottom-btn mt-4 text-right" v-if="processedOrder.status == 'waiting_for_payment'">
+            <div class="bottom-btn mt-4 text-right" v-if="processedOrder.status == 'waiting_for_payment' && processedOrder.type != 'demo'">
                 <div class="success-action">
                     <hr>
                     <b-btn @click="submitPayment">Lanjutkan Pembayaran</b-btn>
