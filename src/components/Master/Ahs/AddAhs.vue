@@ -5,6 +5,19 @@
     :title="'Tambah AHS'"
     no-close-on-backdrop
   >
+    <div
+      class="labeled-select position-relative d-inline-block mb-4"
+      style="width: 100%"
+    >
+      <span class="px-1"> Group AHS</span>
+      <v-select
+        label="name"
+        :reduce="ahs => ahs.id"
+        :options="ahsGroup"
+        v-model="form.groups"
+      >
+      </v-select>
+    </div>
     <ValidationInput
       class="mb-4"
       label="Kode"
@@ -41,7 +54,18 @@
       form: {
         id: '',
         name: '',
+        groups: '',
       },
+      ahsGroup: [
+        {
+          id: 'reference',
+          name: 'AHS Permen PUPR 2016'
+        },
+        {
+          id: 'reference-2023',
+          name: 'AHS Permen PUPR 2023'
+        },
+      ]
     }),
     methods: {
       ...mapActions(['storeAhs']),
