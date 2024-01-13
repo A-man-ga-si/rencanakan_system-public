@@ -26,6 +26,7 @@ import order from './modules/order.module';
 import tutorial from './modules/tutorials.module';
 import global from './modules/global.module'
 import subscription from './modules/subscription.module'
+import implementationScheduleModule from './modules/implementation-schedule.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -68,6 +69,7 @@ export default new Vuex.Store({
     order,
     tutorial,
     global,
-    subscription
+    subscription,
+    implementationScheduleModule
   },
 });

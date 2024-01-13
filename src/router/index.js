@@ -172,6 +172,19 @@ const routes = [
                 /* webpackChunkName */ './../views/app/projects/rabs/Ahp.vue'
               ),
           },
+          {
+            path: 'implementation-schedule',
+            name: 'RabImplementationSchedule',
+            meta: {
+              title: 'Jadwal Pelaksanaan',
+              loginRequired: true,
+              permissions: ['access-project-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'
+              ),
+          },
         ],
       },
       // {
