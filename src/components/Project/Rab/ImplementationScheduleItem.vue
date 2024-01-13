@@ -108,6 +108,7 @@
               :rabs-subtotal="rabSubtotals"
               @rab-item-deleted="onRabItemDeleted"
               @update-rab-item="onRabItemRowUpdated"
+              @rab-item-edit="onRabItemEdit"
             />
           </tbody>
         </table>
