@@ -140,7 +140,6 @@
         this.$emit('manage-project-subscription-button-clicked', projectData)
       },
       deleteProject(name, id) {
-        console.log(name);
         Swal.fire({
           title: 'Hapus Project ?',
           html: `<div class="alert alert-danger bg-white border-danger text-left" style="border-radius: 10px;">

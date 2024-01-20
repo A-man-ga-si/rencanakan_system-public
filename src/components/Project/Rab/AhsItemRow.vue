@@ -174,10 +174,8 @@
             customAhsItemableItem.custom_ahs_itemable_type = ahsItemable(
               customAhsItemableItem.custom_ahs_itemable_type
             );
-            console.log(customAhsItemableItem)
             return customAhsItemableItem;
           });
-          console.log(d)
         return d;
       },
       getItemPrice() {

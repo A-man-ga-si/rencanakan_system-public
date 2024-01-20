@@ -140,7 +140,6 @@
               email: this.form.email,
               password: this.form.password,
             });
-            console.log(data)
             await this.getTutorialLists()
             this.$router.replace({
               name: 'Project',

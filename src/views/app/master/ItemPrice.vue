@@ -92,7 +92,6 @@
       },
       async loadUngroupedItemPrice() {
         const data = await this.fetchUngroupedItemPrices();
-        console.log(data);
       },
     },
     computed: {

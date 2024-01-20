@@ -234,11 +234,6 @@
         return formatCurrency(parseInt(this.rabItem.subtotal));
       },
     },
-    watch : {
-      rabSubtotals() {
-        console.log('subtotals changed')
-      }
-    },
     components: {
       PhX,
       PhPencil,

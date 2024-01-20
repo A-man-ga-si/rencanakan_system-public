@@ -40,7 +40,6 @@
       ...mapActions(['updateRabItemHeader']),
       async submit() {
         try {
-          console.log(this.editedRabItemHeader);
           await this.updateRabItemHeader({
             projectId: this.$route.params.id,
             rabId: this.rab.hashid,
