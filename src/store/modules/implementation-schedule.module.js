@@ -38,6 +38,10 @@ const actions = {
   async updateImplementationSchedule({ commit }, {projectId, implementationScheduleData}) {
     const data = await CustomImplementationSchedule.setPreviousPath(`project/${projectId}`).post('', implementationScheduleData)
     return data.data
+  },
+  async deleteImplementationSchedule({ commit }, { rabItemId, projectId }) {
+    const data = await CustomImplementationSchedule.setPreviousPath(`project/${projectId}`).delete(rabItemId)
+    return data.data
   }
 }
 

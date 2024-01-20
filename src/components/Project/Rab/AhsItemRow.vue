@@ -182,7 +182,7 @@
       },
       getItemPrice() {
         return `Rp. ${formatCurrency(
-          this.customAhsItem.custom_ahs_itemable.subtotal
+          this.customAhsItem.custom_ahs_itemable.price
         )}`;
       },
       getSubtotalPrice() {

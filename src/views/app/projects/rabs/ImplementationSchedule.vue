@@ -32,6 +32,7 @@
           @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
           @edit-rab-item-bt-clicked="editRab"
           @rab-item-edit="editItemImplementationSchedule"
+          @rab-item-delete="reloadData"
         />
         <AddImplementationScheduleItem @implementation-schedule-updated="reloadData" :weight="selectedRabItem.weight" :item-name="selectedRabItem.name" :weeks="selectedRabItem.weeks" :rab-item-hashid="selectedRabItem.hashid" />
       </div>

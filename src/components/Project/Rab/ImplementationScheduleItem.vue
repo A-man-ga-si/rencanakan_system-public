@@ -56,9 +56,9 @@
               :custom-ahs-ids="ahsCodeList"
               :rabs-subtotal="rabSubtotals"
               :unit-ids="unitCodeList"
-              @rab-item-deleted="onRabItemDeleted"
               @update-rab-item="onRabItemRowUpdated"
               @rab-item-edit="onRabItemEdit"
+              @rab-item-delete="onRabItemDelete"
             />
           </tbody>
           <tbody
@@ -106,7 +106,6 @@
               :custom-ahs-ids="ahsCodeList"
               :unit-ids="unitCodeList"
               :rabs-subtotal="rabSubtotals"
-              @rab-item-deleted="onRabItemDeleted"
               @update-rab-item="onRabItemRowUpdated"
               @rab-item-edit="onRabItemEdit"
             />
@@ -175,6 +174,9 @@
           rabItemHeader
         );
       },
+      onRabItemDelete() {
+        this.$emit('rab-item-delete')
+      },
       async deleteRab() {
         const { isConfirmed } = await showConfirmAlert({
           title: 'Hapus Item RAB ?',
@@ -186,7 +188,6 @@
             rabId: this.rabItem.hashid,
           });
           Notify.success('Berhasil menghapus RAB');
-          this.onRabItemDeleted();
         }
       },
       async deleteRabItemHeader(rabItemHeaderId) {
@@ -214,9 +215,6 @@
           },
         });
         this.$emit('rab-item-added');
-      },
-      onRabItemDeleted() {
-        this.$emit('rab-item-deleted');
       },
       onRabItemRowUpdated() {
         this.$emit('rab-item-updated');

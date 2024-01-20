@@ -21,8 +21,17 @@
         href="#"
         class="text-success action-schedule"
         @click.prevent="scheduleItem"
+        title="Tambah jadwal"
       >
         <ph-calendar weight="light" :size="16" />
+      </a>
+      <a
+        href="#"
+        class="text-danger action-schedule"
+        @click.prevent="deleteSchedule"
+        title="Hapus jadwal"
+      >
+        <ph-trash weight="light" :size="16" />
       </a>
     </td>
   </tr>
@@ -31,8 +40,10 @@
 <script>
   import { showConfirmAlert } from '@/utils';
   import { mapActions } from 'vuex';
-  import { PhX, PhCalendar } from 'phosphor-vue';
+  import { PhX, PhCalendar, PhTrash } from 'phosphor-vue';
   import { formatCurrency } from '@/utils';
+  import { Notify } from 'notiflix'
+  
   export default {
     data() {
       return {
@@ -73,13 +84,27 @@
     //   console.log(this.rabItemData)
     // },
     methods: {
-      ...mapActions(['destroyRabItem', 'updateRabItem']),
+      ...mapActions(['destroyRabItem', 'updateRabItem', 'deleteImplementationSchedule']),
       scheduleItem() {
         this.$emit('rab-item-edit', this.rabItemData, this.rabsSubtotal ? (this.jumlahSubtotalUnformatted / this.rabsSubtotal * 100) : 0)
       },
       isAhsReferenced(data) {
         return !!data?.custom_ahs_id;
       },
+      async deleteSchedule() {
+        const { isConfirmed } = await showConfirmAlert({
+          title: 'Hapus jadwal pelaksanaan?',
+          text: 'Semua jadwal pelaksanaan pada item ini akan dihapus'
+        })
+        if (isConfirmed) {
+          const data = await this.deleteImplementationSchedule({
+            rabItemId: this.rabItemData.hashid,
+            projectId: this.$route.params.id
+          })
+          Notify.success(data.message)
+          this.$emit('rab-item-delete')
+        }
+      }
     },
     computed: {
       formattedImplementationScheduleWeeks() {
@@ -131,7 +156,8 @@
     },
     components: {
       PhX,
-      PhCalendar
+      PhCalendar,
+      PhTrash
     },
   };
 </script>
