@@ -12,35 +12,42 @@
       <b-alert variant="secondary" show class="rounded">
         <div class="d-flex justify-content-between">
           <span class="mt-1"><strong>Durasi proyek</strong> : {{ getImplementationDurationSetting }} Minggu</span>
-          <b-btn size="xs" @click="editProjectDuration"><span>Ubah</span></b-btn>
+          <b-btn size="xs" @click="editProjectDuration"> <PhLock v-if="getCurrentActiveProject.subscription_id != 'professional'" /> <span>Ubah</span></b-btn>
         </div>
       </b-alert>
       <div class="implementation-schedule" v-if="getImplementationDurationSetting">
-        <ImplementationScheduleItem
-          v-for="(rab, idx) in getRabs"
-          :key="idx"
-          :index="idx"
-          :rab-item="rab"
-          :ahs-code-list="customAhsIds"
-          :unit-code-list="getUnit"
-          :rab-subtotals="rabSubtotals"
-          @rab-item-deleted="reloadData"
-          @rab-item-added="reloadData"
-          @rab-item-updated="reloadData"
-          @rab-item-header-deleted="reloadData"
-          @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
-          @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
-          @edit-rab-item-bt-clicked="editRab"
-          @rab-item-edit="editItemImplementationSchedule"
-          @rab-item-delete="reloadData"
-        />
-        <AddImplementationScheduleItem @implementation-schedule-updated="reloadData" :weight="selectedRabItem.weight" :item-name="selectedRabItem.name" :weeks="selectedRabItem.weeks" :rab-item-hashid="selectedRabItem.hashid" />
+        <div class="subscription-didnt-supported text-center mt-5" v-if="getCurrentActiveProject.subscription_id != 'professional'">
+          <img src="@/assets/img/custom/package.svg" alt="" width="400" class="mb-5">
+          <h2>Fitur Dikunci</h2>
+          <p>Paket anda tidak mendukung untuk fitur jadwal pelaksanaan. Silahkan upgrade paket terlebih dahulu</p>
+        </div>
+        <div class="subscription-did-supported" v-else>
+          <ImplementationScheduleItem
+            v-for="(rab, idx) in getRabs"
+            :key="idx"
+            :index="idx"
+            :rab-item="rab"
+            :ahs-code-list="customAhsIds"
+            :unit-code-list="getUnit"
+            :rab-subtotals="rabSubtotals"
+            @rab-item-deleted="reloadData"
+            @rab-item-added="reloadData"
+            @rab-item-updated="reloadData"
+            @rab-item-header-deleted="reloadData"
+            @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
+            @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
+            @edit-rab-item-bt-clicked="editRab"
+            @rab-item-edit="editItemImplementationSchedule"
+            @rab-item-delete="reloadData"
+          />
+          <AddImplementationScheduleItem @implementation-schedule-updated="reloadData" :weight="selectedRabItem.weight" :item-name="selectedRabItem.name" :weeks="selectedRabItem.weeks" :rab-item-hashid="selectedRabItem.hashid" />
+        </div>
       </div>
       <div class="implementation-schedule-not-set text-center" v-else>
         <img src="@/assets/img/custom/construction.svg" alt="" width="400" class="mb-5">
         <h2>Estimasi Waktu Pelaksanaan Proyek Belum Diatur</h2>
         <p>Atur waktu pelaksanaan proyek dalam satuan minggu terlebih dahulu untuk menentukan jadwal pelaksanaan proyek anda.</p>
-        <b-button v-b-modal.implementation-schedule-setting-popup class="my-3">Atur Sekarang</b-button>
+        <b-button @click="setImplementationSchedule" class="my-3"> <PhLock v-if="getCurrentActiveProject.subscription_id != 'professional'" /> Atur Sekarang</b-button>
       </div>
       <ImplementationScheduleSettingPopup @project-duration-updated="reloadData" :current-week="getImplementationDurationSetting" />
     </div>
@@ -51,10 +58,12 @@
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
   import { formatCurrency } from '@/utils';
+  import Swal from 'sweetalert2'
   import ImplementationScheduleItem from '@/components/Project/Rab/ImplementationScheduleItem.vue';
   import AddImplementationScheduleItem from '@/components/Project/Rab/AddImplementationScheduleItem.vue'
   import ImplementationScheduleSettingPopup from '@/components/Project/Rab/ImplementationScheduleSettingPopup.vue'
   import Loader from '@/components/Common/Loader.vue'
+  import { PhLock } from 'phosphor-vue';
 
   export default {
     data() {
@@ -108,7 +117,8 @@
         'fetchRab',
         'fetchAhs',
         'showProject',
-        'getImplementationScheduleDuration'
+        'getImplementationScheduleDuration',
+        'showProject',
       ]),
       editItemImplementationSchedule(rabItemData) {
         this.selectedRabItem.name = rabItemData[0].name
@@ -117,8 +127,27 @@
         this.selectedRabItem.weeks = rabItemData[0].implementation_schedule || []
         this.$bvModal.show('add-implementation-schedule-item')
       },
+      setImplementationSchedule() {
+        if (this.getCurrentActiveProject.subscription_id != 'professional') {
+          Swal.fire({
+            title: 'Fitur Terkunci',
+            text: 'Paket project anda belum termasuk jadwal pelaksanaan. Upgrade paket anda menjadi paket professional untuk menikmati fitur ini',
+            icon: 'warning'
+          })
+        } else {
+          this.$bvModal.show('implementation-schedule-setting-popup')
+        }
+      },
       editProjectDuration() {
-        this.$bvModal.show('implementation-schedule-setting-popup')
+        if (this.getCurrentActiveProject.subscription_id != 'professional') {
+          Swal.fire({
+            title: 'Fitur Terkunci',
+            text: 'Paket project anda belum termasuk jadwal pelaksanaan. Upgrade paket anda menjadi paket professional untuk menikmati fitur ini',
+            icon: 'warning'
+          })
+        } else {
+          this.$bvModal.show('implementation-schedule-setting-popup')
+        }
       },
       async loadImplementationScheduleDuration() {
         try {
@@ -166,7 +195,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getRabs', 'getAhs', 'getProjects', 'getUnit', 'getImplementationDurationSetting']),
+      ...mapGetters(['getRabs', 'getAhs', 'getUnit', 'getImplementationDurationSetting', 'getCurrentActiveProject']),
       projectPpn() {
         const percentage = this.projectProperties.data
           ? this.projectProperties.data.data.project.ppn
@@ -218,7 +247,8 @@
       ImplementationScheduleItem,
       AddImplementationScheduleItem,
       ImplementationScheduleSettingPopup,
-      Loader
+      Loader,
+      PhLock
     },
   };
 </script>
