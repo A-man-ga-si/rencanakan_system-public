@@ -7,8 +7,8 @@
     <b-form-group :label="$t('pages.projects.province')" class="has-float-label">
       <v-select v-model="form.provinceId" label="name" :reduce="province => province.hashid" :options="provinces" />
     </b-form-group>
-    <ValidationInput v-model="form.fiscalYear" class="mb-3" field-name="fiscal_year" label="Tahun Anggaran" />
-    <ValidationInput v-model="form.marginProfit" class="mb-3" field-name="profit_margin"
+    <ValidationInput type="number" v-model="form.fiscalYear" class="mb-3" field-name="fiscal_year" label="Tahun Anggaran" />
+    <ValidationInput type="number" v-model="form.marginProfit" class="mb-3" field-name="profit_margin"
       label="Margin Profit & Overhead (%)" />
     <ValidationInput v-model="form.ppn" class="mb-3" field-name="ppn" label="PPN (%)" />
     <template slot="modal-footer">
