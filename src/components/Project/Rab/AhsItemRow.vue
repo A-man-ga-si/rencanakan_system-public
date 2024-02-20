@@ -180,7 +180,7 @@
       },
       getItemPrice() {
         return `Rp. ${formatCurrency(
-          this.customAhsItem.custom_ahs_itemable.price
+          ahsItemable(this.customAhsItem.custom_ahs_itemable_type) == 'CustomAhp' ? this.customAhsItem.custom_ahs_itemable.subtotal : this.customAhsItem.custom_ahs_itemable.price
         )}`;
       },
       getSubtotalPrice() {

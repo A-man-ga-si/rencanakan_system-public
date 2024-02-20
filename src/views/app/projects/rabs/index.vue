@@ -38,6 +38,9 @@
             <b-nav-item :to="{ name: 'RabImplementationSchedule' }">
               {{ $t('pages.projects.rab.implementation-schedule-tab') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'MaterialEstimator' }">
+              Hitung Bahan
+            </b-nav-item>
           </b-nav>
           <router-view />
         </b-card>

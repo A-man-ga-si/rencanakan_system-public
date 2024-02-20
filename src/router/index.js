@@ -185,6 +185,19 @@ const routes = [
                 /* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'
               ),
           },
+          {
+            path: 'material-estimator',
+            name: 'MaterialEstimator',
+            meta: {
+              title: 'Hitung Bahan',
+              loginRequired: true,
+              permissions: ['access-project-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/MaterialEstimator.vue'
+              ),
+          },
         ],
       },
       // {
