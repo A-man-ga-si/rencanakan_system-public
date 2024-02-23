@@ -39,7 +39,7 @@
               <th scope="col">Uraian Pekerjaan</th>
               <th scope="col" style="width: 10%">Koefisien AHS</th>
               <th scope="col" style="width: 10%">Volume RAB</th>
-              <th scope="col" style="width: 10%">Hitung Bahan</th>
+              <th scope="col" style="width: 10%">Kebutuhan Bahan</th>
               <th scope="col" style="width: 15%">SAT</th>
             </tr>
           </thead>
@@ -59,7 +59,7 @@
             </tr>
             <MaterialEstimatorRow
               v-if="itemRab.custom_ahs"
-              v-for="(customAhsItem, idx) in itemRab.custom_ahs.custom_ahs_item"
+              v-for="(customAhsItem, idx) in (itemRab.custom_ahs ? itemRab.custom_ahs.custom_ahs_item : [])"
               :index="idx"
               :key="idx"
               :rab-item-data="customAhsItem"
@@ -184,11 +184,50 @@
         return formatCurrency(parseInt(this.rabItem.subtotal));
       },
       mergedRabItems() {
-        const filteredRabItem = this.rabItem.rab_item ? this.rabItem.rab_item.filter(data => !!data.custom_ahs) : []
-        const temporaryHeadedRabItems = this.rabItem.rab_item_header.length > 0 ? this.rabItem.rab_item_header.map(data => data.rab_item).flat().filter(data => !!data.custom_ahs) : []
+        const filteredRabItem = this.rabItem.rab_item ? this.rabItem.rab_item.map(rabItem => {
+          if (rabItem.custom_ahs) {
+            return rabItem;
+          } else {
+            // Replicating the real rab item (with ahs) structure for non ahs rab item
+            rabItem.custom_ahs = {
+              custom_ahs_item: [
+              {
+                rab_item_without_ahs: true,
+                custom_ahs_itemable: {
+                  name: rabItem.name,
+                },
+                coefficient: 0,
+                unit_id: rabItem.hashed_unit_id,
+              }
+              ]
+            }
+            return rabItem
+          }
+        }) : []
+        const temporaryHeadedRabItems = this.rabItem.rab_item_header.length > 0 ? this.rabItem.rab_item_header.map(data => data.rab_item).flat().map(rabItem => {
+          if (rabItem.custom_ahs) {
+            return rabItem;
+          } else {
+            // Replicating the real rab item (with ahs) structure for non ahs rab item
+            rabItem.custom_ahs = {
+              custom_ahs_item: [
+              {
+                rab_item_without_ahs: true,
+                custom_ahs_itemable: {
+                  name: rabItem.name,
+                },
+                coefficient: 0,
+                unit_id: rabItem.hashed_unit_id,
+              }
+              ]
+            }
+            return rabItem
+          }
+        }) : []
         if (typeof this.rabItem.rab_item != 'undefined' && this.rabItem.rab_item != null) {
           this.rabItem.rab_item = filteredRabItem.concat(temporaryHeadedRabItems)
         }
+        console.log(this.rabItem)
         return this.rabItem.rab_item
       }
     },

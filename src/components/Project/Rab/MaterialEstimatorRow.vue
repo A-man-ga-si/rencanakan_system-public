@@ -5,13 +5,13 @@
       <span>{{ rabItemData.custom_ahs_itemable_type == 'App\\Models\\CustomItemPrice' ? rabItemData.custom_ahs_itemable.name : rabItemData.custom_ahs_itemable.name  }}</span>
     </td>
     <td>
-      <span>{{ rabItemData.coefficient }}</span>
+      <span>{{ rabItemData.rab_item_without_ahs ? '-' : rabItemData.coefficient }}</span>
     </td>
     <td>
       <span>{{ rab.volume }}</span>
     </td>
     <td>
-      <span>{{ ((rabItemData.coefficient || 0) * (rab.volume || 0)) }}</span>
+      <span>{{ (rabItemData.rab_item_without_ahs ? (rab.volume || 0) * 1 : (rabItemData.coefficient || 0) * (rab.volume || 0)) }}</span>
     </td>
     <td>
       <span>{{ unitName }}</span>
@@ -107,7 +107,7 @@
       unitName() {
         if (this.unitIds) {
           for (const unitId of this.unitIds) {
-            if (unitId.id == this.rabItemData.unit_id) {
+            if ((unitId.id == this.rabItemData.unit_id) || (unitId.hashid == this.rabItemData.unit_id)) {
               return unitId.name
             }
           }
