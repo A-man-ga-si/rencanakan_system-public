@@ -39,8 +39,10 @@
               <th scope="col">Uraian Pekerjaan</th>
               <th scope="col" style="width: 10%">Koefisien AHS</th>
               <th scope="col" style="width: 10%">Volume RAB</th>
+              <th scope="col" style="width: 10%">Harga Satuan</th>
+              <th scope="col" style="width: 15%">Satuan</th>
               <th scope="col" style="width: 10%">Kebutuhan Bahan</th>
-              <th scope="col" style="width: 15%">SAT</th>
+              <th scope="col" style="width: 10%">Hitung Harga Total</th>
             </tr>
           </thead>
           <tbody v-for="(itemRab, index) of mergedRabItems" :key="index">
@@ -195,8 +197,10 @@
                 rab_item_without_ahs: true,
                 custom_ahs_itemable: {
                   name: rabItem.name,
+                  price: rabItem.price,
                 },
                 coefficient: 0,
+                subtotal: rabItem.subtotal,
                 unit_id: rabItem.hashed_unit_id,
               }
               ]
@@ -208,6 +212,7 @@
           if (rabItem.custom_ahs) {
             return rabItem;
           } else {
+            console.log('s', rabItem)
             // Replicating the real rab item (with ahs) structure for non ahs rab item
             rabItem.custom_ahs = {
               custom_ahs_item: [
@@ -215,8 +220,10 @@
                 rab_item_without_ahs: true,
                 custom_ahs_itemable: {
                   name: rabItem.name,
+                  price: rabItem.price,
                 },
                 coefficient: 0,
+                subtotal: rabItem.subtotal,
                 unit_id: rabItem.hashed_unit_id,
               }
               ]

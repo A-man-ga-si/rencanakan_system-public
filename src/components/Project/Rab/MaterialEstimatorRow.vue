@@ -5,16 +5,23 @@
       <span>{{ rabItemData.custom_ahs_itemable_type == 'App\\Models\\CustomItemPrice' ? rabItemData.custom_ahs_itemable.name : rabItemData.custom_ahs_itemable.name  }}</span>
     </td>
     <td>
-      <span>{{ rabItemData.rab_item_without_ahs ? '-' : rabItemData.coefficient }}</span>
+      <span>{{ rabItemData.rab_item_without_ahs ? '1' : rabItemData.coefficient }}</span>
     </td>
     <td>
       <span>{{ rab.volume }}</span>
     </td>
     <td>
-      <span>{{ (rabItemData.rab_item_without_ahs ? (rab.volume || 0) * 1 : (rabItemData.coefficient || 0) * (rab.volume || 0)) }}</span>
+      <span>Rp. {{ formatUnitPrice }}</span>
     </td>
     <td>
       <span>{{ unitName }}</span>
+    </td>
+    <td>
+      <span>{{ (rabItemData.rab_item_without_ahs ? (rab.volume || 0) * 1 : (rabItemData.coefficient || 0) * (rab.volume || 0)) }}</span>
+    </td>
+    <td>
+      <span>Rp. {{ formatTotalPrice }}
+      </span>
     </td>
   </tr>
 </template>
@@ -103,6 +110,15 @@
           },
         ].concat(this.customAhsIds || []);
         return combinedCustomAhs;
+      },
+      formatUnitPrice() {
+        return formatCurrency(this.rabItemData.custom_ahs_itemable_type == 'App\\Models\\CustomItemPrice' ?
+         this.rabItemData.custom_ahs_itemable.price : 
+          (this.rabItemData.custom_ahs_itemable_type == 'App\\Models\\CustomAhp' ?
+           this.rabItemData.custom_ahs_itemable.subtotal : this.rabItemData.custom_ahs_itemable.price))
+      },
+      formatTotalPrice() {
+        return formatCurrency(this.rabItemData.subtotal)
       },
       unitName() {
         if (this.unitIds) {
