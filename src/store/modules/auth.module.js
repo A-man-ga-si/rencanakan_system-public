@@ -83,8 +83,6 @@ const actions = {
         demo_quota: user.demo_quota
       };
 
-      console.log(userData)
-
       const parsedToken = token.plainTextToken.split('|')[1];
 
       setCurrentUser(userData);

@@ -16,8 +16,11 @@ export const buyUrl = '#';
 export const landingPageUrl = 'https://rencanakan.id';
 // export const apiDomain = 'http://localhost:8000';
 
+// export const midtransModuleUrl = 'https://app.sandbox.midtrans.com/snap/snap.js'
+// export const midtransClientKey = 'SB-Mid-client-woKoDnctT1WZG9R1'
+
 export const midtransModuleUrl = process.env.NODE_ENV == 'development' ? 'https://app.sandbox.midtrans.com/snap/snap.js' : 'https://app.midtrans.com/snap/snap.js'
-export const midtransClientKey = process.env.NODE_ENV == 'development' ? 'SB-Mid-client-5mnNuoPzJ8v3lPEX' : 'Mid-client-1U2bmsvjj8eJIBEP'
+export const midtransClientKey = process.env.NODE_ENV == 'development' ? 'SB-Mid-client-woKoDnctT1WZG9R1' : 'Mid-client-1U2bmsvjj8eJIBEP'
 
 // const midtransScriptEl = document.createElement('script');
 //       midtransScriptEl.setAttribute('src', 'https://app.midtrans.com/snap/snap.js')

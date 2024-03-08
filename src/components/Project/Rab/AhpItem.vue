@@ -74,7 +74,7 @@
             :tooltip="customAhpAItem.tooltip"
             :coefficient="formattedAhpNumerics[customAhpAItem.code]"
             :editableCoefficient="
-              customAhp.is_default == '0' ? false : customAhpAItem.editableCoefficient
+              customAhp.is_default == '0' ? customAhpAItem.editableCoefficient : false
             "
             :description="customAhpAItem.description"
             @value-changed="onAhpItemChanged($event, customAhpAItem)"
@@ -92,7 +92,7 @@
             :tooltip="customAhpBItem.tooltip"
             :coefficient="formattedAhpNumerics[customAhpBItem.code]"
             :editableCoefficient="
-              customAhp.is_default == '0' ? false : customAhpBItem.editableCoefficient
+              customAhp.is_default == '0' ? customAhpBItem.editableCoefficient : false
             "
             :description="customAhpBItem.description"
             @value-changed="onAhpItemChanged($event, customAhpBItem)"
@@ -110,7 +110,7 @@
             :tooltip="replaceTooltip(customAhpCItem.tooltip)"
             :coefficient="formattedAhpNumerics[customAhpCItem.code]"
             :editableCoefficient="
-              customAhp.is_default == '0' ? false : customAhpCItem.editableCoefficient
+              customAhp.is_default == '0' ? customAhpCItem.editableCoefficient : false
             "
             :description="customAhpCItem.description"
           />
@@ -127,7 +127,7 @@
             :tooltip="replaceTooltip(customAhpDItem.tooltip)"
             :coefficient="formattedAhpNumerics[customAhpDItem.code]"
             :editableCoefficient="
-              customAhp.is_default == '0' ? false : customAhpDItem.editableCoefficient
+              customAhp.is_default == '0' ? customAhpDItem.editableCoefficient : false
             "
             :description="customAhpDItem.description"
           />

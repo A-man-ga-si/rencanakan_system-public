@@ -55,9 +55,6 @@ export default {
             ...this.$route.query,
         }
     },
-    mounted() {
-        console.log(this.status);
-    },
     methods: {
         replaceTo(target) {
             this.$router.replace({name: target});

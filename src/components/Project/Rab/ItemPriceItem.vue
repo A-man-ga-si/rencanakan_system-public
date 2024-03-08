@@ -125,7 +125,6 @@
         if (itemPrice.length) {
           customItemPrice.forEach((cip, idx) => {
             for (const ip of itemPrice) {
-              console.log(cip);
               if (ip.id == cip.code) {
                 ip.price = cip.price;
                 customItemPrice.splice(idx, 1);

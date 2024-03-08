@@ -174,15 +174,13 @@
             customAhsItemableItem.custom_ahs_itemable_type = ahsItemable(
               customAhsItemableItem.custom_ahs_itemable_type
             );
-            console.log(customAhsItemableItem)
             return customAhsItemableItem;
           });
-          console.log(d)
         return d;
       },
       getItemPrice() {
         return `Rp. ${formatCurrency(
-          this.customAhsItem.custom_ahs_itemable.subtotal
+          ahsItemable(this.customAhsItem.custom_ahs_itemable_type) == 'CustomAhp' ? this.customAhsItem.custom_ahs_itemable.subtotal : this.customAhsItem.custom_ahs_itemable.price
         )}`;
       },
       getSubtotalPrice() {

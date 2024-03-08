@@ -5,6 +5,7 @@ import { getToken } from '../../utils';
 
 const projectApi = new ApiTwo({
   basePath: 'project',
+  currentActiveProject: {},
 });
 
 const state = {
@@ -13,6 +14,7 @@ const state = {
 
 const getters = {
   getProjects: state => state.projects,
+  getCurrentActiveProject: state => state.currentActiveProject,
 };
 
 const mutations = {
@@ -21,6 +23,9 @@ const mutations = {
   },
   pushProject(state, project) {
     state.projects.push(project);
+  },
+  setCurrentActiveProject(state, project) {
+    state.currentActiveProject = project
   },
 };
 

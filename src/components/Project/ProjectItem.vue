@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
   import { Notify } from 'notiflix';
   import { PhArrowSquareOut, PhCreditCard } from 'phosphor-vue';
   import Swal from 'sweetalert2';
@@ -92,7 +92,7 @@
       }
     },
     methods: {
-      ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial']),
+      ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial', 'showProject']),
       showDetailProjectTutorial() {
         if (this.shouldShowTutorial('manage_project')) {
           this.editAhsButtonTutorial = this.activateTutorial()
@@ -119,7 +119,10 @@
       reload() {
         this.$refs['project-data-table'].reloadTable();
       },
-      detailProject(projectHashid, order) {
+      ...mapMutations([
+        'setCurrentActiveProject'
+      ]),
+      async detailProject(projectHashid, order) {
 
         if (order.is_expired) {
           Notify.failure('Project telah expired. Perpanjang / upgrade subscription untuk membuka & melanjutkan project ini.')
@@ -130,6 +133,10 @@
         this.markLastOpenedAt({
           projectId: projectHashid,
         });
+
+        const res = await this.showProject(projectHashid)
+        await this.setCurrentActiveProject(res.data.data.project)
+
         this.$router.push({ path: `/app/projects/${projectHashid}/rab/ahs` });
       },
       editProject(project) {
@@ -140,7 +147,6 @@
         this.$emit('manage-project-subscription-button-clicked', projectData)
       },
       deleteProject(name, id) {
-        console.log(name);
         Swal.fire({
           title: 'Hapus Project ?',
           html: `<div class="alert alert-danger bg-white border-danger text-left" style="border-radius: 10px;">

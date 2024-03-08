@@ -35,6 +35,12 @@
             <b-nav-item :to="{ name: 'RabAhp' }">
               {{ $t('pages.projects.rab.tools-price-tab') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'RabImplementationSchedule' }">
+              {{ $t('pages.projects.rab.implementation-schedule-tab') }}
+            </b-nav-item>
+            <b-nav-item :to="{ name: 'MaterialEstimator' }">
+              Hitung Bahan
+            </b-nav-item>
           </b-nav>
           <router-view />
         </b-card>
@@ -46,12 +52,13 @@
 
 <script>
   import ExportRab from '@/components/Project/ExportRab.vue';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapMutations } from 'vuex';
   import { Notify } from 'notiflix';
 
   export default {
     methods: {
       ...mapActions(['showProject']),
+      ...mapMutations(['setCurrentActiveProject']),
       exportRab() {
         this.$bvModal.show('export-rab');
       },
@@ -63,6 +70,8 @@
         this.$router.replace({
           name: 'Project'
         })
+      } else {
+        await this.setCurrentActiveProject(data.data.data.project)
       }
     },
     components: {

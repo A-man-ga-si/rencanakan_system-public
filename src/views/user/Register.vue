@@ -172,6 +172,12 @@
                 {{ errors.password_confirmation }}
               </span>
             </div>
+            <div class="mb-4">
+              <div class="form-group d-flex">
+                <b-form-checkbox v-model="isTncChecked" class="itemCheck mb-0 d-inline-block" id="tnc-checkbox" />
+                <label class="mb-0" for="">Dengan ini, saya menyatakan bahwa saya telah membaca dan menyetujui <a href="https://rencanakan.id/syarat-ketentuan/" target="_blank" style="text-decoration: underline;">Syarat dan Ketentuan</a>  yang berlaku pada Rencanakan.id</label>
+              </div>
+            </div>
             <div class="d-flex justify-content-end align-items-center">
               <router-link
                 :to="{ name: 'Login' }"
@@ -208,6 +214,7 @@
 </template>
 <script>
   import { mapActions, mapGetters } from 'vuex';
+  import { Notify } from 'notiflix'
 
   export default {
     data() {
@@ -228,32 +235,37 @@
           password: '',
           password_confirmation: '',
         },
+        isTncChecked: false,
       };
     },
     methods: {
       async formSubmit() {
         try {
-          await this.register({
-            first_name: this.firstName,
-            last_name: this.lastName,
-            job: this.job,
-            email: this.email,
-            phone: this.phone,
-            password: this.password,
-            password_confirmation: this.passwordConfirmation,
-          });
-          this.$notify(
-            'success',
-            this.$t('alert.success'),
-            this.$t('user.register-success-message'),
-            {
-              duration: 3000,
-              permanent: false,
-            }
-          );
-          this.$router.push({
-            name: 'Login',
-          });
+          if (this.isTncChecked) {
+            await this.register({
+              first_name: this.firstName,
+              last_name: this.lastName,
+              job: this.job,
+              email: this.email,
+              phone: this.phone,
+              password: this.password,
+              password_confirmation: this.passwordConfirmation,
+            });
+            this.$notify(
+              'success',
+              this.$t('alert.success'),
+              this.$t('user.register-success-message'),
+              {
+                duration: 3000,
+                permanent: false,
+              }
+            );
+            this.$router.push({
+              name: 'Login',
+            });
+          } else {
+            Notify.failure('Centang persetujuan syarat dan ketentuan layanan untuk melanjutkan pendaftaran')
+          }
         } catch (err) {
           switch (err.response?.status) {
             case 422:

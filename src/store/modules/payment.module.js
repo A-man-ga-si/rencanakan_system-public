@@ -24,7 +24,6 @@ const actions = {
 
   async setPending(ctx, { snapToken }) {
     const res = await paymentApi.post('set-pending', { snapToken });
-    console.log(res);
   },
 
   // NOTE: For demo purpose only !

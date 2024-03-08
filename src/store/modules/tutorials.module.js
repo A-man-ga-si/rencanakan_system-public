@@ -22,12 +22,7 @@ const mutations = {
     state.tutorialList = val
   },
   updateTutorialItem(state, { key, val }) {
-    console.log('Updating....')
-    console.log('Before : ')
-    console.log(state.tutorialList[key])
     state.tutorialList[key] = val
-    console.log('After : ')
-    console.log(state.tutorialList[key])
   }
 }
 
