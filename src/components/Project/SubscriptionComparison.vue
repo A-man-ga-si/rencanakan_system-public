@@ -9,8 +9,8 @@
           </b-card-title>
           <b-card-body class="pt-2" v-html="subscription.description"></b-card-body>
           <div class="text-center">
-            <h5 class="promo-text" v-if="subscription.promotion_price" style="text-decoration: line-through;">Rp. {{ subscription.formatted_promotion_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
-            <h5 class="font-weight-bold">Rp. {{ subscription.formatted_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : 'tahun')) }}</h5>
+            <h5 class="promo-text" v-if="subscription.promotion_price" style="text-decoration: line-through;">Rp. {{ subscription.formatted_promotion_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' : (subscription.subscription_type == 'THREEWEEKLY' ? '3 hari' : 'tahun'))) }}</h5>
+            <h5 class="font-weight-bold">Rp. {{ subscription.formatted_price }}/{{ subscription.subscription_type == 'MONTHLY' ? 'bulan' : (subscription.subscription_type == 'DAILY' ? 'hari' : (subscription.subscription_type == 'QUARTERLY' ? '3 bulan' :  (subscription.subscription_type == 'THREEWEEKLY' ? '3 hari' : 'tahun'))) }}</h5>
             <span class="d-block blinking-text"><span class="text-danger">*</span> Penawaran Terbatas</span>
             <b-button @click="onChooseSubscription(subscription.id)" variant="primary" type="button" class="mt-3">Pilih Paket</b-button>
           </div>
