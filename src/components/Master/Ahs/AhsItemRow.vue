@@ -49,15 +49,6 @@
         @change="updateCoefficient($event)"
         class="inline-edit"
       />
-      <span class="bg-success">
-        {{ ahsItem.coefficient }}
-      </span>
-      <span class="bg-danger text-white">
-        {{ ahsItem.ahs_itemable.id }}
-      </span>
-      <span class="bg-primary text-white">
-        {{ ahsItem }}
-      </span>
     </td>
     <td>{{ getItemPrice }}</td>
     <td>{{ getSubtotalPrice }}</td>
