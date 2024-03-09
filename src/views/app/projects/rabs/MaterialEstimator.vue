@@ -1,20 +1,38 @@
 <template>
-  <div class="rab-summary-page mt-5">
-    <MaterialEstimatorItem
-      v-for="(rab, idx) in getRabs"
-      :key="idx"
-      :index="idx"
-      :rab-item="rab"
-      :ahs-code-list="customAhsIds"
-      :unit-code-list="getUnit"
-      @rab-item-deleted="reloadData"
-      @rab-item-added="reloadData"
-      @rab-item-updated="reloadData"
-      @rab-item-header-deleted="reloadData"
-      @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
-      @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
-      @edit-rab-item-bt-clicked="editRab"
-    />
+  <div class="material-estimator-page">
+    <div class="subscription-didnt-supported text-center mt-5" v-if="getCurrentActiveProject.subscription_id != 'professional'">
+      <img src="@/assets/img/custom/package.svg" alt="" width="400" class="mb-5">
+      <h2>Fitur Dikunci</h2>
+      <p>Paket anda tidak mendukung untuk fitur hitung bahan. Silahkan upgrade paket terlebih dahulu</p>
+    </div>
+    <div class="rab-summary-page mt-5" v-else>
+      <div class="empty-view text-center" v-if="getRabs.length <= 0">
+        <img
+          src="@/assets/img/panel/Empty-amico.svg"
+          alt=""
+          style="max-width: 350px; width: 100%"
+        />
+        <h2 class="mt-4">Belum Ada RAB</h2>
+        <p>Buat RAB (minimal 1 RAB) terlebih dahulu untuk melihat hasil hitung bahan!.</p>
+      </div>
+      <div class="material-estimator-view" v-else>
+        <MaterialEstimatorItem
+          v-for="(rab, idx) in getRabs"
+          :key="idx"
+          :index="idx"
+          :rab-item="rab"
+          :ahs-code-list="customAhsIds"
+          :unit-code-list="getUnit"
+          @rab-item-deleted="reloadData"
+          @rab-item-added="reloadData"
+          @rab-item-updated="reloadData"
+          @rab-item-header-deleted="reloadData"
+          @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
+          @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
+          @edit-rab-item-bt-clicked="editRab"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -98,7 +116,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getRabs', 'getAhs', 'getProjects', 'getUnit']),
+      ...mapGetters(['getRabs', 'getAhs', 'getProjects', 'getUnit', 'getCurrentActiveProject']),
       projectPpn() {
         const percentage = this.projectProperties.data
           ? this.projectProperties.data.data.project.ppn
