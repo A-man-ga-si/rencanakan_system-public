@@ -13,14 +13,24 @@
     <td>
       <v-select
         label="id"
+        :reduce="
+          ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
+        "
+        :options="getAhsItemableList" 
+        :value="translateAhsItemId"
+        @input="ahsItemIdChange"
+        id=""
+      />
+      <!-- <v-select
+        label="id"
         @input="submitUpdateAhsItem"
         :reduce="
           ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
         "
-        :options="getAhsItemableList"
+        :options="getAhsItemableList" 
         v-model="ahsItemableId"
         id=""
-      />
+      /> -->
     </td>
     <td>
       <v-select
@@ -35,10 +45,19 @@
     <td>
       <input
         type="number"
-        v-model="coefficient"
-        @change="submitUpdateAhsItem"
+        :value="ahsItem.coefficient"
+        @change="updateCoefficient($event)"
         class="inline-edit"
       />
+      <span class="bg-success">
+        {{ ahsItem.coefficient }}
+      </span>
+      <span class="bg-danger text-white">
+        {{ ahsItem.ahs_itemable.id }}
+      </span>
+      <span class="bg-primary text-white">
+        {{ ahsItem }}
+      </span>
     </td>
     <td>{{ getItemPrice }}</td>
     <td>{{ getSubtotalPrice }}</td>
@@ -75,6 +94,14 @@
     },
     methods: {
       ...mapActions(['updateAhsItem', 'deleteAhsItem']),
+      updateCoefficient(val) {
+        this.coefficient = val.target.value
+        this.submitUpdateAhsItem()
+      },
+      ahsItemIdChange(val) {
+        this.ahsItemableId = val
+        this.submitUpdateAhsItem()
+      },
       async submitUpdateAhsItem() {
         try {
           const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
@@ -118,6 +145,9 @@
       },
     },
     computed: {
+      translateAhsItemId() {
+        return `${ahsItemable(this.ahsItem.ahs_itemable_type)}~${this.ahsItem.ahs_itemable_id}`
+      },
       ahsItemableType() {
         const ahsItemableData = this.ahsItem.ahs_itemable_type;
         return ahsItemable(ahsItemableData);
