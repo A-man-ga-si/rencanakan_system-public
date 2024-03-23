@@ -27,6 +27,8 @@ import tutorial from './modules/tutorials.module';
 import global from './modules/global.module'
 import subscription from './modules/subscription.module'
 import implementationScheduleModule from './modules/implementation-schedule.module';
+import masterRabModule from './modules/master/rab.module';
+import masterRabItemModule from './modules/master/rab-item.module'
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -70,6 +72,8 @@ export default new Vuex.Store({
     tutorial,
     global,
     subscription,
-    implementationScheduleModule
+    implementationScheduleModule,
+    masterRabModule,
+    masterRabItemModule
   },
 });

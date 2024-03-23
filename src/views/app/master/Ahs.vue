@@ -105,7 +105,7 @@
           id: 'reference-2023',
           name: 'AHS Permen PUPR 2023'
         },
-      ]
+      ],
     }),
     created() {
       this.loadProvinces();

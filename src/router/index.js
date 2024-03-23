@@ -349,6 +349,18 @@ const routes = [
               ),
           },
           {
+            path: 'rab',
+            name: 'MasterRab',
+            meta: {
+              title: 'Master RAB',
+              permissions: ['access-master-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "masterAhs" */ './../views/app/master/RabSummary.vue'
+              ),
+          },
+          {
             path: 'ahp',
             name: 'MasterAhp',
             meta: {

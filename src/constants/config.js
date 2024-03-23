@@ -3,11 +3,11 @@ export const defaultTitle = 'Untitled';
 export const titleSuffix = ' | Yuk Mulai Hitung RAB';
 
 // URLs Related Configs
-// export const apiDomain = 'http://rencanakan-id-system-backend.test';
+export const apiDomain = 'http://rencanakan-id-system-backend.test';
 
 // export const apiDomain = 'https://beta-api.rencanakan.id';
 // export const apiDomain = 'https://demo-api.rencanakan.id';
-export const apiDomain = 'https://rencanakan.my.id';
+// export const apiDomain = 'https://rencanakan.my.id';
 // export const apiDomain = 'http://rencanakan-id-system-backend.test';
 export const apiUrl = `${apiDomain}/api`;
 export const adminRoot = '/app';

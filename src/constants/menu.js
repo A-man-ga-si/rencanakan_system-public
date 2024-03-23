@@ -79,6 +79,11 @@ const data = [
         permissions: ['access-master-page'],
       },
       {
+        label: 'menu.master-rab',
+        to: `${adminRoot}/master/rab`,
+        permissions: ['access-master-page'],
+      },
+      {
         label: 'menu.master-ahp',
         to: `${adminRoot}/master/ahp`,
         permissions: ['access-master-page'],
