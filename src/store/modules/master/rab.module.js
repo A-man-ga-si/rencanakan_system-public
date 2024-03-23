@@ -22,9 +22,9 @@ const mutations = {
 };
 
 const actions = {
-  async fetchMasterRab({ commit, state }, { query, queryCategory }) {
+  async fetchMasterRab({ commit, state }, { query, queryCategory, provinceId = '' }) {
     const data = await rabApi
-      .get('',query && queryCategory ? `q=${query}&category=${queryCategory}` : null);
+      .get('', `province=${provinceId}${query && queryCategory ? `&q=${query}&category=${queryCategory}` : ''}`);
     console.log(data)
     commit('setMasterRabs', data.data.data.rabs);
     return data;

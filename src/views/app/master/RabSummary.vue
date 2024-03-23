@@ -134,7 +134,7 @@
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
   import EditRab from '@/components/Project/Rab/EditRab.vue';
-  import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
+  import AddRabItemHeader from '@/components/Master/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
   import EditRabItemHeader from '@/components/Project/Rab/EditRabItemHeader.vue';
   import RabSummaryItem from '@/components/Master/Rab/RabSummaryItem.vue';
@@ -168,7 +168,7 @@
           { text: 'Kategori', value: 'header' },
         ],
         selectedProvince: '',
-        selectedAhsGroup: '',
+        selectedAhsGroup: 'all',
         projectProperties: {},
         projects: {},
         ahsCodesList: [],
@@ -182,17 +182,7 @@
       };
     },
     created() {
-      // this.fetchRab({
-      //   projectId: this.$route.params.id,
-      // });
-      this.fetchMasterRab({
-        query: '',
-        queryCategory: ''
-      })
-      this.fetchShowProject();
-      this.fetchUnit();
-      this.getAhsIds();
-      this.loadProvinces();
+      this.loadMasterRab()
     },
     methods: {
       ...mapActions([
@@ -202,6 +192,17 @@
         'fetchMasterRab',
         'fetchProvinces'
       ]),
+      async loadMasterRab() {
+        await this.loadProvinces()
+        await this.fetchMasterRab({
+          query: '',
+          queryCategory: '',
+          provinceId: this.selectedProvince
+        })
+        this.fetchShowProject();
+        this.fetchUnit();
+        this.getAhsIds();
+      },
       async fetchShowProject() {
         this.projectProperties = await this.showProject(this.$route.params.id);
       },
@@ -211,6 +212,9 @@
       },
       async loadProvinces() {
         const data = await this.fetchProvinces();
+        if (data.length > 0) {
+          this.selectedProvince = data[0].hashid
+        }
         this.provinces = data;
       },
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
@@ -220,7 +224,7 @@
       },
       showAddRabItemHeaderModal(rabItem) {
         this.rabItemHeaderAdd = rabItem;
-        this.$bvModal.show('add-rab-item-header');
+        this.$bvModal.show('add-master-rab-item-header');
       },
       fabClick(ref) {
         this.$bvModal.show('add-master-rab');
@@ -228,7 +232,8 @@
       reloadData() {
         this.fetchMasterRab({
           query: '',
-          queryCategory: ''
+          queryCategory: '',
+          provinceId: this.selectedProvince
         })
         // this.fetchRab({
         //   projectId: this.$route.params.id,
@@ -280,6 +285,9 @@
         },
         deep: true,
       },
+      selectedProvince() {
+        this.reloadData()
+      }
     },
     components: {
       RabSummaryItem,

@@ -72,7 +72,7 @@
             </tr>
           </tbody>
           <tbody
-            v-for="(rabItemHeader, idx) in rabItem.rab_item_header"
+            v-for="(rabItemHeader, idx) in rabItem.master_rab_item_header"
             :key="idx"
           >
             <tr>
@@ -108,7 +108,7 @@
               </td>
             </tr>
             <RabSummaryItemRow
-              v-for="(rabItemI, idx2) in rabItemHeader.rab_item"
+              v-for="(rabItemI, idx2) in rabItemHeader.master_rab_item"
               :index="idx2"
               :key="idx2"
               :rab-item-data="rabItemI"
@@ -241,10 +241,11 @@
         await this.storeMasterRabItem({
           rabId: this.rabItem.hashid,
           form: {
-            rab_item_header_id: header ? header.hashid : null,
+            master_rab_item_header_id: header ? header.hashid : null,
             volume: 0,
           },
         });
+        console.log(header)
         this.$emit('rab-item-added');
       },
       onRabItemDeleted() {

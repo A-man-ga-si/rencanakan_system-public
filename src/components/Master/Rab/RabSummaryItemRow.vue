@@ -144,7 +144,6 @@
             id: '-',
           },
         ].concat(this.ahsIds || []);
-        console.log(this.ahsIds)
         return combinedCustomAhs;
       },
       jumlahSubtotal() {
@@ -159,8 +158,8 @@
       $props: {
         handler() {
           this.form.name = this.rabItemData?.name;
-          this.form.customAhsId = this.rabItemData?.custom_ahs
-            ? this.rabItemData?.custom_ahs.hashid
+          this.form.ahsId = this.rabItemData
+            ? (this.rabItemData?.ahs_id ?? '-')
             : '';
           this.form.volume = this.rabItemData?.volume;
           this.form.unitId = this.rabItemData?.hashed_unit_id;
