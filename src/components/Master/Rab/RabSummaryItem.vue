@@ -214,24 +214,23 @@
           text: 'Item RAB ini akan dihapus, aksi ini tidak dapat dibatalkan !',
         });
         if (isConfirmed) {
-          await this.destroyRab({
-            projectId: this.$route.params.id,
-            rabId: this.rabItem.hashid,
+          console.log(this.rabItem.hashid)
+          await this.destroyMasterRab({
+            masterRabId: this.rabItem.hashid,
           });
           Notify.success('Berhasil menghapus RAB');
           this.onRabItemDeleted();
         }
       },
-      async deleteRabItemHeader(rabItemHeaderId) {
+      async deleteRabItemHeader(masterRabItemHeader) {
         const { isConfirmed } = await showConfirmAlert({
           title: 'Hapus section RAB ini ?',
           text: 'Semua item RAB dibawah akan ikut dihapus !',
         });
         if (isConfirmed) {
-          await this.destroyRabItemHeader({
-            projectId: this.$route.params.id,
+          await this.destroyMasterRabItemHeader({
             rabId: this.rabItem.hashid,
-            rabItemHeaderId,
+            masterRabItemHeader,
           });
           this.$emit('rab-item-header-deleted');
           Notify.success('Berhasil menghapus section RAB');

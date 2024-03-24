@@ -13,7 +13,7 @@
             v-model="selectedProvince"
           />
         </div>
-        <div
+        <!-- <div
           class="labeled-select position-relative d-inline-block ml-2"
           style="width: 300px"
         >
@@ -24,9 +24,9 @@
             :options="rabGroup"
             v-model="selectedAhsGroup"
           />
-        </div>
+        </div> -->
     </div>
-    <b-row>
+    <!-- <b-row>
       <b-col :lg="6" :xl="3">
         <div class="text-right mb-2 position-relative">
           <label class="form-group has-float-label mb-0">
@@ -52,7 +52,7 @@
           />
         </b-form-group>
       </b-col>
-    </b-row>
+    </b-row> -->
     <RabSummaryItem
       v-for="(rab, idx) in getMasterRabs"
       :key="idx"
@@ -133,13 +133,12 @@
 
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
-  import EditRab from '@/components/Project/Rab/EditRab.vue';
+  import EditRab from '@/components/Master/Rab/EditRab.vue';
   import AddRabItemHeader from '@/components/Master/Rab/AddRabItemHeader.vue';
   import { formatCurrency } from '@/utils';
-  import EditRabItemHeader from '@/components/Project/Rab/EditRabItemHeader.vue';
+  import EditRabItemHeader from '@/components/Master/Rab/EditRabItemHeader.vue';
   import RabSummaryItem from '@/components/Master/Rab/RabSummaryItem.vue';
   import AddMasterRab from '@/components/Project/Rab/AddMasterRab.vue';
-  import { API_URL } from '@/constants/config'
 
   export default {
     data() {

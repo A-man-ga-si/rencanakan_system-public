@@ -35,11 +35,11 @@ const actions = {
     return data
   },
 
-  async destroyMasterRab({ commit }, { projectId, rabId }) {
-    await rabApi.get(`${rabId}/delete`);
+  async destroyMasterRab({ commit }, { masterRabId }) {
+    await rabApi.get(`${masterRabId}/delete`);
   },
 
-  async updateMasterRab({ commit }, { projectId, rabId, form }) {
+  async updateMasterRab({ commit }, { rabId, form }) {
     const data = await rabApi
       .post(rabId, form);
     return data;
