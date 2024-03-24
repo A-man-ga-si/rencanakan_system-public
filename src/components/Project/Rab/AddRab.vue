@@ -1,8 +1,21 @@
 <template>
   <div class="add-unit">
     <b-modal :id="modalId" :ref="modalId" title="Tambah RAB">
+      <div
+          class="labeled-select position-relative d-inline-block mb-4"
+          style="width: 100%"
+      >
+        <span class="px-1"> Referensi RAB</span>
+        <v-select
+          label="name"
+          :reduce="masterRab => masterRab.hashid"
+          :options="computedMasterRabs"
+          v-model="form.selectedMasterRabId"
+        >
+        </v-select>
+      </div>
       <ValidationInput
-        :label="'Name'"
+        label="Nama"
         field-name="name"
         @keydown.enter="submit"
         v-model="form.name"
@@ -22,8 +35,9 @@
 <script>
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import validationMixins from '@/mixins/validation-mixins';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
+  import { showConfirmAlert } from '@/utils'
 
   export default {
     mixins: [validationMixins],
@@ -32,13 +46,34 @@
         modalId: 'add-rab',
         form: {
           name: '',
+          selectedMasterRabId: '-',
         },
+        provinceId: '',
       };
     },
+    created() {
+      this.loadMasterRab()
+    },
     methods: {
-      ...mapActions(['storeRab']),
+      ...mapActions(['storeRab', 'fetchMasterRab', 'showProject', 'showMasterRab']),
+      async loadMasterRab() {
+        const project = await this.showProject(this.$route.params.id)
+        this.provinceId = project.data.data.project.hashed_province_id
+        await this.fetchMasterRab({
+          query: '',
+          queryCategory: '',
+          provinceId: this.provinceId,
+        })
+      },
       async submit() {
         try {
+          if (this.form.selectedMasterRabId && this.form.selectedMasterRabId != '-') {
+            const userAgreementToReplaceAhs = await showConfirmAlert({
+              title: 'Buat RAB berdasarkan referensi RAB ?',
+              text: 'Jika anda mempunyai AHS dengan kode yang sama dengan data dari AHS referensi RAB, maka harga akan di timpa dengan AHS yang baru. Tetap lanjutkan?'
+            })
+            if (!userAgreementToReplaceAhs.isConfirmed) return
+          }
           await this.storeRab({
             projectId: this.$route.params.id,
             form: this.form,
@@ -47,6 +82,7 @@
           this.hideModal(this.modalId);
           this.resetForm();
           this.$emit('rab-added');
+          // window.location.reload()
         } catch (err) {
           console.error(err);
           Notify.failure('Gagal menambahkan RAB');
@@ -59,7 +95,36 @@
 
       resetForm() {
         this.form.name = '';
+        this.form.selectedMasterRabId = '-';
       },
+    },
+    computed: {
+      ...mapGetters(['getMasterRabs']),
+      computedMasterRabs() {
+        return [{
+          name: '-',
+          id: '-'
+        }].concat(this.getMasterRabs || [])
+      },
+      masterRabName() {
+        const that = this
+        const filteredResult = this.computedMasterRabs.filter(d => d.hashid == that.form.selectedMasterRabId)
+        console.log(filteredResult)
+        if (filteredResult.length > 0) {
+          return filteredResult[0].name
+        } else {
+          return ''
+        }
+      }
+    },
+    watch: {
+      'form.selectedMasterRabId': function() {
+        this.form.name = this.masterRabName
+        // const masterRab = await this.showMasterRab({
+        //   masterRabId: this.form.selectedMasterRabId,
+        //   provinceId: this.provinceId,
+        // })
+      }
     },
     components: {
       ValidationInput,

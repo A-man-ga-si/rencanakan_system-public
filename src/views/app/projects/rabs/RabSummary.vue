@@ -181,10 +181,12 @@
       fabClick(ref) {
         this.$bvModal.show('add-rab');
       },
-      reloadData() {
-        this.fetchRab({
+      async reloadData() {
+        await this.fetchRab({
           projectId: this.$route.params.id,
         });
+        this.fetchUnit();
+        this.getCustomAhsIds();
       },
       numberFormat(number) {
         return formatCurrency(number);

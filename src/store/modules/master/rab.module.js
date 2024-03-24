@@ -30,6 +30,11 @@ const actions = {
     return data;
   },
 
+  async showMasterRab({ commit }, { masterRabId, provinceId = '' }) {
+    const data = await rabApi.get(`${masterRabId}`, `province=${provinceId}`)
+    return data
+  },
+
   async destroyMasterRab({ commit }, { projectId, rabId }) {
     await rabApi.get(`${rabId}/delete`);
   },
