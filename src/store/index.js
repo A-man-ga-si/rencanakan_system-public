@@ -30,6 +30,7 @@ import implementationScheduleModule from './modules/implementation-schedule.modu
 import masterRabModule from './modules/master/rab.module';
 import masterRabItemModule from './modules/master/rab-item.module'
 import masterRabItemHeaderModule from './modules/master/rab-item-header.module'
+import masterRabItemCategoryModule from './modules/master/master-rab-category.module';
 import { setCurrentLanguage } from '../utils';
 
 Vue.use(Vuex);
@@ -76,6 +77,7 @@ export default new Vuex.Store({
     implementationScheduleModule,
     masterRabModule,
     masterRabItemModule,
-    masterRabItemHeaderModule
+    masterRabItemHeaderModule,
+    masterRabItemCategoryModule
   },
 });

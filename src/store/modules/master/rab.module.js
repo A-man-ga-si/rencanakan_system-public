@@ -22,10 +22,9 @@ const mutations = {
 };
 
 const actions = {
-  async fetchMasterRab({ commit, state }, { query, queryCategory, provinceId = '' }) {
+  async fetchMasterRab({ commit, state }, { query, queryCategory, provinceId = '', masterRabCategoryId = '' }) {
     const data = await rabApi
-      .get('', `province=${provinceId}${query && queryCategory ? `&q=${query}&category=${queryCategory}` : ''}`);
-    console.log(data)
+      .get('', `province=${provinceId}${query && queryCategory ? `&q=${query}&category=${queryCategory}` : ''}${masterRabCategoryId ? `&master-rab-category-id=${masterRabCategoryId}` : ''}`);
     commit('setMasterRabs', data.data.data.rabs);
     return data;
   },
@@ -46,6 +45,7 @@ const actions = {
   },
 
   async storeMasterRab({ commit }, { projectId, form }) {
+    console.log(form)
     const data = await rabApi
       .post('', form);
     return data;

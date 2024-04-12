@@ -76,7 +76,6 @@ const actions = {
 
   async fetchAhsIds({ commit }) {
     const data = await masterAhsApi.get(`ids`);
-    console.log('Ahs data', data)
     commit('setAhsIds', data.data.data.ahses);
     return data;
   },

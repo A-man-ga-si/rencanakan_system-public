@@ -1,30 +1,39 @@
 <template>
   <div class="rab-summary-page">
-    <div class="left mb-3">
-        <div
-          class="labeled-select position-relative d-inline-block"
-          style="width: 300px"
-        >
-          <span class="px-1"> Provinsi</span>
-          <v-select
-            label="name"
-            :reduce="province => province.hashid"
-            :options="provinces"
-            v-model="selectedProvince"
-          />
-        </div>
-        <!-- <div
-          class="labeled-select position-relative d-inline-block ml-2"
-          style="width: 300px"
-        >
-          <span class="px-1"> Group AHS</span>
-          <v-select
-            label="name"
-            :reduce="ahs => ahs.id"
-            :options="rabGroup"
-            v-model="selectedAhsGroup"
-          />
-        </div> -->
+    <div class="d-flex justify-content-between">
+      <div class="left mb-3">
+          <div
+            class="labeled-select position-relative d-inline-block"
+            style="width: 300px"
+          >
+            <span class="px-1"> Provinsi</span>
+            <v-select
+              label="name"
+              :reduce="province => province.hashid"
+              :options="provinces"
+              v-model="selectedProvince"
+            />
+          </div>
+          <!-- <div
+            class="labeled-select position-relative d-inline-block ml-2"
+            style="width: 300px"
+          >
+            <span class="px-1"> Group AHS</span>
+            <v-select
+              label="name"
+              :reduce="ahs => ahs.id"
+              :options="rabGroup"
+              v-model="selectedAhsGroup"
+            />
+          </div> -->
+      </div>
+      <div class="center w-100">
+        <h5 class="ml-3 mt-2" v-if="Object.values(getSelectedRabCategory).length > 0">{{ getSelectedRabCategory.name }}</h5>
+        <h5 class="text-danger ml-3 mt-2 blinking-text" v-else>Tidak Ada RAB Terpilih</h5>
+      </div>
+      <div class="right w-100 text-right">
+        <button type="button" class="btn btn-primary" v-b-modal.add-rab-category-modal>Switch RAB</button>
+      </div>
     </div>
     <!-- <b-row>
       <b-col :lg="6" :xl="3">
@@ -120,6 +129,7 @@
       :rab="rabItemHeaderAdd"
       @rab-item-header-added="reloadData"
     />
+    <AddRabCategory @master-rab-category-changed="changeMasterRabCategory" />
     <EditRab @rab-updated="reloadData" :edited-rab="editedRabItem" />
     <EditRabItemHeader
       @rab-item-header-updated="reloadData"
@@ -139,6 +149,7 @@
   import EditRabItemHeader from '@/components/Master/Rab/EditRabItemHeader.vue';
   import RabSummaryItem from '@/components/Master/Rab/RabSummaryItem.vue';
   import AddMasterRab from '@/components/Project/Rab/AddMasterRab.vue';
+  import AddRabCategory from '@/components/Master/Rab/AddRabCategory.vue';
 
   export default {
     data() {
@@ -178,6 +189,7 @@
         searchCountdownObject: null,
         editedRabItem: null,
         editedRabItemHeader: null,
+        masterRabCategoryId: null,
       };
     },
     created() {
@@ -193,11 +205,14 @@
       ]),
       async loadMasterRab() {
         await this.loadProvinces()
-        await this.fetchMasterRab({
-          query: '',
-          queryCategory: '',
-          provinceId: this.selectedProvince
-        })
+        if (this.masterRabCategoryId) {
+          await this.fetchMasterRab({
+            query: '',
+            queryCategory: '',
+            provinceId: this.selectedProvince,
+            masterRabCategoryId: this.masterRabCategoryId
+          })
+        }
         this.fetchShowProject();
         this.fetchUnit();
         this.getAhsIds();
@@ -216,6 +231,16 @@
         }
         this.provinces = data;
       },
+      async changeMasterRabCategory(masterRabCategoryId) {
+        if (this.masterRabCategoryId) {
+          await this.fetchMasterRab({
+            query: '',
+            queryCategory: '',
+            provinceId: this.selectedProvince,
+            masterRabCategoryId,
+          })
+        }
+      },
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
         this.editedRabItemHeader = rabItemHeader;
@@ -229,11 +254,14 @@
         this.$bvModal.show('add-master-rab');
       },
       reloadData() {
-        this.fetchMasterRab({
-          query: '',
-          queryCategory: '',
-          provinceId: this.selectedProvince
-        })
+        if (this.masterRabCategoryId) {
+          this.fetchMasterRab({
+            query: '',
+            queryCategory: '',
+            provinceId: this.selectedProvince,
+            masterRabCategoryId: this.masterRabCategoryId
+          })
+        }
         // this.fetchRab({
         //   projectId: this.$route.params.id,
         // });
@@ -247,9 +275,9 @@
       },
     },
     computed: {
-      ...mapGetters(['getMasterRabs', 'getAhs', 'getProjects', 'getUnit']),
+      ...mapGetters(['getMasterRabs', 'getAhs', 'getProjects', 'getUnit', 'getSelectedRabCategory']),
       rabsTotal() {
-        const mappedRabs = this.getMasterRabs.map(data => data.subtotal);
+        const mappedRabs = this.getMasterRabs ? this.getMasterRabs.map(data => data.subtotal) : [];
         return mappedRabs.length
           ? parseInt(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
@@ -284,6 +312,9 @@
         },
         deep: true,
       },
+      getSelectedRabCategory() {
+        this.masterRabCategoryId = this.getSelectedRabCategory.id
+      },
       selectedProvince() {
         this.reloadData()
       }
@@ -295,6 +326,19 @@
       AddMasterRab,
       AddRabItemHeader,
       EditRabItemHeader,
+      AddRabCategory,
     },
   };
 </script>
+
+<style>
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blinking-text {
+  animation: blink 1s infinite;
+}
+</style>
