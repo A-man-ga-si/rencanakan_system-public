@@ -1,20 +1,36 @@
 <template>
   <div class="add-unit">
     <b-modal :id="modalId" :ref="modalId" title="Tambah RAB">
+      <b-nav class="mb-5 justify-content-center" pills>
+        <b-nav-item
+          @click.prevent="switchRABMode('new')"
+          :active="formOptions.currentState === 'new'"
+        >
+          Kustom RAB Baru
+        </b-nav-item>
+        <b-nav-item
+          @click.prevent="switchRABMode('existing')"
+          :active="formOptions.currentState === 'existing'"
+        >
+          Ambil Referensi RAB
+        </b-nav-item>
+      </b-nav>
       <div
+          v-if="formOptions.currentState == 'existing'"
           class="labeled-select position-relative d-inline-block mb-4"
           style="width: 100%"
       >
         <span class="px-1"> Referensi RAB</span>
         <v-select
           label="name"
-          :reduce="masterRab => masterRab.hashid"
-          :options="computedMasterRabs"
-          v-model="form.selectedMasterRabId"
+          :reduce="masterRabCategory => masterRabCategory.id"
+          :options="getRabCategories"
+          v-model="form.selectedMasterRabCategoryId"
         >
         </v-select>
       </div>
       <ValidationInput
+        v-if="formOptions.currentState == 'new'"
         label="Nama"
         field-name="name"
         @keydown.enter="submit"
@@ -46,28 +62,30 @@
         modalId: 'add-rab',
         form: {
           name: '',
-          selectedMasterRabId: '-',
+          selectedMasterRabCategoryId: '-',
+        },
+        formOptions: {
+          currentState: 'new'
         },
         provinceId: '',
       };
     },
     created() {
-      this.loadMasterRab()
+      this.loadMasterRabCategories()
     },
     methods: {
-      ...mapActions(['storeRab', 'fetchMasterRab', 'showProject', 'showMasterRab']),
-      async loadMasterRab() {
+      ...mapActions(['storeRab', 'fetchMasterRab', 'showProject', 'showMasterRab', 'getMasterRabCategory']),
+      async loadMasterRabCategories() {
         const project = await this.showProject(this.$route.params.id)
         this.provinceId = project.data.data.project.hashed_province_id
-        await this.fetchMasterRab({
-          query: '',
-          queryCategory: '',
-          provinceId: this.provinceId,
-        })
+        this.getMasterRabCategory()
+      },
+      switchRABMode(mode) {
+        this.formOptions.currentState = mode
       },
       async submit() {
         try {
-          if (this.form.selectedMasterRabId && this.form.selectedMasterRabId != '-') {
+          if (this.form.selectedMasterRabCategoryId && this.form.selectedMasterRabCategoryId != '-') {
             const userAgreementToReplaceAhs = await showConfirmAlert({
               title: 'Buat RAB berdasarkan referensi RAB ?',
               text: 'Jika anda mempunyai AHS dengan kode yang sama dengan data dari AHS referensi RAB, maka harga akan di timpa dengan AHS yang baru. Tetap lanjutkan?'
@@ -99,7 +117,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getMasterRabs']),
+      ...mapGetters(['getRabCategories']),
       computedMasterRabs() {
         return [{
           name: '-',
