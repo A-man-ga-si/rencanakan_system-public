@@ -104,6 +104,7 @@
         this.$refs[refname].hide();
       },
       async onTapSaveButton() {
+        if (this.isSubmitting) { return; }
         this.isSubmitting = true;
         try {
           this.resetInvalid();
