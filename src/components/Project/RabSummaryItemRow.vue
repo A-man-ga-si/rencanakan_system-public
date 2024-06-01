@@ -12,12 +12,10 @@
     </td>
     <td>
       <v-select
-        label="code"
         @input="update"
         :clearable="true"
-        :reduce="customAhsIds => customAhsIds.hashid"
-        :options="combinedCustomAhsIds"
-        v-model="form.customAhsId"
+        :options="customAhsItems"
+        v-model="form.selectedCustomAhs"
       />
     </td>
     <td>
@@ -68,9 +66,10 @@
   export default {
     data() {
       return {
+        customAhsItems: [],
         form: {
           name: '',
-          customAhsId: '',
+          selectedCustomAhs: null,
           volume: '',
           unitId: '',
           price: '',
@@ -100,14 +99,14 @@
     methods: {
       ...mapActions(['destroyRabItem', 'updateRabItem']),
       async update() {
-        const { name, customAhsId, volume, unitId, price } = this.form;
+        const { name, selectedCustomAhs, volume, unitId, price } = this.form;
         await this.updateRabItem({
           projectId: this.$route.params.id,
           rabId: this.rab.hashid,
           rabItemId: this.rabItemData.hashid,
           form: {
             name,
-            custom_ahs_id: customAhsId,
+            custom_ahs_id: selectedCustomAhs.id,
             volume,
             unit_id: unitId,
             price,
@@ -134,16 +133,6 @@
       },
     },
     computed: {
-      combinedCustomAhsIds() {
-        const combinedCustomAhs = [
-          {
-            hashid: '',
-            name: '-',
-            code: '-',
-          },
-        ].concat(this.customAhsIds || []);
-        return combinedCustomAhs;
-      },
       jumlahSubtotal() {
         return `Rp. ${formatCurrency(
           this.isAhsReferenced(this.rabItemData)
@@ -156,9 +145,18 @@
       $props: {
         handler() {
           this.form.name = this.rabItemData?.name;
-          this.form.customAhsId = this.rabItemData?.custom_ahs
-            ? this.rabItemData?.custom_ahs.hashid
-            : '';
+          this.customAhsItems = [
+            { id: '', label: '-' },
+            ...this.customAhsIds.map(customAhs => {
+              return {
+                id: customAhs.hashid,
+                label: `${customAhs.name} - ${customAhs.code}`
+              }
+            })
+          ]
+          this.form.selectedCustomAhs = this.customAhsItems.find(
+            customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
+          );
           this.form.volume = this.rabItemData?.volume;
           this.form.unitId = this.rabItemData?.hashed_unit_id;
           this.form.price = this.rabItemData?.custom_ahs
