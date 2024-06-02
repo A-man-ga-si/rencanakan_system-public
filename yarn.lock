@@ -6297,9 +6297,9 @@ performance-now@^2.1.0:
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-"phosphor-vue@git+https://davidmahbubi@bitbucket.org/paypalverifications/phosphor-vue.git":
+"phosphor-vue@git+https://davidmahbubi@bitbucket.org/flying-doge/phosphor-vue.git":
   version "1.4.2"
-  resolved "git+https://davidmahbubi@bitbucket.org/paypalverifications/phosphor-vue.git#13a4011156c17a87f0f2497a9154aa5610c5a5a3"
+  resolved "git+https://davidmahbubi@bitbucket.org/flying-doge/phosphor-vue.git#13a4011156c17a87f0f2497a9154aa5610c5a5a3"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.3.0"
