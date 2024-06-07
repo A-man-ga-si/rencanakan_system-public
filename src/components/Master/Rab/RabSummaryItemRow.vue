@@ -146,7 +146,6 @@
     },
     watch: {
       $props: {
-        deep: true,
         immediate: true, 
         handler () {
           this.form.name = this.rabItemData?.name;
