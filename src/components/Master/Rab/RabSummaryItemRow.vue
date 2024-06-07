@@ -164,7 +164,7 @@
           );
           this.form.volume = this.rabItemData?.volume;
           this.form.unitId = this.rabItemData?.hashed_unit_id;
-          this.form.price = `Rp. ${formatCurrency((this.rabItemData.price ?? 0))}`;
+          this.form.price = `Rp. ${formatCurrency((this.rabItemData.price ?? 0).toFixed(2))}`;
         }
       }
     },
