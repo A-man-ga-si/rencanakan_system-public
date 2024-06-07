@@ -107,7 +107,6 @@
           .replace("Rp.", "")
           .replace(",", "")
           .replace(" ", "");
-          console.log(trimmedPrice)
         await this.updateMasterRabItem({
           rabId: this.rab.hashid,
           rabItemId: this.rabItemData.hashid,
