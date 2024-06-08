@@ -12,12 +12,10 @@
     </td>
     <td>
       <v-select
-        label="id"
         @input="update"
         :clearable="true"
-        :reduce="ahsIds => ahsIds.id"
-        :options="combinedAhsIds"
-        v-model="form.ahsId"
+        :options="customAhsItems"
+        v-model="form.selectedCustomAhs"
       />
     </td>
     <td>
@@ -68,9 +66,10 @@
   export default {
     data() {
       return {
+        customAhsItems: [],
         form: {
           name: '',
-          ahsId: '',
+          selectedCustomAhs: null,
           volume: '',
           unitId: '',
           price: '',
@@ -103,16 +102,20 @@
         if (!this.form.unitId) {
           this.form.unitId = this.unitIds[0].hashid
         }
-        const { name, ahsId, volume, unitId, price } = this.form;
+        const { name, selectedCustomAhs, volume, unitId, price } = this.form;
+        const trimmedPrice = price
+          .replace("Rp.", "")
+          .replace(",", "")
+          .replace(" ", "");
         await this.updateMasterRabItem({
           rabId: this.rab.hashid,
           rabItemId: this.rabItemData.hashid,
           form: {
             name,
-            ahs_id: ahsId,
+            ahs_id: selectedCustomAhs.id,
             volume,
             unit_id: unitId,
-            price,
+            price: trimmedPrice,
           },
         });
         this.$emit('update-rab-item');
@@ -136,39 +139,32 @@
       },
     },
     computed: {
-      combinedAhsIds() {
-        const combinedCustomAhs = [
-          {
-            hashid: '',
-            name: '-',
-            id: '-',
-          },
-        ].concat(this.ahsIds || []);
-        return combinedCustomAhs;
-      },
       jumlahSubtotal() {
-        return `Rp. ${formatCurrency(
-          this.isAhsReferenced(this.rabItemData)
-            ? this.rabItemData.custom_ahs?.price * this.rabItemData.volume
-            : this.rabItemData.price * this.rabItemData.volume
-        )}`;
+        return `Rp. ${formatCurrency((this.rabItemData.price ?? 0) * this.rabItemData.volume)}`;
       },
     },
     watch: {
       $props: {
-        handler() {
+        immediate: true, 
+        handler () {
           this.form.name = this.rabItemData?.name;
-          this.form.ahsId = this.rabItemData
-            ? (this.rabItemData?.ahs_id ?? '-')
-            : '';
+          this.customAhsItems = [
+            { id: '', label: '-' },
+            ...this.ahsIds.map(customAhs => {
+              return {
+                id: customAhs.id,
+                label: `${customAhs.name} - ${customAhs.id}`
+              }
+            })
+          ];
+          this.form.selectedCustomAhs = this.customAhsItems.find(
+            ahsItem => ahsItem.id == (this.rabItemData?.ahs_id ?? "")
+          );
           this.form.volume = this.rabItemData?.volume;
           this.form.unitId = this.rabItemData?.hashed_unit_id;
-          this.form.price = this.rabItemData?.custom_ahs
-            ? this.rabItemData?.custom_ahs.price.toFixed(2)
-            : this.rabItemData.price;
-        },
-        deep: true,
-      },
+          this.form.price = `Rp. ${formatCurrency((this.rabItemData.price ?? 0).toFixed(2))}`;
+        }
+      }
     },
     components: {
       PhX,
