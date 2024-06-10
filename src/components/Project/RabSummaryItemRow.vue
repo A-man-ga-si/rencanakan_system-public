@@ -141,30 +141,25 @@
         )}`;
       },
     },
-    watch: {
-      $props: {
-        handler() {
-          this.form.name = this.rabItemData?.name;
-          this.customAhsItems = [
-            { id: '', label: '-' },
-            ...this.customAhsIds.map(customAhs => {
-              return {
-                id: customAhs.hashid,
-                label: `${customAhs.name} - ${customAhs.code}`
-              }
-            })
-          ]
-          this.form.selectedCustomAhs = this.customAhsItems.find(
-            customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
-          );
-          this.form.volume = this.rabItemData?.volume;
-          this.form.unitId = this.rabItemData?.hashed_unit_id;
-          this.form.price = this.rabItemData?.custom_ahs
-            ? this.rabItemData?.custom_ahs.price.toFixed(2)
-            : this.rabItemData.price;
-        },
-        deep: true,
-      },
+    created() {
+      this.form.name = this.rabItemData?.name;
+      this.customAhsItems = [
+        { id: '', label: '-' },
+        ...this.customAhsIds.map(customAhs => {
+          return {
+            id: customAhs.hashid,
+            label: `${customAhs.name} - ${customAhs.code}`
+          }
+        })
+      ];
+      this.form.selectedCustomAhs = this.customAhsItems.find(
+        customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
+      );
+      this.form.volume = this.rabItemData?.volume;
+      this.form.unitId = this.rabItemData?.hashed_unit_id;
+      this.form.price = this.rabItemData?.custom_ahs
+        ? this.rabItemData?.custom_ahs.price.toFixed(2)
+        : this.rabItemData.price;
     },
     components: {
       PhX,
