@@ -147,14 +147,12 @@
         });
         this.totalRows = data.data.pagination_attribute.total_rows;
         this.customAhs = data.data.customAhs;
-        if (this.inSubmittingAhsItems.length === 0) {
-          this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
-            return {
-              hashId: ahsItem.hashid,
-              sections: []
-            }
-          });
-        };
+        this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
+          return {
+            hashId: ahsItem.hashid,
+            sections: []
+          }
+        });
 
         this.isLoading = false;
       },
