@@ -200,6 +200,7 @@
       overheadAndProfit: 0,
       overheadAndProfitPercentage: 0,
       ahsItemSubtotalVal: 0,
+      projectProfitMargin: 0,
     }),
 
     created() {
@@ -221,8 +222,6 @@
       async getOverheadAndProfit() {
         const { data } = await this.showProject(this.$route.params.id);
         this.overheadAndProfitPercentage = data.data.project.profit_margin;
-        // prettier-ignore
-        this.overheadAndProfit = (parseInt(data.data.project.profit_margin) / 100) * this.ahsItemSubtotalVal;
       },
       
       getIsSubmitting(section) {
@@ -321,7 +320,7 @@
         return `Rp. ${formatCurrency(this.customAhsItem.subtotal)}`;
       },
       overheadAndProfitTotal() {
-        return `Rp. ${formatCurrency(this.overheadAndProfit)}`;
+        return `Rp. ${formatCurrency((parseInt(this.overheadAndProfitPercentage) / 100) * this.ahsItemSubtotalVal)}`;
       },
       ahsItemFinalSubtotal() {
         return `Rp. ${formatCurrency(
