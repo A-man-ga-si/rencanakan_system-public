@@ -63,3 +63,7 @@ export const localeOptions = [
 
 // Miscellaneous configs
 export const availableErrorCodes = ['404', '403', '500'];
+export const dateFormats = {
+  longDateTime: "YYYY-MM-DD_HH:mm:ss",
+  excelFile: "YYYY-MM-DD_HHmmss"
+}
