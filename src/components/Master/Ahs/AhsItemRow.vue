@@ -12,25 +12,13 @@
     </td>
     <td>
       <v-select
-        label="id"
         :reduce="
           ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
         "
         :options="getAhsItemableList" 
         :value="translateAhsItemId"
         @input="ahsItemIdChange"
-        id=""
       />
-      <!-- <v-select
-        label="id"
-        @input="submitUpdateAhsItem"
-        :reduce="
-          ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
-        "
-        :options="getAhsItemableList" 
-        v-model="ahsItemableId"
-        id=""
-      /> -->
     </td>
     <td>
       <v-select
@@ -155,6 +143,7 @@
             return ahsItemableItem.id != ctx.ahsItem.ahs_id;
           })
           .map(ahsItemableItem => {
+            ahsItemableItem.label = `${ahsItemableItem.id} - ${ahsItemableItem.name}`;
             ahsItemableItem.ahs_itemable_type = ahsItemable(
               ahsItemableItem.ahs_itemable_type
             );
