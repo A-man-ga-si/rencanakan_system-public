@@ -489,7 +489,9 @@
     "middle": "Middle",
     "right": "Right",
     "dropdown": "Dropdown",
-    "dropdown-link": "Dropdown Link"
+    "dropdown-link": "Dropdown Link",
+    "export": "Export",
+    "import": "Import"
   },
   "cards": {
     "icon-card": "Icon Card",
@@ -676,7 +678,8 @@
     "save-bt": "Save",
     "cancel-bt": "Cancel",
     "launch-large-modal": "Launch Large Modal",
-    "launch-small-modal": "Launch Small Modal"
+    "launch-small-modal": "Launch Small Modal",
+    "import-popup-title": "You'll update all your data"
   },
   "nav": {
     "basic": "Nav Basic",
