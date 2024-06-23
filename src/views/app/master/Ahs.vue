@@ -193,6 +193,7 @@
         formData.append('file', file);
         await this.importMasterAhs({formData});
         this.$bvModal.hide(this.importModalId);
+        await this.getAhsMaster();
       }
     },
     computed: {
