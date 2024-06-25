@@ -319,12 +319,15 @@
         this.ahsItemSubtotalVal = this.customAhsItem.subtotal;
         return `Rp. ${formatCurrency(this.customAhsItem.subtotal)}`;
       },
+      ahsPriceFee() {
+        return (this.overheadAndProfitPercentage/100) * this.ahsItemSubtotalVal;
+      },
       overheadAndProfitTotal() {
-        return `Rp. ${formatCurrency((parseInt(this.overheadAndProfitPercentage) / 100) * this.ahsItemSubtotalVal)}`;
+        return `Rp. ${formatCurrency(this.ahsPriceFee)}`;
       },
       ahsItemFinalSubtotal() {
         return `Rp. ${formatCurrency(
-          this.overheadAndProfit + this.customAhsItem.subtotal
+          this.customAhsItem.subtotal + this.ahsPriceFee
         )}`;
       },
     },
