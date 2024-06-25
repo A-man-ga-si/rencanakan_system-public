@@ -12,7 +12,7 @@
     </td>
     <td>
       <v-select
-        @input="update"
+        @input="onChangeAhsCode"
         :clearable="true"
         :options="customAhsItems"
         v-model="form.selectedCustomAhs"
@@ -42,10 +42,10 @@
         class="inline-edit"
         placeholder="Isi harga satuan"
         v-model="form.price"
-        :disabled="isAhsReferenced(rabItemData)"
+        :disabled="getIsPriceInputDisabled"
       />
     </td>
-    <td>{{ jumlahSubtotal }}</td>
+    <td>{{ getSubtotalPrice }}</td>
     <td>
       <a
         href="#"
@@ -98,6 +98,14 @@
     mounted() {},
     methods: {
       ...mapActions(['destroyRabItem', 'updateRabItem']),
+      onChangeAhsCode() {
+          if(this.form.selectedCustomAhs.id == '') {
+            this.form.price = null;
+            return
+          }
+          this.form.price = this.form.selectedCustomAhs.price;
+          this.update();
+      },
       async update() {
         const { name, selectedCustomAhs, volume, unitId, price } = this.form;
         await this.updateRabItem({
@@ -109,7 +117,7 @@
             custom_ahs_id: selectedCustomAhs.id,
             volume,
             unit_id: unitId,
-            price,
+            price: price,
           },
         });
         this.$emit('update-rab-item');
@@ -128,17 +136,20 @@
           this.$emit('rab-item-deleted');
         }
       },
-      isAhsReferenced(data) {
+      setupSelectedAhs(data) {
         return !!data?.custom_ahs_id;
       },
     },
     computed: {
-      jumlahSubtotal() {
-        return `Rp. ${formatCurrency(
-          this.isAhsReferenced(this.rabItemData)
-            ? this.rabItemData.custom_ahs?.price * this.rabItemData.volume
-            : this.rabItemData.price * this.rabItemData.volume
-        )}`;
+      getIsPriceInputDisabled() {
+        if (this.form.selectedCustomAhs == null) {
+          return false;
+        }
+        return this.form.selectedCustomAhs.id != "";
+      },
+      getSubtotalPrice() {
+        const subtotalPrice = (this.form.price ?? 0) * (this.form.volume ?? 0);
+        return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
     },
     created() {
@@ -148,13 +159,16 @@
         ...this.customAhsIds.map(customAhs => {
           return {
             id: customAhs.hashid,
-            label: `${customAhs.name} - ${customAhs.code}`
+            label: `${customAhs.name} - ${customAhs.code}`,
+            price: customAhs.price
           }
         })
       ];
-      this.form.selectedCustomAhs = this.customAhsItems.find(
-        customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
-      );
+      this.form.selectedCustomAhs = !this.rabItemData?.custom_ahs
+        ? this.customAhsItems[0]
+        : this.customAhsItems.find(
+          customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
+        );
       this.form.volume = this.rabItemData?.volume;
       this.form.unitId = this.rabItemData?.hashed_unit_id;
       this.form.price = this.rabItemData?.custom_ahs
