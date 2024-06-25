@@ -51,6 +51,16 @@ class ApiTwo {
     });
   }
 
+  download(path = '', query = '', headers = {}) {
+    return axios.get(
+      this.pathBuilder(path, query),
+      {
+        headers: this.includeToken(headers),
+        responseType: 'blob'
+      }
+    );
+  }
+
   pathBuilder(path, query) {
     let buildPath = `${apiUrl}/`;
     buildPath += this.previousPath ? `${this.previousPath}/` : '';
