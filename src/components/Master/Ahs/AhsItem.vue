@@ -12,7 +12,7 @@
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>{{ idx + 1 }}. {{ ahsItem.id }} | {{ ahsItem.name }}</h5>
+        <h5>{{ idx + 1 }}. {{ ahsItem.id }} | {{ ahsItem.name }} <b-badge class="ml-2">{{ ahsItem.groups == 'reference' ? '2016': '2023' }}</b-badge></h5>
       </div>
       <div class="right text-right" style="min-width: 120px">
         <h3 class="d-inline-block mb-0" style="vertical-align: top">

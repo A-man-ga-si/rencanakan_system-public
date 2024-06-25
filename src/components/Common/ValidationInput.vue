@@ -5,6 +5,7 @@
       :class="fieldName"
     >
       <input
+        :disabled="this.disabled"
         :type="type"
         class="form-control"
         :value="value"
@@ -20,6 +21,10 @@
   // NOTE: Validation input require validation mixin to work !
   export default {
     props: {
+      disabled: {
+          required: false,
+          default: false
+      },
       value: {
         required: false,
       },

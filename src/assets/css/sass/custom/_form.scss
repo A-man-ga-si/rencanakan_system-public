@@ -8,6 +8,14 @@
   left: 7px;
 }
 
+.labeled-select .vs--disabled {
+  background: #e9ecef !important;
+}
+
+.labeled-select .vs--disabled .vs__selected-options {
+  background: transparent !important;
+}
+
 .vs--disabled .vs__clear,
 .vs--disabled .vs__dropdown-toggle,
 .vs--disabled .vs__open-indicator,

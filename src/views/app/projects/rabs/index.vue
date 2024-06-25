@@ -35,6 +35,12 @@
             <b-nav-item :to="{ name: 'RabAhp' }">
               {{ $t('pages.projects.rab.tools-price-tab') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'RabImplementationSchedule' }">
+              {{ $t('pages.projects.rab.implementation-schedule-tab') }}
+            </b-nav-item>
+            <b-nav-item :to="{ name: 'MaterialEstimator' }">
+              Hitung Bahan
+            </b-nav-item>
           </b-nav>
           <router-view />
         </b-card>
@@ -46,12 +52,27 @@
 
 <script>
   import ExportRab from '@/components/Project/ExportRab.vue';
+  import { mapActions, mapMutations } from 'vuex';
+  import { Notify } from 'notiflix';
 
   export default {
     methods: {
+      ...mapActions(['showProject']),
+      ...mapMutations(['setCurrentActiveProject']),
       exportRab() {
         this.$bvModal.show('export-rab');
       },
+    },
+    async created() {
+      const data = await this.showProject(this.$route.params.id)
+      if (!data.data.data.project.activeOrder || data.data.data.project.activeOrder.is_expired) {
+        Notify.failure('Project telah kadaluwarsa, anda tidak dapat mengakses halaman ini!');
+        this.$router.replace({
+          name: 'Project'
+        })
+      } else {
+        await this.setCurrentActiveProject(data.data.data.project)
+      }
     },
     components: {
       ExportRab,

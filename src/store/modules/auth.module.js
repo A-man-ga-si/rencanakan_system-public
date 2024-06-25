@@ -80,6 +80,7 @@ const actions = {
         role: 0,
         permissions: user.roles[0].permissions?.map(e => e.name),
         title: `${user.first_name} ${user.last_name}`,
+        demo_quota: user.demo_quota
       };
 
       const parsedToken = token.plainTextToken.split('|')[1];
@@ -132,6 +133,7 @@ const actions = {
         email: user.email,
         permissions: user.roles[0].permissions?.map(e => e.name),
         token_amount: user.token_amount,
+        demo_quota: user.demo_quota,
         role: 0,
       };
       setCurrentUser(userData);

@@ -60,6 +60,8 @@
           :custom-ahs-itemable-list="getCustomAhsItemableIds"
           :custom-ahs-item="cAhs"
           :units-list="getUnit"
+          :on-tap-add-row="didAddRowTapped"
+          :in-submitting-sections="getInSubmittingSections(cAhs.hashid)"
           @custom-ahs-item-added="reloadData"
           @ahs-item-deleted="reloadData"
           @ahs-item-updated="reloadData"
@@ -112,6 +114,7 @@
         customAhs: [],
         editedCustomAhs: {},
         searchCountdownObject: null,
+        inSubmittingAhsItems: []
       };
     },
     created() {
@@ -129,6 +132,7 @@
         'fetchCustomAhsItemableIds',
         'fetchUnit',
         'queryCustomAhs',
+        'storeCustomAhsItem'
       ]),
       onNewItemPriceAdded() {
         this.fetchCustomAhsItemableIds({
@@ -143,6 +147,13 @@
         });
         this.totalRows = data.data.pagination_attribute.total_rows;
         this.customAhs = data.data.customAhs;
+        this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
+          return {
+            hashId: ahsItem.hashid,
+            sections: []
+          }
+        });
+
         this.isLoading = false;
       },
       toggleAddCustomAhsModal() {
@@ -151,6 +162,38 @@
       toggleEditCustomAhs(customAhsItem) {
         this.editedCustomAhs = customAhsItem;
         this.$bvModal.show('edit-custom-ahs');
+      },
+      getInSubmittingSections(hashId) {
+        const inSubmittingAhsItem = this.inSubmittingAhsItems.find(ahsItem => {
+          return ahsItem.hashId == hashId
+        });
+        if (!inSubmittingAhsItem) {
+          return [];
+        }
+        return inSubmittingAhsItem.sections;
+      },
+      async didAddRowTapped(hashId, section) {
+        const submittingAhsItem = this.inSubmittingAhsItems.find(
+          (ahsItem) => ahsItem.hashId == hashId
+        );
+        if (submittingAhsItem == null) { return;  }
+        if (!submittingAhsItem.sections.includes(section)) {
+          submittingAhsItem.sections = [
+            ...submittingAhsItem.sections,
+            section
+          ];
+        }
+        await this.storeCustomAhsItem({
+          projectId: this.$route.params.id,
+          form: {
+            section,
+            custom_ahs_id: hashId,
+          },
+        });
+        await this.getCustomAhs();
+        submittingAhsItem.sections = submittingAhsItem.sections.filter(
+          (submittingSection) => submittingSection != section
+        );
       },
       reloadData() {
         // FIXME: Not well optimized but yeah it's work
@@ -161,7 +204,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getCustomAhsItemableIds', 'getUnit']),
+      ...mapGetters(['getCustomAhsItemableIds', 'getUnit'])
     },
     watch: {
       currentPage() {

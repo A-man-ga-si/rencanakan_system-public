@@ -172,6 +172,32 @@ const routes = [
                 /* webpackChunkName */ './../views/app/projects/rabs/Ahp.vue'
               ),
           },
+          {
+            path: 'implementation-schedule',
+            name: 'RabImplementationSchedule',
+            meta: {
+              title: 'Jadwal Pelaksanaan',
+              loginRequired: true,
+              permissions: ['access-project-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'
+              ),
+          },
+          {
+            path: 'material-estimator',
+            name: 'MaterialEstimator',
+            meta: {
+              title: 'Hitung Bahan',
+              loginRequired: true,
+              permissions: ['access-project-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName */ './../views/app/projects/rabs/MaterialEstimator.vue'
+              ),
+          },
         ],
       },
       // {
@@ -320,6 +346,18 @@ const routes = [
             component: () =>
               import(
                 /* webpackChunkName: "masterAhs" */ './../views/app/master/Ahs.vue'
+              ),
+          },
+          {
+            path: 'rab',
+            name: 'MasterRab',
+            meta: {
+              title: 'Master RAB',
+              permissions: ['access-master-page'],
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "masterAhs" */ './../views/app/master/RabSummary.vue'
               ),
           },
           {

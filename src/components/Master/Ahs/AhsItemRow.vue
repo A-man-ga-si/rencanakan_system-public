@@ -12,14 +12,12 @@
     </td>
     <td>
       <v-select
-        label="id"
-        @input="submitUpdateAhsItem"
         :reduce="
           ahsItemable => `${ahsItemable.ahs_itemable_type}~${ahsItemable.id}`
         "
-        :options="getAhsItemableList"
-        v-model="ahsItemableId"
-        id=""
+        :options="getAhsItemableList" 
+        :value="translateAhsItemId"
+        @input="ahsItemIdChange"
       />
     </td>
     <td>
@@ -35,8 +33,8 @@
     <td>
       <input
         type="number"
-        v-model="coefficient"
-        @change="submitUpdateAhsItem"
+        :value="ahsItem.coefficient"
+        @change="updateCoefficient($event)"
         class="inline-edit"
       />
     </td>
@@ -75,6 +73,14 @@
     },
     methods: {
       ...mapActions(['updateAhsItem', 'deleteAhsItem']),
+      updateCoefficient(val) {
+        this.coefficient = val.target.value
+        this.submitUpdateAhsItem()
+      },
+      ahsItemIdChange(val) {
+        this.ahsItemableId = val
+        this.submitUpdateAhsItem()
+      },
       async submitUpdateAhsItem() {
         try {
           const ahsType = ahsItemable(this.ahsItem.ahs_itemable_type);
@@ -118,6 +124,9 @@
       },
     },
     computed: {
+      translateAhsItemId() {
+        return `${ahsItemable(this.ahsItem.ahs_itemable_type)}~${this.ahsItem.ahs_itemable_id}`
+      },
       ahsItemableType() {
         const ahsItemableData = this.ahsItem.ahs_itemable_type;
         return ahsItemable(ahsItemableData);
@@ -134,6 +143,7 @@
             return ahsItemableItem.id != ctx.ahsItem.ahs_id;
           })
           .map(ahsItemableItem => {
+            ahsItemableItem.label = `${ahsItemableItem.id} - ${ahsItemableItem.name}`;
             ahsItemableItem.ahs_itemable_type = ahsItemable(
               ahsItemableItem.ahs_itemable_type
             );

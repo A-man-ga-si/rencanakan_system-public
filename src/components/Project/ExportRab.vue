@@ -50,7 +50,7 @@
           <div class="payment-ok" v-if="quotasLeft > 0">
             <ph-check-circle :size="32" weight="light" class="text-success" />
             <span>
-              <b class="text-success">Payment Status : <!-- Trial mode, just delete when trial mode end : --> Gratis selama periode percobaan</b>
+              <b class="text-success">Payment Status : Terbayar</b>
             </span>
           </div>
           <div class="company-not-exist d-flex" v-else>

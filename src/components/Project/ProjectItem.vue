@@ -19,7 +19,7 @@
             v-b-modal.show-project-modal
             href="#"
             id="show-project-modal"
-            @click.prevent="detailProject(row.row.rowData.hashid)"
+            @click.prevent="detailProject(row.row.rowData.hashid, row.row.rowData.order)"
             class="rab-icon-bt mx-1"
             title="Tombol untuk melihat detail project"
           >
@@ -29,11 +29,17 @@
             </tutorial-popover>
           </a>
         <EditButton v-b-modal.edit-project-modal id="edit-project-modal" @click.prevent="editProject(row.row.rowData)" title="Tombol untuk mengedit project">
-          <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
+          <tutorial-popover target="edit-project-modal" title="Edit Project" :is-show="editProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showUpgradeProjectButtonTutorial" prevent-imediate-close>
             Klik tombol ini untuk mengubah project
           </tutorial-popover>
           <ph-pencil :size="20" weight="light" />
         </EditButton>
+        <div class="d-inline-block mr-2" @click="manageSubscriptionProject(row.row.rowData)" v-b-modal.manage-project-subscription id="upgrade-project-btn" style="cursor: pointer;">
+          <tutorial-popover target="upgrade-project-btn" title="Upgrade Project" :is-show="upgradeProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="false" @understand="showDeleteProjectButtonTutorial" prevent-imediate-close>
+            Klik tombol ini untuk upgrade paket project
+          </tutorial-popover>
+        <PhCreditCard :size="20" weight="light" />
+        </div>
         <DeleteButton
         title="Tombol untuk menghapus project"
         id="delete-project-btn"
@@ -41,7 +47,7 @@
             deleteProject(row.row.rowData.name, row.row.rowData.hashid)
           "
         >
-        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="deleteProjectButtonTutorial = false">
+        <tutorial-popover target="delete-project-btn" title="Hapus Project" :is-show="deleteProjectButtonTutorial" tutorial-key="manage_project" :end-of-tutorial="true" @understand="deleteProjectButtonTutorial = false" prevent-imediate-close>
             Klik tombol ini untuk menghapus project
         </tutorial-popover>
         <ph-trash :size="20" weight="light" />
@@ -52,9 +58,9 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
   import { Notify } from 'notiflix';
-  import { PhArrowSquareOut } from 'phosphor-vue';
+  import { PhArrowSquareOut, PhCreditCard } from 'phosphor-vue';
   import Swal from 'sweetalert2';
   import tutorialMixin from '@/mixins/tutorial-mixin';
   import projectField from '@/data/fields/project-field';
@@ -75,6 +81,7 @@
       editAhsButtonTutorial: false,
       editProjectButtonTutorial: false,
       deleteProjectButtonTutorial: false,
+      upgradeProjectButtonTutorial: false,
     }),
     computed: {
       ...mapGetters(['getProvinces', 'isInTutorial']),
@@ -85,7 +92,7 @@
       }
     },
     methods: {
-      ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial']),
+      ...mapActions(['destroyProject', 'markLastOpenedAt', 'changeInTutorial', 'showProject']),
       showDetailProjectTutorial() {
         if (this.shouldShowTutorial('manage_project')) {
           this.editAhsButtonTutorial = this.activateTutorial()
@@ -98,27 +105,48 @@
         }
       },
       showDeleteProjectButtonTutorial() {
-        this.editProjectButtonTutorial = false
+        this.upgradeProjectButtonTutorial = false
         if (this.shouldShowTutorial('manage_project')) {
           this.deleteProjectButtonTutorial = this.activateTutorial()
+        }
+      },
+      showUpgradeProjectButtonTutorial() {
+        this.editProjectButtonTutorial = false
+        if (this.shouldShowTutorial('manage_project')) {
+          this.upgradeProjectButtonTutorial = this.activateTutorial()
         }
       },
       reload() {
         this.$refs['project-data-table'].reloadTable();
       },
-      detailProject(projectHashid) {
+      ...mapMutations([
+        'setCurrentActiveProject'
+      ]),
+      async detailProject(projectHashid, order) {
+
+        if (order.is_expired) {
+          Notify.failure('Project telah expired. Perpanjang / upgrade subscription untuk membuka & melanjutkan project ini.')
+          return
+        }
+
         // Keep this asynchronously !
         this.markLastOpenedAt({
           projectId: projectHashid,
         });
+
+        const res = await this.showProject(projectHashid)
+        await this.setCurrentActiveProject(res.data.data.project)
+
         this.$router.push({ path: `/app/projects/${projectHashid}/rab/ahs` });
       },
       editProject(project) {
         this.$bvModal.show('edit-project');
         this.$emit('edit-project-clicked', project);
       },
+      manageSubscriptionProject(projectData) {
+        this.$emit('manage-project-subscription-button-clicked', projectData)
+      },
       deleteProject(name, id) {
-        console.log(name);
         Swal.fire({
           title: 'Hapus Project ?',
           html: `<div class="alert alert-danger bg-white border-danger text-left" style="border-radius: 10px;">
@@ -168,6 +196,7 @@
       TutorialPopover,
       PhPencil,
       PhTrash,
+      PhCreditCard
     },
   };
 </script>

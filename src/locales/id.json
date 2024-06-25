@@ -159,6 +159,7 @@
     "dashboard": "Dashboard",
     "settings": "Pengaturan",
     "master-ahs": "Master AHS",
+    "master-rab": "Master RAB",
     "master-equipment": "Master Peralatan",
     "master-ahp": "Master AHP"
   },
@@ -301,6 +302,7 @@
         "unit-tab": "Harga Satuan",
         "unit-master-tab": "Harga Satuan",
         "tools-price-tab": "Analisa Harga Peralatan",
+        "implementation-schedule-tab": "Jadwal Pelaksanaan",
         "item-price-tab": "Harga Satuan",
         "ahp-master-tab": "Master AHP",
         "item-price-master-tab": "Master Harga Satuan",

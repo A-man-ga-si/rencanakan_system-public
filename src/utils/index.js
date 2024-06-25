@@ -222,6 +222,27 @@ export const showConfirmAlert = ({
   });
 };
 
+export const showConfirmAlertWithPreloader = ({
+  title = 'Confirmation',
+  text = 'Confirm your action ?',
+  icon = 'warning',
+  preConfirm = () => {}
+}) => {
+  return Swal.fire({
+    title,
+    text,
+    icon,
+    showCancelButton: true,
+    showLoaderOnConfirm: true,
+    preConfirm,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    confirmButtonColor: '#153245',
+    cancelButtonColor: '#d33',
+  })
+}
+
 export const convertNumberToAlphabet = number => {
   if (number < 1 || number > 26) {
     return -1;

@@ -56,15 +56,13 @@
             @ahs-item-updated="onCustomAhsItemUpdated"
           />
           <tr>
-            <!-- Original class : class="d-block w-100" -->
             <td colspan="8" class="font-weight-bold">
-              <a
-                href="#"
-                @click.prevent="addCustomAhsItem('labor')"
-                class="btn btn-primary"
-              >
+              <b-button
+                :disabled="getIsSubmitting(AhsTypes.LABOR)"
+                variant="primary"
+                @click.prevent="onTapAddRow(customAhsItem.hashid, AhsTypes.LABOR)">
                 + Tambah Baris
-              </a>
+              </b-button>
             </td>
           </tr>
           <AhsFooterRow title="Total Tenaga Kerja" :value="totalTenagaKerja" />
@@ -84,13 +82,12 @@
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a
-                href="#"
-                class="btn btn-primary"
-                @click.prevent="addCustomAhsItem('ingredients')"
-              >
+              <b-button
+                :disabled="getIsSubmitting(AhsTypes.INGREDIENTS)"
+                variant="primary"
+                @click.prevent="onTapAddRow(customAhsItem.hashid, AhsTypes.INGREDIENTS)">
                 + Tambah Baris
-              </a>
+              </b-button>
             </td>
           </tr>
           <AhsFooterRow title="Total Bahan" :value="totalBahan" />
@@ -109,13 +106,12 @@
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a
-                href="#"
-                class="btn btn-primary"
-                @click.prevent="addCustomAhsItem('tools')"
-              >
+              <b-button
+                :disabled="getIsSubmitting(AhsTypes.TOOLS)"
+                variant="primary"
+                @click.prevent="onTapAddRow(customAhsItem.hashid, AhsTypes.TOOLS)">
                 + Tambah Baris
-              </a>
+              </b-button>
             </td>
           </tr>
           <AhsFooterRow title="Total Peralatan" :value="totalPeralatan" />
@@ -134,13 +130,12 @@
           />
           <tr>
             <td colspan="8" class="font-weight-bold">
-              <a
-                href="#"
-                class="btn btn-primary"
-                @click.prevent="addCustomAhsItem('others')"
-              >
+              <b-button
+                :disabled="getIsSubmitting(AhsTypes.OTHERS)"
+                variant="primary"
+                @click.prevent="onTapAddRow(customAhsItem.hashid, AhsTypes.OTHERS)">
                 + Tambah Baris
-              </a>
+              </b-button>
             </td>
           </tr>
           <AhsFooterRow title="Total Lain Lain" :value="totalLainLain" />
@@ -174,19 +169,48 @@
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
   import { PhX, PhPencil, PhArrowsIn, PhArrowsOut } from 'phosphor-vue';
+  import { AhsTypes } from '@/enums';
 
   export default {
-    props: ['customAhsItem', 'customAhsItemableList', 'unitsList'],
+    props: {
+      customAhsItem: {
+        type: Object,
+        default: null
+      },
+      customAhsItemableList: {
+        type: Array,
+        default: () => []
+      },
+      unitsList: {
+        type: Array,
+        default: () => []
+      },
+      inSubmittingSections: {
+        type: Array,
+        default: () => []
+      },
+      onTapAddRow: {
+        type: Function,
+        required: true
+      }
+    },
 
     data: () => ({
       mainCardCollapsed: false,
       overheadAndProfit: 0,
       overheadAndProfitPercentage: 0,
       ahsItemSubtotalVal: 0,
+      projectProfitMargin: 0,
     }),
 
     created() {
       this.getOverheadAndProfit();
+    },
+
+    setup() {
+      return {
+        AhsTypes
+      }
     },
 
     methods: {
@@ -198,19 +222,10 @@
       async getOverheadAndProfit() {
         const { data } = await this.showProject(this.$route.params.id);
         this.overheadAndProfitPercentage = data.data.project.profit_margin;
-        // prettier-ignore
-        this.overheadAndProfit = (parseInt(data.data.project.profit_margin) / 100) * this.ahsItemSubtotalVal;
       },
-
-      async addCustomAhsItem(section) {
-        await this.storeCustomAhsItem({
-          projectId: this.$route.params.id,
-          form: {
-            section,
-            custom_ahs_id: this.customAhsItem.hashid,
-          },
-        });
-        this.$emit('custom-ahs-item-added');
+      
+      getIsSubmitting(section) {
+        return this.inSubmittingSections.includes(section)
       },
 
       async destroyCustomAhs() {
@@ -305,7 +320,7 @@
         return `Rp. ${formatCurrency(this.customAhsItem.subtotal)}`;
       },
       overheadAndProfitTotal() {
-        return `Rp. ${formatCurrency(this.overheadAndProfit)}`;
+        return `Rp. ${formatCurrency((parseInt(this.overheadAndProfitPercentage) / 100) * this.ahsItemSubtotalVal)}`;
       },
       ahsItemFinalSubtotal() {
         return `Rp. ${formatCurrency(

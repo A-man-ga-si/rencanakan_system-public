@@ -15,7 +15,7 @@
     "core-js": "^3.14.0",
     "notiflix": "^3.0.1",
     "pace-js": "^1.2.4",
-    "phosphor-vue": "git+https://davidmahbubi@bitbucket.org/paypalverifications/phosphor-vue.git",
+    "phosphor-vue": "git+https://davidmahbubi@bitbucket.org/flying-doge/phosphor-vue.git",
     "roman-numerals": "^0.3.2",
     "sweetalert2": "^11.1.2",
     "vue": "^2.6.14",

@@ -27,87 +27,97 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <RabSummaryItem
-      v-for="(rab, idx) in getRabs"
-      :key="idx"
-      :index="idx"
-      :rab-item="rab"
-      :ahs-code-list="customAhsIds"
-      :unit-code-list="getUnit"
-      @rab-item-deleted="reloadData"
-      @rab-item-added="reloadData"
-      @rab-item-updated="reloadData"
-      @rab-item-header-deleted="reloadData"
-      @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
-      @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
-      @edit-rab-item-bt-clicked="editRab"
-    />
-    <b-row>
-      <b-col>
-        <b-button
-          @click="fabClick"
-          variant="primary"
-          class="w-100 mb-4 mt-2"
-          style="font-size: 17px; border-radius: 12px; padding: 12px 0"
-        >
-          <h4 class="mb-0">+ Tambah Kategori</h4>
-        </b-button>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col :xl="7" :lg="9" :md="10" class="ml-auto">
-        <b-card class="ahs-card-single custom-nice-border">
-          <table class="w-100">
-            <tr>
-              <td>
-                <h3>Total</h3>
-              </td>
-              <td class="text-right">
-                <h3>Rp. {{ numberFormat(rabsTotal) }}</h3>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h3>PPN ({{ projectPpn.percentage }}%)</h3>
-              </td>
-              <td class="text-right">
-                <h3>Rp. {{ numberFormat(projectPpn.total) }}</h3>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h3>Subtotal</h3>
-              </td>
-              <td class="text-right">
-                <h3>Rp. {{ numberFormat(rabsSubTotal) }}</h3>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h3>Terbilang</h3>
-              </td>
-              <td class="text-right">
-                <h3 style="padding-left: 70px">
-                  {{ convertAlphabeuticalNum }} RUPIAH
-                </h3>
-              </td>
-            </tr>
-          </table>
-        </b-card>
-      </b-col>
-    </b-row>
-    <!-- <FloatingActionButton  /> -->
-    <AddRab @rab-added="reloadData" />
-    <AddRabItemHeader
-      :rab="rabItemHeaderAdd"
-      @rab-item-header-added="reloadData"
-    />
-    <EditRab @rab-updated="reloadData" :edited-rab="editedRabItem" />
-    <EditRabItemHeader
-      @rab-item-header-updated="reloadData"
-      :rab="rabItemHeaderEdit"
-      :edited-rab-item-header="editedRabItemHeader"
-    />
+    <div v-if="isLoading">
+      <div class="text-center">
+        <Loader class="mt-5" />
+        <h2>
+          <strong>Memuat RAB</strong>
+        </h2>
+      </div>
+    </div>
+    <div v-else>
+      <RabSummaryItem
+        v-for="(rab, idx) in rabItems"
+        :key="idx"
+        :index="idx"
+        :rab-item="rab"
+        :ahs-code-list="ahsItems"
+        :unit-code-list="unitItems"
+        @rab-item-deleted="reloadData"
+        @rab-item-added="reloadData"
+        @rab-item-updated="reloadData"
+        @rab-item-header-deleted="reloadData"
+        @edit-rab-item-header-bt-clicked="showEditRabItemHeaderModal"
+        @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
+        @edit-rab-item-bt-clicked="editRab"
+      />
+      <b-row>
+        <b-col>
+          <b-button
+            @click="fabClick"
+            variant="primary"
+            class="w-100 mb-4 mt-2"
+            style="font-size: 17px; border-radius: 12px; padding: 12px 0"
+          >
+            <h4 class="mb-0">+ Tambah Kategori</h4>
+          </b-button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col :xl="7" :lg="9" :md="10" class="ml-auto">
+          <b-card class="ahs-card-single custom-nice-border">
+            <table class="w-100">
+              <tr>
+                <td>
+                  <h3>Total</h3>
+                </td>
+                <td class="text-right">
+                  <h3>Rp. {{ numberFormat(rabsTotal) }}</h3>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h3>PPN ({{ projectPpn.percentage }}%)</h3>
+                </td>
+                <td class="text-right">
+                  <h3>Rp. {{ numberFormat(projectPpn.total) }}</h3>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h3>Subtotal</h3>
+                </td>
+                <td class="text-right">
+                  <h3>Rp. {{ numberFormat(rabsSubTotal) }}</h3>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h3>Terbilang</h3>
+                </td>
+                <td class="text-right">
+                  <h3 style="padding-left: 70px">
+                    {{ convertAlphabeuticalNum }} RUPIAH
+                  </h3>
+                </td>
+              </tr>
+            </table>
+          </b-card>
+        </b-col>
+      </b-row>
+      <!-- <FloatingActionButton  /> -->
+      <AddRab @rab-added="reloadData" />
+      <AddRabItemHeader
+        :rab="rabItemHeaderAdd"
+        @rab-item-header-added="reloadData"
+      />
+      <EditRab @rab-updated="reloadData" :edited-rab="editedRabItem" />
+      <EditRabItemHeader
+        @rab-item-header-updated="reloadData"
+        :rab="rabItemHeaderEdit"
+        :edited-rab-item-header="editedRabItemHeader"
+      />
+    </div>
   </div>
 </template>
 
@@ -120,6 +130,7 @@
   import EditRabItemHeader from '@/components/Project/Rab/EditRabItemHeader.vue';
   import RabSummaryItem from '@/components/Project/Rab/RabSummaryItem.vue';
   import AddRab from '@/components/Project/Rab/AddRab.vue';
+  import Loader from '@/components/Common/Loader.vue';
 
   export default {
     data() {
@@ -134,23 +145,19 @@
         ],
         projectProperties: {},
         projects: {},
-        ahsCodesList: [],
         unitCodesList: [],
-        customAhsIds: [],
         rabItemHeaderAdd: {},
         rabItemHeaderEdit: {},
         searchCountdownObject: null,
         editedRabItem: null,
         editedRabItemHeader: null,
+        ahsItems: null,
+        rabItems: null,
+        unitItems: null
       };
     },
     created() {
-      this.fetchRab({
-        projectId: this.$route.params.id,
-      });
-      this.fetchShowProject();
-      this.fetchUnit();
-      this.getCustomAhsIds();
+      this.reloadData();
     },
     methods: {
       ...mapActions([
@@ -160,15 +167,6 @@
         'fetchAhs',
         'showProject',
       ]),
-      async fetchShowProject() {
-        this.projectProperties = await this.showProject(this.$route.params.id);
-      },
-      async getCustomAhsIds() {
-        const data = await this.fetchCustomAhsIds({
-          projectId: this.$route.params.id,
-        });
-        this.customAhsIds = data.data.data.ahsItemIds;
-      },
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
         this.editedRabItemHeader = rabItemHeader;
@@ -181,10 +179,27 @@
       fabClick(ref) {
         this.$bvModal.show('add-rab');
       },
-      reloadData() {
-        this.fetchRab({
+      async reloadData() {
+        // Generate AHS items
+        const ahsData = await this.fetchCustomAhsIds({
           projectId: this.$route.params.id,
         });
+        this.ahsItems = ahsData.data.data.ahsItemIds;
+
+        // Generate unit items
+        const unitData = await this.fetchUnit();
+        this.unitItems = unitData.data.data.units;
+
+        // Generate RAB items
+        const rabData = await this.fetchRab({
+          projectId: this.$route.params.id,
+        });
+        this.rabItems = rabData.data.data.rabs;
+
+        // Generate project items
+        this.projectProperties = await this.showProject(
+          this.$route.params.id
+        );
       },
       numberFormat(number) {
         return formatCurrency(number);
@@ -195,7 +210,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getRabs', 'getAhs', 'getProjects', 'getUnit']),
+      ...mapGetters(['getProjects']),
       projectPpn() {
         const percentage = this.projectProperties.data
           ? this.projectProperties.data.data.project.ppn
@@ -206,7 +221,7 @@
         };
       },
       rabsTotal() {
-        const mappedRabs = this.getRabs.map(data => data.subtotal);
+        const mappedRabs = this.rabItems.map(data => data.subtotal);
         return mappedRabs.length
           ? parseInt(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
@@ -217,6 +232,9 @@
       convertAlphabeuticalNum() {
         return angkaTerbilang(this.rabsSubTotal).toUpperCase();
       },
+      isLoading() {
+        return !this.ahsItems || !this.unitItems || !this.rabItems;
+      }
     },
     watch: {
       form: {
@@ -243,6 +261,7 @@
       },
     },
     components: {
+      Loader,
       RabSummaryItem,
       // FloatingActionButton,
       EditRab,

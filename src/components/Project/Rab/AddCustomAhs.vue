@@ -5,16 +5,23 @@
       :ref="modalId"
       title="Buat AHS Baru"
       no-close-on-backdrop
+      size="lg"
     >
       <b-nav class="mb-5 justify-content-center" pills>
         <b-nav-item
-          @click.prevent="switchSource"
+          @click.prevent="switchSource('reference')"
           :active="formOptions.currentState === 'reference'"
         >
           AHS Permen PUPR 2016
         </b-nav-item>
         <b-nav-item
-          @click.prevent="switchSource"
+          @click.prevent="switchSource('reference-2023')"
+          :active="formOptions.currentState === 'reference-2023'"
+        >
+          AHS Permen PUPR 2023
+        </b-nav-item>
+        <b-nav-item
+          @click.prevent="switchSource('custom')"
           :active="formOptions.currentState === 'custom'"
         >
           Custom AHS
@@ -28,11 +35,29 @@
           class="labeled-select position-relative d-inline-block"
           style="width: 100%"
         >
-          <span class="px-1"> Referensi AHS</span>
+          <span class="px-1"> Referensi AHS Permen 2016</span>
           <v-select
             label="id_name"
             :reduce="ahs => `${ahs.id}<<#>>${ahs.name}`"
-            :options="getAhsIds"
+            :options="getMappedAhsIds.reference"
+            v-model="form.selectedReference"
+          >
+          </v-select>
+        </div>
+      </div>
+      <div
+        class="reference-only-form mb-4"
+        v-else-if="formOptions.currentState === 'reference-2023'"
+      >
+        <div
+          class="labeled-select position-relative d-inline-block"
+          style="width: 100%"
+        >
+          <span class="px-1"> Referensi AHS Permen 2023</span>
+          <v-select
+            label="id_name"
+            :reduce="ahs => `${ahs.id}<<#>>${ahs.name}`"
+            :options="getMappedAhsIds['reference-2023']"
             v-model="form.selectedReference"
           >
           </v-select>
@@ -74,7 +99,7 @@
       return {
         modalId: 'add-custom-ahs',
         formOptions: {
-          currentState: 'reference',
+          currentState: 'reference-2023',
         },
         form: {
           name: '',
@@ -127,17 +152,20 @@
         this.form.code = '';
         this.form.selectedReference = '';
       },
-      switchSource() {
-        if (this.formOptions.currentState === 'custom') {
-          this.formOptions.currentState = 'reference';
-        } else {
-          this.formOptions.currentState = 'custom';
-          this.resetForm();
-        }
+      switchSource(source) {
+        this.formOptions.currentState = source;
+        this.resetForm()
+
+        // if (this.formOptions.currentState === 'custom') {
+        //   this.formOptions.currentState = 'reference';
+        // } else {
+        //   this.formOptions.currentState = 'custom';
+        //   this.resetForm();
+        // }
       },
     },
     computed: {
-      ...mapGetters(['getAhsIds']),
+      ...mapGetters(['getMappedAhsIds']),
     },
     components: {
       ValidationInput,

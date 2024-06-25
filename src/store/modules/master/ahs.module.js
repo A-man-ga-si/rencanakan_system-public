@@ -20,6 +20,18 @@ const getters = {
     });
     return state.ahsIds;
   },
+  getMappedAhsIds: state => {
+    const groupedAhs = {}
+    for (const ahs of state.ahsIds) {
+      ahs.id_name = `${ahs.id} | ${ahs.name}`;
+      if (!groupedAhs[ahs.groups]) {
+        groupedAhs[ahs.groups] = [ahs]
+      } else {
+        groupedAhs[ahs.groups].push(ahs)
+      }
+    }
+    return groupedAhs
+  },
   getAhsCount: state => state.ahsCount,
 };
 
@@ -42,9 +54,9 @@ const mutations = {
 };
 
 const actions = {
-  async fetchAhs({ commit }, { province, page, perPage }) {
+  async fetchAhs({ commit }, { province, page, perPage, selectedAhsGroup }) {
     // prettier-ignore
-    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}`);
+    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}&selected_ahs_group=${selectedAhsGroup}`);
     commit('setAhs', data.data.data.ahs);
     commit('setAhsCount', data.data.data.pagination_attribute.total_rows);
     return data;

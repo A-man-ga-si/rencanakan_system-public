@@ -14,6 +14,34 @@
             v-model="selectedProvince"
           />
         </div>
+        <div
+          class="labeled-select position-relative d-inline-block ml-2"
+          style="width: 300px"
+        >
+          <span class="px-1"> Group AHS</span>
+          <v-select
+            label="name"
+            :reduce="ahs => ahs.id"
+            :options="ahsGroup"
+            v-model="selectedAhsGroup"
+          />
+        </div>
+      </div>
+      <div class="right">
+        <div class="labeled-select position-relative d-inline-block ml-2">
+          <label
+            class="form-group has-float-label mb-0 can-invalid"
+            :class="fieldName"
+          >
+            <input
+              type="number"
+              class="form-control"
+              v-model="jumpToPage"
+            />
+            <span>Go to page</span>
+          </label>
+        </div>
+        <b-btn class="ml-2" size="sm" @click.prevent="goToPage">Go</b-btn>
       </div>
     </div>
     <ul class="ahs-item-list">
@@ -59,9 +87,25 @@
       currentPage: 1,
       codesList: ['L.01'],
       unitsList: ['OH'],
+      jumpToPage: '',
       provinces: [],
       selectedProvince: '',
+      selectedAhsGroup: 'all',
       selectedAhs: {},
+      ahsGroup: [
+        {
+          id: 'all',
+          name: 'All'
+        },
+        {
+          id: 'reference',
+          name: 'AHS Permen PUPR 2016'
+        },
+        {
+          id: 'reference-2023',
+          name: 'AHS Permen PUPR 2023'
+        },
+      ],
     }),
     created() {
       this.loadProvinces();
@@ -80,9 +124,27 @@
         this.fetchAhsItemableIds();
         this.getAhsMaster();
       },
+      goToPage() {
+        const destination = Number.parseInt(this.jumpToPage)
+        if (destination != 'NaN') {
+          const pageTotal = Math.ceil((this.getAhsCount / this.perPage))
+          if (destination <= pageTotal) {
+            if (destination <= 0) {
+              this.jumpToPage = 1
+              this.currentPage = 1
+            } else {
+              this.currentPage = destination
+            }
+          } else {
+            this.currentPage = pageTotal
+            this.jumpToPage = pageTotal
+          }
+        }
+      },
       getAhsMaster() {
         this.fetchAhs({
           province: this.selectedProvince,
+          selectedAhsGroup: this.selectedAhsGroup,
           page: this.currentPage,
           perPage: this.perPage,
         });
@@ -107,6 +169,9 @@
     },
     watch: {
       selectedProvince() {
+        this.getAhsMaster();
+      },
+      selectedAhsGroup() {
         this.getAhsMaster();
       },
       currentPage() {

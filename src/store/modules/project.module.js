@@ -5,6 +5,7 @@ import { getToken } from '../../utils';
 
 const projectApi = new ApiTwo({
   basePath: 'project',
+  currentActiveProject: {},
 });
 
 const state = {
@@ -13,6 +14,7 @@ const state = {
 
 const getters = {
   getProjects: state => state.projects,
+  getCurrentActiveProject: state => state.currentActiveProject,
 };
 
 const mutations = {
@@ -21,6 +23,9 @@ const mutations = {
   },
   pushProject(state, project) {
     state.projects.push(project);
+  },
+  setCurrentActiveProject(state, project) {
+    state.currentActiveProject = project
   },
 };
 
@@ -41,7 +46,7 @@ const actions = {
   },
 
   // prettier-ignore
-  async createProject({ commit }, { activity, address, name, job, fiscalYear: fiscal_year, marginProfit: profit_margin, provinceId: province_id, ppn}) {
+  async createProject({ commit }, { activity, address, name, job, fiscalYear: fiscal_year, marginProfit: profit_margin, provinceId: province_id, ppn, subscription_id}) {
     const res = await projectApi.post('', {
       activity,
       address,
@@ -50,7 +55,8 @@ const actions = {
       job,
       profit_margin,
       province_id,
-      ppn
+      ppn,
+      subscription_id
     });
     commit('pushProject', res.data.data.project);
     return res;
@@ -58,6 +64,10 @@ const actions = {
 
   async destroyProject(ctx, projectId) {
     return await projectApi.get(`${projectId}/delete`);
+  },
+
+  async renewProjectSubscription(ctx, projectId) {
+    return await projectApi.post(`${projectId}/renew`)
   },
 
   async updateProject(ctx, { projectId, form }) {
