@@ -17,6 +17,18 @@
       </div>
       <div class="right">
         <b-btn
+          variant="outline-primary"
+          @click="onTapExportButton"
+        >
+          {{ $t('button.export') }}
+        </b-btn>
+        <b-btn
+          variant="outline-primary"
+          @click="onTapImportButton"
+        >
+          {{ $t('button.import') }}
+        </b-btn>
+        <b-btn
           @click="loadUngroupedItemPrice"
           v-b-modal.batch-update-price-modal
           variant="outline-primary"
@@ -51,12 +63,15 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import ItemPriceItem from '@/components/Master/ItemPrice/ItemPriceItem.vue';
   import AddItemPrice from '@/components/Master/ItemPrice/AddItemPrice.vue';
   import EditItemPrice from '@/components/Master/ItemPrice/EditItemPrice.vue';
   import ValidationInput from '@/components/Common/ValidationInput.vue';
   import BatchUpdatePriceItemPrice from '@/components/Master/ItemPrice/BatchUpdatePriceItemPrice';
   import { mapActions, mapGetters } from 'vuex';
+  import { dateFormats } from '@/constants/config';
+  import { Utils } from '@/utils';
 
   export default {
     data: () => ({
@@ -73,6 +88,7 @@
     methods: {
       // TODO: Make provinces fetches more efficient
       ...mapActions([
+        'exportItemPrice',
         'fetchProvinces',
         'fetchItemPrices',
         'fetchUngroupedItemPrices',
@@ -92,6 +108,14 @@
       },
       async loadUngroupedItemPrice() {
         const data = await this.fetchUngroupedItemPrices();
+      },
+      async onTapExportButton() {
+        const response = await this.exportItemPrice();
+        const currentDateStr = moment().format(dateFormats.excelFile); 
+        Utils.downloadFile(`Master_Harga_Satuan_${currentDateStr}.xlsx`, response.data);
+      },
+      onTapImportButton() {
+        // this.$bvModal.show(this.importModalId);
       },
     },
     computed: {
