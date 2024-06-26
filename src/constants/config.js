@@ -3,19 +3,13 @@ export const defaultTitle = 'Untitled';
 export const titleSuffix = ' | Yuk Mulai Hitung RAB';
 
 // URLs Related Configs
-// export const apiDomain = 'http://rencanakan-id-system-backend.test';
-export const apiDomain = 'http://localhost:8000';
+export const apiDomain = process.env.VUE_APP_BASE_API_URL;
 
-// export const apiDomain = 'https://beta-api.rencanakan.id';
-// export const apiDomain = 'https://demo-api.rencanakan.id';
-// export const apiDomain = 'https://rencanakan.my.id';
-// export const apiDomain = 'http://rencanakan-id-system-backend.test';
 export const apiUrl = `${apiDomain}/api`;
 export const adminRoot = '/app';
 export const searchPath = `${adminRoot}/#`;
 export const buyUrl = '#';
 export const landingPageUrl = 'https://rencanakan.id';
-// export const apiDomain = 'http://localhost:8000';
 
 // export const midtransModuleUrl = 'https://app.sandbox.midtrans.com/snap/snap.js'
 // export const midtransClientKey = 'SB-Mid-client-woKoDnctT1WZG9R1'
