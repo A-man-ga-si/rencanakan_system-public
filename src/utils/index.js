@@ -290,3 +290,13 @@ export const formatDateString = stringDate => {
     time: `${hours}:${mins}:${secs}`
   };
 }
+
+export const Utils = {
+  downloadFile: function (fileName, blob) {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  }
+}

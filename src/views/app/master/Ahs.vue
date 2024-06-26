@@ -28,6 +28,18 @@
         </div>
       </div>
       <div class="right">
+        <b-btn
+            variant="outline-primary"
+            @click="onTapExportButton"
+          >
+            {{ $t('button.export') }}
+          </b-btn>
+          <b-btn
+            variant="outline-primary"
+            @click="onTapImportButton"
+          >
+            {{ $t('button.import') }}
+          </b-btn>
         <div class="labeled-select position-relative d-inline-block ml-2">
           <label
             class="form-group has-float-label mb-0 can-invalid"
@@ -70,15 +82,23 @@
     <AddAhs @ahs-added="ahsAdded" />
     <EditAhs @ahs-updated="getAhsMaster" :selected-ahs="selectedAhs" />
     <FloatingActionButton v-b-modal.add-ahs-modal />
+    <ImportExcelModal
+      :id="this.importModalId"
+      :didFileSelected="didFileSelected"
+    />
   </div>
 </template>
 
 <script>
+  import moment from 'moment';
+  import { mapActions, mapGetters } from 'vuex';
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AhsItem from '@/components/Master/Ahs/AhsItem.vue';
   import AddAhs from '@/components/Master/Ahs/AddAhs.vue';
   import EditAhs from '@/components/Master/Ahs/EditAhs.vue';
-  import { mapActions, mapGetters } from 'vuex';
+  import ImportExcelModal from '@/components/Common/ImportExcelModal';
+  import { dateFormats } from '@/constants/config';
+  import { Utils } from '@/utils';
 
   export default {
     data: () => ({
@@ -106,6 +126,7 @@
           name: 'AHS Permen PUPR 2023'
         },
       ],
+      importModalId: 'import-ahs-modal'
     }),
     created() {
       this.loadProvinces();
@@ -118,6 +139,8 @@
         'fetchAhs',
         'fetchUnit',
         'fetchAhsItemableIds',
+        'exportMasterAhs',
+        'importMasterAhs'
       ]),
       ahsAdded() {
         this.fetchUnit();
@@ -157,6 +180,21 @@
       editAhs(ahs) {
         this.selectedAhs = ahs;
       },
+      async onTapExportButton() {
+        const response = await this.exportMasterAhs();
+        const currentDateStr = moment().format(dateFormats.excelFile); 
+        Utils.downloadFile(`Master_AHS_${currentDateStr}.xlsx`, response.data);
+      },
+      onTapImportButton() {
+        this.$bvModal.show(this.importModalId);
+      },
+      async didFileSelected(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        await this.importMasterAhs({formData});
+        this.$bvModal.hide(this.importModalId);
+        await this.getAhsMaster();
+      }
     },
     computed: {
       ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds', 'getAhsCount']),
@@ -166,6 +204,7 @@
       FloatingActionButton,
       AddAhs,
       EditAhs,
+      ImportExcelModal
     },
     watch: {
       selectedProvince() {

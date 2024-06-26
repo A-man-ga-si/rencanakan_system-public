@@ -495,7 +495,9 @@
     "middle": "Middle",
     "right": "Right",
     "dropdown": "Dropdown",
-    "dropdown-link": "Dropdown Link"
+    "dropdown-link": "Dropdown Link",
+    "export": "Export",
+    "import": "Import"
   },
   "cards": {
     "icon-card": "Icon Card",
@@ -682,7 +684,8 @@
     "save-bt": "Simpan",
     "cancel-bt": "Batal",
     "launch-large-modal": "Launch Large Modal",
-    "launch-small-modal": "Launch Small Modal"
+    "launch-small-modal": "Launch Small Modal",
+    "import-popup-title": "Kamu akan memperbarui seluruh data"
   },
   "nav": {
     "basic": "Nav Basic",

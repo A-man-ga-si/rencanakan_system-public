@@ -79,6 +79,16 @@ const actions = {
     commit('setAhsIds', data.data.data.ahses);
     return data;
   },
+
+  async exportMasterAhs(ctx) {
+    return await masterAhsApi.download(`export`);
+  },
+
+  async importMasterAhs(ctx, { formData }) {
+    return await masterAhsApi.post('import', formData, null, {
+      'Content-Type': 'multipart/formdata'
+    });
+  },
 };
 
 export default {
