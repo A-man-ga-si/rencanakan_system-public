@@ -60,6 +60,16 @@ const actions = {
     // prettier-ignore
     const data = await masterItemPrice.post(`${itemPriceId}/batch-update`, form);
   },
+
+  async exportItemPrice(ctx) {
+    return await masterItemPrice.download(`export`);
+  },
+
+  async importItemPrice(ctx, { formData }) {
+    return await masterItemPrice.post('import', formData, null, {
+      'Content-Type': 'multipart/formdata'
+    });
+  },
 };
 
 export default {
