@@ -59,6 +59,10 @@
           this.resetForm();
           this.hideModal(this.modalId);
         } catch (err) {
+          if (err.response?.status == 400 ){
+            Notify.failure(err.response.data.message);
+            return;
+          }
           this.checkForInvalidResponse(err);
         }
       },
