@@ -50,6 +50,10 @@
           Notify.success('Berhasil menambahkan data kelompok harga satuan');
           this.$emit('item-price-group-added');
         } catch (err) {
+          if (err.response?.status == 400 ){
+            Notify.failure(err.response.data.message);
+            return;
+          }
           this.checkForInvalidResponse(err);
         }
       },

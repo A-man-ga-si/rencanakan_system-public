@@ -59,11 +59,16 @@
       @item-price-updated="loadItemPrices"
       :selected-item-price="edit.selectedItemPrice"
     />
+    <ImportExcelModal
+      :id="this.importModalId"
+      :didFileSelected="didFileSelected"
+    />
   </div>
 </template>
 
 <script>
   import moment from 'moment';
+  import ImportExcelModal from '@/components/Common/ImportExcelModal';
   import ItemPriceItem from '@/components/Master/ItemPrice/ItemPriceItem.vue';
   import AddItemPrice from '@/components/Master/ItemPrice/AddItemPrice.vue';
   import EditItemPrice from '@/components/Master/ItemPrice/EditItemPrice.vue';
@@ -81,6 +86,7 @@
       selectedProvince: '',
       edit: { selectedItemPrice: {} },
       form: { searchQuery: '' },
+      importModalId: 'importItemPriceModal'
     }),
     async created() {
       await this.loadProvinces();
@@ -89,6 +95,7 @@
       // TODO: Make provinces fetches more efficient
       ...mapActions([
         'exportItemPrice',
+        'importItemPrice',
         'fetchProvinces',
         'fetchItemPrices',
         'fetchUngroupedItemPrices',
@@ -115,8 +122,15 @@
         Utils.downloadFile(`Master_Harga_Satuan_${currentDateStr}.xlsx`, response.data);
       },
       onTapImportButton() {
-        // this.$bvModal.show(this.importModalId);
+        this.$bvModal.show(this.importModalId);
       },
+      async didFileSelected(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        await this.importItemPrice({formData});
+        this.$bvModal.hide(this.importModalId);
+        this.loadItemPrices();
+      }
     },
     computed: {
       ...mapGetters(['getUngroupedItemPrices']),
@@ -132,6 +146,7 @@
       ValidationInput,
       EditItemPrice,
       BatchUpdatePriceItemPrice,
+      ImportExcelModal
     },
   };
 </script>
