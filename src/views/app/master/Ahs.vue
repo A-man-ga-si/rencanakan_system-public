@@ -99,6 +99,7 @@
   import ImportExcelModal from '@/components/Common/ImportExcelModal';
   import { dateFormats } from '@/constants/config';
   import { Utils } from '@/utils';
+  import { Notify } from 'notiflix';
 
   export default {
     data: () => ({
@@ -189,11 +190,19 @@
         this.$bvModal.show(this.importModalId);
       },
       async didFileSelected(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-        await this.importMasterAhs({formData});
-        this.$bvModal.hide(this.importModalId);
-        await this.getAhsMaster();
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          await this.importMasterAhs({formData});
+          this.$bvModal.hide(this.importModalId);
+          await this.getAhsMaster();
+        } catch (error){
+          if (error.response?.status == 400) {
+            Notify.failure(error.response.data.message);
+            return
+          }
+          this.checkForInvalidResponse(error);
+        }
       }
     },
     computed: {
