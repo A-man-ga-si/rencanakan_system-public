@@ -26,10 +26,17 @@
   .floating-action-button {
     position: fixed;
     right: 45px;
-    bottom: 46px;
-    width: 60px;
-    height: 60px;
+    bottom: 128px;
+    width: 64px;
+    height: 64px;
     font-size: 30px;
     z-index: 99;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .floating-action-button {
+      right: 24px;
+      bottom: 104px;
+    }
   }
 </style>
