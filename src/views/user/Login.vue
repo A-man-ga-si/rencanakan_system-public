@@ -84,6 +84,13 @@
         </div>
       </b-card>
     </b-colxx>
+    <a
+      class="whatsapp-button"
+      href="https://wa.me/081936000388"
+      target="_blank"
+    >
+      <WhatsappIcon class="whatsapp-icon"/>
+    </a>
   </b-row>
 </template>
 
@@ -101,8 +108,12 @@
     minLength,
     email,
   } = require('vuelidate/lib/validators');
+  import { WhatsappIcon } from '@/components/Svg'
 
   export default {
+    components: {
+      WhatsappIcon
+    },
     data() {
       return {
         form: {
@@ -181,5 +192,31 @@
 <style scoped>
   .register-bt {
     font-size: 14px !important;
+  }
+
+  .whatsapp-button {
+    display: flex;
+    position: fixed;
+    bottom: 48px;
+    right: 48px;
+    z-index: 999;
+    width: 64px;
+    height: 64px;
+    background-color: #3ec04f;
+    border: 0;
+    border-radius: 74px;
+  }
+
+  .whatsapp-icon {
+    margin: auto;
+    width: 42px;
+    height: 42px
+  }
+
+  @media only screen and (max-width: 600px) {
+    .whatsapp-button {
+      right: 24px;
+      bottom: 24px;
+    }
   }
 </style>

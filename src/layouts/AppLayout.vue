@@ -8,13 +8,6 @@
       </div>
     </main>
     <footer-component />
-    <a
-      class="whatsapp-button"
-      href="https://wa.me/081936000388"
-      target="_blank"
-    >
-      <WhatsappIcon class="whatsapp-icon"/>
-    </a>
   </div>
 </template>
 
@@ -23,14 +16,12 @@
   import Topnav from '../containers/navs/Topnav';
   import Footer from '../containers/navs/Footer';
   import { mapGetters } from 'vuex';
-  import { WhatsappIcon } from '../components/Svg'
 
   export default {
     components: {
       topnav: Topnav,
       sidebar: Sidebar,
-      'footer-component': Footer,
-      WhatsappIcon
+      'footer-component': Footer
     },
     data() {
       return {
@@ -47,31 +38,3 @@
     }
   };
 </script>
-
-<style scoped>
-  .whatsapp-button {
-    display: flex;
-    position: fixed;
-    bottom: 48px;
-    right: 48px;
-    z-index: 999;
-    width: 64px;
-    height: 64px;
-    background-color: #3ec04f;
-    border: 0;
-    border-radius: 74px;
-  }
-
-  .whatsapp-icon {
-    margin: auto;
-    width: 42px;
-    height: 42px
-  }
-
-  @media only screen and (max-width: 600px) {
-    .whatsapp-button {
-      right: 24px;
-      bottom: 24px;
-    }
-  }
-</style>
