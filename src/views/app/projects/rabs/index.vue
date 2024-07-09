@@ -23,11 +23,11 @@
       <b-col>
         <b-card>
           <b-nav pills>
-            <b-nav-item :to="{ name: 'RabAhs' }">
-              {{ $t('pages.projects.rab.ahs-tab') }}
-            </b-nav-item>
             <b-nav-item :to="{ name: 'RabSummary' }">
               {{ $t('pages.projects.rab.rab-tab') }}
+            </b-nav-item>
+            <b-nav-item :to="{ name: 'RabAhs' }">
+              {{ $t('pages.projects.rab.ahs-tab') }}
             </b-nav-item>
             <b-nav-item :to="{ name: 'ItemPrice' }">
               {{ $t('pages.projects.rab.unit-tab') }}
