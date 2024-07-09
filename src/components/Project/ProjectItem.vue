@@ -137,7 +137,7 @@
         const res = await this.showProject(projectHashid)
         await this.setCurrentActiveProject(res.data.data.project)
 
-        this.$router.push({ path: `/app/projects/${projectHashid}/rab/ahs` });
+        this.$router.push({ path: `/app/projects/${projectHashid}/rab/summary` });
       },
       editProject(project) {
         this.$bvModal.show('edit-project');
