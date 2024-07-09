@@ -158,9 +158,12 @@
           );
         this.form.volume = this.rabItemData?.volume;
         this.form.unitId = this.rabItemData?.hashed_unit_id;
-        this.form.price = this.rabItemData?.custom_ahs
+        const rabItemPrice = this.rabItemData?.custom_ahs
           ? this.rabItemData?.custom_ahs.price.toFixed(2)
           : this.rabItemData.price;
+        this.form.price = this.form.selectedCustomAhs.id != "" 
+            ? `Rp. ${formatCurrency(parseInt(rabItemPrice).toFixed(2))}`
+            : rabItemPrice ?? 0;
       }
     },
     computed: {
@@ -171,7 +174,11 @@
         return this.form.selectedCustomAhs.id != "";
       },
       getSubtotalPrice() {
-        const subtotalPrice = (this.form.price ?? 0) * (this.form.volume ?? 0);
+        const trimmedPrice = String(this.form.price ?? 0)
+          .replace('Rp','')
+          .replace(',','')
+          .replace('.','');
+        const subtotalPrice = trimmedPrice * (this.form.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
     },
