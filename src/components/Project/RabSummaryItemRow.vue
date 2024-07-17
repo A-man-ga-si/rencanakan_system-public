@@ -175,9 +175,10 @@
       },
       getSubtotalPrice() {
         const trimmedPrice = String(this.form.price ?? 0)
-          .replace('Rp','')
-          .replace(',','')
-          .replace('.','');
+          .trim()
+          .replaceAll('Rp','')
+          .replaceAll(',','')
+          .replaceAll('.','');
         const subtotalPrice = trimmedPrice * (this.form.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
