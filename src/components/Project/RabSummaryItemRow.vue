@@ -108,6 +108,11 @@
       },
       async update() {
         const { name, selectedCustomAhs, volume, unitId, price } = this.form;
+        const trimmedPrice = String(this.form.price ?? 0)
+          .trim()
+          .replaceAll('Rp','')
+          .replaceAll(',','')
+          .replaceAll('.','');
         await this.updateRabItem({
           projectId: this.$route.params.id,
           rabId: this.rab.hashid,
@@ -117,7 +122,7 @@
             custom_ahs_id: selectedCustomAhs.id,
             volume,
             unit_id: unitId,
-            price: price,
+            price: trimmedPrice,
           },
         });
         this.$emit('update-rab-item');
