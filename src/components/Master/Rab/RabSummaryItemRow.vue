@@ -104,9 +104,10 @@
         }
         const { name, selectedCustomAhs, volume, unitId, price } = this.form;
         const trimmedPrice = price
-          .replace("Rp.", "")
-          .replace(",", "")
-          .replace(" ", "");
+          .trim()
+          .replaceAll("Rp.", "")
+          .replaceAll(",", "")
+          .replaceAll(".", "");
         await this.updateMasterRabItem({
           rabId: this.rab.hashid,
           rabItemId: this.rabItemData.hashid,
