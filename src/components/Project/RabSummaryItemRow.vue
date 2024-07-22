@@ -7,15 +7,20 @@
         class="inline-edit w-100"
         placeholder="Isi nama pekerjaan"
         v-model="form.name"
-        @change="update"
+        @change="onChangeNameInput"
       />
     </td>
     <td>
-      <v-select
-        @input="onChangeAhsCode"
-        :clearable="true"
-        :options="customAhsItems"
-        v-model="form.selectedCustomAhs"
+      <rcn-ahsproject-dropdown
+        :is-disabled="isAhsUpdating"
+        :ahs-group-items="ahsGroupItems"
+        :selected-ahs="selectedCustomAhs"
+        :selected-group-key="selectedAhsGroupKey"
+        :search-query="ahsSearchQuery"
+        @on-dismiss="() => $emit('did-ahs-dropdown-dismissed')"
+        @on-change-search-input="(data) => $emit('did-search-input-changed', data)"
+        @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
+        :on-select="didAhsItemSelected"
       />
     </td>
     <td>
@@ -23,16 +28,16 @@
         type="text"
         class="inline-edit w-100"
         v-model="form.volume"
-        @change="update"
+        @change="onChangeVolumeInput"
       />
     </td>
     <td>
       <v-select
         v-model="form.unitId"
         label="name"
-        @input="update"
         :reduce="unit => unit.hashid"
         :options="unitIds"
+        @input="onSelectUnit"
       />
     </td>
     <td>
@@ -42,7 +47,7 @@
         class="inline-edit"
         placeholder="Isi harga satuan"
         v-model="form.price"
-        :disabled="getIsPriceInputDisabled"
+        :disabled="this.selectedCustomAhs != null"
       />
     </td>
     <td>{{ getSubtotalPrice }}</td>
@@ -63,10 +68,15 @@
   import { mapActions } from 'vuex';
   import { PhX } from 'phosphor-vue';
   import { formatCurrency } from '@/utils';
+  import { RcnAhsprojectDropdown } from '@/components/Common'
+
   export default {
     data() {
       return {
         customAhsItems: [],
+        isAhsUpdating: false,
+        nameDebouncerTimeout: null,
+        selectedCustomAhs: null,
         form: {
           name: '',
           selectedCustomAhs: null,
@@ -88,23 +98,41 @@
       rab: {
         type: Object,
       },
-      customAhsIds: {
+      ahsGroupItems: {
         type: Array,
       },
       unitIds: {
         type: Array,
       },
+      selectedAhsGroupKey: {
+        type: String,
+        default: null
+      },
+      ahsSearchQuery: {
+        type: String,
+        default: ''
+      }
     },
     mounted() {},
     methods: {
-      ...mapActions(['destroyRabItem', 'updateRabItem']),
-      onChangeAhsCode() {
-          if(this.form.selectedCustomAhs.id == '') {
-            this.form.price = null;
-            return
-          }
-          this.form.price = this.form.selectedCustomAhs.price;
-          this.update();
+      ...mapActions(['destroyRabItem', 'updateRabItem', 'updateRabItemAhs']),
+      onChangeNameInput(event) {
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          const mutatedRabItem = this.rabItemData;
+          mutatedRabItem.name = event.target.value;
+          this.$emit('did-rab-item-updated', mutatedRabItem);
+        }, 500);
+      },
+      onChangeVolumeInput(event) {
+        const mutatedRabItem = this.rabItemData;
+        mutatedRabItem.volume = event.target.value;
+        this.$emit('did-rab-item-updated', mutatedRabItem);
+      },
+      onSelectUnit(value) {
+        const mutatedRabItem = this.rabItemData;
+        mutatedRabItem.hashed_unit_id = value;
+        this.$emit('did-rab-item-updated', mutatedRabItem);
       },
       async update() {
         const { name, selectedCustomAhs, volume, unitId, price } = this.form;
@@ -146,57 +174,56 @@
       },
       setupFormValues() {
         this.form.name = this.rabItemData?.name;
-        this.customAhsItems = [
-          { id: '', label: '-' },
-          ...this.customAhsIds.map(customAhs => {
-            return {
-              id: customAhs.hashid,
-              label: `${customAhs.name} - ${customAhs.code}`,
-              price: customAhs.price
-            }
-          })
-        ];
-        this.form.selectedCustomAhs = !this.rabItemData?.custom_ahs
-          ? this.customAhsItems[0]
-          : this.customAhsItems.find(
-            customAhsItem => customAhsItem.id == this.rabItemData?.custom_ahs.hashid
-          );
         this.form.volume = this.rabItemData?.volume;
         this.form.unitId = this.rabItemData?.hashed_unit_id;
-        const rabItemPrice = this.rabItemData?.custom_ahs
-          ? this.rabItemData?.custom_ahs.price.toFixed(2)
-          : this.rabItemData.price;
-        this.form.price = this.form.selectedCustomAhs.id != "" 
-            ? `Rp. ${formatCurrency(parseInt(rabItemPrice).toFixed(2))}`
-            : rabItemPrice ?? 0;
+        this.form.price = this.rabItemData.custom_ahs != null
+            ? `Rp. ${formatCurrency(parseInt(this.rabItemData.custom_ahs.price).toFixed(2))}`
+            : this.rabItemData.price ?? 0;
+      },
+      didAhsGroupChanged(groupKey) {
+        this.didAhsGroupSelected(groupKey);
+      },
+      async didAhsItemSelected(groupKey, ahsItem)  {
+        this.$emit('did-ahs-code-updated',{
+            rabRowItemId: this.rabItemData.hashid,
+            ahsId: ahsItem.key,
+        });
+      },
+      setupSelectedCustomAhs() {
+        this.selectedCustomAhs = {
+          'label': `${this.rabItemData?.custom_ahs.code} - ${this.rabItemData?.custom_ahs.name}`
+        }
       }
     },
     computed: {
-      getIsPriceInputDisabled() {
-        if (this.form.selectedCustomAhs == null) {
-          return false;
-        }
-        return this.form.selectedCustomAhs.id != "";
-      },
       getSubtotalPrice() {
-        const trimmedPrice = String(this.form.price ?? 0)
+        const rabItemPrice = this.rabItemData.custom_ahs != null 
+          ? this.rabItemData.custom_ahs.price
+          : this.rabItemData.price;
+        const trimmedPrice = String(rabItemPrice)
           .trim()
           .replaceAll('Rp','')
           .replaceAll(',','')
           .replaceAll('.','');
-        const subtotalPrice = trimmedPrice * (this.form.volume ?? 0);
+        const subtotalPrice = trimmedPrice * (this.rabItemData.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
     },
     created() {
       this.setupFormValues();
+      this.setupSelectedCustomAhs();
     },
     watch: {
-      rabItemData() {
-        this.setupFormValues();
+      rabItemData: {
+        deep: true,
+        handler(newValue, _) {
+          this.setupFormValues();
+          this.setupSelectedCustomAhs();
+        }
       }
     },
     components: {
+      RcnAhsprojectDropdown,
       PhX,
     },
   };

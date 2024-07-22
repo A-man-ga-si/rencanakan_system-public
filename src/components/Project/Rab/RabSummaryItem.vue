@@ -37,8 +37,8 @@
       </div>
     </div>
     <div class="body" v-show="!mainCardCollapsed">
-      <div class="table-responsive-xxl">
-        <table class="table text-left mx-3 table-responsive" style="width: 97%">
+      <div class="table-responsive-xxl" style="overflow: visible">
+        <table class="table text-left mx-3 table-responsive" style="width: 97%; overflow: visible">
           <thead>
             <tr>
               <th scope="col" style="width: 3%">No.</th>
@@ -58,8 +58,15 @@
               :key="idx"
               :rab-item-data="rabItemI"
               :rab="rabItem"
-              :custom-ahs-ids="ahsCodeList"
+              :ahs-group-items="ahsGroupItems"
               :unit-ids="unitCodeList"
+              :selected-ahs-group-key="selectedAhsGroupKey"
+              :ahs-search-query="ahsSearchQuery"
+              @did-ahs-group-changed="(data) => $emit('did-ahs-group-changed',  data)"
+              @did-search-input-changed="(data) => $emit('did-search-input-changed', data)"
+              @did-rab-item-updated="(mutatedRabItem) => $emit('did-rab-item-updated', rabItem, mutatedRabItem)"
+              @did-ahs-dropdown-dismissed="() => $emit('did-ahs-dropdown-dismissed')"
+              @did-ahs-code-updated="didAhsCodeUpdated"
               @rab-item-deleted="onRabItemDeleted"
               @update-rab-item="onRabItemRowUpdated"
             />
@@ -113,10 +120,17 @@
               :key="idx2"
               :rab-item-data="rabItemI"
               :rab="rabItem"
-              :custom-ahs-ids="ahsCodeList"
+              :ahs-group-items="ahsGroupItems"
               :unit-ids="unitCodeList"
+              :selected-ahs-group-key="selectedAhsGroupKey"
+              :ahs-search-query="ahsSearchQuery"
               @rab-item-deleted="onRabItemDeleted"
               @update-rab-item="onRabItemRowUpdated"
+              @did-rab-item-updated="(mutatedRabItem) => $emit('did-rab-item-updated', rabItem, mutatedRabItem)"
+              @did-ahs-group-changed="(data) => $emit('did-ahs-group-changed',  data)"
+              @did-search-input-changed="(data) => $emit('did-search-input-changed', data)"
+              @did-ahs-dropdown-dismissed="() => $emit('did-ahs-dropdown-dismissed')"
+              @did-ahs-code-updated="(data) => didHeaderAhsCodeUpdated(rabItemHeader, data)"
             />
             <tr>
               <td colspan="8" class="font-weight-bold">
@@ -185,9 +199,20 @@
         type: Array,
         required: true,
       },
-      ahsCodeList: {
+      ahsGroupItems: {
         type: Array,
       },
+      selectedAhsGroupKey: {
+        type: String,
+        default: null
+      },
+      ahsSearchQuery: {
+        type: String,
+        default: ''
+      },
+      didAhsGroupSelected: {
+        type: Function
+      }
     },
     data: () => ({
       mainCardCollapsed: false,
@@ -260,14 +285,62 @@
       romanized(number) {
         return toRoman(number);
       },
+      didAhsCodeUpdated(data) {
+        this.$emit('did-ahs-code-updated', {
+          rabId: this.rabItem.hashid,
+          rabHeaderId: null,
+          rabRowItemId: data.rabRowItemId,
+          ahsId: data.ahsId
+        });
+      },
+      didHeaderAhsCodeUpdated(rabHeader, data) {
+        this.$emit('did-ahs-code-updated', {
+          rabId: this.rabItem.hashid,
+          rabHeaderId: rabHeader.hashid,
+          rabRowItemId: data.rabRowItemId,
+          ahsId: data.ahsId
+        });
+      }
     },
     computed: {
       alphabeuticalRabNumber() {
         return numberToAlphabet(this.index).toUpperCase();
       },
       formattedSubtotal() {
-        return formatCurrency(parseInt(this.rabItem.subtotal));
+        let subtotal = 0;
+        for (const rabItemRow of this.rabItem.rab_item) {
+          if (rabItemRow.custom_ahs != null) {
+            subtotal = subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+            continue;
+          }
+          subtotal = subtotal + (rabItemRow.price * rabItemRow.volume);
+        }
+        for (const rabHeaderItemRow of this.rabItem.rab_item_header) {
+          for (const rabItemRow of rabHeaderItemRow.rab_item) {
+            if (rabItemRow.custom_ahs != null) {
+              subtotal = subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+              continue;
+            }
+            subtotal = subtotal + (rabItemRow.price * rabItemRow.volume);
+          }
+        }
+        return formatCurrency(parseInt(subtotal));
       },
+    },
+    watch: {
+      rabItem: {
+        deep: true,
+        handler(newValue, _) {
+          console.log("===> (DEBUG) RAB ITEM DATA UPDATED");
+          console.log(newValue);
+        }
+      },
+      // rabItem(newValue, _) {
+      //   deep: true,
+      //   handler
+      //   console.log("===> (DEBUG) RAB ITEM DATA UPDATED");
+      //   console.log(newValue);
+      // }
     },
     components: {
       RabSummaryItemRow,

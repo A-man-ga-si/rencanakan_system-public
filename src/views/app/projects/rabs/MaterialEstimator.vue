@@ -87,6 +87,8 @@
       async getCustomAhsIds() {
         const data = await this.fetchCustomAhsIds({
           projectId: this.$route.params.id,
+          q: '',
+          limit: null
         });
         this.customAhsIds = data.data.data.ahsItemIds;
       },

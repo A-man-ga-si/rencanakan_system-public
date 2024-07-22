@@ -214,7 +214,6 @@
           text: 'Item RAB ini akan dihapus, aksi ini tidak dapat dibatalkan !',
         });
         if (isConfirmed) {
-          console.log(this.rabItem.hashid)
           await this.destroyMasterRab({
             masterRabId: this.rabItem.hashid,
           });
@@ -244,7 +243,6 @@
             volume: 0,
           },
         });
-        console.log(header)
         this.$emit('rab-item-added');
       },
       onRabItemDeleted() {

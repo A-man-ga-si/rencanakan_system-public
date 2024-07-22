@@ -27,10 +27,14 @@ const actions = {
     return data;
   },
 
-  async fetchCustomAhsIds(ctx, { projectId }) {
-    const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get(
-      'ids'
-    );
+  async fetchCustomAhsIds(ctx, { projectId, q='', limit }) {
+    let queryString = `q=${q}`;
+    if (limit != null) {
+      queryString = queryString.concat(`&limit=${limit}`)
+    }
+    const data = await CustomAhsApi
+      .setPreviousPath(`project/${projectId}`)
+      .get('ids', queryString);
     return data;
   },
 

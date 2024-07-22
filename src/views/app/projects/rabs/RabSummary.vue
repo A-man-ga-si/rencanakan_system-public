@@ -41,8 +41,15 @@
         :key="idx"
         :index="idx"
         :rab-item="rab"
-        :ahs-code-list="ahsItems"
+        :ahs-group-items="filteredAhsGroupItems"
         :unit-code-list="unitItems"
+        :selected-ahs-group-key="selectedAhsGroupKey"
+        :ahs-search-query="ahsSearchQuery"
+        @did-ahs-group-changed="didAhsGroupSelected"
+        @did-rab-item-updated="didRabItemUpdated"
+        @did-search-input-changed="didSearchInputChanged"
+        @did-ahs-dropdown-dismissed="didAhsDropdownDismissed"
+        @did-ahs-code-updated="didRabItemAhsUpdated"
         @rab-item-deleted="reloadData"
         @rab-item-added="reloadData"
         @rab-item-updated="reloadData"
@@ -151,9 +158,15 @@
         searchCountdownObject: null,
         editedRabItem: null,
         editedRabItemHeader: null,
-        ahsItems: null,
         rabItems: null,
-        unitItems: null
+        unitItems: null,
+
+        // Datas - Ahs Dropdown 
+        ahsGroupItems: null,
+        filteredAhsGroupItems: null,
+        ahsItemLimit: 10,
+        selectedAhsGroupKey: null,
+        ahsSearchQuery: ""
       };
     },
     created() {
@@ -166,6 +179,10 @@
         'fetchRab',
         'fetchAhs',
         'showProject',
+        'fetchAhsIds',
+        'fetchMasterAhsProject',
+        'updateRabItem',
+        'updateRabItemAhs'
       ]),
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
@@ -179,12 +196,29 @@
       fabClick(ref) {
         this.$bvModal.show('add-rab');
       },
+      filterMasterAhs(masterAhsList, groupKey) { // TODO: Should move this code to RAB Summary Item Row
+        return masterAhsList
+          .filter((masterAhs) => masterAhs.groups == groupKey)
+          .map(
+            (masterAhs) => {
+              return {
+                key: masterAhs.id,
+                label: `${masterAhs.id} - ${masterAhs.name}`
+              }
+            }
+          )
+      },
+      async fetchAhsData() {
+        this.filteredAhsGroupItems = [
+          { groupKey: null, items: null },
+          { groupKey: 'reference',  items: null },
+          { groupKey: 'reference-2023', items: null },
+        ]
+        await this.reloadCustomAhsData();
+        this.ahsGroupItems = JSON.parse(JSON.stringify(this.filteredAhsGroupItems));
+      },
       async reloadData() {
-        // Generate AHS items
-        const ahsData = await this.fetchCustomAhsIds({
-          projectId: this.$route.params.id,
-        });
-        this.ahsItems = ahsData.data.data.ahsItemIds;
+        await this.fetchAhsData();
 
         // Generate unit items
         const unitData = await this.fetchUnit();
@@ -208,6 +242,135 @@
         this.editedRabItem = rabItem;
         this.$bvModal.show('edit-rab');
       },
+      didAhsDropdownDismissed() {
+        this.selectedAhsGroupKey = null;
+        this.ahsSearchQuery = '';
+        this.filteredAhsGroupItems = JSON.parse(JSON.stringify(this.ahsGroupItems))
+      },
+      didAhsGroupSelected(groupKey) {
+        this.ahsSearchQuery = '';
+        this.selectedAhsGroupKey = groupKey;
+        if (this.selectedAhsGroupKey == null) {
+          this.reloadCustomAhsData();
+          return;
+        }
+        this.reloadMasterAhsProjectData();
+      },
+      didSearchInputChanged(searchQuery) {
+        this.ahsSearchQuery = searchQuery;
+        if (this.selectedAhsGroupKey == null) {
+          this.reloadCustomAhsData();
+          return;
+        }
+        this.reloadMasterAhsProjectData();
+      },
+      calculateRabItemsSubtotal() {
+        for (const rabItem of this.rabItems) {
+          rabItem.subtotal = 0;
+          for (const rabItemRow of rabItem.rab_item) {
+            if (rabItemRow.custom_ahs != null) {
+              rabItem.subtotal = rabItem.subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+              continue;
+            }
+            rabItem.subtotal = rabItem.subtotal + (rabItemRow.price * rabItemRow.volume);
+          }
+          for (const rabHeaderItemRow of rabItem.rab_item_header) {
+            for (const rabItemRow of rabHeaderItemRow.rab_item) {
+              if (rabItemRow.custom_ahs != null) {
+                rabItem.subtotal = rabItem.subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+                continue;
+              }
+              rabItem.subtotal = rabItem.subtotal + (rabItemRow.price * rabItemRow.volume);
+            }
+          }
+        }
+      },
+      async reloadCustomAhsData() { // TODO: Should pass only customAhsCodeList to RabSummaryItemRow
+        const ahsGroupItem = this.filteredAhsGroupItems.find(
+          (ahsGroupItem) => ahsGroupItem.groupKey == this.selectedAhsGroupKey
+        );
+        ahsGroupItem.items = null;
+        const customAhsResponse = await this.fetchCustomAhsIds({
+          projectId: this.$route.params.id,
+          q: this.ahsSearchQuery,
+          limit: this.ahsItemLimit
+        });
+        ahsGroupItem.items = customAhsResponse.data.data.ahsItemIds.map((customAhs) => {
+          return  {
+              key: customAhs.hashid,
+              label: `${customAhs.code} - ${customAhs.name}`,
+              price: customAhs.price
+            }
+        });
+      },
+      async reloadMasterAhsProjectData() { // TODO: Should pass only masterAhsList to RabSummaryItemRow
+        const ahsGroupItem = this.filteredAhsGroupItems.find(
+          (ahsGroupItem) => ahsGroupItem.groupKey == this.selectedAhsGroupKey
+        );
+        ahsGroupItem.items = null;
+        const masterAhsResponse = await this.fetchMasterAhsProject({
+          q: this.ahsSearchQuery,
+          limit: this.ahsItemLimit,
+          group: this.selectedAhsGroupKey
+        });
+        ahsGroupItem.items = this.filterMasterAhs(
+          masterAhsResponse.data.ahsList,
+          this.selectedAhsGroupKey
+        );
+      },
+      async didRabItemUpdated(mutatedRab, mutatedRabItem) {
+        let rab = this.rabItems.find((rab) => rab.hashid == mutatedRab.hashid);
+        let rabItem = rab.rab_item.find((rabItemRow) => rabItemRow.hashid == mutatedRabItem.hashid);
+        rabItem = mutatedRabItem;
+        await this.updateRabItem({
+          projectId: this.$route.params.id,
+          rabId: rab.hashid,
+          rabItemId: rabItem.hashid,
+          form: { // TODO: Should changed to rab item instead
+            name: rabItem.name,
+            custom_ahs_id: rabItem.custom_ahs.hashid, // TODO: Should deleted soon on BE
+            volume: rabItem.volume,
+            unit_id: rabItem.hashed_unit_id,
+            price: rabItem.price,
+          },
+        });
+        this.calculateRabItemsSubtotal();
+      },
+      async didRabItemAhsUpdated({ rabId, rabHeaderId, rabRowItemId, ahsId }) {
+        // 01 - Update RAB item remotely
+        const response = await this.updateRabItemAhs({
+            projectId: this.$route.params.id,
+            rabId: rabId,
+            rabItemId: rabRowItemId,
+            groupId: this.selectedAhsGroupKey,
+            ahsId: ahsId
+        });
+        const customAhs = response.data.data.customAhs;
+
+        // 02 - Get RAB index
+        let rabIndex = this.rabItems.findIndex((rab) => rab.hashid == rabId);
+
+        // 03A - Update RAB header item locally
+        if (rabHeaderId) {
+          const rabHeaderIndex = this.rabItems[rabIndex].rab_item_header.findIndex(
+            (rabHeaderItem) => rabHeaderItem.hashid == rabHeaderId
+          );
+          const rabItemIndex = this.rabItems[rabIndex].rab_item_header[rabHeaderIndex].rab_item.findIndex(
+            (rabItemRow) => rabItemRow.hashid == rabRowItemId
+          );
+          this.rabItems[rabIndex].rab_item_header[rabHeaderIndex].rab_item[rabItemIndex].custom_ahs = customAhs;
+        } else {
+          // 03B - Update RAB item locally
+          const rabItemIndex = this.rabItems[rabIndex].rab_item.findIndex(
+            (rabItemRow) => rabItemRow.hashid == rabRowItemId
+          );
+          this.rabItems[rabIndex].rab_item[rabItemIndex].custom_ahs = customAhs;
+        }
+
+        // 04 - Reload custom AHS list data
+        this.reloadCustomAhsData();
+        this.calculateRabItemsSubtotal();
+      }
     },
     computed: {
       ...mapGetters(['getProjects']),
@@ -233,7 +396,7 @@
         return angkaTerbilang(this.rabsSubTotal).toUpperCase();
       },
       isLoading() {
-        return !this.ahsItems || !this.unitItems || !this.rabItems;
+        return !this.ahsGroupItems || !this.unitItems || !this.rabItems;
       }
     },
     watch: {
