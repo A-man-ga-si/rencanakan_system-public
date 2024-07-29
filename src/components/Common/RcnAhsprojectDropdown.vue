@@ -15,16 +15,17 @@
     >
       <div style="border-right: 1px solid #d7d7d7; width: 150px;">
         <div
-          v-for="ahsGroup in ahsGroups"
+          v-for="ahsGroupItem in ahsGroupItems"
           class="ahs-group-item"
-          :key="ahsGroup.key"
-          :class="{ 'selected': ahsGroup.key == selectedGroupKey }"
-          @click="onSelectAhsGroup(ahsGroup.key)"
+          :key="ahsGroupItem.key"
+          :class="{ 'selected': ahsGroupItem.key == selectedGroupKey }"
+          @click="onSelectAhsGroup(ahsGroupItem.key)"
         >
-          <span>{{ ahsGroup.title }}</span>
+          <span>{{ ahsGroupItem.title }}</span>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column;overflow: hidden;">
+
+      <div style="display: flex; flex-direction: column; overflow: hidden;">
         <div style="display: flex; margin: 16px; padding-left: 8px; padding-right: 8px; margin-bottom: 8px; border: 1px solid #d7d7d7 !important; width: 300px;">
             <input
               type="text"
@@ -52,16 +53,40 @@
             Tambah dari Grup AHS
           </b-button>
         </div>
+        
+        <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+          
           <div style="overflow: auto; height: 100%;">
-            <div
-              v-for="ahsItem in selectedAhsGroupItems"
-              class="ahs-item"
-              :key="ahsItem.key"
-              @click="onSelectAhsItem(ahsItem)"
-            >
-              {{ ahsItem.label }}
+            <div v-if="ahsItems != null">
+              <div
+                v-for="ahsItem in ahsItems"
+                class="ahs-item"
+                :key="ahsItem.key"
+                @click="onSelectAhsItem(ahsItem)"
+              >
+                {{ ahsItem.label }}
+              </div>
+            </div>
+
+            <div v-else>
+              <div style="padding-left: 16px; padding-right: 16px;">
+                <RcnShimmerView
+                  v-for="index in 10" :key="index"
+                  style="height: 35px; margin-top: 16px; margin-bottom: 16px;"
+                />
+              </div>
             </div>
           </div>
+
+          <div class="reset-button-container">
+            <button
+              class="btn reset-button"
+              @click="onClickResetButton"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +94,8 @@
 
 <script>
   import { ChevronDown } from '@/components/Svg';
+  import RcnShimmerView from './ShimmerView.vue';
+  import { AHSGroupReference } from '@/constants/enums.js';
 
   export default {
     props: {
@@ -89,6 +116,10 @@
         default: null
       },
       ahsGroupItems: {
+        type: Array,
+        default: null
+      },
+      ahsItems: {
         type: Array,
         default: null
       },
@@ -124,14 +155,6 @@
       };
     },
     computed: {
-      selectedAhsGroupItems() {
-        if (!this.isShowing) { return []; }
-        const selectedAhsGroup = this.ahsGroupItems.find(
-          (ahsGroupItem) =>  ahsGroupItem.groupKey == this.selectedGroupKey
-        )
-        if (!selectedAhsGroup) { return [] }
-        return selectedAhsGroup.items;
-      },
       selectedAhsLabel() {
         if (this.selectedAhs == null) {
           return '-';
@@ -139,10 +162,11 @@
         return this.selectedAhs.label;
       },
       isShowCustomAhsEmptyState() {
-        return this.ahsGroupItems != null
-          && this.selectedGroupKey == null
-          && this.selectedAhsGroupItems  != null
-          && this.selectedAhsGroupItems.length == 0
+        if (this.ahsItems == null) {
+          return false;
+        }
+        return this.ahsItems.length == 0
+          && this.selectedGroupKey == AHSGroupReference.ahsProject
       }
     },
     methods: {
@@ -151,11 +175,15 @@
         this.onClickOutside = (e) => {
           if (!this.$el.contains(e.target) && e.target.id != 'addAhsGroupButton'){
             document.removeEventListener('click', this.onClickOutside);
-            this.isShowing = false;
-            this.$emit('on-dismiss');
+            this.dismiss();
           }
         }
         document.addEventListener('click', this.onClickOutside);
+        this.$emit('on-show-popup');
+      },
+      dismiss() {
+        this.isShowing = false;
+        this.$emit('on-dismiss');
       },
       onSelectAhsGroup(key) {
         this.$emit('on-change-ahs-group', key);
@@ -168,7 +196,11 @@
       },
       onSelectAhsItem(ahsItem) {
         this.onSelect(this.selectedGroupKey, ahsItem);
-        this.isShowing = false;
+        this.dismiss();
+      },
+      onClickResetButton() {
+        this.$emit('on-click-reset-button');
+        this.dismiss();
       },
       onClickAddNewAhsProject() {
         this.$emit('on-change-ahs-group', 'reference');
@@ -180,7 +212,8 @@
       }
     },
     components: {
-      ChevronDown
+      ChevronDown,
+      RcnShimmerView
     },
   };
 </script>
@@ -252,5 +285,20 @@
   .ahs-dropdown .search-bar {
     background-color: rgba(0, 54, 90, 0.6) !important;
     color: white !important;
+  }
+
+  .ahs-dropdown .reset-button-container {
+    display: flex;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-top: 1px #d7d7d7 solid;
+  }
+
+  .ahs-dropdown .reset-button {
+    margin-left: auto;
+    margin-right: 16px;
+    padding: 0;
+    color: #00365a !important;
+    text-decoration: underline;
   }
 </style>

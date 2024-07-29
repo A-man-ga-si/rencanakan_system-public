@@ -14,12 +14,15 @@
       <rcn-ahsproject-dropdown
         :is-disabled="isAhsUpdating"
         :ahs-group-items="ahsGroupItems"
+        :ahs-items="ahsItems"
         :selected-ahs="selectedCustomAhs"
         :selected-group-key="selectedAhsGroupKey"
         :search-query="ahsSearchQuery"
+        @on-show-popup="() => $emit('did-ahs-dropdown-showed')"
         @on-dismiss="() => $emit('did-ahs-dropdown-dismissed')"
         @on-change-search-input="(data) => $emit('did-search-input-changed', data)"
         @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
+        @on-click-reset-button="didResetButtonClicked"
         :on-select="didAhsItemSelected"
       />
     </td>
@@ -42,7 +45,7 @@
     </td>
     <td>
       <input
-        @change="update"
+        @change="onChangePriceInput"
         type="text"
         class="inline-edit"
         placeholder="Isi harga satuan"
@@ -101,6 +104,9 @@
       ahsGroupItems: {
         type: Array,
       },
+      ahsItems: {
+        type: Array,
+      },
       unitIds: {
         type: Array,
       },
@@ -134,26 +140,10 @@
         mutatedRabItem.hashed_unit_id = value;
         this.$emit('did-rab-item-updated', mutatedRabItem);
       },
-      async update() {
-        const { name, selectedCustomAhs, volume, unitId, price } = this.form;
-        const trimmedPrice = String(this.form.price ?? 0)
-          .trim()
-          .replaceAll('Rp','')
-          .replaceAll(',','')
-          .replaceAll('.','');
-        await this.updateRabItem({
-          projectId: this.$route.params.id,
-          rabId: this.rab.hashid,
-          rabItemId: this.rabItemData.hashid,
-          form: {
-            name,
-            custom_ahs_id: selectedCustomAhs.id,
-            volume,
-            unit_id: unitId,
-            price: trimmedPrice,
-          },
-        });
-        this.$emit('update-rab-item');
+      onChangePriceInput(event) {
+        const mutatedRabItem = this.rabItemData;
+        mutatedRabItem.price = event.target.value;
+        this.$emit('did-rab-item-updated', mutatedRabItem);
       },
       async deleteAhsItem() {
         const { isConfirmed } = await showConfirmAlert({
@@ -183,6 +173,11 @@
       didAhsGroupChanged(groupKey) {
         this.didAhsGroupSelected(groupKey);
       },
+      didResetButtonClicked() {
+        this.$emit('did-reset-ahs-button-clicked', {
+          rabRowItemId: this.rabItemData.hashid
+        });
+      },
       async didAhsItemSelected(groupKey, ahsItem)  {
         this.$emit('did-ahs-code-updated',{
             rabRowItemId: this.rabItemData.hashid,
@@ -190,6 +185,10 @@
         });
       },
       setupSelectedCustomAhs() {
+        if (this.rabItemData?.custom_ahs == null) {
+          this.selectedCustomAhs = null;
+          return 
+        }
         this.selectedCustomAhs = {
           'label': `${this.rabItemData?.custom_ahs.code} - ${this.rabItemData?.custom_ahs.name}`
         }
@@ -199,7 +198,7 @@
       getSubtotalPrice() {
         const rabItemPrice = this.rabItemData.custom_ahs != null 
           ? this.rabItemData.custom_ahs.price
-          : this.rabItemData.price;
+          : this.rabItemData.price ?? 0;
         const trimmedPrice = String(rabItemPrice)
           .trim()
           .replaceAll('Rp','')

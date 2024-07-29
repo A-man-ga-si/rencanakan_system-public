@@ -59,12 +59,15 @@
               :rab-item-data="rabItemI"
               :rab="rabItem"
               :ahs-group-items="ahsGroupItems"
+              :ahs-items="ahsItems"
               :unit-ids="unitCodeList"
               :selected-ahs-group-key="selectedAhsGroupKey"
               :ahs-search-query="ahsSearchQuery"
               @did-ahs-group-changed="(data) => $emit('did-ahs-group-changed',  data)"
               @did-search-input-changed="(data) => $emit('did-search-input-changed', data)"
               @did-rab-item-updated="(mutatedRabItem) => $emit('did-rab-item-updated', rabItem, mutatedRabItem)"
+              @did-reset-ahs-button-clicked="didResetAhsButtonClicked"
+              @did-ahs-dropdown-showed="() => $emit('did-ahs-dropdown-showed')"
               @did-ahs-dropdown-dismissed="() => $emit('did-ahs-dropdown-dismissed')"
               @did-ahs-code-updated="didAhsCodeUpdated"
               @rab-item-deleted="onRabItemDeleted"
@@ -121,6 +124,7 @@
               :rab-item-data="rabItemI"
               :rab="rabItem"
               :ahs-group-items="ahsGroupItems"
+              :ahs-items="ahsItems"
               :unit-ids="unitCodeList"
               :selected-ahs-group-key="selectedAhsGroupKey"
               :ahs-search-query="ahsSearchQuery"
@@ -129,6 +133,8 @@
               @did-rab-item-updated="(mutatedRabItem) => $emit('did-rab-item-updated', rabItem, mutatedRabItem)"
               @did-ahs-group-changed="(data) => $emit('did-ahs-group-changed',  data)"
               @did-search-input-changed="(data) => $emit('did-search-input-changed', data)"
+              @did-reset-ahs-button-clicked="(data) => didResetAhsHeaderButtonClicked(rabItemHeader, data)"
+              @did-ahs-dropdown-showed="() => $emit('did-ahs-dropdown-showed')"
               @did-ahs-dropdown-dismissed="() => $emit('did-ahs-dropdown-dismissed')"
               @did-ahs-code-updated="(data) => didHeaderAhsCodeUpdated(rabItemHeader, data)"
             />
@@ -200,6 +206,9 @@
         required: true,
       },
       ahsGroupItems: {
+        type: Array,
+      },
+      ahsItems: {
         type: Array,
       },
       selectedAhsGroupKey: {
@@ -291,6 +300,20 @@
           rabHeaderId: null,
           rabRowItemId: data.rabRowItemId,
           ahsId: data.ahsId
+        });
+      },
+      didResetAhsButtonClicked(data) {
+        this.$emit('did-reset-ahs-button-clicked', {
+          rabId: this.rabItem.hashid,
+          rabHeaderId: null,
+          rabRowItemId: data.rabRowItemId,
+        });
+      },
+      didResetAhsHeaderButtonClicked(rabHeader, data) {
+        this.$emit('did-reset-ahs-button-clicked', {
+          rabId: this.rabItem.hashid,
+          rabHeaderId: rabHeader.hashid,
+          rabRowItemId: data.rabRowItemId,
         });
       },
       didHeaderAhsCodeUpdated(rabHeader, data) {
