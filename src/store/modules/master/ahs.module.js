@@ -89,6 +89,11 @@ const actions = {
       'Content-Type': 'multipart/formdata'
     });
   },
+
+  async fetchMasterAhsProject(_, { q, limit, group }) {
+    const response = await masterAhsApi.get('project', `q=${q}&limit=${limit}&group=${group}`);
+    return response.data;
+  }
 };
 
 export default {

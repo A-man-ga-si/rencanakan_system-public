@@ -80,9 +80,6 @@
         type: Array,
       },
     },
-    // mounted() {
-    //   console.log(this.rabItemData)
-    // },
     methods: {
       ...mapActions(['destroyRabItem', 'updateRabItem', 'deleteImplementationSchedule']),
       scheduleItem() {

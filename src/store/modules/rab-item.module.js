@@ -34,6 +34,19 @@ const actions = {
 
     return data;
   },
+
+  async updateRabItemAhs(ctx, { projectId, rabId, rabItemId, groupId, ahsId }) {
+    const data = await RabItemApi.setPreviousPath(
+      `project/${projectId}/rab/${rabId}`
+    ).post(
+      `${rabItemId}/ahs`,
+      {
+        'group_id': groupId,
+        'ahs_id': ahsId
+      }
+    );
+    return data;
+  },
 };
 
 export default { state, getters, mutations, actions };
