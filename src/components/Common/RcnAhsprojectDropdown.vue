@@ -6,8 +6,11 @@
       :class="{'active': isShowing}"
       :disabled="isDisabled"
     >
-      {{ this.selectedAhsLabel }}
-      <chevron-down style="fill: #d7d7d7; width: 9px; height: 9px; margin: 8px 0px auto auto;"/>
+      <div style="white-space: nowrap; overflow: hidden;">{{ this.selectedAhsLabel }}</div>
+      <div style="width: 16px; height: 16px; margin-left: auto; padding-left: 8px; padding-right: 8px;">
+        <chevron-down style="fill: #d7d7d7; width: 9px; height: 9px; margin-top: 4px;"/>
+      </div>
+      
     </button>
     <div
       class="ahs-dropdown"
@@ -25,7 +28,7 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; overflow: hidden;">
+      <div style="display: flex; flex-direction: column; overflow-y: hidden; overflow-x: hidden; width: 400px;">
         <div style="display: flex; margin: 16px; padding-left: 8px; padding-right: 8px; margin-bottom: 8px; border: 1px solid #d7d7d7 !important; width: 300px;">
             <input
               type="text"
@@ -54,9 +57,8 @@
           </b-button>
         </div>
         
-        <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
-          
-          <div style="overflow: auto; height: 100%;">
+        <div class="ahs-list-container">
+          <div class="ahs-scroll-container">
             <div v-if="ahsItems != null">
               <div
                 v-for="ahsItem in ahsItems"
@@ -225,6 +227,7 @@
     border: 1px solid #d7d7d7;
     width: 100%;
     border-radius: 0px;
+    text-align: left;
   }
 
   .ahs-select:disabled {
@@ -251,6 +254,7 @@
     padding-bottom: 12px;
     padding-left: 16px;
     padding-right: 16px;
+    white-space: normal;
   }
 
   .ahs-dropdown .ahs-item:hover {
@@ -280,6 +284,20 @@
   .ahs-dropdown .ahs-group-item.selected {
     background-color: rgba(0, 54, 90, 0.6) !important;
     color: white !important;
+  }
+
+  .ahs-dropdown .ahs-list-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 400px;
+    height: 100%;
+  }
+
+  .ahs-dropdown .ahs-list-container .ahs-scroll-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
   }
 
   .ahs-dropdown .search-bar {

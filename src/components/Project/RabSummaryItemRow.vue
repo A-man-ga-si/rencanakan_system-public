@@ -11,20 +11,22 @@
       />
     </td>
     <td>
-      <rcn-ahsproject-dropdown
-        :is-disabled="isAhsUpdating"
-        :ahs-group-items="ahsGroupItems"
-        :ahs-items="ahsItems"
-        :selected-ahs="selectedCustomAhs"
-        :selected-group-key="selectedAhsGroupKey"
-        :search-query="ahsSearchQuery"
-        @on-show-popup="() => $emit('did-ahs-dropdown-showed')"
-        @on-dismiss="() => $emit('did-ahs-dropdown-dismissed')"
-        @on-change-search-input="(data) => $emit('did-search-input-changed', data)"
-        @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
-        @on-click-reset-button="didResetButtonClicked"
-        :on-select="didAhsItemSelected"
-      />
+      <div style="width: 350px;">
+        <rcn-ahsproject-dropdown
+          :is-disabled="isAhsUpdating"
+          :ahs-group-items="ahsGroupItems"
+          :ahs-items="ahsItems"
+          :selected-ahs="selectedCustomAhs"
+          :selected-group-key="selectedAhsGroupKey"
+          :search-query="ahsSearchQuery"
+          @on-show-popup="() => $emit('did-ahs-dropdown-showed')"
+          @on-dismiss="() => $emit('did-ahs-dropdown-dismissed')"
+          @on-change-search-input="(data) => $emit('did-search-input-changed', data)"
+          @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
+          @on-click-reset-button="didResetButtonClicked"
+          :on-select="didAhsItemSelected"
+        />
+      </div>
     </td>
     <td>
       <input
