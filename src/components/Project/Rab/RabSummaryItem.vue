@@ -350,21 +350,6 @@
         return formatCurrency(parseInt(subtotal));
       },
     },
-    watch: {
-      rabItem: {
-        deep: true,
-        handler(newValue, _) {
-          console.log("===> (DEBUG) RAB ITEM DATA UPDATED");
-          console.log(newValue);
-        }
-      },
-      // rabItem(newValue, _) {
-      //   deep: true,
-      //   handler
-      //   console.log("===> (DEBUG) RAB ITEM DATA UPDATED");
-      //   console.log(newValue);
-      // }
-    },
     components: {
       RabSummaryItemRow,
       PhX,
