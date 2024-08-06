@@ -54,9 +54,9 @@ const mutations = {
 };
 
 const actions = {
-  async fetchAhs({ commit }, { province, page, perPage, selectedAhsGroup }) {
+  async fetchAhs({ commit }, { province, page, perPage, selectedAhsGroup, searchQuery }) {
     // prettier-ignore
-    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}&selected_ahs_group=${selectedAhsGroup}`);
+    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}&selected_ahs_group=${selectedAhsGroup}&q=${searchQuery}`);
     commit('setAhs', data.data.data.ahs);
     commit('setAhsCount', data.data.data.pagination_attribute.total_rows);
     return data;
