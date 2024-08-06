@@ -29,7 +29,14 @@
       </b-button>
     </template>
     <b-form-group label="Paket Project" class="has-float-label">
-      <v-select ref="selectedEl" v-model="form.subscription_id" label="name" :reduce="subscription => subscription.id" :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly" />
+      <v-select
+        ref="selectedEl"
+        label="name"
+        v-model="form.subscription_id"
+        :reduce="subscription => subscription.id"
+        :options="currentUser.demo_quota > 0 ? demoSubscriptionOnly : withoutDemoOnly"
+        :searchable="false"
+      />
       <a href="#" @click.prevent class="mt-1 d-block" v-b-modal.subscription-comparison-modal-new><u>Bandingkan Paket</u></a>
     </b-form-group>
   </b-modal>

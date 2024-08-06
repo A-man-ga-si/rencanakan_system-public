@@ -1,5 +1,27 @@
 <template>
   <div class="ahs-master">
+
+    <div class="d-flex" style="margin-bottom: 24px;">
+      <label class="form-group has-float-label mb-0" style="width: 300px;">
+        <input type="text" class="form-control" @input="onChangeSearchQuery"/>
+        <span> Search </span>
+      </label>
+      <div style="margin-left: auto;">
+        <b-btn
+          variant="outline-primary"
+          @click="onTapExportButton"
+        >
+          {{ $t('button.export') }}
+        </b-btn>
+        <b-btn
+          variant="outline-primary"
+          @click="onTapImportButton"
+        >
+          {{ $t('button.import') }}
+        </b-btn>
+      </div>
+    </div>
+
     <div class="mb-3 d-flex justify-content-between">
       <div class="left">
         <div
@@ -28,18 +50,6 @@
         </div>
       </div>
       <div class="right">
-        <b-btn
-            variant="outline-primary"
-            @click="onTapExportButton"
-          >
-            {{ $t('button.export') }}
-          </b-btn>
-          <b-btn
-            variant="outline-primary"
-            @click="onTapImportButton"
-          >
-            {{ $t('button.import') }}
-          </b-btn>
         <div class="labeled-select position-relative d-inline-block ml-2">
           <label
             class="form-group has-float-label mb-0 can-invalid"
@@ -91,7 +101,7 @@
 
 <script>
   import moment from 'moment';
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
   import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
   import AhsItem from '@/components/Master/Ahs/AhsItem.vue';
   import AddAhs from '@/components/Master/Ahs/AddAhs.vue';
@@ -127,7 +137,8 @@
           name: 'AHS Permen PUPR 2023'
         },
       ],
-      importModalId: 'import-ahs-modal'
+      importModalId: 'import-ahs-modal',
+      searchDebouncerTimeout: null,
     }),
     created() {
       this.loadProvinces();
@@ -143,6 +154,7 @@
         'exportMasterAhs',
         'importMasterAhs'
       ]),
+      ...mapMutations(['setAhs', 'setAhsCount']),
       ahsAdded() {
         this.fetchUnit();
         this.fetchAhsItemableIds();
@@ -165,12 +177,13 @@
           }
         }
       },
-      getAhsMaster() {
+      getAhsMaster(searchQuery) {
         this.fetchAhs({
           province: this.selectedProvince,
           selectedAhsGroup: this.selectedAhsGroup,
           page: this.currentPage,
           perPage: this.perPage,
+          searchQuery: searchQuery ?? ""
         });
       },
       async loadProvinces() {
@@ -180,6 +193,14 @@
       },
       editAhs(ahs) {
         this.selectedAhs = ahs;
+      },
+      onChangeSearchQuery(event) {
+        clearTimeout(this.searchDebouncerTimeout)
+        this.searchDebouncerTimeout = setTimeout(() => {
+          this.setAhs([]);
+          this.setAhsCount(0);
+          this.getAhsMaster(event.target.value);
+        }, 500);
       },
       async onTapExportButton() {
         const response = await this.exportMasterAhs();

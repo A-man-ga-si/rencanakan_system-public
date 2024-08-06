@@ -7,7 +7,10 @@
             <piaf-breadcrumb :heading="$t('menu.rab')" />
           </b-col>
           <b-col :sm="3" class="text-right">
-            <b-btn variant="primary" @click.prevent="exportRab">
+            <b-btn
+              variant="primary"
+              @click.prevent="didExportRabButtonClicked"
+            >
               {{ $t('pages.projects.rab.summary.export-btn') }}
             </b-btn>
           </b-col>
@@ -47,35 +50,114 @@
       </b-col>
     </b-row>
     <ExportRab />
+    <export-rab-restriction-modal @on-click-upgrade-button="didUpgradeButtonClicked"/>
+    <subscription-comparison
+      modal-id="subscription-comparison-modal-upgrade"
+      @choose-subscription="didSubscriptionChoosen"
+    />
   </div>
 </template>
 
 <script>
   import ExportRab from '@/components/Project/ExportRab.vue';
-  import { mapActions, mapMutations } from 'vuex';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
   import { Notify } from 'notiflix';
+  import { ExportRabRestrictionModal } from './components';
+  import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue';
+  import { showConfirmAlertWithPreloader } from '@/utils';
+  import midtransMixin from '@/mixins/midtrans-mixin'
 
   export default {
+    mixins: [midtransMixin],
+    data: {
+      currentProject: null
+    },
     methods: {
-      ...mapActions(['showProject']),
+      ...mapActions([
+        // Project Services
+        'showProject',
+
+        // Subscription Services
+        'fetchSubscriptions',
+        'fetchSubscriptionSnapToken',
+        'setCanceled',
+        'setPending'
+      ]),
+      ...mapGetters(['getCurrentActiveProject']),
       ...mapMutations(['setCurrentActiveProject']),
-      exportRab() {
-        this.$bvModal.show('export-rab');
+      async loadProjectData() {
+        const data = await this.showProject(this.$route.params.id)
+        if (data.data.data.project.activeOrder && !data.data.data.project.activeOrder.is_expired) {
+          await this.setCurrentActiveProject(data.data.data.project);
+          this.currentProject = data.data.data.project;
+          return;
+        }
+        Notify.failure('Project telah kadaluwarsa, anda tidak dapat mengakses halaman ini!');
+        this.$router.replace({ name: 'Project' })
       },
+      didExportRabButtonClicked() {
+        if (this.currentProject.subscription_id != 'demo') {
+          this.$bvModal.show('export-rab');
+          return;
+        }
+        this.fetchSubscriptions();
+        this.$bvModal.show('export-rab-restriction');
+      },
+      didUpgradeButtonClicked() {
+        this.$bvModal.show('subscription-comparison-modal-upgrade');
+      },
+      async didSubscriptionChoosen(subscriptionId) {
+        const parentView = this;
+        await showConfirmAlertWithPreloader ({
+          title: 'Ganti paket?',
+          text: 'Paket yang Anda miliki saat ini akan digantikan oleh paket yang telah Anda pilih.',
+          icon: 'question',
+          preConfirm: async () => {
+            const data = await this.fetchSubscriptionSnapToken({
+              project_hashid: this.$route.params.id,
+              subscription_id: subscriptionId,
+              type: 'renew',
+            })
+            if (data.status != 200) {
+              throw new Error(data.message)
+            }
+            const snapToken = data.data.data.snap_token
+            await new Promise((resolve, _) => {
+              window.snap.pay(snapToken, {
+                skipOrderSummary: false,
+                onSuccess: async () => {
+                  Notify.success('Berhasil upgrade project');
+                  parentView.$bvModal.hide('subscription-comparison-modal-upgrade')
+                  this.loadProjectData();
+                  resolve()
+                },
+                async onPending() {
+                  await parentView.setPending({snapToken})
+                  resolve()
+                },
+                onError() {
+                    Notify.failure('Tidak dapat melanjutkan pembayaran. Hubungi CS untuk informasi lebih lanjut');
+                    resolve()
+                },
+                onClose() {
+                    Notify.failure('Upgrading paket tidak dapat dilanjutkan karena pembayaran telah dibatalkan.');
+                    parentView.$bvModal.hide('subscription-comparison-modal-upgrade')
+                    parentView.setCanceled({ snapToken })
+                    resolve()
+                },
+              });
+            })
+          }
+        })
+      }
     },
     async created() {
-      const data = await this.showProject(this.$route.params.id)
-      if (!data.data.data.project.activeOrder || data.data.data.project.activeOrder.is_expired) {
-        Notify.failure('Project telah kadaluwarsa, anda tidak dapat mengakses halaman ini!');
-        this.$router.replace({
-          name: 'Project'
-        })
-      } else {
-        await this.setCurrentActiveProject(data.data.data.project)
-      }
+      await this.loadProjectData();
     },
     components: {
       ExportRab,
+      ExportRabRestrictionModal,
+      SubscriptionComparison
     },
   };
 </script>
