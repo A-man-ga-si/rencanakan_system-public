@@ -1,6 +1,6 @@
 <template>
   <div class="add-unit">
-    <b-modal :id="modalId" :ref="modalId" title="Tambah RAB">
+    <b-modal :id="modalId" :ref="modalId" title="Tambah Kategori">
       <b-nav class="mb-5 justify-content-center" pills>
         <b-nav-item
           @click.prevent="switchRABMode('new')"

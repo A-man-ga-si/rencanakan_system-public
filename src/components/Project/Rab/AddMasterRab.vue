@@ -1,6 +1,6 @@
 <template>
   <div class="add-unit">
-    <b-modal :id="modalId" :ref="modalId" title="Tambah RAB">
+    <b-modal :id="modalId" :ref="modalId" title="Tambah Kategori">
       <p><span class="font-weight-bold">Nama RAB :</span>
         <span v-if="Object.values(getSelectedRabCategory).length > 0">
           {{ getSelectedRabCategory.name }}
