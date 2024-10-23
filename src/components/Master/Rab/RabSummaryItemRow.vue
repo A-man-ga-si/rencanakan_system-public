@@ -103,7 +103,7 @@
           this.form.unitId = this.unitIds[0].hashid
         }
         const { name, selectedCustomAhs, volume, unitId, price } = this.form;
-        const trimmedPrice = price
+        const trimmedPrice = price.toString()
           .trim()
           .replaceAll("Rp.", "")
           .replaceAll(",", "")
