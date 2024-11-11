@@ -1,29 +1,32 @@
 <template>
   <b-modal
     :id="id"
-    :title="$t('modal.import-popup-title')"
+    :title="title"
   >
-    <p>Pastikan format excel yang diupload sama dengan format export dan seluruh data yang diinput sudah benar karena data baru akan menimpa data yang lama</p>
+    <p>{{ subtitle }}</p>
     <template slot="modal-footer">
-      <b-button
-        class="mr-1"
-        variant="primary"
-        @click.prevent="onClickUploadButton" 
-      >
-        Upload
-      </b-button>
-      <b-button
-        class="mr-1"
-        variant="outline-primary"
-        @click.prevent="onClickCancelButton"
-      >
-        {{ $t('modal.cancel-bt') }}
-      </b-button>
+      <LoaderCircle v-if="isLoading"/>
+      <div v-else>
+          <b-button
+          class="mr-1"
+          variant="primary"
+          @click.prevent="onClickUploadButton" 
+        >
+          Upload
+        </b-button>
+        <b-button
+          class="mr-1"
+          variant="outline-primary"
+          @click.prevent="onClickCancelButton"
+        >
+          {{ $t('modal.cancel-bt') }}
+        </b-button>
+      </div>
       <input
         ref="importFileInput"
         type="file"
         class="d-none"
-        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        :accept="fileAccept"
         @change="onChangeImportFileInput"
       />
     </template>
@@ -31,16 +34,19 @@
 </template>
 
 <script>
+  import { LoaderCircle } from '@/components/Common';
+
   export default {
     props: {
-      id: {
-        required: true,
-        type: String
-      },
-      didFileSelected: {
-        required: true,
-        type: Function
-      }
+      id: { required: true, type: String },
+      title: { required: true, type: String },
+      subtitle: { required: true, type: String },
+      fileAccept:{ required: true, type: String },
+      isLoading:{ required: true, type: Boolean, default: true },
+      didFileSelected: { required: true, type: Function },
+    },
+    components: {
+      LoaderCircle
     },
     methods: {
       onClickCancelButton() {

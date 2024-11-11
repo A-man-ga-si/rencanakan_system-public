@@ -61,6 +61,10 @@
     />
     <ImportExcelModal
       :id="this.importModalId"
+      :title="$t('modal.import-master-data-title')"
+      :subtitle="$t('modal.import-master-data-subtitle')"
+      :fileAccept="'.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'"
+      :isLoading="false"
       :didFileSelected="didFileSelected"
     />
   </div>

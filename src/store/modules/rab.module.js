@@ -50,6 +50,12 @@ const actions = {
       .post('', form);
     return data;
   },
+
+  async importApendoRab(ctx, { projectId, formData }) {
+    return await rabApi.post(`import-apendo-rab`, formData, null, {
+      'Content-Type': 'multipart/formdata'
+    });
+  },
 };
 
 export default {

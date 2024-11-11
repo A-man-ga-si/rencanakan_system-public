@@ -1,8 +1,8 @@
 <template>
   <div class="rab-summary-page mt-5">
-    <b-row>
+    <b-row style="margin-bottom: 24px">
       <b-col :lg="6" :xl="3">
-        <div class="text-right mb-2 position-relative">
+        <div class="text-right position-relative">
           <label class="form-group has-float-label mb-0">
             <input
               v-model="form.searchQuery"
@@ -17,14 +17,23 @@
           />
         </div>
       </b-col>
-      <b-col>
-        <b-form-group horizontal>
+      <b-col class="d-flex">
+        <b-form-group horizontal class="my-auto">
           <b-form-radio-group
-            class="pt-2"
+            class="my-auto"
             :options="searchQueryOptions"
             v-model="form.searchQueryCategory"
           />
         </b-form-group>
+      </b-col>
+      <b-col class="d-flex">
+        <b-btn
+          class="ml-auto my-auto"
+          variant="outline-primary"
+          @click="onTapImportButton"
+        >
+          {{ $t('button.import') }} Apendo
+        </b-btn>
       </b-col>
     </b-row>
     <div v-if="isLoading">
@@ -128,6 +137,15 @@
         :edited-rab-item-header="editedRabItemHeader"
       />
     </div>
+
+    <ImportExcelModal
+      :id="this.importApendoModalId"
+      :title="$t('modal.import-apendo-data-title')"
+      :subtitle="$t('modal.import-apendo-data-subtitle')"
+      :fileAccept="'.pdf'"
+      :isLoading="isImportRabLoading"
+      :didFileSelected="didFileSelected"
+    />
   </div>
 </template>
 
@@ -143,6 +161,7 @@
   import Loader from '@/components/Common/Loader.vue';
   import { AHSGroupReference } from '@/constants/enums.js'
   import { Notify } from 'notiflix';
+  import { ImportExcelModal } from '@/components/Common';
 
   export default {
     data() {
@@ -173,7 +192,10 @@
         selectedAhsGroupKey: AHSGroupReference.ahsProject,
         ahsSearchQuery: "",
 
-        ahsDropdownProps: null
+        ahsDropdownProps: null,
+
+        importApendoModalId: 'import-apendo-modal',
+        isImportRabLoading: false,
       };
     },
     created() {
@@ -189,7 +211,8 @@
         'fetchAhsIds',
         'fetchMasterAhsProject',
         'updateRabItem',
-        'updateRabItemAhs'
+        'updateRabItemAhs',
+        'importApendoRab'
       ]),
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
@@ -384,7 +407,6 @@
         }
       },
       async didResetButtonClicked({ rabId, rabHeaderId, rabRowItemId }) {
-        console.log("===> (DEBUG) DID RESET BUTTON CLICKED")
         const rabItemIndex = this.rabItems.findIndex((rabItem) => rabItem.hashid == rabId);
         
         let mutatedRabItem = null;
@@ -427,6 +449,31 @@
           },
         });
         this.calculateRabItemsSubtotal();
+      },
+      onTapImportButton() {
+        this.$bvModal.show(this.importApendoModalId);
+      },
+      async didFileSelected(file) {
+        this.isImportRabLoading = true;
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          await this.importApendoRab({
+            projectId: this.$route.params.id,
+            formData: formData
+          });
+          this.$bvModal.hide(this.importApendoModalId);
+          this.rabItems = null;
+          await this.reloadData()
+          this.isImportRabLoading = false;
+        } catch (error){
+          this.isImportRabLoading = false;
+          if (error.response?.status == 400) {
+            Notify.failure(error.response.data.message);
+            return
+          }
+          this.checkForInvalidResponse(error);
+        }
       }
     },
     computed: {
@@ -483,11 +530,11 @@
     components: {
       Loader,
       RabSummaryItem,
-      // FloatingActionButton,
       EditRab,
       AddRab,
       AddRabItemHeader,
       EditRabItemHeader,
+      ImportExcelModal
     },
   };
 </script>
