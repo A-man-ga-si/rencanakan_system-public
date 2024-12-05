@@ -77,6 +77,10 @@ const actions = {
   async markLastOpenedAt(ctx, { projectId }) {
     return await projectApi.get(`${projectId}/update-last-opened-at`);
   },
+
+  async getMaterialSummary(ctx, { projectId }) {
+    return await projectApi.get(`${projectId}/material-summary`);
+  }
 };
 
 export default {
