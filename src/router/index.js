@@ -195,7 +195,7 @@ const routes = [
             },
             component: () =>
               import(
-                /* webpackChunkName */ './../views/app/projects/rabs/MaterialEstimator.vue'
+                /* webpackChunkName */ './../views/app/projects/rabs/material-estimator/MaterialEstimator.vue'
               ),
           },
         ],
