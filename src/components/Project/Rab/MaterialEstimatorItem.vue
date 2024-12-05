@@ -212,7 +212,6 @@
           if (rabItem.custom_ahs) {
             return rabItem;
           } else {
-            console.log('s', rabItem)
             // Replicating the real rab item (with ahs) structure for non ahs rab item
             rabItem.custom_ahs = {
               custom_ahs_item: [
@@ -234,7 +233,6 @@
         if (typeof this.rabItem.rab_item != 'undefined' && this.rabItem.rab_item != null) {
           this.rabItem.rab_item = filteredRabItem.concat(temporaryHeadedRabItems)
         }
-        console.log(this.rabItem)
         return this.rabItem.rab_item
       }
     },
