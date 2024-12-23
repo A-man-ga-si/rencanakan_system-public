@@ -1,52 +1,60 @@
 <template>
-  <div>
-    <b-row class="">
-      <b-col :lg="6" :xl="3">
-        <div class="text-right mb-2 position-relative">
-          <label class="form-group has-float-label mb-0">
-            <input
-              v-model="form.searchQuery"
-              type="text"
-              class="form-control"
-            />
-            <span> Search </span>
-          </label>
-          <i
-            class="simple-icon-magnifier position-absolute bg-white"
-            style="top: 11px; right: 10px"
-          />
-        </div>
-      </b-col>
-      <b-col>
-        <b-form-group horizontal>
-          <b-form-radio-group
-            class="pt-2"
-            :options="searchQueryOptions"
-            v-model="form.searchQueryCategory"
-          />
-        </b-form-group>
-      </b-col>
-    </b-row>
-    <ItemPriceItem
-      v-for="(itemPriceGroup, idx) in getCustomItemPrice"
-      :key="idx"
-      :units="getUnit"
-      :item-price-group="itemPriceGroup"
-      :title="itemPriceGroup.name"
-      :index="idx"
-      @custom-item-price-group-deleted="reloadData"
-      @custom-item-price-added="reloadData"
-      @custom-item-price-deleted="reloadData"
-      @edit-bt-custom-item-price-group-clicked="fillEditData"
-    />
-    <FloatingActionButton @click="showAddItemPriceDialog" />
-    <AddItemPriceGroup @custom-item-price-group-added="reloadData" />
-    <EditItemPriceGroup
-      :edited-data="editedItemPriceGroup"
-      @custom-item-price-group-updated="reloadData"
-    />
+  <div class="ahs-page">
+    <div class="mt-5">
+      <div>
+        <b-row class="">
+          <b-col :lg="6" :xl="3">
+            <div class="text-right mb-2 position-relative">
+              <label class="form-group has-float-label mb-0">
+                <input
+                  v-model="form.searchQuery"
+                  type="text"
+                  class="form-control"
+                />
+                <span> Search </span>
+              </label>
+              <i
+                class="simple-icon-magnifier position-absolute bg-white"
+                style="top: 11px; right: 10px"
+              />
+            </div>
+          </b-col>
+          <b-col>
+            <b-form-group horizontal>
+              <b-form-radio-group
+                class="pt-2"
+                :options="searchQueryOptions"
+                v-model="form.searchQueryCategory"
+              />
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <ItemPriceItem
+          v-for="(itemPriceGroup, idx) in getCustomItemPrice"
+          :key="idx"
+          :units="getUnit"
+          :item-price-group="itemPriceGroup"
+          :title="itemPriceGroup.name"
+          :index="idx"
+          @custom-item-price-group-deleted="reloadData"
+          @custom-item-price-added="reloadData"
+          @custom-item-price-deleted="reloadData"
+          @edit-bt-custom-item-price-group-clicked="fillEditData"
+        />
+        <FloatingActionButton @click="showAddItemPriceDialog" />
+        <AddItemPriceGroup @custom-item-price-group-added="reloadData" />
+        <EditItemPriceGroup
+          :edited-data="editedItemPriceGroup"
+          @custom-item-price-group-updated="reloadData"
+        />
+      </div>
+    </div>
   </div>
 </template>
+
+<!-- <template>
+  
+</template> -->
 
 <script>
   import ItemPriceItem from '@/components/Project/Rab/ItemPriceItem.vue';
@@ -71,16 +79,17 @@
       };
     },
     async created() {
-      const customItemPrices = this.$store.state.customItemPrice.customItemPrice
-      const units = this.$store.state.unit
-      const promises = []
+      const customItemPrices =
+        this.$store.state.customItemPrice.customItemPrice;
+      const units = this.$store.state.unit;
+      const promises = [];
       if (units.units.length <= 0) {
-        promises.push(this.fetchUnit())
+        promises.push(this.fetchUnit());
       }
       if (customItemPrices.length <= 0) {
-        promises.push(this.fetchCustomItemPrices(this.$route.params.id))
+        promises.push(this.fetchCustomItemPrices(this.$route.params.id));
       }
-      await Promise.all(promises)
+      await Promise.all(promises);
     },
     methods: {
       ...mapActions([

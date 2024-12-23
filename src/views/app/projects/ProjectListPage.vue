@@ -36,16 +36,16 @@
 </template>
 
 <script>
-  import AppLayout from './../../../layouts/AppLayout.vue';
-  import AddProject from './../../../components/Project/AddProject.vue';
+  import AppLayout from '../../../layouts/AppLayout.vue';
+  import AddProject from '../../../components/Project/AddProject.vue';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
   import ProjectItem from '@/components/Project/ProjectItem.vue';
   import EditProject from '@/components/Project/EditProject.vue';
   import SubscriptionComparison from '@/components/Project/SubscriptionComparison.vue'
   import SubscriptionManagement from '@/components/Project/SubscriptionManagement.vue'
-  import { showConfirmAlert, showConfirmAlertWithPreloader } from './../../../utils';
-  import midtransMixin from './../../../mixins/midtrans-mixin'
+  import { showConfirmAlert, showConfirmAlertWithPreloader } from '../../../utils';
+  import midtransMixin from '../../../mixins/midtrans-mixin'
 
   export default {
     data: () => ({
