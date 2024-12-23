@@ -680,9 +680,7 @@
     "launch-large-modal": "Launch Large Modal",
     "launch-small-modal": "Launch Small Modal",
     "import-master-data-title": "You'll update all your data",
-    "import-master-data-subtitle": "Make sure the Excel format you upload matches the export format, and all the data entered is correct because new data will overwrite the old data.",
-    "import-apendo-data-title": "Upload RAB Apendo",
-    "import-apendo-data-subtitle": "Export the Apendo page containing the RAB table to PDF format, and then upload it to this page."
+    "import-master-data-subtitle": "Make sure the Excel format you upload matches the export format, and all the data entered is correct because new data will overwrite the old data."
   },
   "nav": {
     "basic": "Nav Basic",

@@ -686,9 +686,7 @@
     "launch-large-modal": "Launch Large Modal",
     "launch-small-modal": "Launch Small Modal",
     "import-master-data-title": "Kamu akan menimpa seluruh data kamu.",
-    "import-master-data-subtitle": "Pastikan format excel yang diupload sama dengan format export dan seluruh data yang diinput sudah benar karena data baru akan menimpa data yang lama.",
-    "import-apendo-data-title": "Unggah RAB Apendo",
-    "import-apendo-data-subtitle": "Ekspor halaman apendo yang memuat tabel RAB ke format pdf, dan kemudian upload ke halaman ini."
+    "import-master-data-subtitle": "Pastikan format excel yang diupload sama dengan format export dan seluruh data yang diinput sudah benar karena data baru akan menimpa data yang lama."
   },
   "nav": {
     "basic": "Nav Basic",

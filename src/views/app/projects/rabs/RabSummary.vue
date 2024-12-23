@@ -32,7 +32,7 @@
           variant="outline-primary"
           @click="onTapImportButton"
         >
-          {{ $t('button.import') }} Apendo
+          Upload RAB LPSE
         </b-btn>
       </b-col>
     </b-row>
@@ -140,8 +140,8 @@
 
     <ImportExcelModal
       :id="this.importApendoModalId"
-      :title="$t('modal.import-apendo-data-title')"
-      :subtitle="$t('modal.import-apendo-data-subtitle')"
+      :title="'Unggah RAB Apendo'"
+      :subtitle="'Upload dokumen lelang LPSE yang memuat tabel RAB ke format pdf, dan kemudian upload ke halaman ini.'"
       :fileAccept="'.pdf'"
       :isLoading="isImportRabLoading"
       :didFileSelected="didFileSelected"
