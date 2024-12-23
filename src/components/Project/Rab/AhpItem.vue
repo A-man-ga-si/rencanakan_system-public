@@ -77,7 +77,7 @@
               customAhp.is_default == '0' ? customAhpAItem.editableCoefficient : false
             "
             :description="customAhpAItem.description"
-            @value-changed="onAhpItemChanged($event, customAhpAItem)"
+            @value-changed="(value) => onAhpItemChanged(value, customAhpAItem)"
           />
           <tr class="bg-primary font-weight-bold">
             <th colspan="5">B. LAIN - LAIN</th>
@@ -95,7 +95,7 @@
               customAhp.is_default == '0' ? customAhpBItem.editableCoefficient : false
             "
             :description="customAhpBItem.description"
-            @value-changed="onAhpItemChanged($event, customAhpBItem)"
+            @value-changed="(value) => onAhpItemChanged(value, customAhpBItem)"
           />
           <tr class="bg-primary">
             <th colspan="5">C. BIAYA PASTI PER JAM KERJA</th>
@@ -206,12 +206,12 @@
         }
       },
 
-      async onAhpItemChanged(e, ahpVal) {
+      async onAhpItemChanged(value, ahpVal) {
         await this.updateCustomAhp({
           customAhpId: this.customAhp.hashid,
           projectId: this.$route.params.id,
           form: {
-            [ahpVal.code]: e.target.value,
+            [ahpVal.code]: value,
           },
         });
       },

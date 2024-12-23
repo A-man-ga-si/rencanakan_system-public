@@ -2,7 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthGuard from './../utils/auth.guard';
 import App from './../views/app';
-import { adminRoot, defaultTitle, titleSuffix } from './../constants/config';
+import {
+  adminRoot,
+  defaultTitle,
+  titleSuffix
+} from './../constants/config';
 import PasswordResetGuard from './../utils/password-reset.guard';
 import {
   ProjectListPage,
@@ -15,8 +19,7 @@ import { UserListPage } from '@/views/app/admin';
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     redirect: {
       name: 'Dashboard',
@@ -32,8 +35,7 @@ const routes = [
       name: 'Dashboard',
     },
     component: App,
-    children: [
-      {
+    children: [{
         path: `dashboard`,
         name: 'Dashboard',
         meta: {
@@ -45,7 +47,7 @@ const routes = [
         redirect: {
           name: 'Project',
         },
-        component: () => import(/* webpackChunkName: "dashboard" */ './../views/app/dashboard'),
+        component: () => import( /* webpackChunkName: "dashboard" */ './../views/app/dashboard'),
       },
       // {
       //   path: `settings`,
@@ -66,7 +68,7 @@ const routes = [
           loginRequired: true,
           permissions: ['access-project-page'],
         },
-        component: () => import(/* webpackChunkName: "project" */ './../views/app/projects'),
+        component: ProjectListPage,
       },
       {
         path: `orders`,
@@ -76,7 +78,7 @@ const routes = [
           loginRequired: true,
           // permissions: ['access-project-page'],
         },
-        component: () => import(/* webpackChunkName: "project" */ './../views/app/order/Index.vue'),
+        component: () => import( /* webpackChunkName: "project" */ './../views/app/order/Index.vue'),
       },
       {
         path: 'projects/:id/rab',
@@ -89,9 +91,8 @@ const routes = [
           loginRequired: true,
           permissions: ['access-project-page'],
         },
-        component: () => import(/* webpackChunkName: "rab" */ './../views/app/projects/rabs'),
-        children: [
-          {
+        component: () => import( /* webpackChunkName: "rab" */ './../views/app/projects/rabs'),
+        children: [{
             path: 'summary',
             name: 'RabSummary',
             meta: {
@@ -99,7 +100,7 @@ const routes = [
               permissions: ['access-project-page'],
               loginRequired: true,
             },
-            component: () => import(/* webpackChunkName: "rabSummary" */ './../views/app/projects/rabs/RabSummary.vue'),
+            component: BudgetEstimatePage,
           },
           {
             path: 'ahs',
@@ -109,7 +110,7 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            component: () => import(/* webpackChunkName: "rabAhs" */ './../views/app/projects/rabs/Ahs.vue'),
+            component: ItemPriceAnalysisPage,
           },
           {
             path: 'item-price',
@@ -119,33 +120,35 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            redirect: {
-              name: 'RabItemPriceMaster',
-            },
-            component: () => import(/* webpackChunkName: "itemPrice" */ './../views/app/projects/rabs/item-price'),
-            children: [
-              {
-                path: 'item-price-master',
-                name: 'RabItemPriceMaster',
-                meta: {
-                  title: 'Harga Satuan',
-                  loginRequired: true,
-                  permissions: ['access-project-page'],
-                },
-                component: () => import(/* webpackChunkName: "itemPriceMaster" */ './../views/app/projects/rabs/item-price/ItemPriceMaster.vue'),
-              },
-              {
-                path: 'equipment-item-price-master',
-                name: 'RabEquipmentPriceMaster',
-                meta: {
-                  title: 'Harga Satuan Peralatan',
-                  loginRequired: true,
-                  permissions: ['access-project-page'],
-                },
-                component: () =>
-                  import(/* webpackChunkName: "equipmentItemPriceMaster" */ './../views/app/projects/rabs/item-price/EquipmentItemPriceMaster.vue'),
-              },
-            ],
+            component: ItemPriceMaster,
+
+            // Temporary Disabled
+            // redirect: {
+            //   name: 'RabItemPriceMaster',
+            // },
+            // component: () => import( /* webpackChunkName: "itemPrice" */ './../views/app/projects/rabs/item-price'),
+            // children: [{
+            //     path: 'item-price-master',
+            //     name: 'RabItemPriceMaster',
+            //     meta: {
+            //       title: 'Harga Satuan',
+            //       loginRequired: true,
+            //       permissions: ['access-project-page'],
+            //     },
+            //     component: ItemPriceMaster,
+            //   },
+            //   {
+            //     path: 'equipment-item-price-master',
+            //     name: 'RabEquipmentPriceMaster',
+            //     meta: {
+            //       title: 'Harga Satuan Peralatan',
+            //       loginRequired: true,
+            //       permissions: ['access-project-page'],
+            //     },
+            //     component: () =>
+            //       import( /* webpackChunkName: "equipmentItemPriceMaster" */ './../views/app/projects/rabs/item-price/EquipmentItemPriceMaster.vue'),
+            //   },
+            // ],
           },
           {
             path: 'ahp',
@@ -165,7 +168,7 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            component: () => import(/* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'),
+            component: () => import( /* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'),
           },
           {
             path: 'material-estimator',
@@ -175,7 +178,7 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            component: () => import(/* webpackChunkName */ './../views/app/projects/rabs/material-estimator/MaterialEstimator.vue'),
+            component: () => import( /* webpackChunkName */ './../views/app/projects/rabs/material-estimator/MaterialEstimator.vue'),
           },
         ],
       },
@@ -213,16 +216,15 @@ const routes = [
         redirect: {
           name: 'ProfileAccount',
         },
-        component: () => import(/* webpackChunkName: "account" */ './../views/app/account'),
-        children: [
-          {
+        component: () => import( /* webpackChunkName: "account" */ './../views/app/account'),
+        children: [{
             path: 'profile',
             name: 'ProfileAccount',
             meta: {
               title: 'Account Profile',
               permissions: ['access-account-page'],
             },
-            component: () => import(/* webpackChunkName: "profileAccount" */ './../views/app/account/Profile.vue'),
+            component: () => import( /* webpackChunkName: "profileAccount" */ './../views/app/account/Profile.vue'),
           },
           {
             path: 'company-profile',
@@ -231,7 +233,7 @@ const routes = [
               title: 'Company Profile',
               permissions: ['access-account-page'],
             },
-            component: () => import(/* webpackChunkName: "companyProfile" */ './../views/app/account/CompanyProfile.vue'),
+            component: () => import( /* webpackChunkName: "companyProfile" */ './../views/app/account/CompanyProfile.vue'),
           },
           {
             path: 'change-email',
@@ -240,7 +242,7 @@ const routes = [
               title: 'Change Email',
               permissions: ['access-account-page'],
             },
-            component: () => import(/* webpackChunkName: "changeEmail" */ './../views/app/account/ChangeEmail.vue'),
+            component: () => import( /* webpackChunkName: "changeEmail" */ './../views/app/account/ChangeEmail.vue'),
           },
           {
             path: 'change-password',
@@ -249,7 +251,7 @@ const routes = [
               title: 'Change Password',
               permissions: ['access-account-page'],
             },
-            component: () => import(/* webpackChunkName: "changePassword" */ './../views/app/account/ChangePassword.vue'),
+            component: () => import( /* webpackChunkName: "changePassword" */ './../views/app/account/ChangePassword.vue'),
           },
         ],
       },
@@ -263,16 +265,15 @@ const routes = [
         redirect: {
           name: 'ProfileAccount',
         },
-        component: () => import(/* webpackChunkName: "master" */ './../views/app/master'),
-        children: [
-          {
+        component: () => import( /* webpackChunkName: "master" */ './../views/app/master'),
+        children: [{
             path: 'unit',
             name: 'MasterUnit',
             meta: {
               title: 'Master Unit',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterUnit" */ './../views/app/master/Unit.vue'),
+            component: () => import( /* webpackChunkName: "masterUnit" */ './../views/app/master/Unit.vue'),
           },
           {
             path: 'group-item-price',
@@ -281,7 +282,7 @@ const routes = [
               title: 'Master Item Price Group',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterItemPriceGroup" */ './../views/app/master/ItemPriceGroup.vue'),
+            component: () => import( /* webpackChunkName: "masterItemPriceGroup" */ './../views/app/master/ItemPriceGroup.vue'),
           },
           {
             path: 'item-price',
@@ -290,7 +291,7 @@ const routes = [
               title: 'Master Item Price',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterItemPrice" */ './../views/app/master/ItemPrice.vue'),
+            component: () => import( /* webpackChunkName: "masterItemPrice" */ './../views/app/master/ItemPrice.vue'),
           },
           {
             path: 'ahs',
@@ -299,7 +300,7 @@ const routes = [
               title: 'Master AHS',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterAhs" */ './../views/app/master/Ahs.vue'),
+            component: () => import( /* webpackChunkName: "masterAhs" */ './../views/app/master/Ahs.vue'),
           },
           {
             path: 'rab',
@@ -308,7 +309,7 @@ const routes = [
               title: 'Master RAB',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterAhs" */ './../views/app/master/RabSummary.vue'),
+            component: () => import( /* webpackChunkName: "masterAhs" */ './../views/app/master/RabSummary.vue'),
           },
           {
             path: 'ahp',
@@ -317,7 +318,7 @@ const routes = [
               title: 'Master AHP',
               permissions: ['access-master-page'],
             },
-            component: () => import(/* webpackChunkName: "masterAhp" */ './../views/app/master/Ahp.vue'),
+            component: () => import( /* webpackChunkName: "masterAhp" */ './../views/app/master/Ahp.vue'),
           },
         ],
       },
@@ -336,15 +337,14 @@ const routes = [
     path: `/auth`,
     redirect: '/auth/login',
     name: 'Auth',
-    component: () => import(/* webpackChunkName: "auth" */ './../views/user'),
-    children: [
-      {
+    component: () => import( /* webpackChunkName: "auth" */ './../views/user'),
+    children: [{
         path: 'login',
         name: 'Login',
         meta: {
           title: 'Login',
         },
-        component: () => import(/* webpackChunkName: "login" */ './../views/user/Login'),
+        component: () => import( /* webpackChunkName: "login" */ './../views/user/Login'),
       },
       {
         path: 'register',
@@ -352,7 +352,7 @@ const routes = [
         meta: {
           title: 'Register',
         },
-        component: () => import(/* webpackChunkName: "register" */ './../views/user/Register'),
+        component: () => import( /* webpackChunkName: "register" */ './../views/user/Register'),
       },
       {
         path: 'forgot-password',
@@ -360,7 +360,7 @@ const routes = [
         meta: {
           title: 'Forgot Password',
         },
-        component: () => import(/* webpackChunkName: "forgotPassword" */ './../views/user/ForgotPassword'),
+        component: () => import( /* webpackChunkName: "forgotPassword" */ './../views/user/ForgotPassword'),
       },
       {
         path: 'reset-password',
@@ -368,7 +368,7 @@ const routes = [
         meta: {
           title: 'Reset Password',
         },
-        component: () => import(/* webpackChunkName: "resetPassword" */ './../views/user/ResetPassword'),
+        component: () => import( /* webpackChunkName: "resetPassword" */ './../views/user/ResetPassword'),
       },
       {
         path: 'verification/callback',
@@ -376,17 +376,17 @@ const routes = [
         meta: {
           title: 'Email Verification Status',
         },
-        component: () => import(/* webpackChunkName: "emailVerificationCallback" */ './../views/user/VerificationCallback'),
+        component: () => import( /* webpackChunkName: "emailVerificationCallback" */ './../views/user/VerificationCallback'),
       },
     ],
   },
   {
     path: '/error/:errorCode',
-    component: () => import(/* webpackChunkName: "error" */ './../views/Error'),
+    component: () => import( /* webpackChunkName: "error" */ './../views/Error'),
   },
   {
     path: '*/:errorCode',
-    component: () => import(/* webpackChunkName: "error" */ './../views/Error'),
+    component: () => import( /* webpackChunkName: "error" */ './../views/Error'),
   },
 ];
 

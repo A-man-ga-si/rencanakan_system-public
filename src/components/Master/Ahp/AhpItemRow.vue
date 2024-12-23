@@ -12,14 +12,11 @@
     </td>
     <td>{{ code }}</td>
     <td>
-      <input
+      <NumericInput
         v-if="editableCoefficient"
-        type="number"
         class="inline-edit"
-        step="0.01"
-        :value="coefficient > 0 ? coefficient : undefined"
-        placeholder="0,00"
-        @change.prevent="valueChanged"
+        v-model="form.coefficient"
+        :onChangeValue="valueChanged"
       />
       <span v-else>{{ coefficient || 0 }}</span>
     </td>
@@ -30,7 +27,12 @@
 </template>
 
 <script>
+  import { NumericInput } from '@/components/Common';
+
   export default {
+    components: {
+      NumericInput,
+    },
     props: [
       'number',
       'name',
@@ -41,9 +43,14 @@
       'description',
       'tooltip',
     ],
+    data() {
+      return {
+        form: { coefficient: parseFloat(this.coefficient) },
+      };
+    },
     methods: {
       valueChanged(newValue) {
-        this.$emit('value-changed', newValue);
+        this.$emit('value-changed', newValue ?? 0);
       },
     },
   };

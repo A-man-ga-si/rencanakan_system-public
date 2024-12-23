@@ -16,23 +16,28 @@
         @input="submitUpdateAhsItem"
         :reset-on-option-change="true"
         :reduce="
-          customAhsItemable =>
+          (customAhsItemable) =>
             `${customAhsItemable.custom_ahs_itemable_type}~${customAhsItemable.custom_ahs_itemable_id}`
         "
         :options="getAhsItemableList"
         v-model="ahsItemableId"
       >
-      <template slot="list-footer">
-        <div class="text-center">
-          <b-badge v-b-modal.create-item-price-modal variant="primary" class="add-item-btn">Tambah Baru</b-badge>
-        </div>
-      </template>
+        <template slot="list-footer">
+          <div class="text-center">
+            <b-badge
+              v-b-modal.create-item-price-modal
+              variant="primary"
+              class="add-item-btn"
+              >Tambah Baru</b-badge
+            >
+          </div>
+        </template>
       </v-select>
     </td>
     <td>
       <v-select
         label="name"
-        :reduce="unit => unit.hashid"
+        :reduce="(unit) => unit.hashid"
         @input="submitUpdateAhsItem"
         v-model="unitId"
         :options="unitsList"
@@ -40,11 +45,10 @@
       />
     </td>
     <td>
-      <input
-        type="number"
-        v-model="coefficient"
-        @change="submitUpdateAhsItem"
+      <NumericInput
         class="inline-edit"
+        v-model="coefficient"
+        :onChangeValue="submitUpdateAhsItem"
       />
     </td>
     <td>{{ getItemPrice }}</td>
@@ -57,10 +61,11 @@
 
 <script>
   import DeleteButton from '@/components/DataTable/Actions/DeleteButton';
-  import { mapActions, mapGetters } from 'vuex';
-  import { isItemPrice, ahsItemable, formatCurrency } from './../../../utils';
+  import { mapActions } from 'vuex';
+  import { ahsItemable, formatCurrency } from './../../../utils';
   import { Notify } from 'notiflix';
   import { showConfirmAlert } from './../../../utils';
+  import { NumericInput } from '@/components/Common';
 
   export default {
     props: [
@@ -79,14 +84,17 @@
             ? this.customAhsItem.custom_ahs_itemable.name
             : this.customAhsItem.name,
         ahsItemableId: `${ahsItemable(
-          this.customAhsItem.custom_ahs_itemable_type
+          this.customAhsItem.custom_ahs_itemable_type,
         )}~${this.customAhsItem.custom_ahs_itemable_id}`,
         unitId:
           ahsItemable(this.customAhsItem.custom_ahs_itemable_type) ===
           'CustomItemPrice'
             ? this.customAhsItem.custom_ahs_itemable.unit.hashid
             : this.customAhsItem.unit?.hashid,
-        coefficient: this.customAhsItem.coefficient,
+        coefficient:
+          this.customAhsItem.coefficient !== 0
+            ? this.customAhsItem.coefficient
+            : undefined,
       };
     },
     methods: {
@@ -95,7 +103,7 @@
       async submitUpdateAhsItem() {
         try {
           const ahsType = ahsItemable(
-            this.customAhsItem.custom_ahs_itemable_type
+            this.customAhsItem.custom_ahs_itemable_type,
           );
 
           const ahsItemableIdType = this.ahsItemableId.split('~');
@@ -108,7 +116,7 @@
 
           dataToUpdate.custom_ahs_itemable_id = ahsItemableIdType[1];
           dataToUpdate.custom_ahs_itemable_type = ahsItemableIdType[0];
-          dataToUpdate.coefficient = this.coefficient;
+          dataToUpdate.coefficient = parseFloat(this.coefficient ?? 0);
 
           const data = await this.updateCustomAhsItem({
             customAhsItemId: this.customAhsItem.hashid,
@@ -119,10 +127,10 @@
           this.$emit('ahs-item-updated');
         } catch (err) {
           this.ahsItemableId = `${ahsItemable(
-            this.customAhsItem.custom_ahs_itemable_type
+            this.customAhsItem.custom_ahs_itemable_type,
           )}~${this.customAhsItem.custom_ahs_itemable_id}`;
           Notify.failure(
-            err?.response?.data?.message || 'Gagal mengupdate item AHS'
+            err?.response?.data?.message || 'Gagal mengupdate item AHS',
           );
         }
       },
@@ -162,7 +170,7 @@
       getAhsItemableList() {
         const ctx = this;
         const d = this.customAhsItemableList
-          .filter(customAhsItemableItem => {
+          .filter((customAhsItemableItem) => {
             // Filter to not showing current AHS ID
             return !(
               ahsItemable(customAhsItemableItem.custom_ahs_itemable_type) ==
@@ -170,9 +178,9 @@
               customAhsItemableItem.display_id == ctx.customAhs.code
             );
           })
-          .map(customAhsItemableItem => {
+          .map((customAhsItemableItem) => {
             customAhsItemableItem.custom_ahs_itemable_type = ahsItemable(
-              customAhsItemableItem.custom_ahs_itemable_type
+              customAhsItemableItem.custom_ahs_itemable_type,
             );
             return customAhsItemableItem;
           });
@@ -180,7 +188,10 @@
       },
       getItemPrice() {
         return `Rp. ${formatCurrency(
-          ahsItemable(this.customAhsItem.custom_ahs_itemable_type) == 'CustomAhp' ? this.customAhsItem.custom_ahs_itemable.subtotal : this.customAhsItem.custom_ahs_itemable.price
+          ahsItemable(this.customAhsItem.custom_ahs_itemable_type) ==
+            'CustomAhp'
+            ? this.customAhsItem.custom_ahs_itemable.subtotal
+            : this.customAhsItem.custom_ahs_itemable.price,
         )}`;
       },
       getSubtotalPrice() {
@@ -189,6 +200,7 @@
     },
     components: {
       DeleteButton,
+      NumericInput,
     },
     watch: {
       customAhsItem(e) {

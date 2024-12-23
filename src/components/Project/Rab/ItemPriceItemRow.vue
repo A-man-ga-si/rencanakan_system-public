@@ -18,7 +18,7 @@
         v-if="item.is_default == '0'"
         label="name"
         class="rab-inline-editor"
-        :reduce="unit => unit.hashid"
+        :reduce="(unit) => unit.hashid"
         v-model="form.unit.hashid"
         :options="units"
         @input="partialUpdate('unit_id')"
@@ -37,7 +37,7 @@
       <span v-else>{{ item.code }}</span>
     </td>
     <td>
-      <input
+      <!-- <input
         type="number"
         class="rab-inline-editor"
         :class="{
@@ -45,6 +45,12 @@
         }"
         v-model="form.price"
         @change="partialUpdate('price')"
+      /> -->
+      <NumericInput
+        class="inline-edit"
+        v-model="form.price"
+        :isSeparatorEnabled="false"
+        :onChangeValue="() => partialUpdate('price')"
       />
     </td>
     <td>
@@ -61,6 +67,7 @@
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
   import { showConfirmAlert } from '@/utils';
+  import { NumericInput } from '@/components/Common';
 
   export default {
     props: {
@@ -80,7 +87,9 @@
     data() {
       return {
         unitId: this.isCustomItemPrice(this.item) ? this.item.unit.hashid : '',
-        form: { ...this.item },
+        form: {
+          ...this.item
+        },
         defaultPrice: true,
       };
     },
@@ -108,12 +117,12 @@
             }
           } else {
             console.log(
-              "Nothing to do, this is not custom item price so you can't delete it"
+              "Nothing to do, this is not custom item price so you can't delete it",
             );
           }
         } catch (err) {
           Notify.failure(
-            `Gagal menghapus harga satuan ! ${err.response.data.message}`
+            `Gagal menghapus harga satuan ! ${err.response.data.message}`,
           );
         }
       },
@@ -126,7 +135,7 @@
             name,
             unit_id: unit.hashid,
             code,
-            price,
+            price: price ?? 0,
           },
         });
         this.checkDefaultPrice();
@@ -144,6 +153,7 @@
     components: {
       EditButton,
       DeleteButton,
+      NumericInput
     },
     watch: {
       item() {
@@ -159,7 +169,7 @@
     border-right: none;
     border-top: none;
     padding-bottom: 5px !important;
-    border-bottom: .5px solid gray !important;
+    border-bottom: 0.5px solid gray !important;
   }
 
   td {

@@ -11,7 +11,7 @@
       />
     </td>
     <td>
-      <div style="width: 350px;">
+      <div style="width: 350px">
         <rcn-ahsproject-dropdown
           :is-disabled="isAhsUpdating"
           :ahs-group-items="ahsGroupItems"
@@ -21,7 +21,9 @@
           :search-query="ahsSearchQuery"
           @on-show-popup="() => $emit('did-ahs-dropdown-showed')"
           @on-dismiss="() => $emit('did-ahs-dropdown-dismissed')"
-          @on-change-search-input="(data) => $emit('did-search-input-changed', data)"
+          @on-change-search-input="
+            (data) => $emit('did-search-input-changed', data)
+          "
           @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
           @on-click-reset-button="didResetButtonClicked"
           :on-select="didAhsItemSelected"
@@ -29,30 +31,28 @@
       </div>
     </td>
     <td>
-      <input
-        type="text"
-        class="inline-edit w-100"
+      <NumericInput
+        class="inline-edit"
         v-model="form.volume"
-        @change="onChangeVolumeInput"
+        :onChangeValue="didVolumeChanged"
       />
     </td>
     <td>
       <v-select
         v-model="form.unitId"
         label="name"
-        :reduce="unit => unit.hashid"
+        :reduce="(unit) => unit.hashid"
         :options="unitIds"
         @input="onSelectUnit"
       />
     </td>
     <td>
-      <input
-        @change="onChangePriceInput"
-        type="text"
+      <NumericInput
         class="inline-edit"
-        placeholder="Isi harga satuan"
         v-model="form.price"
-        :disabled="this.selectedCustomAhs != null"
+        :disabled="selectedCustomAhs != null"
+        :isSeparatorEnabled="false"
+        :onChangeValue="didPriceChanged"
       />
     </td>
     <td>{{ getSubtotalPrice }}</td>
@@ -73,7 +73,7 @@
   import { mapActions } from 'vuex';
   import { PhX } from 'phosphor-vue';
   import { formatCurrency } from '@/utils';
-  import { RcnAhsprojectDropdown } from '@/components/Common'
+  import { NumericInput, RcnAhsprojectDropdown } from '@/components/Common';
 
   export default {
     data() {
@@ -114,37 +114,37 @@
       },
       selectedAhsGroupKey: {
         type: String,
-        default: null
+        default: null,
       },
       ahsSearchQuery: {
         type: String,
-        default: ''
-      }
+        default: '',
+      },
     },
     mounted() {},
     methods: {
       ...mapActions(['destroyRabItem', 'updateRabItem', 'updateRabItemAhs']),
       onChangeNameInput(event) {
-        clearTimeout(this.timeout)
+        clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           const mutatedRabItem = this.rabItemData;
           mutatedRabItem.name = event.target.value;
           this.$emit('did-rab-item-updated', mutatedRabItem);
         }, 500);
       },
-      onChangeVolumeInput(event) {
+      didVolumeChanged() {
         const mutatedRabItem = this.rabItemData;
-        mutatedRabItem.volume = event.target.value;
+        mutatedRabItem.volume = this.form.volume;
+        this.$emit('did-rab-item-updated', mutatedRabItem);
+      },
+      didPriceChanged() {
+        const mutatedRabItem = this.rabItemData;
+        mutatedRabItem.price = this.form.price;
         this.$emit('did-rab-item-updated', mutatedRabItem);
       },
       onSelectUnit(value) {
         const mutatedRabItem = this.rabItemData;
         mutatedRabItem.hashed_unit_id = value;
-        this.$emit('did-rab-item-updated', mutatedRabItem);
-      },
-      onChangePriceInput(event) {
-        const mutatedRabItem = this.rabItemData;
-        mutatedRabItem.price = event.target.value;
         this.$emit('did-rab-item-updated', mutatedRabItem);
       },
       async deleteAhsItem() {
@@ -165,47 +165,64 @@
         return !!data?.custom_ahs_id;
       },
       setupFormValues() {
+        // Setup name form value
         this.form.name = this.rabItemData?.name;
-        this.form.volume = this.rabItemData?.volume;
+
+        // Setup volume form value
+        this.form.volume =
+          this.rabItemData?.volume !== null && this.rabItemData.volume !== 0
+            ? parseFloat(this.rabItemData?.volume ?? 0)
+            : undefined;
+
+        // Setup unit form value
         this.form.unitId = this.rabItemData?.hashed_unit_id;
-        this.form.price = this.rabItemData.custom_ahs != null
-            ? `Rp. ${formatCurrency(parseInt(this.rabItemData.custom_ahs.price).toFixed(2))}`
-            : this.rabItemData.price ?? 0;
+
+        // Setup price form value
+        if (this.rabItemData.custom_ahs != null) {
+          this.form.price = `Rp. ${formatCurrency(
+            parseInt(this.rabItemData.custom_ahs.price).toFixed(2),
+          )}`;
+        }
+        this.form.price =
+          this.rabItemData.price !== null && this.rabItemData.price !== 0
+            ? parseFloat(this.rabItemData.price ?? 0)
+            : undefined;
       },
       didAhsGroupChanged(groupKey) {
         this.didAhsGroupSelected(groupKey);
       },
       didResetButtonClicked() {
         this.$emit('did-reset-ahs-button-clicked', {
-          rabRowItemId: this.rabItemData.hashid
+          rabRowItemId: this.rabItemData.hashid,
         });
       },
-      async didAhsItemSelected(groupKey, ahsItem)  {
-        this.$emit('did-ahs-code-updated',{
-            rabRowItemId: this.rabItemData.hashid,
-            ahsId: ahsItem.key,
+      async didAhsItemSelected(groupKey, ahsItem) {
+        this.$emit('did-ahs-code-updated', {
+          rabRowItemId: this.rabItemData.hashid,
+          ahsId: ahsItem.key,
         });
       },
       setupSelectedCustomAhs() {
         if (this.rabItemData?.custom_ahs == null) {
           this.selectedCustomAhs = null;
-          return 
+          return;
         }
         this.selectedCustomAhs = {
-          'label': `${this.rabItemData?.custom_ahs.code} - ${this.rabItemData?.custom_ahs.name}`
-        }
-      }
+          label: `${this.rabItemData?.custom_ahs.code} - ${this.rabItemData?.custom_ahs.name}`,
+        };
+      },
     },
     computed: {
       getSubtotalPrice() {
-        const rabItemPrice = this.rabItemData.custom_ahs != null 
-          ? this.rabItemData.custom_ahs.price
-          : this.rabItemData.price ?? 0;
+        const rabItemPrice =
+          this.rabItemData.custom_ahs != null
+            ? this.rabItemData.custom_ahs.price
+            : this.rabItemData.price ?? 0;
         const trimmedPrice = String(rabItemPrice)
           .trim()
-          .replaceAll('Rp','')
-          .replaceAll(',','')
-          .replaceAll('.','');
+          .replaceAll('Rp', '')
+          .replaceAll(',', '')
+          .replaceAll('.', '');
         const subtotalPrice = trimmedPrice * (this.rabItemData.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
@@ -220,10 +237,11 @@
         handler(newValue, _) {
           this.setupFormValues();
           this.setupSelectedCustomAhs();
-        }
-      }
+        },
+      },
     },
     components: {
+      NumericInput,
       RcnAhsprojectDropdown,
       PhX,
     },
