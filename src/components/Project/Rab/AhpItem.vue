@@ -214,7 +214,6 @@
             [ahpVal.code]: e.target.value,
           },
         });
-        this.$emit('custom-ahp-item-changed');
       },
 
       editAhp() {

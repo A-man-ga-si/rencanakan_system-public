@@ -1,0 +1,1 @@
+export { default as EquipmentPricePage } from './equipment-price/EquipmentPricePage.vue';
