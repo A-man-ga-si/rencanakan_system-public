@@ -6,7 +6,7 @@
           @click.prevent="switchRABMode('new')"
           :active="formOptions.currentState === 'new'"
         >
-          Kustom RAB Baru
+          Kategori RAB Baru
         </b-nav-item>
         <b-nav-item
           @click.prevent="switchRABMode('existing')"
