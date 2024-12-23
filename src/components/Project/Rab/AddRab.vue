@@ -106,43 +106,18 @@
           Notify.failure('Gagal menambahkan RAB');
         }
       },
-
       hideModal(refname) {
+        this.resetForm();
         this.$refs[refname].hide();
       },
-
       resetForm() {
+        this.formOptions.currentState = 'new';
         this.form.name = '';
-        this.form.selectedMasterRabId = '-';
+        this.form.selectedMasterRabCategoryId = "-";
       },
     },
     computed: {
-      ...mapGetters(['getRabCategories']),
-      computedMasterRabs() {
-        return [{
-          name: '-',
-          id: '-'
-        }].concat(this.getMasterRabs || [])
-      },
-      masterRabName() {
-        const that = this
-        const filteredResult = this.computedMasterRabs.filter(d => d.hashid == that.form.selectedMasterRabId)
-        console.log(filteredResult)
-        if (filteredResult.length > 0) {
-          return filteredResult[0].name
-        } else {
-          return ''
-        }
-      }
-    },
-    watch: {
-      'form.selectedMasterRabId': function() {
-        this.form.name = this.masterRabName
-        // const masterRab = await this.showMasterRab({
-        //   masterRabId: this.form.selectedMasterRabId,
-        //   provinceId: this.provinceId,
-        // })
-      }
+      ...mapGetters(['getRabCategories'])
     },
     components: {
       ValidationInput,
