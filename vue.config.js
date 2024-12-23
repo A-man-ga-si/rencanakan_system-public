@@ -1,5 +1,6 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack')
+const path = require('path');
 
 module.exports = {
   pages: {
@@ -36,12 +37,25 @@ module.exports = {
   productionSourceMap: false,
   assetsDir: './assets/',
   configureWebpack: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    },
     plugins: [
       new CopyPlugin({
-        patterns: [
-          { from: 'src/assets/img', to: 'assets/img' },
-          { from: 'src/assets/logos', to: 'assets/logos' },
-          { from: 'src/assets/fonts', to: 'assets/fonts' },
+        patterns: [{
+            from: 'src/assets/img',
+            to: 'assets/img'
+          },
+          {
+            from: 'src/assets/logos',
+            to: 'assets/logos'
+          },
+          {
+            from: 'src/assets/fonts',
+            to: 'assets/fonts'
+          },
         ],
       }),
     ],

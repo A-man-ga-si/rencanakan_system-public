@@ -17,7 +17,8 @@
         type="number"
         class="inline-edit"
         step="0.01"
-        :value="coefficient || 0"
+        :value="coefficient > 0 ? coefficient : undefined"
+        placeholder="0,00"
         @change.prevent="valueChanged"
       />
       <span v-else>{{ coefficient || 0 }}</span>
