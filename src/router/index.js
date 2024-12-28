@@ -326,6 +326,7 @@ const routes = [{
         path: `admin`,
         name: 'Admin Page',
         meta: {
+            title: 'Admin Panel',
           loginRequired: true,
           permissions: ['access-master-page'],
         },
