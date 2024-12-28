@@ -4,9 +4,6 @@ import AuthGuard from './../utils/auth.guard';
 import App from './../views/app';
 import { adminRoot, defaultTitle, titleSuffix } from './../constants/config';
 import PasswordResetGuard from './../utils/password-reset.guard';
-<<<<<<< HEAD
-import { EquipmentPricePage } from '@/views/app/projects';
-=======
 import {
   ProjectListPage,
   BudgetEstimatePage,
@@ -15,7 +12,6 @@ import {
   ItemPriceMaster
 } from '@/views/app/projects';
 import { UserListPage } from '@/views/app/admin';
->>>>>>> 33dbfad... implement users list on admin page
 
 Vue.use(VueRouter);
 
