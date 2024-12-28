@@ -91,7 +91,7 @@ const data = [
     ],
   },
   {
-    id: 'admin-panel',
+    id: 'admin',
     icon: 'iconsminds-administrator',
     label: 'Admin Panel',
     permissions: ['access-master-page'],
