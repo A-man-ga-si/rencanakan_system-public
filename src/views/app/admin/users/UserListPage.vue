@@ -12,21 +12,17 @@
         >
           <h4 class="card-title" style="margin-bottom: 0px">Daftar Pengguna</h4>
         </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 24px;
-          "
-        >
+        <div class="header">
           <ValidationInput
+            class="search-input"
             :label="'Search'"
+            :placeholder="'Cari email atau nomor telepon'"
             :fieldName="''"
-            style="width: 500px; max-width: 100%"
             @input="onChangeSearchValue"
           />
 
           <input-dropdown
+            class="sort-input"
             :input-style="{ width: '150px' }"
             :selected-option="selectedSortOption"
             :options="sortOptions"
@@ -144,7 +140,7 @@
           limit: this.limit,
           page: this.currentPage,
           search: this.searchQuery,
-          sort: this.selectedSortOption?.key
+          sort: this.selectedSortOption?.key,
         });
         this.isLoading = false;
         this.users = response.data.users;
@@ -195,6 +191,17 @@
 </script>
 
 <style scoped>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .search-input {
+    width: 500px;
+    max-width: 100%;
+  }
+
   .table-header {
     background-color: #00365a;
     color: white;
@@ -222,6 +229,18 @@
   }
 
   @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+    }
+
+    .search-input {
+      margin-bottom: 16px;
+    }
+
+    .sort-input {
+      margin-left: auto;
+    }
+
     .footer {
       display: flex;
       justify-content: unset;
