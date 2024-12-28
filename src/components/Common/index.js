@@ -1,15 +1,10 @@
-import Loader from "./Loader.vue";
-import LoaderCircle from "./LoaderCircle.vue";
-import RcnAhsprojectDropdown from "./RcnAhsprojectDropdown.vue";
-import ImportExcelModal from "./ImportExcelModal.vue";
-import SectionLoading from './SectionLoading.vue';
-import NumericInput from './NumericInput.vue';
+export { default as Loader } from './Loader.vue';
+export { default as LoaderCircle } from './LoaderCircle.vue';
+export { default as RcnAhsprojectDropdown } from './RcnAhsprojectDropdown.vue';
+export { default as ImportExcelModal } from './ImportExcelModal.vue';
+export { default as InputDropdown } from './InputDropdown.vue';
+export { default as SectionLoading } from './SectionLoading.vue';
+export { default as NumericInput } from './NumericInput.vue';
+export { default as Pagination } from './Pagination.vue';
+export { default as ValidationInput } from './ValidationInput.vue';
 
-export {
-    Loader,
-    LoaderCircle,
-    RcnAhsprojectDropdown,
-    ImportExcelModal,
-    SectionLoading,
-    NumericInput
-}

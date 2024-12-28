@@ -15,6 +15,7 @@ import {
   EquipmentPricePage,
   ItemPriceMaster
 } from '@/views/app/projects';
+import { UserListPage } from '@/views/app/admin';
 
 Vue.use(VueRouter);
 
@@ -326,22 +327,9 @@ const routes = [{
         name: 'Admin Page',
         meta: {
           loginRequired: true,
-          permissions: ['access-account-page'],
+          permissions: ['access-master-page'],
         },
-        // redirect: {
-        //   name: 'ProfileAccount',
-        // },
-        component: () => import('./../views/app/admin/users'),
-        children: [{
-          path: 'users',
-          name: 'ProfileAccount',
-          meta: {
-            title: 'Account Profile',
-            permissions: ['access-account-page'],
-          },
-          component: () =>
-            import('./../views/app/account/Profile.vue'),
-        }],
+        component: UserListPage,
       },
     ],
   },

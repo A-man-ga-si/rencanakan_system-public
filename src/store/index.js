@@ -4,6 +4,7 @@ import app from '../main';
 import auth from './modules/auth.module';
 import menu from './modules/menu.module';
 import user from './modules/user.module';
+import users from './modules/users.module';
 import province from './modules/province.module';
 import project from './modules/project.module';
 import payment from './modules/payment.module';
@@ -51,6 +52,7 @@ export default new Vuex.Store({
   modules: {
     menu,
     user,
+    users,
     province,
     project,
     payment,

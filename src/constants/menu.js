@@ -90,6 +90,13 @@ const data = [
       },
     ],
   },
+  {
+    id: 'admin-panel',
+    icon: 'iconsminds-administrator',
+    label: 'Admin Panel',
+    permissions: ['access-master-page'],
+    to: `${adminRoot}/admin`
+  },
 ];
 
 export default data;

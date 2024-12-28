@@ -41,7 +41,6 @@
         required: false,
         default: 'text',
       },
-      // ['value', 'fieldName', 'label']
     },
   };
 </script>
