@@ -5,7 +5,19 @@
       <IconLeftChevron />
     </button>
 
-    <div v-if="currentPage < 5" class="page-num-container">
+    <div v-if="totalPage < 5" class="page-num-container">
+      <button
+        v-for="index in [...Array(this.totalPage)].map((_, index) => index + 1)"
+        :key="index"
+        :style="pageNumStyle(index == currentPage)"
+        class="page-nav"
+        @click="() => onClickPageNumButton(index)"
+      >
+        {{ index }}
+      </button>
+    </div>
+
+    <div v-else-if="currentPage < 5" class="page-num-container">
       <button
         v-for="index in [1, 2, 3, 4, 5]"
         :key="index"
