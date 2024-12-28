@@ -42,10 +42,6 @@
         required: false,
         default: 'text',
       },
-      placeholder: {
-        type: String,
-        required: false,
-      },
     },
   };
 </script>

@@ -15,8 +15,7 @@
         <div class="header">
           <ValidationInput
             class="search-input"
-            :label="'Search'"
-            :placeholder="'Cari email atau nomor telepon'"
+            :label="'Search Email/ Phone'"
             :fieldName="''"
             @input="onChangeSearchValue"
           />
