@@ -1,5 +1,5 @@
 // Application theme related configs
-export const defaultTitle = 'Untitled';
+export const defaultTitle = 'Rencanakan.id';
 export const titleSuffix = ' | Yuk Mulai Hitung RAB';
 
 // URLs Related Configs
