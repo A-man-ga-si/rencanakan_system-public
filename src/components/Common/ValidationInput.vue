@@ -9,7 +9,6 @@
         :type="type"
         class="form-control"
         :value="value"
-        :placeholder="placeholder"
         @input="$emit('input', $event.target.value)"
       />
       <span>{{ label }}</span>
