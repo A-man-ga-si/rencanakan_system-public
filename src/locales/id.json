@@ -161,7 +161,8 @@
     "master-ahs": "Master AHS",
     "master-rab": "Master RAB",
     "master-equipment": "Master Peralatan",
-    "master-ahp": "Master AHP"
+    "master-ahp": "Master AHP",
+    "admin": "Admin Panel"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",
