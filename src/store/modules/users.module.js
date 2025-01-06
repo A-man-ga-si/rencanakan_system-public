@@ -18,7 +18,7 @@ const actions = {
     if (request.sort !== undefined) {
       params.append('sort', request.sort);
     }
-    const response = await usersApi.get('', params);
+    const response = await usersApi.get('', decodeURIComponent(params));
     return response.data;
   },
   async fetchUserDetail(_, userId) {
