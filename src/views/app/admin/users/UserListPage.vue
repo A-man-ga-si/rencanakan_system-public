@@ -22,50 +22,57 @@
       />
     </div>
     <SectionLoading v-if="users === undefined" title="Memuat Daftar Pengguna" />
-    <table v-else class="table table-responsive-md shadow-sm w-100 mb-5">
-      <thead>
-        <th
-          class="table-header"
-          style="border-top-left-radius: 8px; width: 15%; min-width: 150px"
-        >
-          Nama Lengkap
-        </th>
-        <th class="table-header" style="width: 20%; min-width: 150px">Email</th>
-        <th class="table-header" style="width: 15%; min-width: 150px">
-          Nomor Telepon
-        </th>
-        <th class="table-header" style="width: 15%; min-width: 150px">
-          Pekerjaan
-        </th>
-        <th class="table-header" style="width: 10%; min-width: 125px">
-          Proyek Aktif
-        </th>
-        <th class="table-header" style="width: 15%; min-width: 150px">
-          Login Terakhir
-        </th>
-        <th
-          class="table-header"
-          style="border-top-right-radius: 8px; width: 10%; min-width: 125px"
-        >
-          Aksi
-        </th>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.hashid">
-          <td>{{ `${user.first_name} ${user.last_name}` }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.job }}</td>
-          <td>{{ user.project_count }}</td>
-          <td>{{ user.last_login ?? '-' }}</td>
-          <td>
-            <router-link :to="`admin/${user.hashid}`" class="rab-icon-bt mx-1">
-              <ph-arrow-square-out :size="20" weight="light" />
-            </router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-else class="mb-5" style="overflow-x: auto">
+      <table class="table table-responsive-md shadow-sm w-100 m-0">
+        <thead>
+          <th
+            class="table-header"
+            style="border-top-left-radius: 8px; width: 15%; min-width: 150px"
+          >
+            Nama Lengkap
+          </th>
+          <th class="table-header" style="width: 20%; min-width: 150px">
+            Email
+          </th>
+          <th class="table-header" style="width: 15%; min-width: 150px">
+            Nomor Telepon
+          </th>
+          <th class="table-header" style="width: 15%; min-width: 150px">
+            Pekerjaan
+          </th>
+          <th class="table-header" style="width: 10%; min-width: 125px">
+            Proyek Aktif
+          </th>
+          <th class="table-header" style="width: 15%; min-width: 150px">
+            Login Terakhir
+          </th>
+          <th
+            class="table-header"
+            style="border-top-right-radius: 8px; width: 10%; min-width: 125px"
+          >
+            Aksi
+          </th>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.hashid">
+            <td>{{ `${user.first_name} ${user.last_name}` }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.job }}</td>
+            <td>{{ user.project_count }}</td>
+            <td>{{ user.last_login ?? '-' }}</td>
+            <td>
+              <router-link
+                :to="`admin/${user.hashid}`"
+                class="rab-icon-bt mx-1"
+              >
+                <ph-arrow-square-out :size="20" weight="light" />
+              </router-link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="footer">
       <div class="data-hint">
         <span style="margin: auto 0px">{{ dataHintLabel }}</span>
