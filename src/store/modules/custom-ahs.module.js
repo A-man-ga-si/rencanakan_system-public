@@ -58,12 +58,16 @@ const actions = {
     return data;
   },
 
-  async queryCustomAhs(ctx, { projectId, query, category }) {
-    const data = await CustomAhsApi.setPreviousPath(`project/${projectId}`).get(
-      'query',
-      `q=${query}&category=${category}&arrange=true`
-    );
-    return data;
+  async queryCustomAhs(_, { projectId, query, category }) {
+    const params = new URLSearchParams({
+        q: query,
+        category: category,
+        arrange: true
+    });
+    const response = await CustomAhsApi
+        .setPreviousPath(`project/${projectId}`)
+        .get('query', decodeURIComponent(params));
+    return response;
   },
 };
 

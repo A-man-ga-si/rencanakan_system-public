@@ -214,14 +214,14 @@
     },
 
     methods: {
-      ...mapActions(['storeCustomAhsItem', 'deleteCustomAhs', 'showProject']),
+      ...mapActions(['storeCustomAhsItem', 'deleteCustomAhs']),
       toggleMaincardCollapse() {
         this.mainCardCollapsed = !this.mainCardCollapsed;
       },
 
       async getOverheadAndProfit() {
-        const { data } = await this.showProject(this.$route.params.id);
-        this.overheadAndProfitPercentage = data.data.project.profit_margin;
+        const project = this.getCurrentActiveProject;
+        this.overheadAndProfitPercentage = project.profit_margin;
       },
       
       getIsSubmitting(section) {
@@ -262,7 +262,7 @@
     },
 
     computed: {
-      ...mapGetters(['getProjects']),
+      ...mapGetters(['getProjects', 'getCurrentActiveProject']),
       totalTenagaKerja() {
         let val = 0;
         if (

@@ -30,7 +30,7 @@ const mutations = {
 };
 
 const actions = {
-  async showProject(ctx, projectId) {
+  async showProject(_, projectId) {
     const data = await projectApi.get(projectId);
     return data;
   },

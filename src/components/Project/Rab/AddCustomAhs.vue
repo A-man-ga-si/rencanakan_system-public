@@ -8,61 +8,44 @@
       size="lg"
     >
       <b-nav class="mb-5 justify-content-center" pills>
+        <!-- PUPR AHS GROUPS -->
         <b-nav-item
-          @click.prevent="switchSource('reference')"
-          :active="formOptions.currentState === 'reference'"
+          v-for="(ahsGroup, index) in ahsGroups" :key="index"
+          @click.prevent="switchSource(ahsGroup)"
+          :active="selectedAhsGroup?.key === ahsGroup.key"
         >
-          AHS Permen PUPR 2016
+          {{ ahsGroup.title }}
         </b-nav-item>
+
+        <!-- CUSTOM AHS GROUP -->
         <b-nav-item
-          @click.prevent="switchSource('reference-2023')"
-          :active="formOptions.currentState === 'reference-2023'"
-        >
-          AHS Permen PUPR 2023
-        </b-nav-item>
-        <b-nav-item
-          @click.prevent="switchSource('custom')"
-          :active="formOptions.currentState === 'custom'"
+          @click.prevent="switchSource(undefined)"
+          :active="selectedAhsGroup === undefined"
         >
           Custom AHS
         </b-nav-item>
       </b-nav>
+
+      <!-- PUPR AHS DROPDOWN INPUT -->
       <div
+        v-if="selectedAhsGroup !== undefined"
         class="reference-only-form mb-4"
-        v-if="formOptions.currentState === 'reference'"
       >
         <div
           class="labeled-select position-relative d-inline-block"
           style="width: 100%"
         >
-          <span class="px-1"> Referensi AHS Permen 2016</span>
+          <span class="px-1">{{ selectedAhsGroup.title }}</span>
           <v-select
             label="id_name"
             :reduce="ahs => `${ahs.id}<<#>>${ahs.name}`"
-            :options="getMappedAhsIds.reference"
+            :options="getMappedAhsIds[selectedAhsGroup.key]"
             v-model="form.selectedReference"
-          >
-          </v-select>
+          />
         </div>
       </div>
-      <div
-        class="reference-only-form mb-4"
-        v-else-if="formOptions.currentState === 'reference-2023'"
-      >
-        <div
-          class="labeled-select position-relative d-inline-block"
-          style="width: 100%"
-        >
-          <span class="px-1"> Referensi AHS Permen 2023</span>
-          <v-select
-            label="id_name"
-            :reduce="ahs => `${ahs.id}<<#>>${ahs.name}`"
-            :options="getMappedAhsIds['reference-2023']"
-            v-model="form.selectedReference"
-          >
-          </v-select>
-        </div>
-      </div>
+
+      <!-- DEFAULT FORM INPUTS -->
       <ValidationInput
         :label="'Kode'"
         field-name="code"
@@ -92,15 +75,17 @@
   import validationMixins from '@/mixins/validation-mixins';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
+  import { AHSGroupReferences } from '@/constants/enums';
 
   export default {
     mixins: [validationMixins],
     data() {
       return {
         modalId: 'add-custom-ahs',
-        formOptions: {
-          currentState: 'reference-2023',
-        },
+        selectedAhsGroup: AHSGroupReferences.reference2024,
+        ahsGroups: Object.values(AHSGroupReferences).filter(
+          (ahsGroup) => ahsGroup.key !== AHSGroupReferences.ahsProject.key
+        ),
         form: {
           name: '',
           code: '',
@@ -112,7 +97,7 @@
       this.requestAhsIds();
     },
     methods: {
-      ...mapActions(['storeCustomAhs', 'fetchAhsIds']),
+      ...mapActions(['storeCustomAhs', 'fetchAhs', 'fetchAhsIds']),
       async submit() {
         try {
           const { name, code, selectedReference } = this.form;
@@ -121,7 +106,7 @@
             form: {
               name,
               code:
-                selectedReference == 'reference'
+                selectedReference == AHSGroupReferences.reference2016.key
                   ? code.split('<<#>>')[0]
                   : code,
               selected_reference: selectedReference.split('<<#>>')[0],
@@ -152,20 +137,21 @@
         this.form.code = '';
         this.form.selectedReference = '';
       },
-      switchSource(source) {
-        this.formOptions.currentState = source;
-        this.resetForm()
-
-        // if (this.formOptions.currentState === 'custom') {
-        //   this.formOptions.currentState = 'reference';
-        // } else {
-        //   this.formOptions.currentState = 'custom';
-        //   this.resetForm();
-        // }
+      async switchSource(ahsGroup) {
+        this.selectedAhsGroup = ahsGroup;
+        this.resetForm();
       },
     },
     computed: {
-      ...mapGetters(['getMappedAhsIds']),
+      ...mapGetters(['getMappedAhsIds', 'getAhs', 'getCurrentActiveProject']),
+      ahsOptions() {
+        return this.getAhs.map((ahs) => {
+          return {
+            id: ahs.id,
+            name: ahs.name
+          }
+        })
+      }
     },
     components: {
       ValidationInput,
@@ -175,7 +161,7 @@
         const [code, name] = e.split('<<#>>');
         this.form.code = `${code || ''}`;
         this.form.name = `${name || ''}`;
-      },
+      }
     },
   };
 </script>

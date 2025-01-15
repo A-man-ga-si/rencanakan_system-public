@@ -2,19 +2,19 @@
   <div class="rab-summary-page">
     <div class="d-flex justify-content-between">
       <div class="left mb-3">
-          <div
-            class="labeled-select position-relative d-inline-block"
-            style="width: 300px"
-          >
-            <span class="px-1"> Provinsi</span>
-            <v-select
-              label="name"
-              :reduce="province => province.hashid"
-              :options="provinces"
-              v-model="selectedProvince"
-            />
-          </div>
-          <!-- <div
+        <div
+          class="labeled-select position-relative d-inline-block"
+          style="width: 300px"
+        >
+          <span class="px-1"> Provinsi</span>
+          <v-select
+            label="name"
+            :reduce="(province) => province.hashid"
+            :options="provinces"
+            v-model="selectedProvince"
+          />
+        </div>
+        <!-- <div
             class="labeled-select position-relative d-inline-block ml-2"
             style="width: 300px"
           >
@@ -28,11 +28,24 @@
           </div> -->
       </div>
       <div class="center w-100">
-        <h5 class="ml-3 mt-2" v-if="Object.values(getSelectedRabCategory).length > 0">{{ getSelectedRabCategory.name }}</h5>
-        <h5 class="text-danger ml-3 mt-2 blinking-text" v-else>Tidak Ada RAB Terpilih</h5>
+        <h5
+          class="ml-3 mt-2"
+          v-if="Object.values(getSelectedRabCategory).length > 0"
+        >
+          {{ getSelectedRabCategory.name }}
+        </h5>
+        <h5 class="text-danger ml-3 mt-2 blinking-text" v-else>
+          Tidak Ada RAB Terpilih
+        </h5>
       </div>
       <div class="right w-100 text-right">
-        <button type="button" class="btn btn-primary" v-b-modal.add-rab-category-modal>Switch RAB</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          v-b-modal.add-rab-category-modal
+        >
+          Switch RAB
+        </button>
       </div>
     </div>
     <!-- <b-row>
@@ -140,7 +153,6 @@
 </template>
 
 <script>
-
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
   import EditRab from '@/components/Master/Rab/EditRab.vue';
@@ -150,25 +162,18 @@
   import RabSummaryItem from '@/components/Master/Rab/RabSummaryItem.vue';
   import AddMasterRab from '@/components/Project/Rab/AddMasterRab.vue';
   import AddRabCategory from '@/components/Master/Rab/AddRabCategory.vue';
+  import { AHSGroupReferences } from '@/constants/enums';
 
   export default {
     data() {
       return {
         provinces: [],
-        rabGroup: [
-          {
-            id: 'all',
-            name: 'All'
-          },
-          {
-            id: 'reference',
-            name: 'AHS Permen PUPR 2016'
-          },
-          {
-            id: 'reference-2023',
-            name: 'AHS Permen PUPR 2023'
-          },
-        ],
+        rabGroup: Object.values(AHSGroupReferences).map((ahsGroup) => {
+          return {
+            id: ahsGroup.key,
+            name: ahsGroup.title,
+          };
+        }),
         form: {
           searchQuery: '',
           searchQueryCategory: 'item',
@@ -193,7 +198,7 @@
       };
     },
     created() {
-      this.loadMasterRab()
+      this.loadMasterRab();
     },
     methods: {
       ...mapActions([
@@ -201,17 +206,17 @@
         'fetchAhsIds',
         'showProject',
         'fetchMasterRab',
-        'fetchProvinces'
+        'fetchProvinces',
       ]),
       async loadMasterRab() {
-        await this.loadProvinces()
+        await this.loadProvinces();
         if (this.masterRabCategoryId) {
           await this.fetchMasterRab({
             query: '',
             queryCategory: '',
             provinceId: this.selectedProvince,
-            masterRabCategoryId: this.masterRabCategoryId
-          })
+            masterRabCategoryId: this.masterRabCategoryId,
+          });
         }
         this.fetchShowProject();
         this.fetchUnit();
@@ -227,7 +232,7 @@
       async loadProvinces() {
         const data = await this.fetchProvinces();
         if (data.length > 0) {
-          this.selectedProvince = data[0].hashid
+          this.selectedProvince = data[0].hashid;
         }
         this.provinces = data;
       },
@@ -238,7 +243,7 @@
             queryCategory: '',
             provinceId: this.selectedProvince,
             masterRabCategoryId,
-          })
+          });
         }
       },
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
@@ -259,8 +264,8 @@
             query: '',
             queryCategory: '',
             provinceId: this.selectedProvince,
-            masterRabCategoryId: this.masterRabCategoryId
-          })
+            masterRabCategoryId: this.masterRabCategoryId,
+          });
         }
         // this.fetchRab({
         //   projectId: this.$route.params.id,
@@ -275,9 +280,17 @@
       },
     },
     computed: {
-      ...mapGetters(['getMasterRabs', 'getAhs', 'getProjects', 'getUnit', 'getSelectedRabCategory']),
+      ...mapGetters([
+        'getMasterRabs',
+        'getAhs',
+        'getProjects',
+        'getUnit',
+        'getSelectedRabCategory',
+      ]),
       rabsTotal() {
-        const mappedRabs = this.getMasterRabs ? this.getMasterRabs.map(data => data.subtotal) : [];
+        const mappedRabs = this.getMasterRabs
+          ? this.getMasterRabs.map((data) => data.subtotal)
+          : [];
         return mappedRabs.length
           ? parseInt(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
@@ -313,11 +326,11 @@
         deep: true,
       },
       getSelectedRabCategory() {
-        this.masterRabCategoryId = this.getSelectedRabCategory.id
+        this.masterRabCategoryId = this.getSelectedRabCategory.id;
       },
       selectedProvince() {
-        this.reloadData()
-      }
+        this.reloadData();
+      },
     },
     components: {
       RabSummaryItem,
@@ -332,13 +345,19 @@
 </script>
 
 <style>
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
-.blinking-text {
-  animation: blink 1s infinite;
-}
+  .blinking-text {
+    animation: blink 1s infinite;
+  }
 </style>

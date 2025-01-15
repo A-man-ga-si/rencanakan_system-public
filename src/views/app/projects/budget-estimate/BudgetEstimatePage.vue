@@ -141,7 +141,7 @@
   import RabSummaryItem from '@/components/Project/Rab/RabSummaryItem.vue';
   import AddRab from '@/components/Project/Rab/AddRab.vue';
   import Loader from '@/components/Common/Loader.vue';
-  import { AHSGroupReference } from '@/constants/enums.js'
+  import { AHSGroupReferences } from '@/constants/enums.js'
   import { Notify } from 'notiflix';
 
   export default {
@@ -166,11 +166,11 @@
         unitItems: null,
 
         // Datas - Ahs Dropdown 
-        ahsGroupItems: null,
+        ahsGroupItems: Object.values(AHSGroupReferences),
         ahsItems: null,
         filteredAhsGroupItems: null,
         ahsItemLimit: 10,
-        selectedAhsGroupKey: AHSGroupReference.ahsProject,
+        selectedAhsGroupKey: AHSGroupReferences.ahsProject.key,
         ahsSearchQuery: "",
 
         ahsDropdownProps: null
@@ -216,12 +216,7 @@
           )
       },
       async initAhsData() {
-        this.ahsGroupItems = [
-          {'key': AHSGroupReference.ahsProject, 'title': 'AHS Project'},
-          {'key': AHSGroupReference.reference2016, 'title': 'Permen PUPR 2016'},
-          {'key': AHSGroupReference.reference2023, 'title': 'Permen PUPR 2023'}
-        ]
-        this.selectedAhsGroupKey = AHSGroupReference.ahsProject;
+        this.selectedAhsGroupKey = AHSGroupReferences.ahsProject.key;
         await this.reloadCustomAhsData();
       },
       async reloadData() {
@@ -253,12 +248,12 @@
         this.reloadCustomAhsData();
       },
       didAhsDropdownDismissed() {
-        this.selectedAhsGroupKey = AHSGroupReference.ahsProject;
+        this.selectedAhsGroupKey = AHSGroupReferences.ahsProject.key;
         this.ahsSearchQuery = '';
         this.ahsItems = null
       },
       reloadAhsData() {
-        if (this.selectedAhsGroupKey == AHSGroupReference.ahsProject) {
+        if (this.selectedAhsGroupKey == AHSGroupReferences.ahsProject.key) {
           this.reloadCustomAhsData();
           return;
         }
@@ -348,7 +343,7 @@
               rabItemId: rabRowItemId,
               ahsId: ahsId
           }
-          if (this.selectedAhsGroupKey != AHSGroupReference.ahsProject) {
+          if (this.selectedAhsGroupKey != AHSGroupReferences.ahsProject.key) {
             request['groupId'] = this.selectedAhsGroupKey;
           }
           const response = await this.updateRabItemAhs(request);
