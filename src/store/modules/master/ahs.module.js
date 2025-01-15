@@ -12,27 +12,27 @@ const state = {
 };
 
 const getters = {
-  getAhs: state => state.ahs,
-  getAhsIds: state => {
-    state.ahsIds.map(d => {
+  getAhs: (state) => state.ahs,
+  getAhsIds: (state) => {
+    state.ahsIds.map((d) => {
       d.id_name = `${d.id} | ${d.name}`;
       return d;
     });
     return state.ahsIds;
   },
-  getMappedAhsIds: state => {
-    const groupedAhs = {}
+  getMappedAhsIds: (state) => {
+    const groupedAhs = {};
     for (const ahs of state.ahsIds) {
       ahs.id_name = `${ahs.id} | ${ahs.name}`;
       if (!groupedAhs[ahs.groups]) {
-        groupedAhs[ahs.groups] = [ahs]
+        groupedAhs[ahs.groups] = [ahs];
       } else {
-        groupedAhs[ahs.groups].push(ahs)
+        groupedAhs[ahs.groups].push(ahs);
       }
     }
-    return groupedAhs
+    return groupedAhs;
   },
-  getAhsCount: state => state.ahsCount,
+  getAhsCount: (state) => state.ahsCount,
 };
 
 const mutations = {
@@ -54,9 +54,26 @@ const mutations = {
 };
 
 const actions = {
-  async fetchAhs({ commit }, { province, page, perPage, selectedAhsGroup, searchQuery }) {
-    // prettier-ignore
-    const data = await masterAhsApi.query('', `arrange=true&province=${province}&page=${page}&per_page=${perPage}&selected_ahs_group=${selectedAhsGroup}&q=${searchQuery}`);
+  async fetchAhs(
+    { commit },
+    { province, page, perPage, selectedAhsGroup, searchQuery },
+  ) {
+    let params = new URLSearchParams({
+      arrange: true,
+      province: province,
+      page: page || 1,
+      per_page: perPage || 10,
+    });
+    const optionalParams = {
+      q: searchQuery,
+      selected_ahs_group: selectedAhsGroup,
+    };
+    for (const [key, value] of Object.entries(optionalParams)) {
+      if (value !== undefined && value !== null) {
+        params.append(key, value);
+      }
+    }
+    const data = await masterAhsApi.get('', decodeURIComponent(params));
     commit('setAhs', data.data.data.ahs);
     commit('setAhsCount', data.data.data.pagination_attribute.total_rows);
     return data;
@@ -86,14 +103,17 @@ const actions = {
 
   async importMasterAhs(ctx, { formData }) {
     return await masterAhsApi.post('import', formData, null, {
-      'Content-Type': 'multipart/formdata'
+      'Content-Type': 'multipart/formdata',
     });
   },
 
   async fetchMasterAhsProject(_, { q, limit, group }) {
-    const response = await masterAhsApi.get('project', `q=${q}&limit=${limit}&group=${group}`);
+    const response = await masterAhsApi.get(
+      'project',
+      `q=${q}&limit=${limit}&group=${group}`,
+    );
     return response.data;
-  }
+  },
 };
 
 export default {

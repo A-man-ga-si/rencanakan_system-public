@@ -8,28 +8,28 @@
   >
     <div
       class="labeled-select position-relative d-inline-block mb-4"
-      :class="{ 'disabled': isSubmitting }"
-      style="width: 100%;"
+      :class="{ disabled: isSubmitting }"
+      style="width: 100%"
     >
       <span class="px-1"> Group AHS</span>
       <v-select
-        :disabled=isSubmitting
+        :disabled="isSubmitting"
         label="name"
-        :reduce="ahs => ahs.id"
+        :reduce="(ahs) => ahs.id"
         :options="ahsGroup"
         v-model="form.groups"
       >
       </v-select>
     </div>
     <ValidationInput
-      :disabled=isSubmitting
+      :disabled="isSubmitting"
       class="mb-4"
       label="Kode"
       field-name="id"
       v-model="form.id"
     />
     <ValidationInput
-      :disabled=isSubmitting
+      :disabled="isSubmitting"
       class="mb-4"
       label="Nama"
       field-name="name"
@@ -37,13 +37,13 @@
     />
     <template slot="modal-footer">
       <b-button
-        :disabled=!isFormFilled
+        :disabled="!isFormFilled"
         :style="buttonStyle"
         @click.prevent="onTapSaveButton"
         variant="primary"
         class="mr-1"
       >
-        <LoaderCircle v-show="isSubmitting"/>
+        <LoaderCircle v-show="isSubmitting" />
         <span v-show="!isSubmitting">
           {{ $t('modal.save-bt') }}
         </span>
@@ -65,6 +65,7 @@
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
   import LoaderCircle from '@/components/Common/LoaderCircle.vue';
+  import { AHSGroupReferences } from '@/constants/enums';
 
   export default {
     mixins: [validationMixin],
@@ -72,30 +73,27 @@
       modalId: 'add-ahs-modal',
       isSubmitting: false,
       buttonStyle: {
-        height: '42px', width: '100px'
+        height: '42px',
+        width: '100px',
       },
       form: {
         id: '',
         name: '',
         groups: '',
       },
-      ahsGroup: [
-        {
-          id: 'reference',
-          name: 'AHS Permen PUPR 2016'
-        },
-        {
-          id: 'reference-2023',
-          name: 'AHS Permen PUPR 2023'
-        },
-      ]
+      ahsGroup: Object.values(AHSGroupReferences).map((ahsGroup) => {
+        return {
+          id: ahsGroup.key,
+          name: ahsGroup.title
+        };
+      }),
     }),
     computed: {
       isFormFilled() {
-        return this.form.groups != ''
-          && this.form.name != ''
-          && this.form.id != ''
-      }
+        return (
+          this.form.groups != '' && this.form.name != '' && this.form.id != ''
+        );
+      },
     },
     methods: {
       ...mapActions(['storeAhs']),
@@ -104,7 +102,9 @@
         this.$refs[refname].hide();
       },
       async onTapSaveButton() {
-        if (this.isSubmitting) { return; }
+        if (this.isSubmitting) {
+          return;
+        }
         this.isSubmitting = true;
         try {
           this.resetInvalid();
@@ -123,7 +123,7 @@
         this.form.groups = '';
         this.form.id = '';
         this.form.name = '';
-      }
+      },
     },
     components: {
       LoaderCircle,

@@ -1,18 +1,13 @@
 <template>
   <div
-    class="
-      ahs-card-single
-      position-relative
-      mb-3
-      custom-nice-border
-      p-4
-      rounded-md
-      shadow-sm
-    "
+    class="ahs-card-single position-relative mb-3 custom-nice-border p-4 rounded-md shadow-sm"
   >
     <div class="heading d-flex justify-content-between">
       <div class="left">
-        <h5>{{ idx + 1 }}. {{ ahsItem.id }} | {{ ahsItem.name }} <b-badge class="ml-2">{{ ahsItem.groups == 'reference' ? '2016': '2023' }}</b-badge></h5>
+        <h5>
+          {{ idx + 1 }}. {{ ahsItem.id }} | {{ ahsItem.name }}
+          <b-badge class="ml-2">{{ yearGroupLabel }}</b-badge>
+        </h5>
       </div>
       <div class="right text-right" style="min-width: 120px">
         <h3 class="d-inline-block mb-0" style="vertical-align: top">
@@ -178,6 +173,7 @@
   import { Notify } from 'notiflix';
   // prettier-ignore
   import { formatCurrency, showConfirmAlert, ahsItemable } from '@/utils';
+  import { AHSGroupReferences } from '@/constants/enums';
 
   export default {
     data: () => ({
@@ -214,7 +210,7 @@
       async addAhsItem(section) {
         if (this.ahsItemableList.length <= 0) {
           Notify.failure(
-            'Tidak ada data untuk di referensi, buat minimal 1 harga satuan terlebih dahulu'
+            'Tidak ada data untuk di referensi, buat minimal 1 harga satuan terlebih dahulu',
           );
         } else {
           const data = await this.storeAhsItem({
@@ -223,7 +219,7 @@
               section,
               ahs_itemable_id: this.ahsItemableList[0].id,
               ahs_itemable_type: ahsItemable(
-                this.ahsItemableList[0].ahs_itemable_type
+                this.ahsItemableList[0].ahs_itemable_type,
               ),
             },
           });
@@ -238,6 +234,11 @@
       },
     },
     computed: {
+      yearGroupLabel() {
+        return Object.values(AHSGroupReferences).find(
+          (ahsGroup) => ahsGroup.key == this.ahsItem.groups,
+        ).year;
+      },
       totalTenagaKerja() {
         let val = 0;
         if (
@@ -245,7 +246,7 @@
           this.ahsItem.item_arranged.labor.length > 0
         ) {
           val = this.ahsItem.item_arranged.labor
-            .map(data => data.subtotal)
+            .map((data) => data.subtotal)
             .reduce((acc, curr) => acc + curr);
         }
 
@@ -258,7 +259,7 @@
           this.ahsItem.item_arranged.ingredients.length > 0
         ) {
           val = this.ahsItem.item_arranged.ingredients
-            .map(data => data.subtotal)
+            .map((data) => data.subtotal)
             .reduce((acc, curr) => acc + curr);
         }
 
@@ -271,7 +272,7 @@
           this.ahsItem.item_arranged.tools.length > 0
         ) {
           val = this.ahsItem.item_arranged.tools
-            .map(data => data.subtotal)
+            .map((data) => data.subtotal)
             .reduce((acc, curr) => acc + curr);
         }
 
@@ -284,7 +285,7 @@
           this.ahsItem.item_arranged.others.length > 0
         ) {
           val = this.ahsItem.item_arranged.others
-            .map(data => data.subtotal)
+            .map((data) => data.subtotal)
             .reduce((acc, curr) => acc + curr);
         }
 
@@ -297,7 +298,7 @@
         return `Rp. ${formatCurrency(
           (0 / 100) * this.ahsItem.subtotal +
             (0 / 100) * this.ahsItem.subtotal +
-            this.ahsItem.subtotal
+            this.ahsItem.subtotal,
         )}`;
       },
     },

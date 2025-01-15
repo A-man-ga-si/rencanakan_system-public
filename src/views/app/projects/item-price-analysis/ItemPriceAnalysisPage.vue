@@ -114,7 +114,7 @@
         customAhs: [],
         editedCustomAhs: {},
         searchCountdownObject: null,
-        inSubmittingAhsItems: []
+        inSubmittingAhsItems: [],
       };
     },
     created() {
@@ -132,7 +132,7 @@
         'fetchCustomAhsItemableIds',
         'fetchUnit',
         'queryCustomAhs',
-        'storeCustomAhsItem'
+        'storeCustomAhsItem',
       ]),
       onNewItemPriceAdded() {
         this.fetchCustomAhsItemableIds({
@@ -150,8 +150,8 @@
         this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
           return {
             hashId: ahsItem.hashid,
-            sections: []
-          }
+            sections: [],
+          };
         });
 
         this.isLoading = false;
@@ -164,9 +164,11 @@
         this.$bvModal.show('edit-custom-ahs');
       },
       getInSubmittingSections(hashId) {
-        const inSubmittingAhsItem = this.inSubmittingAhsItems.find(ahsItem => {
-          return ahsItem.hashId == hashId
-        });
+        const inSubmittingAhsItem = this.inSubmittingAhsItems.find(
+          (ahsItem) => {
+            return ahsItem.hashId == hashId;
+          },
+        );
         if (!inSubmittingAhsItem) {
           return [];
         }
@@ -174,14 +176,13 @@
       },
       async didAddRowTapped(hashId, section) {
         const submittingAhsItem = this.inSubmittingAhsItems.find(
-          (ahsItem) => ahsItem.hashId == hashId
+          (ahsItem) => ahsItem.hashId == hashId,
         );
-        if (submittingAhsItem == null) { return;  }
+        if (submittingAhsItem == null) {
+          return;
+        }
         if (!submittingAhsItem.sections.includes(section)) {
-          submittingAhsItem.sections = [
-            ...submittingAhsItem.sections,
-            section
-          ];
+          submittingAhsItem.sections = [...submittingAhsItem.sections, section];
         }
         await this.storeCustomAhsItem({
           projectId: this.$route.params.id,
@@ -192,7 +193,7 @@
         });
         await this.getCustomAhs();
         submittingAhsItem.sections = submittingAhsItem.sections.filter(
-          (submittingSection) => submittingSection != section
+          (submittingSection) => submittingSection != section,
         );
       },
       reloadData() {
@@ -204,7 +205,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getCustomAhsItemableIds', 'getUnit'])
+      ...mapGetters(['getCustomAhsItemableIds', 'getUnit']),
     },
     watch: {
       currentPage() {

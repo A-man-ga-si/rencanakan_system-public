@@ -2,8 +2,10 @@
   <b-modal :id="modalId" :ref="modalId" :title="'Tambah AHP'">
     <b-nav class="mb-5 justify-content-center" pills>
       <b-nav-item
+        v-for="ahpGroup in ahpGroups"
+        :key="ahpGroup.key"
         @click.prevent="switchSource"
-        :active="formOptions.currentState === 'reference'"
+        :active="formOptions.currentState === ahpGroup.key"
       >
         AHP Permen PUPR 2016
       </b-nav-item>
@@ -16,7 +18,7 @@
     </b-nav>
     <div
       class="reference-only-form mb-4"
-      v-if="formOptions.currentState === 'reference'"
+      v-if="formOptions.currentState !== 'custom'"
     >
       <div
         class="labeled-select position-relative d-inline-block"
@@ -25,7 +27,7 @@
         <span class="px-1"> Referensi AHP</span>
         <v-select
           label="id"
-          :reduce="ahp => `${ahp.id}~${ahp.name}`"
+          :reduce="(ahp) => `${ahp.id}~${ahp.name}`"
           :options="getAhp"
           v-model="form.selectedReference"
         />
@@ -59,6 +61,7 @@
   import validationMixin from '@/mixins/validation-mixins';
   import { mapActions, mapGetters } from 'vuex';
   import { Notify } from 'notiflix';
+  import { AHPGroupReferences } from '@/constants/enums';
 
   export default {
     mixins: [validationMixin],
@@ -70,8 +73,11 @@
         name: '',
       },
       formOptions: {
-        currentState: 'reference',
+        currentState: AHPGroupReferences.reference2016.key,
       },
+      ahpGroups: Object.values(AHPGroupReferences).filter(
+        (ahsGroup) => ahsGroup.key === AHPGroupReferences.reference2016.key,
+      ),
     }),
     created() {
       this.fetchAhp();
@@ -108,7 +114,7 @@
       },
       switchSource() {
         if (this.formOptions.currentState === 'custom') {
-          this.formOptions.currentState = 'reference';
+          this.formOptions.currentState = AHPGroupReferences.reference2016.key;
         } else {
           this.formOptions.currentState = 'custom';
           this.resetForm();
@@ -120,7 +126,9 @@
     },
     watch: {
       'form.selectedReference'() {
-        if (this.formOptions.currentState === 'reference') {
+        if (
+          this.formOptions.currentState === AHPGroupReferences.reference2016.key
+        ) {
           const [code, name] = this.form.selectedReference.split('~');
           this.form.code = `${code}-copy`;
           this.form.name = name;

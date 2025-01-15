@@ -1,22 +1,15 @@
 <template>
   <div class="ahs-master">
-
-    <div class="d-flex" style="margin-bottom: 24px;">
-      <label class="form-group has-float-label mb-0" style="width: 300px;">
-        <input type="text" class="form-control" @input="onChangeSearchQuery"/>
+    <div class="d-flex" style="margin-bottom: 24px">
+      <label class="form-group has-float-label mb-0" style="width: 300px">
+        <input type="text" class="form-control" @input="onChangeSearchQuery" />
         <span> Search </span>
       </label>
-      <div style="margin-left: auto;">
-        <b-btn
-          variant="outline-primary"
-          @click="onTapExportButton"
-        >
+      <div style="margin-left: auto">
+        <b-btn variant="outline-primary" @click="onTapExportButton">
           {{ $t('button.export') }}
         </b-btn>
-        <b-btn
-          variant="outline-primary"
-          @click="onTapImportButton"
-        >
+        <b-btn variant="outline-primary" @click="onTapImportButton">
           {{ $t('button.import') }}
         </b-btn>
       </div>
@@ -31,7 +24,7 @@
           <span class="px-1"> Provinsi</span>
           <v-select
             label="name"
-            :reduce="province => province.hashid"
+            :reduce="(province) => province.hashid"
             :options="provinces"
             v-model="selectedProvince"
           />
@@ -43,7 +36,7 @@
           <span class="px-1"> Group AHS</span>
           <v-select
             label="name"
-            :reduce="ahs => ahs.id"
+            :reduce="(ahs) => ahs.id"
             :options="ahsGroup"
             v-model="selectedAhsGroup"
           />
@@ -55,11 +48,7 @@
             class="form-group has-float-label mb-0 can-invalid"
             :class="fieldName"
           >
-            <input
-              type="number"
-              class="form-control"
-              v-model="jumpToPage"
-            />
+            <input type="number" class="form-control" v-model="jumpToPage" />
             <span>Go to page</span>
           </label>
         </div>
@@ -114,6 +103,7 @@
   import { dateFormats } from '@/constants/config';
   import { Utils } from '@/utils';
   import { Notify } from 'notiflix';
+import { AHSGroupReferences } from '@/constants/enums';
 
   export default {
     data: () => ({
@@ -127,20 +117,12 @@
       selectedProvince: '',
       selectedAhsGroup: 'all',
       selectedAhs: {},
-      ahsGroup: [
-        {
-          id: 'all',
-          name: 'All'
-        },
-        {
-          id: 'reference',
-          name: 'AHS Permen PUPR 2016'
-        },
-        {
-          id: 'reference-2023',
-          name: 'AHS Permen PUPR 2023'
-        },
-      ],
+      ahsGroup: Object.values(AHSGroupReferences).map((ahsGroup) => {
+        return {
+          id: ahsGroup.key,
+          name: ahsGroup.title,
+        };
+      }),
       importModalId: 'import-ahs-modal',
       searchDebouncerTimeout: null,
     }),
@@ -156,7 +138,7 @@
         'fetchUnit',
         'fetchAhsItemableIds',
         'exportMasterAhs',
-        'importMasterAhs'
+        'importMasterAhs',
       ]),
       ...mapMutations(['setAhs', 'setAhsCount']),
       ahsAdded() {
@@ -165,19 +147,19 @@
         this.getAhsMaster();
       },
       goToPage() {
-        const destination = Number.parseInt(this.jumpToPage)
+        const destination = Number.parseInt(this.jumpToPage);
         if (destination != 'NaN') {
-          const pageTotal = Math.ceil((this.getAhsCount / this.perPage))
+          const pageTotal = Math.ceil(this.getAhsCount / this.perPage);
           if (destination <= pageTotal) {
             if (destination <= 0) {
-              this.jumpToPage = 1
-              this.currentPage = 1
+              this.jumpToPage = 1;
+              this.currentPage = 1;
             } else {
-              this.currentPage = destination
+              this.currentPage = destination;
             }
           } else {
-            this.currentPage = pageTotal
-            this.jumpToPage = pageTotal
+            this.currentPage = pageTotal;
+            this.jumpToPage = pageTotal;
           }
         }
       },
@@ -187,7 +169,7 @@
           selectedAhsGroup: this.selectedAhsGroup,
           page: this.currentPage,
           perPage: this.perPage,
-          searchQuery: searchQuery ?? ""
+          searchQuery: searchQuery ?? '',
         });
       },
       async loadProvinces() {
@@ -199,7 +181,7 @@
         this.selectedAhs = ahs;
       },
       onChangeSearchQuery(event) {
-        clearTimeout(this.searchDebouncerTimeout)
+        clearTimeout(this.searchDebouncerTimeout);
         this.searchDebouncerTimeout = setTimeout(() => {
           this.setAhs([]);
           this.setAhsCount(0);
@@ -208,7 +190,7 @@
       },
       async onTapExportButton() {
         const response = await this.exportMasterAhs();
-        const currentDateStr = moment().format(dateFormats.excelFile); 
+        const currentDateStr = moment().format(dateFormats.excelFile);
         Utils.downloadFile(`Master_AHS_${currentDateStr}.xlsx`, response.data);
       },
       onTapImportButton() {
@@ -218,17 +200,17 @@
         try {
           const formData = new FormData();
           formData.append('file', file);
-          await this.importMasterAhs({formData});
+          await this.importMasterAhs({ formData });
           this.$bvModal.hide(this.importModalId);
           await this.getAhsMaster();
-        } catch (error){
+        } catch (error) {
           if (error.response?.status == 400) {
             Notify.failure(error.response.data.message);
-            return
+            return;
           }
           this.checkForInvalidResponse(error);
         }
-      }
+      },
     },
     computed: {
       ...mapGetters(['getAhs', 'getUnit', 'getAhsItemableIds', 'getAhsCount']),
@@ -238,7 +220,7 @@
       FloatingActionButton,
       AddAhs,
       EditAhs,
-      ImportExcelModal
+      ImportExcelModal,
     },
     watch: {
       selectedProvince() {
