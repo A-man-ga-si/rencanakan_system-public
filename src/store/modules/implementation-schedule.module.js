@@ -7,44 +7,66 @@ const CustomImplementationSchedule = new ApiTwo({
 const state = {
   implementationDurationSetting: null,
   implementationSchedules: [],
-}
+};
 
 const getters = {
-  getImplementationDurationSetting: state => state.implementationDurationSetting
-}
+  getImplementationDurationSetting: (state) =>
+    state.implementationDurationSetting,
+};
 
 const mutations = {
   setImplementationDurationSetting(state, implementationDurationSetting) {
-    state.implementationDurationSetting = implementationDurationSetting
+    state.implementationDurationSetting = implementationDurationSetting;
   },
-}
+};
 
 const actions = {
-  async updateImplementationScheduleDuration({ commit }, { projectId, implementationScheduleDuration }) {
-    const data = await CustomImplementationSchedule
-      .setPreviousPath(`project/${projectId}`)
-      .post('update-project-duration', {
-          implementation_duration: implementationScheduleDuration
-      })
-      commit('setImplementationDurationSetting', implementationScheduleDuration)
-      return data.data
+  async updateImplementationScheduleDuration(
+    { commit },
+    { projectId, implementationScheduleDuration },
+  ) {
+    const data = await CustomImplementationSchedule.setPreviousPath(
+      `project/${projectId}`,
+    ).post('update-project-duration', {
+      implementation_duration: implementationScheduleDuration,
+    });
+    commit('setImplementationDurationSetting', implementationScheduleDuration);
+    return data.data;
   },
   async getImplementationScheduleDuration({ commit }, { projectId }) {
-    const data = await CustomImplementationSchedule
-    .setPreviousPath(`project/${projectId}`)
-    .get('implementation-schedule-duration')
-    commit('setImplementationDurationSetting', data?.data?.data?.projectDuration || null)
+    const data = await CustomImplementationSchedule.setPreviousPath(
+      `project/${projectId}`,
+    ).get('implementation-schedule-duration');
+    commit(
+      'setImplementationDurationSetting',
+      data?.data?.data?.projectDuration || null,
+    );
   },
-  async updateImplementationSchedule({ commit }, {projectId, implementationScheduleData}) {
-    const data = await CustomImplementationSchedule.setPreviousPath(`project/${projectId}`).post('', implementationScheduleData)
-    return data.data
+  async updateImplementationSchedule(
+    { commit },
+    { projectId, implementationScheduleData },
+  ) {
+    const data = await CustomImplementationSchedule.setPreviousPath(
+      `project/${projectId}`,
+    ).post('', implementationScheduleData);
+    return data.data;
   },
   async deleteImplementationSchedule({ commit }, { rabItemId, projectId }) {
-    const data = await CustomImplementationSchedule.setPreviousPath(`project/${projectId}`).delete(rabItemId)
-    return data.data
-  }
-}
+    const data = await CustomImplementationSchedule.setPreviousPath(
+      `project/${projectId}`,
+    ).delete(rabItemId);
+    return data.data;
+  },
+  async downloadSCurve(_, { projectId }) {
+    return await CustomImplementationSchedule
+        .setPreviousPath(`project/${projectId}`)
+        .download('s-curve');
+  },
+};
 
 export default {
-  state, getters, mutations, actions
-}
+  state,
+  getters,
+  mutations,
+  actions,
+};

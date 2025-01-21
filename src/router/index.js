@@ -9,6 +9,7 @@ import {
   BudgetEstimatePage,
   ItemPriceAnalysisPage,
   EquipmentPricePage,
+  ImplementationSchedulePage,
   ItemPriceMaster,
 } from '@/views/app/projects';
 import { AdminLayout, UserListPage, UserDetailPage } from '@/views/app/admin';
@@ -174,10 +175,7 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            component: () =>
-              import(
-                /* webpackChunkName */ './../views/app/projects/rabs/ImplementationSchedule.vue'
-              ),
+            component: ImplementationSchedulePage,
           },
           {
             path: 'material-estimator',
