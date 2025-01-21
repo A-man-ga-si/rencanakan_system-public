@@ -11,17 +11,54 @@
     <div class="mt-4" v-else>
       <b-alert variant="secondary" show class="rounded">
         <div class="d-flex justify-content-between">
-          <span class="mt-1"><strong>Durasi proyek</strong> : {{ getImplementationDurationSetting }} Minggu</span>
-          <b-btn size="xs" @click="editProjectDuration"> <PhLock v-if="getCurrentActiveProject.subscription_id != 'professional'" /> <span>Ubah</span></b-btn>
+          <span class="mt-1"
+            ><strong>Durasi proyek</strong> :
+            {{ getImplementationDurationSetting }} Minggu</span
+          >
+          <b-btn size="xs" @click="editProjectDuration">
+            <PhLock
+              v-if="getCurrentActiveProject.subscription_id != 'professional'"
+            />
+            <span>Ubah</span></b-btn
+          >
         </div>
       </b-alert>
-      <div class="implementation-schedule" v-if="getImplementationDurationSetting">
-        <div class="subscription-didnt-supported text-center mt-5" v-if="getCurrentActiveProject.subscription_id != 'professional'">
-          <img src="@/assets/img/custom/package.svg" alt="" width="400" class="mb-5">
+      <div
+        class="implementation-schedule"
+        v-if="getImplementationDurationSetting"
+      >
+        <div
+          class="subscription-didnt-supported text-center mt-5"
+          v-if="getCurrentActiveProject.subscription_id != 'professional'"
+        >
+          <img
+            src="@/assets/img/custom/package.svg"
+            alt=""
+            width="400"
+            class="mb-5"
+          />
           <h2>Fitur Dikunci</h2>
-          <p>Paket anda tidak mendukung untuk fitur jadwal pelaksanaan. Silahkan upgrade paket terlebih dahulu</p>
+          <p>
+            Paket anda tidak mendukung untuk fitur jadwal pelaksanaan. Silahkan
+            upgrade paket terlebih dahulu
+          </p>
         </div>
-        <div class="subscription-did-supported" v-else>
+        <div
+          class="subscription-did-supported"
+          style="display: flex; flex-direction: column"
+          v-else
+        >
+          <div style="margin-top: 16px; margin-bottom: 16px; margin-left: auto">
+            <b-button
+              v-if="!isDownloadPdfLoading"
+              variant="primary"
+              @click.prevent="onClickDownloadButton"
+            >
+              Unduh PDF
+            </b-button>
+            <LoaderCircle v-else style="margin: auto 32px;"/>
+          </div>
+
           <ImplementationScheduleItem
             v-for="(rab, idx) in getRabs"
             :key="idx"
@@ -40,16 +77,38 @@
             @rab-item-edit="editItemImplementationSchedule"
             @rab-item-delete="reloadData"
           />
-          <AddImplementationScheduleItem @implementation-schedule-updated="reloadData" :weight="selectedRabItem.weight" :item-name="selectedRabItem.name" :weeks="selectedRabItem.weeks" :rab-item-hashid="selectedRabItem.hashid" />
+          <AddImplementationScheduleItem
+            @implementation-schedule-updated="reloadData"
+            :weight="selectedRabItem.weight"
+            :item-name="selectedRabItem.name"
+            :weeks="selectedRabItem.weeks"
+            :rab-item-hashid="selectedRabItem.hashid"
+          />
         </div>
       </div>
       <div class="implementation-schedule-not-set text-center" v-else>
-        <img src="@/assets/img/custom/construction.svg" alt="" width="400" class="mb-5">
+        <img
+          src="@/assets/img/custom/construction.svg"
+          alt=""
+          width="400"
+          class="mb-5"
+        />
         <h2>Estimasi Waktu Pelaksanaan Proyek Belum Diatur</h2>
-        <p>Atur waktu pelaksanaan proyek dalam satuan minggu terlebih dahulu untuk menentukan jadwal pelaksanaan proyek anda.</p>
-        <b-button @click="setImplementationSchedule" class="my-3"> <PhLock v-if="getCurrentActiveProject.subscription_id != 'professional'" /> Atur Sekarang</b-button>
+        <p>
+          Atur waktu pelaksanaan proyek dalam satuan minggu terlebih dahulu
+          untuk menentukan jadwal pelaksanaan proyek anda.
+        </p>
+        <b-button @click="setImplementationSchedule" class="my-3">
+          <PhLock
+            v-if="getCurrentActiveProject.subscription_id != 'professional'"
+          />
+          Atur Sekarang</b-button
+        >
       </div>
-      <ImplementationScheduleSettingPopup @project-duration-updated="reloadData" :current-week="getImplementationDurationSetting" />
+      <ImplementationScheduleSettingPopup
+        @project-duration-updated="reloadData"
+        :current-week="getImplementationDurationSetting"
+      />
     </div>
   </div>
 </template>
@@ -57,13 +116,14 @@
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
-  import { formatCurrency } from '@/utils';
-  import Swal from 'sweetalert2'
+  import { formatCurrency, Utils } from '@/utils';
+  import Swal from 'sweetalert2';
   import ImplementationScheduleItem from '@/components/Project/Rab/ImplementationScheduleItem.vue';
-  import AddImplementationScheduleItem from '@/components/Project/Rab/AddImplementationScheduleItem.vue'
-  import ImplementationScheduleSettingPopup from '@/components/Project/Rab/ImplementationScheduleSettingPopup.vue'
-  import Loader from '@/components/Common/Loader.vue'
+  import AddImplementationScheduleItem from '@/components/Project/Rab/AddImplementationScheduleItem.vue';
+  import ImplementationScheduleSettingPopup from '@/components/Project/Rab/ImplementationScheduleSettingPopup.vue';
+  import Loader from '@/components/Common/Loader.vue';
   import { PhLock } from 'phosphor-vue';
+  import { LoaderCircle } from '@/components/Common';
 
   export default {
     data() {
@@ -73,7 +133,7 @@
           name: '',
           weight: '',
           weeks: [],
-          hashid: ''
+          hashid: '',
         },
         isLoading: true,
         numberOfWeeks: null,
@@ -96,10 +156,11 @@
         editedRabItem: null,
         editedRabItemHeader: null,
         rabSubtotals: 0,
+        isDownloadPdfLoading: false,
       };
     },
     mounted() {
-      this.$bvModal.show('')
+      this.$bvModal.show('');
     },
     created() {
       this.fetchRab({
@@ -108,7 +169,7 @@
       this.fetchShowProject();
       this.fetchUnit();
       this.getCustomAhsIds();
-      this.loadImplementationScheduleDuration()
+      this.loadImplementationScheduleDuration();
     },
     methods: {
       ...mapActions([
@@ -119,23 +180,36 @@
         'showProject',
         'getImplementationScheduleDuration',
         'showProject',
+        'downloadSCurve',
       ]),
+      async onClickDownloadButton() {
+        this.isDownloadPdfLoading = true;
+        const response = await this.downloadSCurve({
+          projectId: this.$route.params.id,
+        });
+        Utils.downloadFile(
+          `Kurva S - ${this.getCurrentActiveProject.name}.pdf`,
+          response.data,
+        );
+        this.isDownloadPdfLoading = false;
+      },
       editItemImplementationSchedule(rabItemData) {
-        this.selectedRabItem.name = rabItemData[0].name
-        this.selectedRabItem.weight = rabItemData[1]
-        this.selectedRabItem.hashid = rabItemData[0].hashid
-        this.selectedRabItem.weeks = rabItemData[0].implementation_schedule || []
-        this.$bvModal.show('add-implementation-schedule-item')
+        this.selectedRabItem.name = rabItemData[0].name;
+        this.selectedRabItem.weight = rabItemData[1];
+        this.selectedRabItem.hashid = rabItemData[0].hashid;
+        this.selectedRabItem.weeks =
+          rabItemData[0].implementation_schedule || [];
+        this.$bvModal.show('add-implementation-schedule-item');
       },
       setImplementationSchedule() {
         if (this.getCurrentActiveProject.subscription_id != 'professional') {
           Swal.fire({
             title: 'Fitur Terkunci',
             text: 'Paket project anda belum termasuk jadwal pelaksanaan. Upgrade paket anda menjadi paket professional untuk menikmati fitur ini',
-            icon: 'warning'
-          })
+            icon: 'warning',
+          });
         } else {
-          this.$bvModal.show('implementation-schedule-setting-popup')
+          this.$bvModal.show('implementation-schedule-setting-popup');
         }
       },
       editProjectDuration() {
@@ -143,21 +217,20 @@
           Swal.fire({
             title: 'Fitur Terkunci',
             text: 'Paket project anda belum termasuk jadwal pelaksanaan. Upgrade paket anda menjadi paket professional untuk menikmati fitur ini',
-            icon: 'warning'
-          })
+            icon: 'warning',
+          });
         } else {
-          this.$bvModal.show('implementation-schedule-setting-popup')
+          this.$bvModal.show('implementation-schedule-setting-popup');
         }
       },
       async loadImplementationScheduleDuration() {
         try {
           await this.getImplementationScheduleDuration({
-            projectId: this.$route.params.id
-          })
+            projectId: this.$route.params.id,
+          });
         } catch (err) {
-
         } finally {
-          this.isLoading = false
+          this.isLoading = false;
         }
       },
       async fetchShowProject() {
@@ -167,7 +240,7 @@
         const data = await this.fetchCustomAhsIds({
           projectId: this.$route.params.id,
           q: '',
-          limit: null
+          limit: null,
         });
         this.customAhsIds = data.data.data.ahsItemIds;
       },
@@ -197,7 +270,13 @@
       },
     },
     computed: {
-      ...mapGetters(['getRabs', 'getAhs', 'getUnit', 'getImplementationDurationSetting', 'getCurrentActiveProject']),
+      ...mapGetters([
+        'getRabs',
+        'getAhs',
+        'getUnit',
+        'getImplementationDurationSetting',
+        'getCurrentActiveProject',
+      ]),
       projectPpn() {
         const percentage = this.projectProperties.data
           ? this.projectProperties.data.data.project.ppn
@@ -208,7 +287,7 @@
         };
       },
       rabsTotal() {
-        const mappedRabs = this.getRabs.map(data => data.subtotal);
+        const mappedRabs = this.getRabs.map((data) => data.subtotal);
         return mappedRabs.length
           ? parseInt(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
@@ -222,7 +301,11 @@
     },
     watch: {
       getRabs() {
-        this.rabSubtotals = this.getRabs.length ? this.getRabs.map(data => data.subtotal).reduce((acc, curr) => acc + curr) : []
+        this.rabSubtotals = this.getRabs.length
+          ? this.getRabs
+              .map((data) => data.subtotal)
+              .reduce((acc, curr) => acc + curr)
+          : [];
       },
       form: {
         async handler() {
@@ -250,7 +333,8 @@
       AddImplementationScheduleItem,
       ImplementationScheduleSettingPopup,
       Loader,
-      PhLock
+      LoaderCircle,
+      PhLock,
     },
   };
 </script>
