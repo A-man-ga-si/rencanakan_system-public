@@ -18,79 +18,108 @@
       </div>
     </b-alert>
 
-    <!-- HEADER ACTIONS -->
-    <div class="d-flex justify-content-between" style="margin-bottom: 24px">
-      <!-- SEGMENTED CONTROL -->
-      <div class="d-flex p-1" style="background: #eceff6; border-radius: 999px">
-        <div
-          class="segment"
-          :class="{
-            active: this.selectedSegment == SCHEDULE_SEGMENT.TABLE,
-          }"
-          @click="() => onClickSegment(SCHEDULE_SEGMENT.TABLE)"
-        >
-          Tabel
-        </div>
-        <div
-          class="segment"
-          :class="{
-            active: this.selectedSegment == SCHEDULE_SEGMENT.SCURVE,
-          }"
-          @click="() => onClickSegment(SCHEDULE_SEGMENT.SCURVE)"
-        >
-          Kurva S
-        </div>
-      </div>
+    <SectionLoading
+      v-if="currentProject == null || rabs == null"
+      title="Memuat Table Jadwal"
+    />
 
-      <!-- S-CURVE DOWNLOAD BUTTON -->
-      <div style="margin: auto 0px">
-        <b-button
-          v-if="!isDownloadPdfLoading"
-          variant="primary"
-          @click.prevent="onClickDownloadButton"
-        >
-          Unduh Kurva S
-        </b-button>
-        <LoaderCircle v-else style="margin: 0px 32px" />
-      </div>
-    </div>
-
-    <!-- IMPLEMENTATION SCHEDULE TABLE -->
-    <div v-if="selectedSegment == SCHEDULE_SEGMENT.TABLE">
-      <SectionLoading v-if="rabs == null" title="Memuat Table Jadwal" />
-      <div v-else>
-        <ImplementationScheduleItem
-          v-for="(rab, index) in rabs"
-          :key="index"
-          :index="index"
-          :rab-item="rab"
-          @rab-item-edit="onClickEditScheduleItem"
-          @rab-item-delete="reloadData"
+    <div v-else>
+      <!-- SUBSCRIPTION RESTRICTION -->
+      <div
+        v-if="currentProject?.subscription_id != 'professional'"
+        class="subscription-didnt-supported text-center mt-5"
+      >
+        <img
+          src="@/assets/img/custom/package.svg"
+          alt=""
+          width="400"
+          class="mb-5"
         />
+        <h2>Fitur Dikunci</h2>
+        <p>
+          Paket anda tidak mendukung untuk fitur jadwal pelaksanaan. Silahkan
+          upgrade paket terlebih dahulu
+        </p>
       </div>
-    </div>
 
-    <!-- IMPLEMENTATION S-CURVE -->
-    <div class="d-flex" v-else>
-      <SectionLoading
-        v-if="sCurveImage == null"
-        title="Memuat Kurva S"
-        style="margin: 0px auto"
+      <div v-else>
+        <!-- HEADER ACTIONS -->
+        <div class="d-flex justify-content-between" style="margin-bottom: 24px">
+          <!-- SEGMENTED CONTROL -->
+          <div
+            class="d-flex p-1"
+            style="background: #eceff6; border-radius: 999px"
+          >
+            <div
+              class="segment"
+              :class="{
+                active: this.selectedSegment == SCHEDULE_SEGMENT.TABLE,
+              }"
+              @click="() => onClickSegment(SCHEDULE_SEGMENT.TABLE)"
+            >
+              Tabel
+            </div>
+            <div
+              class="segment"
+              :class="{
+                active: this.selectedSegment == SCHEDULE_SEGMENT.SCURVE,
+              }"
+              @click="() => onClickSegment(SCHEDULE_SEGMENT.SCURVE)"
+            >
+              Kurva S
+            </div>
+          </div>
+
+          <!-- S-CURVE DOWNLOAD BUTTON -->
+          <div style="margin: auto 0px">
+            <b-button
+              v-if="!isDownloadPdfLoading"
+              variant="primary"
+              @click.prevent="onClickDownloadButton"
+            >
+              Unduh Kurva S
+            </b-button>
+            <LoaderCircle v-else style="margin: 0px 32px" />
+          </div>
+        </div>
+
+        <!-- IMPLEMENTATION SCHEDULE TABLE -->
+        <div v-if="selectedSegment == SCHEDULE_SEGMENT.TABLE">
+          <div>
+            <ImplementationScheduleItem
+              v-for="(rab, index) in rabs"
+              :key="index"
+              :index="index"
+              :rab-item="rab"
+              @rab-item-edit="onClickEditScheduleItem"
+              @rab-item-delete="reloadData"
+            />
+          </div>
+        </div>
+
+        <!-- IMPLEMENTATION S-CURVE -->
+        <div class="d-flex" v-else>
+          <SectionLoading
+            v-if="sCurveImage == null"
+            title="Memuat Kurva S"
+            style="margin: 0px auto"
+          />
+          <img v-else id="scurve-image" alt="S Curve" :src="sCurveImage" />
+        </div>
+      </div>
+
+      <!-- UPDATE DURATION FORM POPUP -->
+      <ImplementationScheduleSettingPopup
+        @project-duration-updated="reloadData"
+        :current-week="implementationDuration"
       />
-      <img v-else id="scurve-image" alt="S Curve" :src="sCurveImage" />
+
+      <!-- RAB SCHEDULE ITEM UPDATE FORM POPUP -->
+      <AddImplementationScheduleItem
+        :schedule-item="selectedScheduleItem"
+        @implementation-schedule-updated="reloadData"
+      />
     </div>
-
-    <!-- UPDATE DURATION FORM POPUP -->
-    <ImplementationScheduleSettingPopup
-      @project-duration-updated="reloadData"
-      :current-week="implementationDuration"
-    />
-
-    <!-- RAB SCHEDULE ITEM UPDATE FORM POPUP -->
-    <AddImplementationScheduleItem
-      :schedule-item="selectedScheduleItem"
-      @implementation-schedule-updated="reloadData"
-    />
   </div>
 </template>
 
