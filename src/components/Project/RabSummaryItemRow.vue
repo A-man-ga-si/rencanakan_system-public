@@ -164,6 +164,7 @@
       setupSelectedAhs(data) {
         return !!data?.custom_ahs_id;
       },
+      
       setupFormValues() {
         // Setup name form value
         this.form.name = this.rabItemData?.name;
@@ -179,9 +180,8 @@
 
         // Setup price form value
         if (this.rabItemData.custom_ahs != null) {
-          this.form.price = `Rp. ${formatCurrency(
-            parseInt(this.rabItemData.custom_ahs.price).toFixed(2),
-          )}`;
+          this.form.price = parseInt(this.rabItemData.custom_ahs.price);
+          return;
         }
         this.form.price =
           this.rabItemData.price !== null && this.rabItemData.price !== 0

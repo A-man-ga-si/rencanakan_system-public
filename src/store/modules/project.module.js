@@ -30,8 +30,9 @@ const mutations = {
 };
 
 const actions = {
-  async showProject(_, projectId) {
+  async showProject({ commit, state }, projectId) {
     const data = await projectApi.get(projectId);
+    commit('setCurrentActiveProject', data.data.data.project);
     return data;
   },
 

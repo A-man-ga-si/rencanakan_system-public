@@ -11,6 +11,7 @@ import {
   EquipmentPricePage,
   ImplementationSchedulePage,
   ItemPriceMaster,
+  ImplementationSchedule,
 } from '@/views/app/projects';
 import { AdminLayout, UserListPage, UserDetailPage } from '@/views/app/admin';
 
@@ -175,7 +176,7 @@ const routes = [
               loginRequired: true,
               permissions: ['access-project-page'],
             },
-            component: ImplementationSchedulePage,
+            component: ImplementationSchedule,
           },
           {
             path: 'material-estimator',
