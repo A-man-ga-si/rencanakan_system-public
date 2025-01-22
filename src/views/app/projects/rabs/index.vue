@@ -83,7 +83,6 @@
         'setCanceled',
         'setPending'
       ]),
-      ...mapGetters(['getCurrentActiveProject']),
       ...mapMutations(['setCurrentActiveProject']),
       async loadProjectData() {
         const data = await this.showProject(this.$route.params.id)

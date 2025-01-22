@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      rab-card-single
-      position-relative
-      mb-3
-      custom-nice-border
-      pb-2
-      rounded-md
-      shadow-sm
-    "
+    class="rab-card-single position-relative mb-3 custom-nice-border pb-2 rounded-md shadow-sm"
     style="padding-top: 0"
   >
     <div
@@ -52,10 +44,7 @@
               :index="idx"
               :key="idx"
               :rab-item-data="rabItemI"
-              :rab="rabItem"
-              :custom-ahs-ids="ahsCodeList"
-              :rabs-subtotal="rabSubtotals"
-              :unit-ids="unitCodeList"
+              :rab-total-calculation="rabItem.subtotal"
               @update-rab-item="onRabItemRowUpdated"
               @rab-item-edit="onRabItemEdit"
               @rab-item-delete="onRabItemDelete"
@@ -98,14 +87,11 @@
               </td>
             </tr>
             <ImplementationScheduleItemRow
-              v-for="(rabItemI, idx2) in rabItemHeader.rab_item"
-              :index="idx2"
-              :key="idx2"
+              v-for="(rabItemI, index) in rabItemHeader.rab_item"
+              :key="index"
+              :index="index"
               :rab-item-data="rabItemI"
-              :rab="rabItem"
-              :custom-ahs-ids="ahsCodeList"
-              :unit-ids="unitCodeList"
-              :rabs-subtotal="rabSubtotals"
+              :rab-total-calculation="rabItem.subtotal"
               @update-rab-item="onRabItemRowUpdated"
               @rab-item-edit="onRabItemEdit"
             />
@@ -127,7 +113,7 @@
 
 <script>
   import { toRoman } from 'roman-numerals';
-  import ImplementationScheduleItemRow from '@/components/Project/Rab/ImplementationScheduleItemRow.vue'
+  import ImplementationScheduleItemRow from '@/components/Project/Rab/ImplementationScheduleItemRow.vue';
   import { mapActions } from 'vuex';
   import { Notify } from 'notiflix';
   import { showConfirmAlert, formatCurrency, numberToAlphabet } from '@/utils';
@@ -135,7 +121,7 @@
 
   export default {
     props: {
-      rabSubtotals: 0,
+      rabTotalCalculation: 0,
       rabItem: {
         type: Object,
         required: true,
@@ -143,13 +129,6 @@
       index: {
         type: Number,
         required: true,
-      },
-      unitCodeList: {
-        type: Array,
-        required: true,
-      },
-      ahsCodeList: {
-        type: Array,
       },
     },
     data: () => ({
@@ -165,17 +144,17 @@
         this.$emit('edit-rab-item-bt-clicked', this.rabItem);
       },
       onRabItemEdit(...rabItemData) {
-        this.$emit('rab-item-edit', rabItemData)
+        this.$emit('rab-item-edit', rabItemData);
       },
       editRabItemHeader(rabItemHeader) {
         this.$emit(
           'edit-rab-item-header-bt-clicked',
           this.rabItem,
-          rabItemHeader
+          rabItemHeader,
         );
       },
       onRabItemDelete() {
-        this.$emit('rab-item-delete')
+        this.$emit('rab-item-delete');
       },
       async deleteRab() {
         const { isConfirmed } = await showConfirmAlert({
@@ -239,7 +218,7 @@
       PhPencil,
       PhArrowsIn,
       PhArrowsOut,
-      ImplementationScheduleItemRow
+      ImplementationScheduleItemRow,
     },
   };
 </script>

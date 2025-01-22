@@ -41,6 +41,7 @@ const actions = {
       'setImplementationDurationSetting',
       data?.data?.data?.projectDuration || null,
     );
+    return data?.data?.data;
   },
   async updateImplementationSchedule(
     { commit },
@@ -60,7 +61,12 @@ const actions = {
   async downloadSCurve(_, { projectId }) {
     return await CustomImplementationSchedule
         .setPreviousPath(`project/${projectId}`)
-        .download('s-curve');
+        .download('download-s-curve');
+  },
+  async showSCurve(_, { projectId }) {
+    return await CustomImplementationSchedule
+        .setPreviousPath(`project/${projectId}`)
+        .download('show-s-curve');
   },
 };
 
