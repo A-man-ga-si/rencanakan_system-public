@@ -29,7 +29,7 @@
         <v-select
           v-model="form.provinceId"
           label="name"
-          :reduce="province => province.hashid"
+          :reduce="(province) => province.hashid"
           :options="provinces"
         />
       </b-form-group>
@@ -43,7 +43,11 @@
         :label="$t('pages.projects.margin-profit')"
         class="has-float-label"
       >
-        <b-form-input type="text" v-model="form.marginProfit" />
+        <b-form-input
+          type="text"
+          v-model="form.marginProfit"
+          placeholder="0.000"
+        />
       </b-form-group>
       <b-form-group label="PPN (%)" class="has-float-label">
         <b-form-input type="text" v-model="form.ppn" />
@@ -124,15 +128,15 @@
           profit_margin: marginProfit,
           ppn,
         } = this.selectedProject;
-        const provinceId = this.selectedProject.province.hashid;
+        
         this.form = {
           name,
           activity,
           job,
           address,
-          provinceId,
+          provinceId: this.selectedProject.province.hashid,
           fiscalYear,
-          marginProfit,
+          marginProfit: marginProfit === 0 ? undefined : marginProfit,
           ppn,
         };
       },
