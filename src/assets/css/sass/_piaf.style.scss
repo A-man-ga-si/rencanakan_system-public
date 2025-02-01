@@ -5353,24 +5353,6 @@ input:-webkit-autofill {
   opacity: 1;
 }
 
-.has-float-label
-  .form-control:placeholder-shown:not(:focus)::-webkit-input-placeholder {
-  opacity: 0;
-}
-
-.has-float-label .form-control:placeholder-shown:not(:focus)::-moz-placeholder {
-  opacity: 0;
-}
-
-.has-float-label
-  .form-control:placeholder-shown:not(:focus):-ms-input-placeholder {
-  opacity: 0;
-}
-
-.has-float-label .form-control:placeholder-shown:not(:focus)::placeholder {
-  opacity: 0;
-}
-
 .input-group .has-float-label {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;

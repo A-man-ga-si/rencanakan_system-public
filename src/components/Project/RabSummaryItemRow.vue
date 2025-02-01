@@ -218,11 +218,7 @@
           this.rabItemData.custom_ahs != null
             ? this.rabItemData.custom_ahs.price
             : this.rabItemData.price ?? 0;
-        const trimmedPrice = String(rabItemPrice)
-          .trim()
-          .replaceAll('Rp', '')
-          .replaceAll(',', '')
-          .replaceAll('.', '');
+        const trimmedPrice = parseInt(String(rabItemPrice).trim().replaceAll('Rp', ''));
         const subtotalPrice = trimmedPrice * (this.rabItemData.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
