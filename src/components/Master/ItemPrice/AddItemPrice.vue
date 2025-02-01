@@ -38,6 +38,11 @@
           v-model="form.unit"
         />
       </div>
+      <ValidationInput
+        :label="'Harga'"
+        field-name="price"
+        v-model="form.price"
+      />
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
           {{ $t('modal.save-bt') }}
@@ -63,6 +68,7 @@
         id: '',
         name: '',
         unit: '',
+        price: undefined,
         itemPriceGroup: [],
       },
       modalId: 'add-item-price',
@@ -74,13 +80,14 @@
     methods: {
       ...mapActions(['fetchItemPriceGroup', 'fetchUnit', 'storeItemPrice']),
       async submit() {
-        const { id, name, unit, itemPriceGroup } = this.form;
-        const data = await this.storeItemPrice({
-          id,
-          name,
-          unit_id: unit,
-          item_price_group_id: itemPriceGroup,
-        });
+        const request = {
+          id: this.form.id,
+          name: this.form.name,
+          unit_id: this.form.unit,
+          item_price_group_id: this.form.itemPriceGroup,
+          price: this.form.price
+        };
+        const data = await this.storeItemPrice(request);
         this.$emit('item-price-added', data);
         this.hideModal(this.modalId);
         this.resetForm();
@@ -91,6 +98,7 @@
           id: '',
           name: '',
           unit: '',
+          price: undefined,
           itemPriceGroup: [],
         };
       },

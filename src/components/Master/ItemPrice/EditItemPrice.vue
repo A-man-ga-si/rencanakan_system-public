@@ -9,7 +9,7 @@
         <span class="px-1"> Kelompok</span>
         <v-select
           label="name"
-          :reduce="priceGroup => priceGroup.hashid"
+          :reduce="(priceGroup) => priceGroup.hashid"
           :options="getPriceGroups"
           id=""
           v-model="form.itemPriceGroup"
@@ -23,7 +23,7 @@
       />
       <ValidationInput
         class="mb-4"
-        :label="'Name'"
+        :label="'Nama'"
         field-name="name"
         v-model="form.name"
       />
@@ -31,12 +31,17 @@
         <span class="px-1"> Satuan</span>
         <v-select
           label="name"
-          :reduce="unit => unit.hashid"
+          :reduce="(unit) => unit.hashid"
           :options="getUnit"
           id=""
           v-model="form.unit"
         />
       </div>
+      <ValidationInput
+        :label="'Harga'"
+        field-name="price"
+        v-model="form.price"
+      />
       <template slot="modal-footer">
         <b-button @click.prevent="submit" variant="primary" class="mr-1">
           {{ $t('modal.save-bt') }}
@@ -57,7 +62,7 @@
 
   export default {
     mixins: [validationMixin],
-    props: ['selectedItemPrice'],
+    props: ['selectedItemGroup', 'selectedItemPrice'],
     data() {
       return {
         form: {
@@ -75,16 +80,14 @@
     methods: {
       ...mapActions(['updateItemPrice']),
       async submit() {
-        const { id, name, unit, itemPriceGroup } = this.form;
-        await this.updateItemPrice({
-          id: this.selectedItemPrice.id,
-          form: {
-            id,
-            name,
-            unit_id: unit,
-            item_price_group_id: itemPriceGroup,
-          },
-        });
+        const request = {
+          group_id: this.form.itemPriceGroup,
+          id: this.form.id,
+          name: this.form.name,
+          unit_id: this.form.unit,
+          price: this.form.price,
+        };
+        const response = await this.updateItemPrice({id: this.selectedItemPrice.id, request});
         Notify.success('Berhasil mengupdate data harga satuan');
         this.$emit('item-price-updated');
         this.hideModal(this.modalId);
@@ -98,12 +101,10 @@
     },
     watch: {
       selectedItemPrice() {
-        const { id, name, unit, item_price_group } = this.selectedItemPrice;
         this.form = {
-          id,
-          name,
-          unit: unit.hashid,
-          itemPriceGroup: item_price_group.hashid,
+          ...this.selectedItemPrice,
+          unit: this.selectedItemPrice.unit.hashid,
+          itemPriceGroup: this.selectedItemGroup,
         };
       },
     },

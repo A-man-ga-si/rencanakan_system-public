@@ -10,8 +10,8 @@ const state = {
 };
 
 const getters = {
-  getItemPrices: state => state.itemPrices,
-  getUngroupedItemPrices: state => state.ungroupedItemPrices,
+  getItemPrices: (state) => state.itemPrices,
+  getUngroupedItemPrices: (state) => state.ungroupedItemPrices,
 };
 
 const mutations = {
@@ -24,10 +24,15 @@ const mutations = {
 };
 
 const actions = {
-  async fetchItemPrices({ commit }, province) {
-    // prettier-ignore
-    const data = await masterItemPrice.query('', `province=${province}&grouped=true`);
-    return data;
+  async fetchItemPrices(_, request) {
+    let params = new URLSearchParams({
+        limit: request.limit,
+        page: request.page || 1,
+        province_id: request.provinceId ,
+        group_id: request.groupId,
+      });
+      const response = await masterItemPrice.get('', decodeURIComponent(params));
+      return response;
   },
 
   async fetchUngroupedItemPrices({ commit }) {
@@ -36,12 +41,12 @@ const actions = {
     return data;
   },
 
-  async storeItemPrice(ctx, payload) {
+  async storeItemPrice(_, payload) {
     const data = await masterItemPrice.post('', payload);
     return data;
   },
 
-  async deleteItemPrice(ctx, id) {
+  async deleteItemPrice(_, id) {
     const data = await masterItemPrice.post(`${id}/delete`);
     return data;
   },
@@ -51,8 +56,8 @@ const actions = {
     return data;
   },
 
-  async updateItemPrice(ctx, { id, form }) {
-    const data = await masterItemPrice.post(`${id}`, form);
+  async updateItemPrice(_, { id, request }) {
+    const data = await masterItemPrice.post(`${id}`, request);
     return data;
   },
 
@@ -67,7 +72,7 @@ const actions = {
 
   async importItemPrice(ctx, { formData }) {
     return await masterItemPrice.post('import', formData, null, {
-      'Content-Type': 'multipart/formdata'
+      'Content-Type': 'multipart/formdata',
     });
   },
 };

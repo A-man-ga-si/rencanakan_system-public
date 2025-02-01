@@ -61,3 +61,5 @@ export const dateFormats = {
   longDateTime: "YYYY-MM-DD_HH:mm:ss",
   excelFile: "YYYY-MM-DD_HHmmss"
 }
+
+export const PAGINATION_DEFAULT_LIMIT = 15;
