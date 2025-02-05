@@ -180,12 +180,12 @@
 
         // Setup price form value
         if (this.rabItemData.custom_ahs != null) {
-          this.form.price = parseInt(this.rabItemData.custom_ahs.price);
+          this.form.price = parseInt(Math.round(this.rabItemData.custom_ahs.price));
           return;
         }
         this.form.price =
           this.rabItemData.price !== null && this.rabItemData.price !== 0
-            ? parseFloat(this.rabItemData.price ?? 0)
+            ? parseInt(Math.round(this.rabItemData.price ?? 0))
             : undefined;
       },
       didAhsGroupChanged(groupKey) {
@@ -218,8 +218,8 @@
           this.rabItemData.custom_ahs != null
             ? this.rabItemData.custom_ahs.price
             : this.rabItemData.price ?? 0;
-        const trimmedPrice = parseInt(String(rabItemPrice).trim().replaceAll('Rp', ''));
-        const subtotalPrice = trimmedPrice * (this.rabItemData.volume ?? 0);
+        const ahsItemPrice = Math.round(String(rabItemPrice).trim().replaceAll('Rp', ''));
+        const subtotalPrice = ahsItemPrice * (this.rabItemData.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },
     },
