@@ -485,7 +485,7 @@
       rabsTotal() {
         const mappedRabs = this.rabItems.map(data => data.subtotal);
         return mappedRabs.length
-          ? Math.floor(mappedRabs.reduce((acc, curr) => acc + curr))
+          ? Math.round(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
       },
       rabsSubTotal() {
