@@ -333,18 +333,18 @@
         let subtotal = 0;
         for (const rabItemRow of this.rabItem.rab_item) {
           if (rabItemRow.custom_ahs != null) {
-            subtotal = subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+            subtotal = subtotal + Math.round(rabItemRow.custom_ahs.price) * rabItemRow.volume
             continue;
           }
-          subtotal = subtotal + (rabItemRow.price * rabItemRow.volume);
+          subtotal = subtotal + Math.round(rabItemRow.price) * rabItemRow.volume;
         }
         for (const rabHeaderItemRow of this.rabItem.rab_item_header) {
           for (const rabItemRow of rabHeaderItemRow.rab_item) {
             if (rabItemRow.custom_ahs != null) {
-              subtotal = subtotal + (rabItemRow.custom_ahs.price * rabItemRow.volume);
+              subtotal = subtotal + Math.round(rabItemRow.custom_ahs.price) * rabItemRow.volume;
               continue;
             }
-            subtotal = subtotal + (rabItemRow.price * rabItemRow.volume);
+            subtotal = subtotal + Math.round(rabItemRow.price) * rabItemRow.volume;
           }
         }
         return formatCurrency(parseInt(subtotal));

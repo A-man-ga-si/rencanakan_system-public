@@ -479,17 +479,17 @@
           : 0;
         return {
           percentage,
-          total: parseInt((percentage / 100) * this.rabsTotal),
+          total: Math.round((percentage / 100) * this.rabsTotal),
         };
       },
       rabsTotal() {
         const mappedRabs = this.rabItems.map(data => data.subtotal);
         return mappedRabs.length
-          ? parseInt(mappedRabs.reduce((acc, curr) => acc + curr))
+          ? Math.floor(mappedRabs.reduce((acc, curr) => acc + curr))
           : 0;
       },
       rabsSubTotal() {
-        return parseInt(this.rabsTotal + this.projectPpn.total);
+        return Math.round(this.rabsTotal + this.projectPpn.total);
       },
       convertAlphabeuticalNum() {
         return angkaTerbilang(this.rabsSubTotal).toUpperCase();
