@@ -29,6 +29,10 @@
         type: Boolean,
         default: true,
       },
+      isZeroAllowed: {
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {
@@ -90,7 +94,7 @@
         if (this.localValue != undefined && this.localValue.endsWith(',')) {
           return;
         }
-        if (newValue == 0 || newValue === undefined) {
+        if ((!this.isZeroAllowed && newValue == 0) || newValue === undefined) {
           this.localValue = undefined;
           return;
         }

@@ -48,6 +48,7 @@
       <NumericInput
         class="inline-edit"
         v-model="coefficient"
+        :is-zero-allowed="true"
         :onChangeValue="submitUpdateAhsItem"
       />
     </td>
