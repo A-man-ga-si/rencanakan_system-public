@@ -37,18 +37,18 @@
       </div>
     </div>
     <div class="body" v-show="!mainCardCollapsed">
-      <div class="table-responsive-xxl" style="overflow: visible">
-        <table class="table text-left mx-3 table-responsive" style="width: 97%; overflow: visible">
+      <div class="table-responsive-xxl" style="overflow-y: visible;">
+        <table class="table text-left mx-3" style="width: 100%; table-layout: auto;">
           <thead>
             <tr>
-              <th scope="col" style="width: 3%">No.</th>
-              <th scope="col">Uraian Pekerjaan</th>
-              <th scope="col" style="width: 15%">Kode</th>
-              <th scope="col" style="width: 10%">Volume</th>
-              <th scope="col" style="width: 15%">SAT</th>
-              <th scope="col" style="width: 15%">Harga Sat (Rp.)</th>
-              <th scope="col">Jumlah (Rp.)</th>
-              <th style="width: 2%"></th>
+              <th scope="col" style="width: 5%; min-width: 50px;">No.</th>
+              <th scope="col" style="width: 25%; min-width: 350px;">Uraian Pekerjaan</th>
+              <th scope="col" style="width: 20%; min-width: 300px;">Kode</th>
+              <th scope="col" style="width: 5%; min-width: 75px;">Volume</th>
+              <th scope="col" style="width: 10%; min-width: 150px;">SAT</th>
+              <th scope="col" style="width: 15%; min-width: 200px;">Harga Sat (Rp.)</th>
+              <th scope="col" style="width: 15%; min-width: 200px;">Jumlah (Rp.)</th>
+              <th style="width: 5%"></th>
             </tr>
           </thead>
           <tbody>

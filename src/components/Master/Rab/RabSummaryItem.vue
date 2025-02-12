@@ -44,7 +44,7 @@
               <th scope="col" style="width: 3%">No.</th>
               <th scope="col">Uraian Pekerjaan</th>
               <th scope="col" style="width: 15%">Kode</th>
-              <th scope="col" style="width: 10%">Volume</th>
+              <th scope="col" style="width: 10%;">Volume</th>
               <th scope="col" style="width: 15%">SAT</th>
               <th scope="col" style="width: 15%">Harga Sat (Rp.)</th>
               <th scope="col">Jumlah (Rp.)</th>

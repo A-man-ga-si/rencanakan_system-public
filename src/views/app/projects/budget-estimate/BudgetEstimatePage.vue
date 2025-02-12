@@ -375,7 +375,7 @@
           // 02 - Get RAB index
           let rabIndex = this.rabItems.findIndex((rab) => rab.hashid == rabId);
 
-          // 03A - Update RAB header item locally
+          // 03.A - Update RAB header item locally
           if (rabHeaderId) {
             const rabHeaderIndex = this.rabItems[rabIndex].rab_item_header.findIndex(
               (rabHeaderItem) => rabHeaderItem.hashid == rabHeaderId
@@ -385,7 +385,7 @@
             );
             this.rabItems[rabIndex].rab_item_header[rabHeaderIndex].rab_item[rabItemIndex].custom_ahs = customAhs;
           } else {
-            // 03B - Update RAB item locally
+            // 03.B - Update RAB item locally
             const rabItemIndex = this.rabItems[rabIndex].rab_item.findIndex(
               (rabItemRow) => rabItemRow.hashid == rabRowItemId
             );

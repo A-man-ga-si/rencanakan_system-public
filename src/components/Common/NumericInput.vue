@@ -87,7 +87,7 @@
     },
     watch: {
       value(newValue) {
-        if (this.localValue.endsWith(',')){
+        if (this.localValue != undefined && this.localValue.endsWith(',')) {
           return;
         }
         if (newValue == 0 || newValue === undefined) {

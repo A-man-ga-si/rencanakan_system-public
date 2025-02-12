@@ -10,8 +10,7 @@
         @change="onChangeNameInput"
       />
     </td>
-    <td>
-      <div style="width: 350px">
+    <td style="max-width: 300px;">
         <rcn-ahsproject-dropdown
           :is-disabled="isAhsUpdating"
           :ahs-group-items="ahsGroupItems"
@@ -28,11 +27,10 @@
           @on-click-reset-button="didResetButtonClicked"
           :on-select="didAhsItemSelected"
         />
-      </div>
     </td>
     <td>
       <NumericInput
-        class="inline-edit"
+        class="inline-edit w-100"
         v-model="form.volume"
         :onChangeValue="didVolumeChanged"
       />
@@ -164,7 +162,7 @@
       setupSelectedAhs(data) {
         return !!data?.custom_ahs_id;
       },
-      
+
       setupFormValues() {
         // Setup name form value
         this.form.name = this.rabItemData?.name;
@@ -180,7 +178,9 @@
 
         // Setup price form value
         if (this.rabItemData.custom_ahs != null) {
-          this.form.price = parseInt(Math.round(this.rabItemData.custom_ahs.price));
+          this.form.price = parseInt(
+            Math.round(this.rabItemData.custom_ahs.price),
+          );
           return;
         }
         this.form.price =
@@ -218,7 +218,9 @@
           this.rabItemData.custom_ahs != null
             ? this.rabItemData.custom_ahs.price
             : this.rabItemData.price ?? 0;
-        const ahsItemPrice = Math.round(String(rabItemPrice).trim().replaceAll('Rp', ''));
+        const ahsItemPrice = Math.round(
+          String(rabItemPrice).trim().replaceAll('Rp', ''),
+        );
         const subtotalPrice = ahsItemPrice * (this.rabItemData.volume ?? 0);
         return `Rp. ${formatCurrency(subtotalPrice)}`;
       },

@@ -23,6 +23,7 @@
         />
       </div>
     </button>
+
     <div
       class="ahs-dropdown"
       :class="{ 'd-none': !isShowing, 'd-flex': isShowing }"
