@@ -36,6 +36,7 @@ import { Notify } from 'notiflix';
 import { PhStar, PhInfo } from 'phosphor-vue'
 import { mapActions, mapGetters } from 'vuex'
 import { showConfirmAlert, showConfirmAlertWithPreloader } from '@/utils';
+import moment from 'moment';
 
 export default {
   data() {
@@ -76,9 +77,14 @@ export default {
         Notify.failure('Paket demo tidak dapat diperpanjang! Harap upgrade paket untuk tetap mengaktifkan project')
       } else {
         const that = this
+        const expiredDurations = { "MONTHLY": 1, "QUARTERLY": 3 }
+        const nextExpiredDate = moment(this.project.order.expired_at).add(
+            expiredDurations[this.project.subscription.subscription_type],
+            "months"
+        )
         const { isConfirmed } = await showConfirmAlertWithPreloader({
           title: 'Perpanjang Paket Project ?',
-          text: 'Tanggal expired project anda akan diperpanjang hingga 2023-02-01 !',
+          text: `Tanggal expired project anda akan diperpanjang hingga ${nextExpiredDate.format("DD-MM-YYYY")} !`,
           icon: 'question',
           preConfirm: async () => {
             const data = await this.fetchSubscriptionSnapToken({
