@@ -25,6 +25,7 @@
           "
           @on-change-ahs-group="(data) => $emit('did-ahs-group-changed', data)"
           @on-click-reset-button="didResetButtonClicked"
+          @on-click-custom-button="() => $emit('did-custom-button-clicked')"
           :on-select="didAhsItemSelected"
         />
     </td>

@@ -10,11 +10,13 @@ const projectApi = new ApiTwo({
 
 const state = {
   projects: [],
+  isShowingAhsPopup: false
 };
 
 const getters = {
   getProjects: state => state.projects,
   getCurrentActiveProject: state => state.currentActiveProject,
+  isShowingAhsPopup: state => state.isShowingAhsPopup,
 };
 
 const mutations = {
@@ -27,6 +29,8 @@ const mutations = {
   setCurrentActiveProject(state, project) {
     state.currentActiveProject = project
   },
+  showCreateAhsPopup(state) { state.isShowingAhsPopup = true },
+  hideCreateAhsPopup(state) { state.isShowingAhsPopup = false }
 };
 
 const actions = {

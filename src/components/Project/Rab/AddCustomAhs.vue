@@ -6,6 +6,7 @@
       title="Buat AHS Baru"
       no-close-on-backdrop
       size="lg"
+      @hidden="onHideModal"
     >
       <b-nav class="mb-5 justify-content-center" pills>
         <!-- PUPR AHS GROUPS -->
@@ -79,6 +80,7 @@
 
   export default {
     mixins: [validationMixins],
+    props: ['selectedColumn'],
     data() {
       return {
         modalId: 'add-custom-ahs',
@@ -141,6 +143,9 @@
         this.selectedAhsGroup = ahsGroup;
         this.resetForm();
       },
+      onHideModal() {
+        this.$emit('hide');
+      }
     },
     computed: {
       ...mapGetters(['getMappedAhsIds', 'getAhs', 'getCurrentActiveProject']),
@@ -157,6 +162,9 @@
       ValidationInput,
     },
     watch: {
+      selectedColumn() {
+        this.selectedAhsGroup = this.selectedColumn;
+      },
       'form.selectedReference'(e) {
         const [code, name] = e.split('<<#>>');
         this.form.code = `${code || ''}`;

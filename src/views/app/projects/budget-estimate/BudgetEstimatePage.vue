@@ -56,6 +56,7 @@
         :selected-ahs-group-key="selectedAhsGroupKey"
         :ahs-search-query="ahsSearchQuery"
         @did-ahs-group-changed="didAhsGroupSelected"
+        @did-custom-button-clicked="didCustomButtonClicked"
         @did-rab-item-updated="didRabItemUpdated"
         @did-search-input-changed="didSearchInputChanged"
         @did-reset-ahs-button-clicked="didResetButtonClicked"
@@ -150,7 +151,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
   import angkaTerbilang from '@develoka/angka-terbilang-js';
   import EditRab from '@/components/Project/Rab/EditRab.vue';
   import AddRabItemHeader from '@/components/Project/Rab/AddRabItemHeader.vue';
@@ -213,6 +214,9 @@
         'updateRabItem',
         'updateRabItemAhs',
         'importApendoRab'
+      ]),
+      ...mapMutations([
+        'showCreateAhsPopup'
       ]),
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
@@ -281,6 +285,10 @@
           return;
         }
         this.reloadMasterAhsProjectData();
+      },
+      didCustomButtonClicked() {
+        this.showCreateAhsPopup();
+        this.$router.push({ name: 'RabAhs'});
       },
       didAhsGroupSelected(key) {
         this.selectedAhsGroupKey = key;

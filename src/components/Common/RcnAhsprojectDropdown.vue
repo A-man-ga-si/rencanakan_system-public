@@ -93,11 +93,25 @@
           <b-button
             id="addAhsGroupButton"
             variant="primary"
-            style="display: block; margin-left: auto; margin-right: auto"
+            style="
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              margin-bottom: 8px;
+            "
             @click="onClickAddNewAhsProject()"
           >
             Tambah dari Grup AHS
           </b-button>
+          <span>atau
+            <button
+              class="btn p-0"
+              style="color: #00365a; text-decoration: underline;"
+              @click="onClickCreateCustomButton"
+            >
+              Buat Custom
+            </button>
+          </span>
         </div>
 
         <div class="ahs-list-container">
@@ -242,6 +256,9 @@
       onClickAddNewAhsProject() {
         this.$emit('on-change-ahs-group', AHSGroupReferences.reference2016.key);
       },
+      onClickCreateCustomButton() {
+        this.$emit('on-click-custom-button');
+      }
     },
     watch: {
       searchQuery(newValue, _) {

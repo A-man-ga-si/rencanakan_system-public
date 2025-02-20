@@ -78,7 +78,10 @@
       ></b-pagination>
     </div>
     <FloatingActionButton @click="toggleAddCustomAhsModal" />
-    <AddCustomAhs @custom-ahs-added="reloadData" />
+    <AddCustomAhs
+      :selected-column="createAhsColumn"
+      @custom-ahs-added="reloadData"
+      @hide="didAddCustomAhsPopupHidden" />
     <EditCustomAhs
       @custom-ahs-updated="reloadData"
       :edited-custom-ahs="editedCustomAhs"
@@ -88,160 +91,175 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
-  import AhsItem from '@/components/Project/Rab/AhsItem.vue';
-  import AddCustomAhs from '@/components/Project/Rab/AddCustomAhs.vue';
-  import EditCustomAhs from '@/components/Project/Rab/EditCustomAhs.vue';
-  import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
-  import Loader from '@/components/Common/Loader.vue';
-  import CreateItemPricePopup from '@/components/Project/Rab/CreateItemPricePopup.vue';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import AhsItem from '@/components/Project/Rab/AhsItem.vue';
+import AddCustomAhs from '@/components/Project/Rab/AddCustomAhs.vue';
+import EditCustomAhs from '@/components/Project/Rab/EditCustomAhs.vue';
+import FloatingActionButton from '@/components/Project/FloatingActionButton.vue';
+import Loader from '@/components/Common/Loader.vue';
+import CreateItemPricePopup from '@/components/Project/Rab/CreateItemPricePopup.vue';
+import { AHSGroupReferences } from '@/constants/enums';
 
-  export default {
-    data() {
-      return {
-        perPage: 4,
-        totalRows: 0,
-        currentPage: 1,
-        isLoading: true,
-        form: {
-          searchQuery: '',
-          searchQueryCategory: 'item',
-        },
-        searchQueryOptions: [
-          { text: 'Nama Barang', value: 'item' },
-          { text: 'Kategori', value: 'header' },
-        ],
-        customAhs: [],
-        editedCustomAhs: {},
-        searchCountdownObject: null,
-        inSubmittingAhsItems: [],
-      };
-    },
-    created() {
+export default {
+  data() {
+    return {
+      perPage: 4,
+      totalRows: 0,
+      currentPage: 1,
+      isLoading: true,
+      form: {
+        searchQuery: '',
+        searchQueryCategory: 'item',
+      },
+      searchQueryOptions: [
+        { text: 'Nama Barang', value: 'item' },
+        { text: 'Kategori', value: 'header' },
+      ],
+      customAhs: [],
+      editedCustomAhs: {},
+      searchCountdownObject: null,
+      inSubmittingAhsItems: [],
+      createAhsColumn: AHSGroupReferences.reference2024
+    };
+  },
+  created() {
+    this.fetchCustomAhsItemableIds({
+      projectId: this.$route.params.id,
+    });
+    this.fetchUnit();
+  },
+  mounted() {
+    this.getCustomAhs();
+
+    // Handler for showing Add Custom Ahs Modal from RAB List
+    if (this.isShowingAhsPopup) {
+      this.createAhsColumn = undefined;
+      this.hideCreateAhsPopup();
+      this.toggleAddCustomAhsModal();
+    }
+  },
+  methods: {
+    ...mapActions([
+      'fetchCustomAhs',
+      'fetchCustomAhsItemableIds',
+      'fetchUnit',
+      'queryCustomAhs',
+      'storeCustomAhsItem',
+    ]),
+    ...mapMutations([
+      'hideCreateAhsPopup'
+    ]),
+    onNewItemPriceAdded() {
       this.fetchCustomAhsItemableIds({
         projectId: this.$route.params.id,
       });
-      this.fetchUnit();
     },
-    mounted() {
+    async getCustomAhs() {
+      const { data } = await this.fetchCustomAhs({
+        projectId: this.$route.params.id,
+        perPage: this.perPage,
+        page: this.currentPage,
+      });
+      this.totalRows = data.data.pagination_attribute.total_rows;
+      this.customAhs = data.data.customAhs;
+      this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
+        return {
+          hashId: ahsItem.hashid,
+          sections: [],
+        };
+      });
+
+      this.isLoading = false;
+    },
+    toggleAddCustomAhsModal() {
+      this.$bvModal.show('add-custom-ahs');
+    },
+    toggleEditCustomAhs(customAhsItem) {
+      this.editedCustomAhs = customAhsItem;
+      this.$bvModal.show('edit-custom-ahs');
+    },
+    getInSubmittingSections(hashId) {
+      const inSubmittingAhsItem = this.inSubmittingAhsItems.find(
+        (ahsItem) => {
+          return ahsItem.hashId == hashId;
+        },
+      );
+      if (!inSubmittingAhsItem) {
+        return [];
+      }
+      return inSubmittingAhsItem.sections;
+    },
+    async didAddRowTapped(hashId, section) {
+      const submittingAhsItem = this.inSubmittingAhsItems.find(
+        (ahsItem) => ahsItem.hashId == hashId,
+      );
+      if (submittingAhsItem == null) {
+        return;
+      }
+      if (!submittingAhsItem.sections.includes(section)) {
+        submittingAhsItem.sections = [...submittingAhsItem.sections, section];
+      }
+      await this.storeCustomAhsItem({
+        projectId: this.$route.params.id,
+        form: {
+          section,
+          custom_ahs_id: hashId,
+        },
+      });
+      await this.getCustomAhs();
+      submittingAhsItem.sections = submittingAhsItem.sections.filter(
+        (submittingSection) => submittingSection != section,
+      );
+    },
+    reloadData() {
+      // FIXME: Not well optimized but yeah it's work
+      this.fetchCustomAhsItemableIds({
+        projectId: this.$route.params.id,
+      });
       this.getCustomAhs();
     },
-    methods: {
-      ...mapActions([
-        'fetchCustomAhs',
-        'fetchCustomAhsItemableIds',
-        'fetchUnit',
-        'queryCustomAhs',
-        'storeCustomAhsItem',
-      ]),
-      onNewItemPriceAdded() {
-        this.fetchCustomAhsItemableIds({
-          projectId: this.$route.params.id,
-        });
-      },
-      async getCustomAhs() {
-        const { data } = await this.fetchCustomAhs({
-          projectId: this.$route.params.id,
-          perPage: this.perPage,
-          page: this.currentPage,
-        });
-        this.totalRows = data.data.pagination_attribute.total_rows;
-        this.customAhs = data.data.customAhs;
-        this.inSubmittingAhsItems = this.customAhs.map((ahsItem) => {
-          return {
-            hashId: ahsItem.hashid,
-            sections: [],
-          };
-        });
-
-        this.isLoading = false;
-      },
-      toggleAddCustomAhsModal() {
-        this.$bvModal.show('add-custom-ahs');
-      },
-      toggleEditCustomAhs(customAhsItem) {
-        this.editedCustomAhs = customAhsItem;
-        this.$bvModal.show('edit-custom-ahs');
-      },
-      getInSubmittingSections(hashId) {
-        const inSubmittingAhsItem = this.inSubmittingAhsItems.find(
-          (ahsItem) => {
-            return ahsItem.hashId == hashId;
-          },
-        );
-        if (!inSubmittingAhsItem) {
-          return [];
+    didAddCustomAhsPopupHidden() {
+      this.createAhsColumn = AHSGroupReferences.reference2024;
+    }
+  },
+  computed: {
+    ...mapGetters(['getCustomAhsItemableIds', 'getUnit', 'isShowingAhsPopup']),
+  },
+  watch: {
+    currentPage() {
+      this.getCustomAhs();
+    },
+    form: {
+      deep: true,
+      async handler() {
+        if (this.searchCountdownObject != 'null') {
+          clearTimeout(this.searchCountdownObject);
         }
-        return inSubmittingAhsItem.sections;
-      },
-      async didAddRowTapped(hashId, section) {
-        const submittingAhsItem = this.inSubmittingAhsItems.find(
-          (ahsItem) => ahsItem.hashId == hashId,
-        );
-        if (submittingAhsItem == null) {
-          return;
-        }
-        if (!submittingAhsItem.sections.includes(section)) {
-          submittingAhsItem.sections = [...submittingAhsItem.sections, section];
-        }
-        await this.storeCustomAhsItem({
-          projectId: this.$route.params.id,
-          form: {
-            section,
-            custom_ahs_id: hashId,
-          },
-        });
-        await this.getCustomAhs();
-        submittingAhsItem.sections = submittingAhsItem.sections.filter(
-          (submittingSection) => submittingSection != section,
-        );
-      },
-      reloadData() {
-        // FIXME: Not well optimized but yeah it's work
-        this.fetchCustomAhsItemableIds({
-          projectId: this.$route.params.id,
-        });
-        this.getCustomAhs();
-      },
-    },
-    computed: {
-      ...mapGetters(['getCustomAhsItemableIds', 'getUnit']),
-    },
-    watch: {
-      currentPage() {
-        this.getCustomAhs();
-      },
-      form: {
-        deep: true,
-        async handler() {
-          if (this.searchCountdownObject != 'null') {
-            clearTimeout(this.searchCountdownObject);
-          }
 
-          const that = this;
+        const that = this;
 
-          if (this.form.searchQuery != '') {
-            this.searchCountdownObject = setTimeout(async function () {
-              const { data } = await that.queryCustomAhs({
-                projectId: that.$route.params.id,
-                query: that.form.searchQuery,
-                category: that.form.searchQueryCategory,
-              });
-              that.customAhs = data.data;
-            }, 500);
-          } else {
-            this.getCustomAhs();
-          }
-        },
+        if (this.form.searchQuery != '') {
+          this.searchCountdownObject = setTimeout(async function () {
+            const { data } = await that.queryCustomAhs({
+              projectId: that.$route.params.id,
+              query: that.form.searchQuery,
+              category: that.form.searchQueryCategory,
+            });
+            that.customAhs = data.data;
+          }, 500);
+        } else {
+          this.getCustomAhs();
+        }
       },
     },
-    components: {
-      AhsItem,
-      FloatingActionButton,
-      AddCustomAhs,
-      EditCustomAhs,
-      Loader,
-      CreateItemPricePopup,
-    },
-  };
+  },
+  components: {
+    AhsItem,
+    FloatingActionButton,
+    AddCustomAhs,
+    EditCustomAhs,
+    Loader,
+    CreateItemPricePopup,
+  },
+};
 </script>
