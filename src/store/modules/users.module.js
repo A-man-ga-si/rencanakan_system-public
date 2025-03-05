@@ -25,6 +25,12 @@ const actions = {
     const response = await usersApi.get(userId, '');
     return response.data.data;
   },
+  async updateUserDemoQuota(_, request) {
+    const response = await usersApi.put(`${request.userId}/demo-quota`,  {
+      demo_quota: request.demoQuota
+    });
+    return response.data;
+  },
 };
 
 export default {
