@@ -147,7 +147,7 @@
             });
             const fileLink = document.createElement('a');
             fileLink.href = window.URL.createObjectURL(xlsxBlob);
-            fileLink.download = this.getCompany.name + '.xlsx';
+            fileLink.download = this.getCurrentActiveProject.name + '.xlsx';
             fileLink.click();
             this.checkQuotas();
           } else {
@@ -182,7 +182,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getCompany']),
+      ...mapGetters(['getCompany', 'getCurrentActiveProject']),
     },
     components: {
       ValidationInput,
