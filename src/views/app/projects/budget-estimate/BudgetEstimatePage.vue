@@ -34,6 +34,14 @@
         >
           Upload RAB LPSE
         </b-btn>
+        <b-btn 
+          variant="link" 
+          class="text-primary font-weight-bold d-inline-flex align-items-center"
+          @click="toggleRap"  
+        >
+          {{ showRap ? 'Hide RAP' : 'Show RAP' }} 
+          <span v-if="!showRap" class="ml-1">→</span>
+        </b-btn>
       </b-col>
     </b-row>
     <div v-if="isLoading">
@@ -44,12 +52,13 @@
         </h2>
       </div>
     </div>
-    <div v-else>
-      <RabSummaryItem
+    <div v-else ref="mainTableDiv">
+      <RabSummaryItem ref="rabSummaryItem"
         v-for="(rab, idx) in rabItems"
         :key="idx"
         :index="idx"
         :rab-item="rab"
+        :showRap="showRap"
         :ahs-group-items="ahsGroupItems"
         :ahs-items="ahsItems"
         :unit-code-list="unitItems"
@@ -71,6 +80,126 @@
         @add-rab-item-header-bt-clicked="showAddRabItemHeaderModal"
         @edit-rab-item-bt-clicked="editRab"
       />
+      <transition name="slide">
+      <div v-if="showRap" class="rap-sheet" :style="{ maxWidth: '100%', height: rapSheetHeight, top: popupMaxY }">
+        <div class="rap-parent-view" :style="{ maxWidth: '100%', position: 'relative' }">
+        <div class="rap-content" v-for="(tableItem, index) in rabItems" :key="index" :style="{ maxWidth: '100%', top: tablePositions[index] + 'px', position: 'absolute' }">
+          <h4 class="text-primary" :style="{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                fontSize: '14px',
+                height: '27px'
+            }">
+            <span :style="{
+                  flex: '1',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                  }"> 
+              {{ alphabeuticalRabNumber(index) }}. {{ tableItem.name }} 
+            </span>
+            <a
+            href="#"
+            @click.prevent="toggleEdit(tableItem)"
+            class="text-primary action-close float-right"
+            style="margin-top: -3px"
+          >
+              <ph-pencil weight="light" :size="25" />
+          </a>
+          </h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th :style="{ width: '105px' }">Profit Margin</th>
+                <th>Harga Satuan</th>
+                <th>Jumlah Modal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in tableItem.rab_item" :style="{ height: '62.2px' }">
+                <td :style="{ verticalAlign: 'middle' }">
+                  <template v-if="editingTable === tableItem">
+                    <div :style="{ display: 'flex', alignItems: 'center' }">
+                      <input type="number" v-model="item.profit_margin" class="form-control" :style="{ marginRight: '5px' }"/> 
+                      <span>%</span>
+                    </div>
+                  </template>
+                  <template v-else>
+                      {{ item.profit_margin }} %
+                  </template>
+                </td>
+                <td :style="{ verticalAlign: 'middle' }">{{ item.profit_margin == 0 ? "Rp. -" : getRAPPrice(item, item.profit_margin) }}</td>
+                <td :style="{ verticalAlign: 'middle' }">{{ item.profit_margin == 0 ? "Rp. -" : getRAPTotal(item, item.profit_margin) }}</td>
+              </tr>
+            </tbody>
+            <div v-if="editingTable === tableItem" class="edit-actions d-flex justify-content-end mt-2" :style="{ position:'absolute', right: '0' }">
+              <button class="btn btn-outline-primary mr-2" @click.prevent = "editingTable = null" :style="{ width: '100px' }">Cancel</button>
+              <button class="btn btn-primary" @click.prevent="saveProfitMargin(tableItem)" :style="{ width: '100px' }">Save</button>
+            </div>
+          </table>
+
+          <div class="rap-content" v-for="(tableItem, idx) in rabItems[index].rab_item_header" :style="{ marginTop: '62.5px', position: 'relative' }" :key="idx">
+            <h3 class="text-primary" :style="{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                fontSize: '14px',
+                height: '43.8px'
+            }">
+            <span :style="{
+                  flex: '1',
+                  minWidth: '0', /* Prevents unexpected flex shrink */
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                  }"> 
+              {{ romanized(idx + 1) }}. {{ tableItem.name }} 
+            </span>
+            
+            <a
+            href="#"
+            @click.prevent="toggleEdit(tableItem)"
+            class="text-primary action-close float-right"
+            style="margin-top: -3px"
+          >
+              <ph-pencil weight="light" :size="25" />
+          </a>
+          </h3>
+          <table class="table">
+            <tbody>
+              <tr v-for="item in tableItem.rab_item" :style="{ height: '62.2px' }">
+                <td :style="{ width: '105px', verticalAlign: 'middle' }">
+                  <template v-if="editingTable === tableItem">
+                    <div :style="{ display: 'flex', alignItems: 'center' }">
+                      <input type="number" v-model="item.profit_margin" class="form-control" :style="{ marginRight: '5px' }"/> 
+                      <span>%</span>
+                    </div>
+                    </template>
+                    <template v-else>
+                      {{ item.profit_margin }} %
+                    </template>
+                </td>
+                <td :style="{ verticalAlign: 'middle' }">{{ item.profit_margin == 0 ? "Rp. -" : getRAPPrice(item, item.profit_margin) }}</td>
+                <td :style="{ verticalAlign: 'middle' }">{{ item.profit_margin == 0 ? "Rp. -" : getRAPTotal(item, item.profit_margin) }}</td>
+              </tr>
+            </tbody>
+            <div v-if="editingTable === tableItem" class="edit-actions d-flex justify-content-end mt-2" :style="{ position:'absolute', right: '0' }">
+              <button class="btn btn-outline-primary mr-2" @click.prevent = "editingTable = null" :style="{ width: '100px' }">Cancel</button>
+              <button class="btn btn-primary" @click.prevent="saveProfitMargin(rabItems[index], tableItem)" :style="{ width: '100px' }">Save</button>
+            </div>
+          </table>
+        </div>
+        </div>
+        </div>
+      </div>
+    </transition>
       <b-row>
         <b-col>
           <b-button
@@ -163,10 +292,20 @@
   import { AHSGroupReferences } from '@/constants/enums.js'
   import { Notify } from 'notiflix';
   import { ImportExcelModal } from '@/components/Common';
+  import { PhPencil } from 'phosphor-vue';
+  import { toRoman } from 'roman-numerals';
+  import { numberToAlphabet } from '@/utils';
+import { isNil } from 'lodash';
 
   export default {
     data() {
       return {
+        rapSheetHeight: null,
+        isProfitMarginError: false,
+        shouldShowProfitMarginNotif: false,
+        editingTable: null,
+        tablePositions: [],
+        showRap: false,
         form: {
           searchQuery: '',
           searchQueryCategory: 'item',
@@ -218,6 +357,67 @@
       ...mapMutations([
         'showCreateAhsPopup'
       ]),
+      saveProfitMargin(tableItem, rabHeader) {
+        if (rabHeader) {
+          rabHeader.rab_item.forEach((item, index, array) => {
+            this.didRabItemUpdated(tableItem, item, true);
+            if (index === array.length - 1) {
+              this.shouldShowProfitMarginNotif = true;
+            }
+          });          
+          return;
+        }
+        tableItem.rab_item.forEach((item, index, array) => {
+          this.didRabItemUpdated(tableItem, item, true);
+          if (index === array.length - 1) {
+              this.shouldShowProfitMarginNotif = true;
+          }
+        });
+      },
+      alphabeuticalRabNumber(index) {
+        return numberToAlphabet(index).toUpperCase();
+      },
+      romanized(number) {
+        return toRoman(number);
+      },
+      getRAPPrice(rabItemRow, profitMargin) {
+        if (rabItemRow.custom_ahs != null) {
+          return `Rp. ${formatCurrency(parseInt(Math.round(rabItemRow.custom_ahs.price) * (1 - profitMargin / 100)))}`;
+        }
+        return `Rp. ${formatCurrency(parseInt(Math.round((rabItemRow.price)) * (1 - profitMargin / 100)))}`;
+      },
+      getRAPTotal(rabItemRow, profitMargin) {
+        if (rabItemRow.custom_ahs != null) {
+          return `Rp. ${formatCurrency(parseInt(Math.round(rabItemRow.custom_ahs.price) * rabItemRow.volume * (1 - profitMargin / 100)))}`;
+        }
+        return `Rp. ${formatCurrency(parseInt(Math.round((rabItemRow.price) * rabItemRow.volume) * (1 - profitMargin / 100)))}`;
+      },
+      toggleEdit(table) {
+        this.editingTable = this.editingTable === table ? null : table;
+      },
+      updateTablePositions() {
+        const targetDiv = this.$refs.mainTableDiv;
+        const targetRect = targetDiv.offsetTop;
+        this.tablePositions = this.$refs.rabSummaryItem.map((item) => {
+          return item.$el.offsetTop - targetRect;
+        });
+        this.rapSheetHeight = (this.$refs.mainTableDiv.offsetHeight - 475) + 'px';
+      },
+      getTbodyYPosition() {
+        const targetDiv = this.$refs.mainTableDiv;
+        if (targetDiv) {
+          const targetRect = targetDiv.offsetTop;
+          this.popupMaxY = `${targetRect}px`;
+          this.$refs.rabSummaryItem[0].getTbodyMetrics();
+          const maxY = this.$refs.rabSummaryItem[0].$refs.rabTheader.getBoundingClientRect().top + window.scrollY;
+          this.headerMaxY = `${maxY}px`;
+          
+          const headerHeight = this.$refs.rabSummaryItem[0].$refs.rabTheader.offsetHeight;
+          this.itemHeaderHeight = `${headerHeight}px`;
+
+          this.updateTablePositions();
+        }
+      },
       showEditRabItemHeaderModal(rabItem, rabItemHeader) {
         this.rabItemHeaderEdit = rabItem;
         this.editedRabItemHeader = rabItemHeader;
@@ -242,6 +442,10 @@
             }
           )
       },
+      toggleRap() {
+        this.showRap = !this.showRap;
+        this.getTbodyYPosition();
+      },
       async initAhsData() {
         this.selectedAhsGroupKey = AHSGroupReferences.ahsProject.key;
         await this.reloadCustomAhsData();
@@ -263,6 +467,8 @@
         this.projectProperties = await this.showProject(
           this.$route.params.id
         );
+
+        this.updateTablePositions();
       },
       numberFormat(number) {
         return formatCurrency(number);
@@ -347,23 +553,39 @@
           this.selectedAhsGroupKey
         );
       },
-      async didRabItemUpdated(mutatedRab, mutatedRabItem) {
+      async didRabItemUpdated(mutatedRab, mutatedRabItem, isProfitMarginUpdate) {
         let rab = this.rabItems.find((rab) => rab.hashid == mutatedRab.hashid);
         let rabItem = rab.rab_item.find((rabItemRow) => rabItemRow.hashid == mutatedRabItem.hashid);
         rabItem = mutatedRabItem;
-        await this.updateRabItem({
-          projectId: this.$route.params.id,
-          rabId: rab.hashid,
-          rabItemId: rabItem.hashid,
-          form: {
-            name: rabItem.name,
-            custom_ahs_id: rabItem.custom_ahs?.hashid ?? null,
-            volume: rabItem.volume,
-            unit_id: rabItem.hashed_unit_id,
-            price: rabItem.price,
-          },
-        });
-        this.calculateRabItemsSubtotal();
+        try {
+          await this.updateRabItem({
+            projectId: this.$route.params.id,
+            rabId: rab.hashid,
+            rabItemId: rabItem.hashid,
+            form: {
+              name: rabItem.name,
+              custom_ahs_id: rabItem.custom_ahs?.hashid ?? null,
+              volume: rabItem.volume,
+              unit_id: rabItem.hashed_unit_id,
+              price: rabItem.price,
+              profit_margin: rabItem.profit_margin
+            },
+          });
+          this.calculateRabItemsSubtotal();
+          if (this.shouldShowProfitMarginNotif && isProfitMarginUpdate && !this.isProfitMarginError) {
+            Notify.success('Profit margin berhasil diubah');
+            this.shouldShowProfitMarginNotif = false;
+            this.editingTable = null;
+          } else if (this.shouldShowProfitMarginNotif && isProfitMarginUpdate && this.isProfitMarginError) {
+            Notify.failure('Profit margin gagal diubah');
+            this.shouldShowProfitMarginNotif = false;
+            this.editingTable = null;
+          }
+        } catch (err) {
+          if (isProfitMarginUpdate) {
+            this.isProfitMarginError = true;
+          }
+        }
       },
       async didRabItemAhsUpdated({ rabId, rabHeaderId, rabRowItemId, ahsId }) {
         try {
@@ -537,7 +759,31 @@
       AddRab,
       AddRabItemHeader,
       EditRabItemHeader,
-      ImportExcelModal
+      ImportExcelModal,
+      PhPencil
     },
   };
 </script>
+
+<style>
+.rap-sheet {
+  position: absolute;
+  right: 0;
+  width: 400px;
+  max-width: 400px;
+  background: white;
+  box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.rap-parent-view {
+  max-width: 400px;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+.slide-enter { transform: translateX(100%); }
+.slide-leave-to { transform: translateX(100%); }
+</style>

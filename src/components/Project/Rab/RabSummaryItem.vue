@@ -13,9 +13,12 @@
   >
     <div
       class="heading d-flex justify-content-between bg-primary px-3 pt-3"
-      style="border-radius: 8px 8px 0 0"
-    >
-      <div class="left">
+      :style="{ 
+        borderRadius: '8px 8px 0 0', 
+        maxWidth: showRap ? 'calc(100% - 370px)' : '100%',
+        transition: 'max-width 0.3s ease-in-out' 
+      }">
+      <div class="left" ref="rabTheader">
         <h4>{{ alphabeuticalRabNumber }}. {{ rabItem.name }}</h4>
       </div>
       <div class="right">
@@ -90,11 +93,13 @@
               <td colspan="8" class="p-3">
                 <div
                   class="py-2 px-4"
-                  style="
-                    border-radius: 30px;
-                    background-color: #586878;
-                    color: white;
-                  "
+                  :style="{ 
+                    borderRadius: '30px', 
+                    backgroundColor: '#586878', 
+                    color: 'white', 
+                    maxWidth: showRap ? 'calc(100% - 370px)' : '100%',
+                    transition: 'max-width 0.3s ease-in-out' 
+                  }"
                 >
                   <p class="d-inline-block mb-0" style="font-size: 16px">
                     {{ romanized(idx + 1) }}. {{ rabItemHeader.name }}
@@ -199,6 +204,7 @@
         type: Object,
         required: true,
       },
+      showRap: Boolean,
       index: {
         type: Number,
         required: true,
@@ -243,6 +249,12 @@
           this.rabItem,
           rabItemHeader
         );
+      },
+      getTbodyMetrics() {
+        const targetCell = this.$refs.rabTheader;
+        const targetY = targetCell.offsetTop;
+        if (targetCell) {
+        }
       },
       async deleteRab() {
         const { isConfirmed } = await showConfirmAlert({
