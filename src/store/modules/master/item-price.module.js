@@ -29,8 +29,13 @@ const actions = {
         limit: request.limit,
         page: request.page || 1,
         province_id: request.provinceId ,
-        group_id: request.groupId,
+        group_id: request.groupId
       });
+
+      if (request.name && request.name.trim() !== '') {
+        params.append('name', request.name);
+      }
+
       const response = await masterItemPrice.get('', decodeURIComponent(params));
       return response;
   },

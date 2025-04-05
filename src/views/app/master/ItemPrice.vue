@@ -1,35 +1,33 @@
 <template>
   <div class="item-price">
     <div class="mb-5 d-xl-flex justify-content-between">
-      <div class="left">
-        <!-- ITEM GROUP DROPDOWN -->
-        <div
-          class="labeled-select position-relative d-inline-block mb-xs-3 mb-md-0"
-          style="width: 300px"
-        >
-          <span class="px-1">Kelompok Harga Satuan</span>
-          <v-select
-            label="name"
-            :reduce="(itemGroup) => itemGroup.hashid"
-            :options="itemPriceGroups"
-            v-model="selectedItemGroup"
-          />
-        </div>
-
-        <!-- PROVINCE DROPDOWN -->
-        <div
-          class="labeled-select position-relative d-inline-block mb-xs-3 mb-md-0 ml-xs-0 ml-md-3"
-          style="width: 300px"
-        >
-          <span class="px-1">Provinsi</span>
-          <v-select
-            label="name"
-            :reduce="(province) => province.hashid"
-            :options="provinces"
-            v-model="selectedProvince"
-          />
-        </div>
+  <div class="left d-flex">
+    <div class="d-flex flex-column" style="width: 300px">
+      <!-- ITEM GROUP DROPDOWN -->
+      <div class="labeled-select position-relative mb-3">
+        <span class="px-1">Kelompok Harga Satuan</span>
+        <v-select label="name" :reduce="(itemGroup) => itemGroup.hashid" :options="itemPriceGroups" v-model="selectedItemGroup" />
       </div>
+
+      <!-- NEW SEARCH TEXTFIELD -->
+      <div class="labeled-select position-relative">
+        <span class="px-1">Search</span>
+        <input 
+          type="text" 
+          class="form-control" 
+          v-model="searchedName"
+          @blur="loadItemPrices"
+          @keyup.enter="loadItemPrices"
+        />
+      </div>
+    </div>
+
+    <!-- PROVINCE DROPDOWN (Keeps its original position) -->
+    <div class="labeled-select position-relative ml-md-3" style="width: 300px">
+      <span class="px-1">Provinsi</span>
+      <v-select label="name" :reduce="(province) => province.hashid" :options="provinces" v-model="selectedProvince" />
+    </div>
+  </div>
       <div class="right">
         <b-btn variant="outline-primary" @click="onTapExportButton">
           {{ $t('button.export') }}
@@ -148,6 +146,7 @@
       selectedItemGroup: undefined,
       selectedProvince: undefined,
       selectedItemPrice: undefined,
+      searchedName: null,
 
       pagination: {
         currentPage: 1,
@@ -202,7 +201,8 @@
           provinceId: this.selectedProvince,
           groupId: this.selectedItemGroup,
           page: this.pagination.currentPage,
-          limit: this.pagination.limit
+          limit: this.pagination.limit,
+          name: this.searchedName
         });
         this.itemPrices = response.data.item_prices;
         this.pagination.totalPage =
