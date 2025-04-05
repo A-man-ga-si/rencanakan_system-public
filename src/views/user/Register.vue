@@ -112,20 +112,38 @@
               </span>
             </div>
             <div class="mb-4">
-              <label class="form-group has-float-label mb-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="{ 'border-danger': errors.job }"
-                  v-model="job"
-                />
-                <span :class="{ 'text-danger': errors.job }">{{
-                  $t('user.job')
-                }}</span>
-              </label>
+              <div class="mb-2">
+                <div
+                  class="labeled-select position-relative d-inline-block"
+                  style="width: 100%"
+                >
+                  <span class="px-1">{{ $t('user.job') }}</span>
+                  <v-select
+                    label="id_name"
+                    v-model="job"
+                    :options="[
+                      'Kontraktor / Pemborong',
+                      'Konsultan Perencana',
+                      'Konsultan Pengawas',
+                      'Pegawai Pemerintahan',
+                      'Mahasiswa Teknik Sipil',
+                      'Mahasiswa Arsitektur',
+                      'Arsitek',
+                      'Lainnya'
+                    ]"
+                  />
+                </div>
+              </div>
+
+              <input
+                v-show="job === 'Lainnya'"
+                v-model="formData.otherJob"
+                class="form-control"
+                placeholder="Tuliskan pekerjaan anda"
+              />
+
               <span
-                v-if="errors.job"
-                for=""
+                v-show="errors.job"
                 class="mt-1 d-block text-danger error-msg"
               >
                 {{ errors.job }}
@@ -236,21 +254,39 @@
           password_confirmation: '',
         },
         isTncChecked: false,
+        formData: {
+          otherJob: ''
+        }
       };
     },
     methods: {
       async formSubmit() {
-        try {
-          if (this.isTncChecked) {
-            await this.register({
-              first_name: this.firstName,
-              last_name: this.lastName,
-              job: this.job,
-              email: this.email,
-              phone: this.phone,
-              password: this.password,
-              password_confirmation: this.passwordConfirmation,
-            });
+          if (!this.isTncChecked) {
+            Notify.failure('Centang persetujuan syarat dan ketentuan layanan untuk melanjutkan pendaftaran')
+            return
+          }
+
+          const request = {
+            first_name: this.firstName,
+            last_name: this.lastName,
+            email: this.email,
+            phone: this.phone,
+            job: this.job,
+            password: this.password,
+            password_confirmation: this.passwordConfirmation,
+          };
+
+          if (this.job === 'Lainnya') {
+            request.job = this.formData.otherJob;
+          }
+
+          if (request.job.trim() === '') {
+            this.errors.job = 'Pekerjaan tidak boleh kosong';
+            return;
+          }
+
+          try {
+            await this.register(request);
             this.$notify(
               'success',
               this.$t('alert.success'),
@@ -263,27 +299,20 @@
             this.$router.push({
               name: 'Login',
             });
-          } else {
-            Notify.failure('Centang persetujuan syarat dan ketentuan layanan untuk melanjutkan pendaftaran')
-          }
-        } catch (err) {
-          switch (err.response?.status) {
-            case 422:
+          } catch (err) {
+            if (err.response.status == 422) {
               this.markInvalids(err.response.data);
-              break;
-            default:
-              this.$notify(
-                'error',
-                this.$t('alert.success'),
-                this.$t('user.register-error-message'),
-                {
-                  duration: 3000,
-                  permanent: false,
-                }
-              );
-              console.error(err);
+            }
+            this.$notify(
+              'error',
+              this.$t('alert.success'),
+              err.response.data.message ?? this.$t('user.register-error-message'),
+              {
+                duration: 3000,
+                permanent: false,
+              }
+            );
           }
-        }
       },
       markInvalids(invalids) {
         this.resetInvalid();
@@ -292,7 +321,9 @@
         }
       },
       resetInvalid() {
-        this.errors = {};
+        for (const key in this.errors) {
+          this.errors[key] = '';
+        }
       },
       ...mapActions(['register']),
     },
