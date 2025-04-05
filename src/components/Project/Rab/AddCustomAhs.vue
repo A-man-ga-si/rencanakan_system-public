@@ -7,6 +7,7 @@
       no-close-on-backdrop
       size="lg"
       @hidden="onHideModal"
+      @shown="setupEnterKeyListener"
     >
       <b-nav class="mb-5 justify-content-center" pills>
         <!-- PUPR AHS GROUPS -->
@@ -100,6 +101,20 @@
     },
     methods: {
       ...mapActions(['storeCustomAhs', 'fetchAhs', 'fetchAhsIds']),
+      setupEnterKeyListener() {
+      document.addEventListener('keydown', this.handleEnterKey);
+    },
+    
+    removeEnterKeyListener() {
+      document.removeEventListener('keydown', this.handleEnterKey);
+    },
+    
+    handleEnterKey(e) {
+      if (e.key === 'Enter' && this.$refs[this.modalId]?.isVisible) {
+        e.preventDefault();
+        this.submit();
+      }
+    },
       async submit() {
         try {
           const { name, code, selectedReference } = this.form;
@@ -171,5 +186,9 @@
         this.form.name = `${name || ''}`;
       }
     },
+    beforeDestroy() {
+      // Clean up listener when component is destroyed
+      this.removeEnterKeyListener();
+    }
   };
 </script>
