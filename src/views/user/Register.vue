@@ -128,6 +128,7 @@
                       'Pegawai Pemerintahan',
                       'Mahasiswa Teknik Sipil',
                       'Mahasiswa Arsitektur',
+                      'Quatity Surveyor (QS)',
                       'Arsitek',
                       'Lainnya'
                     ]"
