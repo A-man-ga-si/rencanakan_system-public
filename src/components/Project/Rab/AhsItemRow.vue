@@ -72,7 +72,6 @@
     props: [
       'customAhsItem',
       'idx',
-      'codesList',
       'unitsList',
       'customAhsItemableList',
       'customAhs',
@@ -84,9 +83,7 @@
           'CustomItemPrice'
             ? this.customAhsItem.custom_ahs_itemable.name
             : this.customAhsItem.name,
-        ahsItemableId: `${ahsItemable(
-          this.customAhsItem.custom_ahs_itemable_type,
-        )}~${this.customAhsItem.custom_ahs_itemable_id}`,
+        ahsItemableId: null,
         unitId:
           ahsItemable(this.customAhsItem.custom_ahs_itemable_type) ===
           'CustomItemPrice'
@@ -163,11 +160,6 @@
         const ahsItemableData = this.customAhsItem.custom_ahs_itemable_type;
         return ahsItemable(ahsItemableData);
       },
-      ahsItemName() {
-        return this.ahsItemableType == 'ItemPrice'
-          ? this.customAhsItem.custom_ahs_itemable.name
-          : this.customAhsItem.name;
-      },
       getAhsItemableList() {
         const ctx = this;
         const d = this.customAhsItemableList
@@ -204,16 +196,25 @@
       NumericInput,
     },
     watch: {
-      customAhsItem(e) {
-        this.name =
-          ahsItemable(e.custom_ahs_itemable_type) === 'CustomItemPrice'
-            ? e.custom_ahs_itemable.name
-            : e.name;
-        this.unitId =
-          ahsItemable(this.customAhsItem.custom_ahs_itemable_type) ===
-          'CustomItemPrice'
-            ? this.customAhsItem.custom_ahs_itemable.unit.hashid
-            : this.customAhsItem.unit?.hashid;
+      customAhsItem: {
+        handler(newValue, _) {
+          if (!newValue || !newValue.custom_ahs_itemable_type) {
+            return;
+          }
+          this.name =
+            ahsItemable(newValue.custom_ahs_itemable_type) === 'CustomItemPrice'
+              ? newValue.custom_ahs_itemable.name
+              : newValue.name;
+          this.unitId =
+            ahsItemable(newValue.custom_ahs_itemable_type) ===
+            'CustomItemPrice'
+              ? newValue.custom_ahs_itemable.unit.hashid
+              : newValue.unit?.hashid;
+          this.ahsItemableId = `${ahsItemable(
+            newValue.custom_ahs_itemable_type,
+          )}~${newValue.custom_ahs_itemable_id}`;
+        },
+        immediate: true,
       },
     },
   };
