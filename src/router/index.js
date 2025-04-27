@@ -397,6 +397,16 @@ const routes = [
           },
         ],
       },
+      {
+        path: `/design`,
+        name: 'Design System',
+        meta: {
+          title: 'Design System',
+          loginRequired: false,
+        },
+        component: () =>
+          import(/* webpackChunkName: "testSearch" */ './../views/DesignSystem'),
+      },
     ],
   },
   {

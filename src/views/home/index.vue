@@ -483,7 +483,7 @@
   import { headroom } from 'vue-headroom';
   import VueScrollTo from 'vue-scrollto';
   import HomeLayout from '@/layouts/HomeLayout';
-  import GlideComponent from '@/components/Carousel/GlideComponent';
+  // import GlideComponent from '@/components/Carousel/GlideComponent';
   import { adminRoot, buyUrl } from '@/constants/config';
   const slideSettings = {
     type: 'carousel',
@@ -669,7 +669,7 @@
   export default {
     components: {
       'home-layout': HomeLayout,
-      'glide-component': GlideComponent,
+      // 'glide-component': GlideComponent,
       headroom: headroom,
     },
     data() {
