@@ -95,16 +95,16 @@
                   <i class="simple-icon-star" :class="{ 'filled': talent.bookmarked }"></i>
                 </div>
                 <div class="talent-badge experience-badge">
-                  {{ talent.experience }} Tahun Pengalaman
+                  {{ talent.experienceYears }} Tahun Pengalaman
                 </div>
                 <div class="talent-badge specialty-badge">
                   {{ talent.skill }}
                 </div>
               </div>
               <div class="talent-info">
-                <h3 class="talent-name">{{ talent.name }}</h3>
+                <h3 class="talent-name">{{ talent.firstName }} {{ talent.lastName }}</h3>
                 <p class="talent-location">
-                  <i class="simple-icon-location-pin"></i> {{ talent.location }}
+                  <i class="simple-icon-location-pin"></i> {{ talent.currentLocation }}
                 </p>
                 <div class="talent-footer">
                   <div class="talent-price">Rp {{ formatPrice(talent.price) }}</div>
@@ -190,40 +190,17 @@ export default {
       try {
         this.loading = true;
 
-        if (process.env.NODE_ENV === 'production') {
-          const response = await TalentService.getFilterOptions();
-          const filterOptions = response.data.data;
-          
-          // Extract just the labels for the dropdown components
-          this.skillOptions = filterOptions.skills || [];
-          this.locationOptions = filterOptions.locations || [];
-          
-          // Create a non-overlapping sequential price range
-          this.generateSequentialPriceRanges(filterOptions.priceRanges);
-        } else {
-          // In development, use the imported filter data structures
-          
-          // Extract just the labels for skill options
-          this.skillOptions = skills.map(skill => skill.label);
-          
-          // Extract just the labels for location options
-          this.locationOptions = locations.map(location => location.label);
-          
-          // Collect all min and max values from the price ranges
-          const allPricePoints = new Set();
-          
-          Object.keys(hargaJasa).forEach(type => {
-            Object.keys(hargaJasa[type]).forEach(exp => {
-              const { min, max } = hargaJasa[type][exp];
-              allPricePoints.add(min);
-              allPricePoints.add(max);
-            });
-          });
-          
-          // Create sequential ranges from the sorted price points
-          this.generateSequentialPriceRanges(Array.from(allPricePoints));
-        }
-        
+        // Fetch filter options from the backend
+        const response = await TalentService.getMockFilterOptions();
+        const filterOptions = response.data.data;
+
+        // Extract just the labels for the dropdown components
+        this.skillOptions = filterOptions.skills || [];
+        this.locationOptions = filterOptions.locations || [];
+
+        // Create a non-overlapping sequential price range
+        this.generateSequentialPriceRanges(filterOptions.priceRanges);
+
         this.filterOptionsLoaded = true;
       } catch (error) {
         console.error('Error fetching filter options:', error);
@@ -231,7 +208,6 @@ export default {
         this.loading = false;
       }
     },
-    
     generateSequentialPriceRanges(priceData) {
       // Extract all unique price points
       const pricePoints = new Set();
@@ -291,74 +267,16 @@ export default {
         // Prepare API parameters based on the active tab and filters
         const params = this.prepareApiParams();
         
-        let response;
-        if (process.env.NODE_ENV === 'production') {
-          // Connect to the backend's /users/contractor endpoint
-          response = await TalentService.getTalents(params);
-          this.talents = response.data.data || [];
-        } else {
-          // In development, use mock data
-          response = await TalentService.getMockTalents();
-          let filteredData = [...response.data.data];
-          
-          // Filter by search query
-          if (this.searchQuery) {
-            const lowerSearchQuery = this.searchQuery.toLowerCase();
-            filteredData = filteredData.filter(talent => 
-              talent.name.toLowerCase().includes(lowerSearchQuery) || 
-              talent.skill.toLowerCase().includes(lowerSearchQuery) ||
-              talent.location.toLowerCase().includes(lowerSearchQuery)
-            );
-          }
-          
-          // Filter by skill
-          if (this.filterCriteria.skills) {
-            filteredData = filteredData.filter(talent => 
-              talent.skill === this.filterCriteria.skills
-            );
-          }
-          
-          // Filter by location
-          if (this.filterCriteria.preferredLocations) {
-            filteredData = filteredData.filter(talent => 
-              talent.location === this.filterCriteria.preferredLocations
-            );
-          }
-          
-          // Filter by price range
-          if (this.filterCriteria.priceRange) {
-            const priceRange = this.priceRangeMapping[this.filterCriteria.priceRange];
-            if (priceRange) {
-              const [minPrice, maxPrice] = priceRange;
-              filteredData = filteredData.filter(talent => 
-                talent.price >= minPrice && talent.price <= maxPrice
-              );
-            }
-          }
-          
-          // Filter by tab
-          if (this.activeTab === 'favorit') {
-            filteredData = filteredData.filter(talent => talent.bookmarked);
-          } else if (this.activeTab === 'terakhir') {
-            // Sort by last contracted date in descending order
-            filteredData.sort((a, b) => 
-              new Date(b.lastContracted) - new Date(a.lastContracted)
-            );
-            // Take only the first 2 items to simulate "last contracted"
-            filteredData = filteredData.slice(0, 2);
-          }
-          
-          this.talents = filteredData;
-        }
+        // Fetch talents from the backend
+        const response = await TalentService.getTalents(params);
+        this.talents = response.data.data || [];
+        console.log('Fetched talents:', response.data.data);
       } catch (error) {
         console.error('Error fetching talents:', error);
         this.talents = [];
         this.$toast.error('Gagal memuat data. Silakan coba lagi.');
       } finally {
-        // Always stop loading after a short time
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
+        this.loading = false;
       }
     },
     prepareApiParams() {
