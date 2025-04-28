@@ -8,9 +8,16 @@ import { hargaJasa, locations, skills } from '@/constants/filterData';
  * @returns {Promise} - API response
  */
 const getTalents = (filters = {}) => {
+  // Convert array values in filters to comma-separated strings
+  const formattedFilters = Object.keys(filters).reduce((acc, key) => {
+    const value = filters[key];
+    acc[key] = Array.isArray(value) ? value.join(',') : value;
+    return acc;
+  }, {});
+
   // The backend endpoint is /users/contractor
   return axios.get(`${apiUrl}/users/contractor`, {
-    params: filters
+    params: formattedFilters
   });
 };
 
