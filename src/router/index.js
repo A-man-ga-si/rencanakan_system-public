@@ -64,6 +64,19 @@ const routes = [
       //     import(/* webpackChunkName: "settings" */ './../views/app/settings'),
       // },
       {
+        path: `talent-pool`,
+        name: 'TalentPool',
+        meta: {
+          title: 'Talent Pool',
+          loginRequired: false,
+          permissions: ['read-dashboard'],
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "talentpool" */ './../views/app/talent-pool'
+          ),
+      },
+      {
         path: `projects`,
         name: 'Project',
         meta: {

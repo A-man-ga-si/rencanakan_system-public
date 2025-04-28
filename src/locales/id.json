@@ -162,7 +162,22 @@
     "master-rab": "Master RAB",
     "master-equipment": "Master Peralatan",
     "master-ahp": "Master AHP",
-    "admin": "Admin Panel"
+    "admin": "Admin Panel",
+    "project": "Projek Saya",
+    "talent-pool": "Talent Pool",
+    "order": "Order"
+  },
+  "talent": {
+    "semua-talent": "Semua Talent",
+    "terakhir-dikontrak": "Talent Terakhir Dikontrak",
+    "favorit": "Talent Favorit",
+    "search-placeholder": "Cari nama talent",
+    "tahun-pengalaman": "Tahun Pengalaman"
+  },
+  "filter": {
+    "keahlian": "Keahlian",
+    "lokasi": "Lokasi",
+    "harga": "Harga"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",

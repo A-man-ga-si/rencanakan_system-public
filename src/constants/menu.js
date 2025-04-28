@@ -16,6 +16,13 @@ const data = [
     to: `${adminRoot}/projects`,
   },
   {
+    id: 'talent-pool',
+    icon: 'iconsminds-male-female',
+    label: 'menu.talent-pool',
+    permissions: ['read-dashboard'],
+    to: `${adminRoot}/talent-pool`,
+  },
+  {
     id: 'orders',
     icon: 'iconsminds-safe-box',
     label: 'menu.orders',
