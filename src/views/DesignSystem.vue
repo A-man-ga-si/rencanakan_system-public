@@ -21,22 +21,41 @@
           </div>
         </div>
       </div>
+
+      <div class="component-demo">
+        <h3 class="component-title">DropdownSelect</h3>
+        <div class="component-description">
+          <p>A customizable dropdown select component with focus styling and custom icon.</p>
+        </div>
+        <div class="component-example">
+          <DropdownSelect
+            v-model="selectedOption"
+            :options="dropdownOptions"
+            placeholder="Select an option..."
+          />
+        </div>
+      </div>
+
     </section>
   </div>
 </template>
 
 <script>
 import SearchBar from '@/components/Common/SearchBar.vue'
+import DropdownSelect from '@/components/Common/DropdownSelect.vue'
 
 export default {
   name: 'DesignSystem',
   components: {
-    SearchBar
+    SearchBar,
+    DropdownSelect
   },
   data() {
     return {
       searchQuery: '',
-      hasSearched: false
+      hasSearched: false,
+      selectedOption: '',
+      dropdownOptions: ['Option 1', 'Option 2', 'Option 3']
     }
   },
   methods: {
@@ -49,59 +68,60 @@ export default {
 </script>
 
 <style scoped>
-  .design-system-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    font-family: 'Roboto', sans-serif;
-  }
+/* your styles remain the same */
+.design-system-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Roboto', sans-serif;
+}
 
-  .main-title {
-    font-size: 32px;
-    margin-bottom: 40px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e0e0e0;
-  }
+.main-title {
+  font-size: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
 
-  .component-section {
-    margin-bottom: 60px;
-  }
+.component-section {
+  margin-bottom: 60px;
+}
 
-  .section-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e0e0e0;
-  }
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
 
-  .component-demo {
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
+.component-demo {
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
 
-  .component-title {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.component-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-  .component-description {
-    margin-bottom: 20px;
-    color: #777;
-  }
+.component-description {
+  margin-bottom: 20px;
+  color: #777;
+}
 
-  .component-example {
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    border: 1px solid #e0e0e0;
-  }
+.component-example {
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+}
 
-  .component-result {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #f0f8ff;
-    border-radius: 4px;
-  }
+.component-result {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f0f8ff;
+  border-radius: 4px;
+}
 </style>
