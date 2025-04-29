@@ -86,7 +86,7 @@
         </div>
 
         <!-- Talent Cards -->
-        <div v-else class="talent-grid">
+        <!-- <div v-else class="talent-grid">
           <div class="talent-card-wrapper" v-for="(talent, index) in talents" :key="talent.id || index">
             <div class="talent-card">
               <div class="talent-image-container">
@@ -113,6 +113,14 @@
               </div>
             </div>
           </div>
+        </div> -->
+        <div v-else class="talent-grid">
+          <UserCard 
+            v-for="(talent, index) in talents" 
+            :key="talent.id || index"
+            :user="talent"
+            @toggle-bookmark="toggleBookmark"
+          />
         </div>
       </div>
     </div>
@@ -123,13 +131,15 @@
 import TalentService from '@/services/TalentService';
 import SearchBar from '@/components/Common/SearchBar.vue';
 import DropdownSelect from '@/components/Common/DropdownSelect.vue';
+import UserCard from '@/components/Common/UserCard.vue';
 import { hargaJasa, locations, skills } from '@/constants/filterData';
 
 export default {
   name: 'TalentPool',
   components: {
     SearchBar,
-    DropdownSelect
+    DropdownSelect,
+    UserCard
   },
   data() {
     return {
